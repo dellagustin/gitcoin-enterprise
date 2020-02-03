@@ -14,3 +14,13 @@ For legal simplification reasons gitcoin-enterprise - for the time being - does 
 Experimental
 
 
+## Starting the server locally in dev mode
+cd server
+npm run start:dev
+visit http://localhost:3000
+
+
+## Starting the client locally in dev mode
+cd client
+ng serve
+visit http://localhost:4200
