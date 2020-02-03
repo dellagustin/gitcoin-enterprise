@@ -1,25 +1,40 @@
 import { Injectable } from '@nestjs/common';
+const { Octokit } = require("@octokit/rest");
+const octokit = new Octokit();
 import * as fs from 'fs-sync'
 import * as path from 'path'
 
 @Injectable()
-export class AppService {
+export class AppService
+{
 
   private gitHubToken = ''
 
-  public constructor() {
+  public constructor()
+  {
     // tbd
   }
 
-  public getIssues(): string[] {
-    return [];
-  }
-
-  public getHello(): string {
+  public getHello(): string
+  {
     return 'Hello World!';
   }
 
-  public getGitHubToken(): string {
+  public async  getIssues(): Promise<boolean>
+  {
+    try {
+      const response = await octokit.issues.listForRepo({
+        owner: 'gitcoin-enterprise',
+        repo: 'gitcoin-enterprise'
+      });
+      return response.data;
+    } catch (error) {
+      console.log(`the github call to get the issues failed ${error}`);
+    }
+  }
+
+  public getGitHubToken(): string
+  {
     return fs.readJSON(path.join(__dirname, '../.env.json')).gitHubToken;
   }
 
