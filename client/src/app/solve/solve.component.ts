@@ -20,7 +20,7 @@ export enum ETaskStatus {
 @Component({
   selector: 'app-solve',
   templateUrl: './solve.component.html',
-  styleUrls: ['./solve.component.css']
+  styleUrls: ['./solve.component.css', '../app.component.css']
 })
 export class SolveComponent implements OnInit {
 

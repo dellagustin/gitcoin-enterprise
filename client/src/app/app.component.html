@@ -2,17 +2,18 @@
 
 <div class="contentContainer" style="margin-top: 20vh">
 
-  <div *ngIf="mode===''">
+  <h3>Peer To Peer Collaboration Playground</h3>
+  <div *ngIf="mode===''" style="margin-top: 7vh">
 
     What would you like to do?
 
     <p><br></p>
-    <button (click)="fundTask()">
+    <button (click)="fundTask()" type="button" class="btn btn-primary">
       Fund a Task
     </button>
 
     <p><br></p>
-    <button (click)="solveTask()">
+    <button (click)="solveTask()" type="button" class="btn btn-success">
       Solve a Task
     </button>
 

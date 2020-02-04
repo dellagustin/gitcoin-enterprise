@@ -1,4 +1,26 @@
-Which kind of task would you like to fund?
-<select name="" id="">
-  GitHub Issue
-</select>
+<div class="dropdown">
+  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Task Type
+    <span class="caret"></span></button>
+  <ul class="dropdown-menu">
+    <div *ngFor="let taskType of taskTypes">
+      <li (click)="onTaskTypeSelected(taskType)">
+        <a href="#">{{taskType}}</a>
+      </li>
+    </div>
+  </ul>
+
+  <div class="form-group" *ngIf="selectedTaskType.length>0" class="taskDetails">
+    <input type="text" class="form-control" id="usr"
+           placeholder="https://github.com/cla-assistant/cla-assistant/issues/530" [(ngModel)]="taskLink">
+
+    <div *ngIf="taskLink!==''">
+
+
+      <button type="button" class="btn btn-success" (click)="getInfoFromTaskLink()">
+        Go
+      </button>
+
+
+    </div>
+  </div>
+</div>

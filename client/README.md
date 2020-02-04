@@ -25,3 +25,13 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+
+## Personal Learnings along the way:
+
+I needed to 
+1. install https://www.npmjs.com/package/bootstrap
+2. add the following entry in styles within angular.json
+"./node_modules/bootstrap/dist/css/bootstrap.min.css",
+
+before I could use https://www.npmjs.com/package/ngx-bootstrap successfully

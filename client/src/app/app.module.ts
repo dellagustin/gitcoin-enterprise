@@ -8,7 +8,9 @@ import { AboutComponent } from './about/about.component';
 import { FundComponent } from './fund/fund.component';
 import { SolveComponent } from './solve/solve.component';
 import { ContactComponent } from './contact/contact.component';
-
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent,
@@ -18,6 +20,9 @@ import { ContactComponent } from './contact/contact.component';
     ContactComponent
   ],
   imports: [
+    HttpClientModule,
+    FormsModule,
+    ButtonsModule.forRoot(),
     NavbarModule,
     BrowserModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
