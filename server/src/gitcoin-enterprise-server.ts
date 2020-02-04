@@ -30,10 +30,10 @@ async function bootstrap() {
     app = await NestFactory.create(AppModule)
   }
 
+  app.useStaticAssets(pathToStaticAssets)
   app.use(cors('*'))
   app.use(compression())
 
-  (app as any).useStaticAssets(pathToStaticAssets)
   await app.listen(config.port)
 
   logger.log(ELogLevel.Info, `app is listening on port: ${config.port}`)
