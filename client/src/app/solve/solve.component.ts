@@ -33,21 +33,9 @@ export class SolveComponent implements OnInit {
   public task: ITask;
   public searchTerm = '';
 
-  public static getInitialTask(): ITask {
-    return {
-      taskType: ETaskType.GitHubIssue,
-      name: '',
-      description: '',
-      funding: 0,
-      currency: 'EIC',
-      status: ETaskStatus.created,
-      funderRatedWith: 5,
-      solutionProviderRatedWith: 5
-    };
-  }
   constructor() { }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
   }
 
   public searchTask() {

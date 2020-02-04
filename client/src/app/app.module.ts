@@ -10,6 +10,7 @@ import { SolveComponent } from './solve/solve.component';
 import { ContactComponent } from './contact/contact.component';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { FormsModule } from '@angular/forms';
+import { NgRangeModule } from 'ng-range';
 import { HttpClientModule } from '@angular/common/http';
 import { ProfileComponent } from './profile/profile.component';
 @NgModule({
@@ -22,6 +23,7 @@ import { ProfileComponent } from './profile/profile.component';
     ProfileComponent
   ],
   imports: [
+    NgRangeModule,
     HttpClientModule,
     FormsModule,
     ButtonsModule.forRoot(),

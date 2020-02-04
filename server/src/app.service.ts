@@ -3,7 +3,7 @@ const { Octokit } = require('@octokit/rest');
 const octokit = new Octokit();
 import * as fs from 'fs-sync';
 import * as path from 'path';
-import { IssueInfo } from './interfaces'
+import { IssueInfo } from './interfaces';
 
 @Injectable()
 export class AppService {
@@ -24,7 +24,7 @@ export class AppService {
       const response = await octokit.issues.get({
         owner,
         repo,
-        issue_number: issueId
+        issue_number: issueId,
       });
       issueInfo.title = response.data.title;
       issueInfo.description = response.data.body;
@@ -34,7 +34,6 @@ export class AppService {
     }
 
   }
-
 
   public getGitHubToken(): string {
     return fs.readJSON(path.join(__dirname, '../.env.json')).gitHubToken;

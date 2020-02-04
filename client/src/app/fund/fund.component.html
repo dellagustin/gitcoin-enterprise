@@ -1,42 +1,81 @@
 <div class="form-group" class="taskDetails">
-  <span *ngIf="task.name===''">
-    Please enter the link to the issue <p></p>
-    <input type="text" class="form-control" id="usr"
-      placeholder="https://github.com/cla-assistant/cla-assistant/issues/530" [(ngModel)]="taskLink">
+  <span *ngIf="!fundingCompleted">
 
-    <div *ngIf="taskLink!==''">
 
+    <span *ngIf="task.name===''">
+      Please enter the link to the issue <p></p>
+      <input type="text" class="form-control" id="usr"
+             placeholder="https://github.com/cla-assistant/cla-assistant/issues/530" [(ngModel)]="taskLink">
+
+      <div *ngIf="taskLink!==''">
+
+        <button type="button" class="btn btn-success" (click)="getInfoFromTaskLink()">
+          Go
+        </button>
+
+      </div>
+    </span>
+
+    <div *ngIf="task.name!==''" class="taskDescription">
+
+      <span *ngIf="user.firstName!==''" style="margin-top: 7vh;">
+        Hi {{user.firstName}}. How much would you give for getting this task done?
+
+        <p></p>
+        <div class="sliderDiv">
+          <input type="range" min="{{minimumRange}}" max="{{ user.balance }}" class="slider" [(ngModel)]="currentRange"
+                 (change)="handleRangeSetting()" />
+
+          {{this.currentRange}} Enterprise Internal Coins (EIC)
+        </div>
+
+        <span *ngIf="task.funding>0">
+          <button type="button" class="btn btn-success" (click)="saveFunding()">
+            Save
+          </button>
+        </span>
+
+      </span>
+
+      <span *ngIf="user.firstName===''">
+        <input type="text" class="form-control" placeholder="Please enter your company user id"
+               [(ngModel)]="user.companyId" autofocus>
+
+        <span *ngIf="user.companyId.length>0">
+          <button type="button" class="btn btn-success" (click)="onUserIdEntered()">
+            Next
+          </button>
+        </span>
+      </span>
+
+      <div class="card" style="width:100%; margin-top: 4vh;">
+        <div class="card-body">
+          <h4 class="card-title">{{task.name}}</h4>
+          <p class="card-text">{{task.description}}</p>
+        </div>
+      </div>
+      <p></p>
+
+      <!-- <span *ngIf="task.funding>0">
       <button type="button" class="btn btn-success" (click)="getInfoFromTaskLink()">
-        Go
+        Fund This Task Now
       </button>
+    </span> -->
 
     </div>
   </span>
 
-  <div *ngIf="task.name!==''" class="taskDescription">
-    You are about to fund the following task:
 
+  <span *ngIf="fundingCompleted ">
+    Successfully Funded with {{task.funding}} Enterprise Internal Coins (EIC)
     <div class="card" style="width:100%; margin-top: 4vh;">
       <div class="card-body">
         <h4 class="card-title">{{task.name}}</h4>
         <p class="card-text">{{task.description}}</p>
-
-        <input type="text" class="form-control" placeholder="Please enter your company user id"
-          [(ngModel)]="user.companyId">
-
+        <p>Bounty: {{task.funding}} EIC</p>
       </div>
-
     </div>
 
-    <span *ngIf="user.companyId.length===7" style="margin-top: 3vh;">
-      Your have 10000 EIC right now
-    </span>
+  </span>
 
-    <span *ngIf="task.funding>0">
-      <button type="button" class="btn btn-success" (click)="getInfoFromTaskLink()">
-        Fund This Task Now
-      </button>
-    </span>
-
-  </div>
 </div>

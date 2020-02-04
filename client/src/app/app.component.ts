@@ -37,13 +37,18 @@ export class AppComponent {
       },
       {
         isActive: false,
-        text: 'About',
-        href: 'about',
+        text: 'Profile',
+        href: 'profile',
       },
       {
         isActive: false,
-        text: 'Profile',
-        href: 'profile',
+        text: 'Download Ledger',
+        href: 'downloadLedger',
+      },
+      {
+        isActive: false,
+        text: 'About',
+        href: 'about',
       },
       {
         isActive: false,
@@ -56,5 +61,9 @@ export class AppComponent {
 
   public onClickMenuEntry(target: string) {
     this.mode = target;
+    if (this.mode === 'downloadLedger') {
+      alert('Downloading Ledger in JSON Format');
+      this.mode = '';
+    }
   }
 }

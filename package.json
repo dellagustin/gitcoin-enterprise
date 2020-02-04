@@ -29,6 +29,7 @@
   },
   "homepage": "https://github.com/gitcoin-enterprise/gitcoin-enterprise#readme",
   "dependencies": {
-    "husky": "^4.2.1"
+    "husky": "^4.2.1",
+    "ng-range": "0.0.1"
   }
 }
