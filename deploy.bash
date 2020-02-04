@@ -11,4 +11,6 @@ npm run build-prod
 rm -rf ../server/docs
 cp -r ./docs ../server/ 
 mv ../server/docs/index.html ../server/docs/i-want-compression-via-route.html
+cd ../server
+npm run compress
 pm2 restart gitcoin-enterprise-server
