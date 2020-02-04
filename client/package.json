@@ -5,7 +5,8 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "cp ./src/configurations/configuration-dev.ts ./src/configurations/configuration.ts && ng build --prod --output-path='docs'",
-    "build-prod": "cp ./src/configurations/configuration-prod.ts ./src/configurations/configuration.ts && ng build --prod --output-path='docs'",
+    "build-prod": "cp ./src/configurations/configuration-prod.ts ./src/configurations/configuration.ts && ng build --prod --output-path='docs' && npm run compress",
+    "compress": "npx gzipper --verbose ./docs",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -23,6 +24,7 @@
     "@angular/router": "~9.0.0-rc.8",
     "@angular/service-worker": "~9.0.0-rc.8",
     "bootstrap": "^4.4.1",
+    "gzipper": "^3.4.2",
     "jquery": "^3.4.1",
     "ng-range": "^0.1.0",
     "ng-responsive-navbar": "^1.1.0",
