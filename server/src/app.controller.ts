@@ -2,22 +2,21 @@ import { Controller, Get, Param } from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller()
-export class AppController {
+export class AppController
+{
   constructor(private readonly appService: AppService) { }
 
   @Get()
-  getHello(): string {
+  getHello(): string
+  {
     return this.appService.getHello();
   }
 
-  @Get('getissues')
-  getIssues() {
-    return this.appService.getIssues();
-  }
 
-  @Get('getissue/org/:org/repo/:repo/issueId/:issueId')
-  getIssue(@Param('org') org: string, @Param('repo') repo: string, @Param('issueId') issueId: string) {
-    return this.appService.getIssue(org, repo, issueId );
+  @Get('getissue/owner/:owner/repo/:repo/issueid/:issueId')
+  getIssue(@Param('owner') owner: string, @Param('repo') repo: string, @Param('issueId') issueId: number)
+  {
+    return this.appService.getIssue(owner, repo, issueId);
   }
 
 }
