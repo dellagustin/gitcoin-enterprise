@@ -43,7 +43,14 @@ async function bootstrap() {
 
     httpForwarderAPP.get('*', (req, res) => {
       logger.log(ELogLevel.Info, `forwarding an http request to https`)
-      const saveHost = req.headers.host.replace('http://', 'https://')
+      logger.log(ELogLevel.Info, req.headers.host)
+      let unsafeHost
+      if (req.headers.host.indexOf('http://') === -1) {
+        unsafeHost = `http://${req.headers.host}`
+      } else {
+        unsafeHost = req.headers.host
+      }
+      const saveHost = unsafeHost.replace('http://', 'https://')
       logger.log(ELogLevel.Info, saveHost)
       res.redirect(saveHost)
     })
