@@ -11,7 +11,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "cd server && npm run test"
+      "pre-commit": "cd server && npm run lint && cd ../client && npm run lint"
     }
   },
   "repository": {

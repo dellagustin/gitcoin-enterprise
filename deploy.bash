@@ -2,6 +2,7 @@ cd gitcoin-enterprise
 git pull
 cd server
 npm i
+rm -rf dist
 npm run build
 cd ../client
 npm i

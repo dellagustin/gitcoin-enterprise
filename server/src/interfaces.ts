@@ -1,5 +1,4 @@
-export interface IssueInfo
-{
-    title: string,
+export interface IssueInfo {
+    title: string
     description: string
 }

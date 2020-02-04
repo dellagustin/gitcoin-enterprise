@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { BackendService } from '../backend.service';
+import { Component, OnInit } from '@angular/core'
+import { BackendService } from '../backend.service'
 
 export interface IUser {
-  companyId: string;
-  firstName: string;
-  balance: number;
+  companyId: string
+  firstName: string
+  balance: number
 }
 
 @Component({
@@ -14,12 +14,12 @@ export interface IUser {
 })
 export class ProfileComponent implements OnInit {
 
-  public users: IUser[] = [];
-  public user = BackendService.getInitialUser();
+  public users: IUser[] = []
+  public user = BackendService.getInitialUser()
 
   public constructor(private readonly backendService: BackendService) { }
 
   public ngOnInit(): void {
-    this.users = this.backendService.getUsers();
+    this.users = this.backendService.getUsers()
   }
 }
