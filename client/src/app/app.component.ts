@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { INavbarData } from 'ng-responsive-navbar';
 
 @Component({
   selector: 'app-root',
@@ -6,31 +7,45 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'client';
-
-
+  public title = 'client';
+  public mode = '';
   public navBarData: INavbarData = this.getNavBarData();
+
+  public fundTask() {
+    this.mode = 'fund';
+  }
+
+  public solveTask() {
+    this.mode = 'solve';
+  }
+
+
 
   private getNavBarData(): INavbarData {
     return {
-      // replace the following by your data...
       logoURL: 'https://fance-stiftung.de/api/app/app-images/logo.png',
-      appTitle: 'App Title',
+      appTitle: 'GitCoin Enterprise',
       menuEntries: [{
         isActive: true,
-        text: 'Menu Entry 1',
-        href: '/menuEntry1',
+        text: 'Fund an Issue',
+        href: '/fund',
       },
       {
         isActive: false,
-        text: 'Menu Entry 2',
-        href: '/menuEntry2',
+        text: 'Solve an Issue',
+        href: '/solve',
       },
       {
         isActive: false,
-        text: 'Menu Entry 3',
-        href: '/menuEntry3',
-      }]
+        text: 'About',
+        href: '/about',
+      },
+      {
+        isActive: false,
+        text: 'Contact',
+        href: '/contact',
+      }
+      ]
     };
   }
 

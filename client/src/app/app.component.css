@@ -1,0 +1,11 @@
+.contentContainer {
+  text-align: center;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.button {
+  margin-top: 7vh;
+  margin-bottom: 7vh;
+}

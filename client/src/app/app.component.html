@@ -1,1 +1,34 @@
 <lib-navbar [navBarData]="navBarData" (clickMenuEntry)="onClickMenuEntry($event)"></lib-navbar>
+
+<div class="contentContainer" style="margin-top: 20vh">
+
+  <div *ngIf="mode===''">
+
+    What would you like to do?
+
+    <p><br></p>
+    <button (click)="fundTask()">
+      Fund a Task
+    </button>
+
+    <p><br></p>
+    <button (click)="solveTask()">
+      Solve a Task
+    </button>
+
+  </div>
+
+  <div *ngIf="mode=='fund'">
+    <app-fund></app-fund>
+  </div>
+
+
+  <div *ngIf="mode=='solve'">
+    <app-solve></app-solve>
+  </div>
+
+  <div *ngIf="mode==='about'">
+    <app-about></app-about>
+  </div>
+
+</div>
