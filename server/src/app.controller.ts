@@ -8,6 +8,7 @@ export class AppController {
 
   @Get()
   getHello(@Res() res: any): void {
+    console.log('go')
     res.sendFile(`${pathToStaticAssets}/i-want-compression-via-route.html`)
   }
 
