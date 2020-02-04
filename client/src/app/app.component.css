@@ -3,11 +3,12 @@
   width: 90%;
   margin-left: auto;
   margin-right: auto;
+  text-align: center;
 }
 
 button {
   margin-top: 5vh;
-  min-width: 100%
+  min-width: 100%;
 }
 
 @media screen and (min-width: 600px) {

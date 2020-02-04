@@ -1,1 +1,15 @@
-Welcome to the Task Explorer
+<div class="taskExplorer">
+  Welcome to the Task Explorer
+
+  <div class="searchTask">
+    <input type="text" class="form-control" placeholder="What kind of task are you looking for?"
+      [(ngModel)]="searchTerm">
+
+    <div *ngIf="searchTerm!==''">
+      <button type="button" class="btn btn-success" (click)="searchTask()">
+        Go
+      </button>
+    </div>
+
+  </div>
+</div>

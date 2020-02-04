@@ -25,10 +25,14 @@ export enum ETaskStatus {
 export class SolveComponent implements OnInit {
 
   public task: ITask;
+  public searchTerm = '';
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  public searchTask() {
+
+  }
 }

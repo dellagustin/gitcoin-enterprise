@@ -28,28 +28,28 @@ export class AppComponent {
       menuEntries: [{
         isActive: true,
         text: 'Fund an Issue',
-        href: '/fund',
+        href: 'fund',
       },
       {
         isActive: false,
         text: 'Solve an Issue',
-        href: '/solve',
+        href: 'solve',
       },
       {
         isActive: false,
         text: 'About',
-        href: '/about',
+        href: 'about',
       },
       {
         isActive: false,
         text: 'Contact',
-        href: '/contact',
+        href: 'contact',
       }
       ]
     };
   }
 
   public onClickMenuEntry(target: string) {
-    alert(target);
+    this.mode = target;
   }
 }

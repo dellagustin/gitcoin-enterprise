@@ -10,11 +10,11 @@
   </ul>
 
   <div class="form-group" *ngIf="selectedTaskType.length>0" class="taskDetails">
+    Please enter the link to your issue <p></p>
     <input type="text" class="form-control" id="usr"
-           placeholder="https://github.com/cla-assistant/cla-assistant/issues/530" [(ngModel)]="taskLink">
+      placeholder="https://github.com/cla-assistant/cla-assistant/issues/530" [(ngModel)]="taskLink">
 
     <div *ngIf="taskLink!==''">
-
 
       <button type="button" class="btn btn-success" (click)="getInfoFromTaskLink()">
         Go
