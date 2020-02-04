@@ -23,9 +23,12 @@ async function bootstrap() {
     const httpForwarderAPP = express()
 
     httpForwarderAPP.get('*', (req, res) => {
-      logger.log(ELogLevel.Info, `forwarding an http requst to https`)
-      const saveHost = req.headers.host.replace('http://', 'https://')
-      res.redirect(saveHost)
+      logger.log(ELogLevel.Info, `forwarding an http request to https`)
+      if (req.headers.host.indexOf('http://') !== -1) {
+        const saveHost = req.headers.host.replace('http://', 'https://')
+        logger.log(ELogLevel.Info, saveHost)
+        res.redirect(saveHost)
+      }
 
     })
 
