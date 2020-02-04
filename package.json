@@ -1,0 +1,34 @@
+{
+  "name": "gitcoin-enterprise",
+  "version": "0.0.1",
+  "description": "This project is inspired by [gitcoin.co](https://gitcoin.co/).   [gitcoin.co](https://gitcoin.co) improves Open Source & Peer To Peer collaboration.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "cd server && npm run test"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gitcoin-enterprise/gitcoin-enterprise.git"
+  },
+  "keywords": [
+    "gig",
+    "economy"
+  ],
+  "author": "Michael Spengler",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/gitcoin-enterprise/gitcoin-enterprise/issues"
+  },
+  "homepage": "https://github.com/gitcoin-enterprise/gitcoin-enterprise#readme",
+  "dependencies": {
+    "husky": "^4.2.1"
+  }
+}

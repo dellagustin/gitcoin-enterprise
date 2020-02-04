@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build-prod": "ng build --prod --output-path='dist'",
+    "build-prod": "ng build --prod --output-path='docs' && cp -r ./docs ../",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
