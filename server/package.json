@@ -23,8 +23,12 @@
     "@nestjs/common": "^6.0.0",
     "@nestjs/core": "^6.0.0",
     "@nestjs/platform-express": "^6.0.0",
+<<<<<<< HEAD
     "@octokit/rest": "^16.43.0",
     "cors": "^2.8.5",
+=======
+    "@octokit/rest": "^16.43.1",
+>>>>>>> 57453e564792940df1f0731c211cd1f3d6c54105
     "fs-sync": "^1.0.6",
     "reflect-metadata": "^0.1.12",
     "rimraf": "^2.6.2",

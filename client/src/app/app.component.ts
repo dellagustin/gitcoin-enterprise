@@ -23,7 +23,7 @@ export class AppComponent {
 
   private getNavBarData(): INavbarData {
     return {
-      logoURL: 'https://fance-stiftung.de/api/app/app-images/logo.png',
+      logoURL: '',
       appTitle: 'GitCoin Enterprise',
       menuEntries: [{
         isActive: true,

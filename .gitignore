@@ -1,4 +1,5 @@
 node_modules
-dist
-docs
+server/dist
+client/dist
+client/docs
 .env.json
