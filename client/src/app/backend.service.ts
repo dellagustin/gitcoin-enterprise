@@ -1,7 +1,29 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { IUser } from './profile/profile.component';
-import { ETaskType, ETaskStatus, ITask } from './solve/solve.component';
+
+export interface ITask {
+  taskType: ETaskType;
+  name: string;
+  description: string;
+  funding: number;
+  currency: string;
+  status: ETaskStatus;
+  funderRatedWith: number;
+  solutionProviderRatedWith: number;
+}
+
+export enum ETaskStatus {
+  'created' = 1,
+  'inProgress' = 2,
+  'completed' = 3,
+  'paid' = 4
+}
+
+export enum ETaskType {
+  'GitHubIssue' = 1,
+  'tbd...' = 2,
+}
 
 @Injectable({
   providedIn: 'root'
@@ -53,6 +75,25 @@ export class BackendService {
 
     console.log(JSON.stringify(body));
     return this.http.post<any>(urlWithClient, JSON.stringify(body), httpOptions);
+  }
+
+  public getFundedTasks(): ITask[] {
+    const fundedTasks: ITask[] = []
+    const task1 = this.getDefaultTaskForDemo()
+    task1.funding = 1000
+    fundedTasks.push(task1)
+
+    const task2 = this.getDefaultTaskForDemo()
+    task2.name = 'Another fancy task'
+    task2.funding = 2000
+    fundedTasks.push(task2)
+
+    const task3 = this.getDefaultTaskForDemo()
+    task2.name = 'Yet another fancy task'
+    task2.funding = 3000
+    fundedTasks.push(task2)
+
+    return fundedTasks
   }
 
   public getUser(companyId: string) {

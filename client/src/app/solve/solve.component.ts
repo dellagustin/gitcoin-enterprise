@@ -1,27 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core'
+import { BackendService, ITask } from '../backend.service'
 
-export interface ITask {
-  taskType: ETaskType;
-  name: string;
-  description: string;
-  funding: number;
-  currency: string;
-  status: ETaskStatus;
-  funderRatedWith: number;
-  solutionProviderRatedWith: number;
-}
-
-export enum ETaskStatus {
-  'created' = 1,
-  'inProgress' = 2,
-  'completed' = 3,
-  'paid' = 4
-}
-
-export enum ETaskType {
-  'GitHubIssue' = 1,
-  'tbd...' = 2,
-}
 
 @Component({
   selector: 'app-solve',
@@ -30,15 +9,25 @@ export enum ETaskType {
 })
 export class SolveComponent implements OnInit {
 
-  public task: ITask;
-  public searchTerm = '';
+  public task: ITask
+  public fundedTasks: ITask[] = []
+  public filteredTasks: ITask[] = []
+  public searchTerm = ''
 
-  constructor() { }
+  public constructor(private readonly backendService: BackendService) { }
 
   public ngOnInit(): void {
+    this.fundedTasks = this.backendService.getFundedTasks()
+    this.filteredTasks = this.fundedTasks
   }
 
   public searchTask() {
-
+    this.filteredTasks = this.fundedTasks.filter((entry: ITask) => {
+      if (entry.name.indexOf(this.searchTerm) !== -1) {
+        return true
+      } else {
+        return false
+      }
+    })
   }
 }

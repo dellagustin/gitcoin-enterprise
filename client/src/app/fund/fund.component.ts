@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { BackendService } from '../backend.service';
-import { ITask, ETaskStatus, ETaskType, SolveComponent } from '../solve/solve.component';
-import { IUser, ProfileComponent } from '../profile/profile.component';
+import { BackendService, ITask, ETaskType, ETaskStatus } from '../backend.service';
+import { IUser } from '../profile/profile.component';
 
 @Component({
   selector: 'app-fund',
@@ -15,7 +14,7 @@ export class FundComponent implements OnInit {
   public user: IUser = BackendService.getInitialUser();
   public task: ITask = BackendService.getInitialTask();
   public currentRange = 0;
-  public fundingCompleted  = false;
+  public fundingCompleted = false;
   public initialRange = 70;
   public minimumRange = 10;
   public maximumRange = 100;
@@ -42,7 +41,7 @@ export class FundComponent implements OnInit {
 
   public saveFunding() {
     // if (confirm("Are you sure?")) {
-      this.fundingCompleted = true;
+    this.fundingCompleted = true;
     // }
   }
 

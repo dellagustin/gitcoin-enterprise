@@ -5,7 +5,7 @@
     <span *ngIf="task.name===''">
       Please enter the link to the issue <p></p>
       <input type="text" class="form-control" id="usr"
-             placeholder="https://github.com/cla-assistant/cla-assistant/issues/530" [(ngModel)]="taskLink">
+        placeholder="https://github.com/cla-assistant/cla-assistant/issues/530" [(ngModel)]="taskLink">
 
       <div *ngIf="taskLink!==''">
 
@@ -24,12 +24,12 @@
         <p></p>
         <div class="sliderDiv">
           <input type="range" min="{{minimumRange}}" max="{{ user.balance }}" class="slider" [(ngModel)]="currentRange"
-                 (change)="handleRangeSetting()" />
-
+            (change)="handleRangeSetting()" />
+          <p></p>
           {{this.currentRange}} Enterprise Internal Coins (EIC)
         </div>
 
-        <span *ngIf="task.funding>0">
+        <span *ngIf="task.funding>1">
           <button type="button" class="btn btn-success" (click)="saveFunding()">
             Save
           </button>
@@ -39,7 +39,7 @@
 
       <span *ngIf="user.firstName===''">
         <input type="text" class="form-control" placeholder="Please enter your company user id"
-               [(ngModel)]="user.companyId" autofocus>
+          [(ngModel)]="user.companyId" autofocus>
 
         <span *ngIf="user.companyId.length>0">
           <button type="button" class="btn btn-success" (click)="onUserIdEntered()">

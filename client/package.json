@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --prod --output-path='docs' && cp -r ./docs ../",
+    "build": "ng build --prod --output-path='docs' && cp -r ./docs ../server/ && mv ../server/docs/index.html ../server/docs/i-want-compression-via-route.html",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
