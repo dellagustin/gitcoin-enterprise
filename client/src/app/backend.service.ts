@@ -31,7 +31,6 @@ export enum ETaskType {
 export class BackendService {
   public constructor(private readonly http: HttpClient) { }
 
-  public static backendBaseURL = 'http://localhost:3000'
 
 
   public static getInitialTask(): ITask {

@@ -24,36 +24,47 @@ export class AppComponent {
     return {
       logoURL: '../assets/logo.png',
       appTitle: 'GitCoin Enterprise',
-      menuEntries: [{
-        isActive: true,
-        text: 'Fund an Issue',
-        href: 'fund',
-      },
-      {
-        isActive: false,
-        text: 'Solve an Issue',
-        href: 'solve',
-      },
-      {
-        isActive: false,
-        text: 'Profile',
-        href: 'profile',
-      },
-      {
-        isActive: false,
-        text: 'Download Ledger',
-        href: 'downloadLedger',
-      },
-      {
-        isActive: false,
-        text: 'About',
-        href: 'about',
-      },
-      {
-        isActive: false,
-        text: 'Contact',
-        href: 'contact',
-      }
+      menuEntries: [
+        {
+          isActive: true,
+          text: 'Home',
+          href: '',
+        },
+        {
+          isActive: false,
+          text: 'Fund an Issue',
+          href: 'fund',
+        },
+        {
+          isActive: false,
+          text: 'Solve an Issue',
+          href: 'solve',
+        },
+        {
+          isActive: false,
+          text: 'Profile',
+          href: 'profile',
+        },
+        {
+          isActive: false,
+          text: 'Download Ledger',
+          href: 'downloadLedger',
+        },
+        {
+          isActive: false,
+          text: 'Open Source',
+          href: 'openSource',
+        },
+        {
+          isActive: false,
+          text: 'About',
+          href: 'about',
+        },
+        {
+          isActive: false,
+          text: 'Contact',
+          href: 'contact',
+        }
       ]
     }
   }
@@ -63,6 +74,8 @@ export class AppComponent {
     if (this.mode === 'downloadLedger') {
       alert('Downloading Ledger in JSON Format')
       this.mode = ''
+    } else if (this.mode === 'openSource') {
+      window.location.assign('https://github.com/gitcoin-enterprise/gitcoin-enterprise')
     }
   }
 }

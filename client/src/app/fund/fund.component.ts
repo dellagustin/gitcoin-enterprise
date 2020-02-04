@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { BackendService, ITask, ETaskType, ETaskStatus } from '../backend.service'
+import { backendURL } from '../../configurations/configuration'
+
 import { IUser } from '../profile/profile.component'
 
 @Component({
@@ -26,7 +28,7 @@ export class FundComponent implements OnInit {
   }
 
   public getInfoFromTaskLink() {
-    this.backendService.get(`${BackendService.backendBaseURL}/getissue/org/hi/repo/akshaywhats/issueId/up`)
+    this.backendService.get(`${backendURL}/getissue/org/hi/repo/akshaywhats/issueId/up`)
       .subscribe((response: any) => {
         this.task = this.getTaskFromResponse(response)
       }, error => {
