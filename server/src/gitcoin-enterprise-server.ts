@@ -16,18 +16,18 @@ async function bootstrap() {
   (app as any).useStaticAssets(pathToStaticAssets)
   await app.listen(config.port)
 
-  if (config.port === '443') {
-    const httpForwarderAPP = express()
+  // if (config.port === '443') {
+  //   const httpForwarderAPP = express()
 
-    httpForwarderAPP.get('*', (req, res) => {
-      console.log(req.headers.host)
-      const saveHost = req.headers.host.replace('http://', 'https://')
-      res.redirect(saveHost)
+  //   httpForwarderAPP.get('*', (req, res) => {
+  //     console.log(req.headers.host)
+  //     const saveHost = req.headers.host.replace('http://', 'https://')
+  //     res.redirect(saveHost)
 
-    })
+  //   })
 
-    httpForwarderAPP.listen(80)
-  }
+  //   httpForwarderAPP.listen(80)
+  // }
 
 }
 bootstrap()

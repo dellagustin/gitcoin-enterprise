@@ -4,21 +4,18 @@ const octokit = new Octokit()
 import * as fs from 'fs-sync'
 import * as path from 'path'
 import { IssueInfo } from './interfaces'
+import { LoggerService, ELogLevel } from './logger/logger.service'
 
 @Injectable()
 export class AppService {
 
   private gitHubToken = ''
 
-  public constructor() {
+  public constructor(private readonly loggerService: LoggerService) {
     // tbd
   }
 
-  public getHello(): string {
-    return 'Hello World!'
-  }
-
-  public async getIssue(owner: any, repo: any, issueId: any): Promise<IssueInfo> {
+   public async getIssue(owner: any, repo: any, issueId: any): Promise<IssueInfo> {
     try {
       const issueInfo = {} as IssueInfo
       const response = await octokit.issues.get({
@@ -30,7 +27,7 @@ export class AppService {
       issueInfo.description = response.data.body
       return issueInfo
     } catch (error) {
-      console.log(`the github call to get the issue failed ${error}`)
+      this.loggerService.log(ELogLevel.Error, `the github call to get the issue failed ${error}`)
     }
 
   }
