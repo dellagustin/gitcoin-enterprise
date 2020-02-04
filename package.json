@@ -27,5 +27,8 @@
   "bugs": {
     "url": "https://github.com/gitcoin-enterprise/gitcoin-enterprise/issues"
   },
-  "homepage": "https://github.com/gitcoin-enterprise/gitcoin-enterprise#readme"
+  "homepage": "https://github.com/gitcoin-enterprise/gitcoin-enterprise#readme",
+  "dependencies": {
+    "husky": "^4.2.1"
+  }
 }
