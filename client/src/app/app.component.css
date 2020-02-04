@@ -6,6 +6,9 @@
   text-align: center;
 }
 
+.titleImage {
+  width: 70%;
+}
 button {
   margin-top: 5vh;
   min-width: 100%;
@@ -25,6 +28,6 @@ button {
 
 @media screen and (min-width: 1400px) {
   .contentContainer {
-    width: 30%;
+    width: 24%;
   }
 }

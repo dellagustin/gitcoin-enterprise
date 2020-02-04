@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
 export interface ITask {
+  taskType: ETaskType;
   name: string;
-  description;
+  description: string;
   funding: number;
   currency: string;
   status: ETaskStatus;
@@ -17,6 +18,11 @@ export enum ETaskStatus {
   'paid' = 4
 }
 
+export enum ETaskType {
+  'GitHubIssue' = 1,
+  'tbd...' = 2,
+}
+
 @Component({
   selector: 'app-solve',
   templateUrl: './solve.component.html',
@@ -27,6 +33,18 @@ export class SolveComponent implements OnInit {
   public task: ITask;
   public searchTerm = '';
 
+  public static getInitialTask(): ITask {
+    return {
+      taskType: ETaskType.GitHubIssue,
+      name: '',
+      description: '',
+      funding: 0,
+      currency: 'EIC',
+      status: ETaskStatus.created,
+      funderRatedWith: 5,
+      solutionProviderRatedWith: 5
+    };
+  }
   constructor() { }
 
   ngOnInit(): void {

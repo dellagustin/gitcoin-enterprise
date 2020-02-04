@@ -23,7 +23,7 @@ export class AppComponent {
 
   private getNavBarData(): INavbarData {
     return {
-      logoURL: '',
+      logoURL: '../assets/logo.png',
       appTitle: 'GitCoin Enterprise',
       menuEntries: [{
         isActive: true,
@@ -39,6 +39,11 @@ export class AppComponent {
         isActive: false,
         text: 'About',
         href: 'about',
+      },
+      {
+        isActive: false,
+        text: 'Profile',
+        href: 'profile',
       },
       {
         isActive: false,

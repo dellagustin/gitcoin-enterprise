@@ -1,20 +1,25 @@
 <lib-navbar [navBarData]="navBarData" (clickMenuEntry)="onClickMenuEntry($event)"></lib-navbar>
+<div class="contentContainer" style="margin-top: 17vh">
 
-<div class="contentContainer" style="margin-top: 20vh">
+  <span *ngIf="mode===''">
+    <img src="../assets/collaboration-1.png" alt="" class="titleImage">
+    <!-- https://icons8.com -->
+    <p><br></p>
+  </span>
 
   <h3>Peer To Peer Collaboration Playground</h3>
-  <div *ngIf="mode===''" style="margin-top: 7vh">
+  <div *ngIf="mode===''" style="margin-top: 3vh">
 
-    What would you like to do?
-
-    <p><br></p>
     <button (click)="fundTask()" type="button" class="btn btn-primary">
+      <i class="fa fa-usd" aria-hidden="true" style="padding-right: 1vw;"></i>
       Fund a Task
+      <i class="fa fa-usd" aria-hidden="true" style="padding-left: 1vw;"></i>
     </button>
 
-    <p><br></p>
     <button (click)="solveTask()" type="button" class="btn btn-success">
+      <i class="fa fa-wrench" aria-hidden="true" style="padding-right: 1vw;"></i>
       Solve a Task
+      <i class="fa fa-wrench" aria-hidden="true" style="padding-left: 1vw;"></i>
     </button>
 
   </div>
@@ -22,6 +27,11 @@
   <div *ngIf="mode=='fund'">
     <app-fund></app-fund>
   </div>
+
+  <div *ngIf="mode=='profile'">
+    <app-profile></app-profile>
+  </div>
+
 
 
   <div *ngIf="mode=='solve'">

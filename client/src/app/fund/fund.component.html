@@ -1,16 +1,6 @@
-<div class="dropdown">
-  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Task Type
-    <span class="caret"></span></button>
-  <ul class="dropdown-menu">
-    <div *ngFor="let taskType of taskTypes">
-      <li (click)="onTaskTypeSelected(taskType)">
-        <a href="#">{{taskType}}</a>
-      </li>
-    </div>
-  </ul>
-
-  <div class="form-group" *ngIf="selectedTaskType.length>0" class="taskDetails">
-    Please enter the link to your issue <p></p>
+<div class="form-group" class="taskDetails">
+  <span *ngIf="task.name===''">
+    Please enter the link to the issue <p></p>
     <input type="text" class="form-control" id="usr"
       placeholder="https://github.com/cla-assistant/cla-assistant/issues/530" [(ngModel)]="taskLink">
 
@@ -20,7 +10,33 @@
         Go
       </button>
 
+    </div>
+  </span>
+
+  <div *ngIf="task.name!==''" class="taskDescription">
+    You are about to fund the following task:
+
+    <div class="card" style="width:100%; margin-top: 4vh;">
+      <div class="card-body">
+        <h4 class="card-title">{{task.name}}</h4>
+        <p class="card-text">{{task.description}}</p>
+
+        <input type="text" class="form-control" placeholder="Please enter your company user id"
+          [(ngModel)]="user.companyId">
+
+      </div>
 
     </div>
+
+    <span *ngIf="user.companyId.length===7" style="margin-top: 3vh;">
+      Your have 10000 EIC right now
+    </span>
+
+    <span *ngIf="task.funding>0">
+      <button type="button" class="btn btn-success" (click)="getInfoFromTaskLink()">
+        Fund This Task Now
+      </button>
+    </span>
+
   </div>
 </div>
