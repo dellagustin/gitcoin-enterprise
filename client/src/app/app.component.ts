@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { INavbarData } from 'ng-responsive-navbar';
+import { Component } from '@angular/core'
+import { INavbarData } from 'ng-responsive-navbar'
 
 @Component({
   selector: 'app-root',
@@ -7,16 +7,15 @@ import { INavbarData } from 'ng-responsive-navbar';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  public title = 'client';
-  public mode = '';
-  public navBarData: INavbarData = this.getNavBarData();
+  public mode = ''
+  public navBarData: INavbarData = this.getNavBarData()
 
   public fundTask() {
-    this.mode = 'fund';
+    this.mode = 'fund'
   }
 
   public solveTask() {
-    this.mode = 'solve';
+    this.mode = 'solve'
   }
 
 
@@ -56,14 +55,14 @@ export class AppComponent {
         href: 'contact',
       }
       ]
-    };
+    }
   }
 
   public onClickMenuEntry(target: string) {
-    this.mode = target;
+    this.mode = target
     if (this.mode === 'downloadLedger') {
-      alert('Downloading Ledger in JSON Format');
-      this.mode = '';
+      alert('Downloading Ledger in JSON Format')
+      this.mode = ''
     }
   }
 }
