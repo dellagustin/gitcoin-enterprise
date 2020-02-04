@@ -3,3 +3,4 @@ server/dist
 client/dist
 client/docs
 .env.json
+topsecret
