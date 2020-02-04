@@ -18,11 +18,9 @@ export class AppComponent {
     this.mode = 'solve'
   }
 
-
-
   private getNavBarData(): INavbarData {
     return {
-      logoURL: '../assets/logo.png',
+      logoURL: '../assets/peer-2-peer.jpg',
       appTitle: 'GitCoin Enterprise',
       menuEntries: [
         {
