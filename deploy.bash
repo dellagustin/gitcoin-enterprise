@@ -1,4 +1,5 @@
 cd gitcoin-enterprise
+git stash
 git pull
 cd server
 npm i
