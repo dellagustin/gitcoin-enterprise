@@ -11,7 +11,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "cd client && npm run build-prod"
+      "pre-commit": "cd client && npm run build-prod && git add ."
     }
   },
   "repository": {
