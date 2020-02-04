@@ -1,4 +1,4 @@
-# Gitcoin Enterprise
+# GitCoin Enterprise
 
 This project is inspired by [gitcoin.co](https://gitcoin.co/).  
 [gitcoin.co](https://gitcoin.co) improves Open Source & Peer To Peer collaboration.
@@ -10,15 +10,15 @@ This project is inspired by [gitcoin.co](https://gitcoin.co/).
 1. Someone who wants to delegate a task funds this task
 2. Someone who solves this task receives the reward / funding aka. bounty
 
-For legal simplification Gitcoin Enterprise - for the time being - can not use a crypto currency / e.g. ERC20 token (which could easily be traded for "real" money) but just an enterprise-internal Gitcoin Enterprise Coin which is only meant to optimize **Peer To Peer Collaboration**.
+For legal simplification GitCoin Enterprise - for the time being - can not use a crypto currency / e.g. ERC20 token (which could easily be traded for "real" money) but just an enterprise-internal GitCoin Enterprise Coin which is only meant to optimize **Peer To Peer Collaboration**.
 
 A playground to explore the features can be found [here](https://gitcoin-enterprise.org).
 
 ## Background Info
 
-To support the emergence of fluid Inner Source & Peer To Peer collaboration styles GitCoin Enterprise offers only some of the features of gitcoin.co for the enterprise context.
+To support the emergence of fluid Inner Source- & Peer To Peer collaboration styles GitCoin Enterprise offers only some of the features of gitcoin.co for the enterprise context.
 
-GitCoin Enterprise focuses on optimizing **Inner Source & Peer To Peer collaboration** within restricted and disregulated systems (e.g. suffering from income tax and other penalties for creating value).
+GitCoin Enterprise focuses on optimizing **Inner Source & Peer To Peer collaboration** within restricted and disregulated systems suffering from income tax and other penalties for creating value.
 
 ## Status
 
