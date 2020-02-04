@@ -6,28 +6,24 @@ import * as path from 'path';
 import { IssueInfo } from './interfaces'
 
 @Injectable()
-export class AppService
-{
+export class AppService {
 
   private gitHubToken = '';
 
-  public constructor()
-  {
+  public constructor() {
     // tbd
   }
 
-  public getHello(): string
-  {
+  public getHello(): string {
     return 'Hello World!';
   }
 
-  public async getIssue(owner: any, repo: any, issueId: any): Promise<IssueInfo>
-  {
+  public async getIssue(owner: any, repo: any, issueId: any): Promise<IssueInfo> {
     try {
       const issueInfo = {} as IssueInfo;
       const response = await octokit.issues.get({
-        owner: owner,
-        repo: repo,
+        owner,
+        repo,
         issue_number: issueId
       });
       issueInfo.title = response.data.title;
@@ -40,8 +36,7 @@ export class AppService
   }
 
 
-  public getGitHubToken(): string
-  {
+  public getGitHubToken(): string {
     return fs.readJSON(path.join(__dirname, '../.env.json')).gitHubToken;
   }
 

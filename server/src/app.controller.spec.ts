@@ -15,8 +15,10 @@ describe('AppController', () => {
   });
 
   describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(appController.getHello()).toBe('Hello World!');
+    it('should return "Hello World!"', async () => {
+      const expectedResult = { issueDescription: 'my issue description', issueTitle: 'my issue title' };
+      // expect(await appController.getIssue('testOrg', 'testRepo', 2)).toEqual(expectedResult);
+      // todo
     });
   });
 });
