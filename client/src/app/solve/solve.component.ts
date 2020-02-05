@@ -14,12 +14,13 @@ export class SolveComponent implements OnInit {
   public fundedTasks: ITask[] = []
   public filteredTasks: ITask[] = []
   public searchTerm = ''
+  public sortingDirectionDown = false
 
   public constructor(private readonly backendService: BackendService) { }
 
   public ngOnInit(): void {
     this.fundedTasks = this.backendService.getFundedTasks()
-    this.filteredTasks = this.fundedTasks
+    this.filteredTasks = this.sortDescending(this.fundedTasks)
   }
 
   public searchTask() {
@@ -38,6 +39,42 @@ export class SolveComponent implements OnInit {
 
   public backToOverview() {
     delete this.taskOfInterest
+  }
+
+  public sort() {
+    this.sortingDirectionDown = !this.sortingDirectionDown
+
+    return (this.sortingDirectionDown) ?
+      this.sortAscending(this.filteredTasks) :
+      this.sortDescending(this.filteredTasks)
+  }
+
+  private sortAscending(tasks: ITask[]) {
+    return tasks.sort((task1: ITask, task2: ITask) => {
+      if (task1.funding > task2.funding) {
+        return 1
+      }
+
+      if (task1.funding < task2.funding) {
+        return -1
+      }
+
+      return 0
+    })
+  }
+
+  private sortDescending(tasks: ITask[]) {
+    return tasks.sort((task1: ITask, task2: ITask) => {
+      if (task1.funding < task2.funding) {
+        return 1
+      }
+
+      if (task1.funding > task2.funding) {
+        return -1
+      }
+
+      return 0
+    })
   }
 
 }

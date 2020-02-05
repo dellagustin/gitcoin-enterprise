@@ -18,7 +18,7 @@
       <thead class="thead-dark">
         <tr>
           <th>Title</th>
-          <th>Funding</th>
+          <th>Funding <i class="fa fa-sort" style="padding-left: 2vw; padding-right: 2vw;" (click)="sort()"></i></th>
         </tr>
       </thead>
       <tbody>
@@ -32,7 +32,7 @@
 
   </span>
   <span *ngIf="taskOfInterest!==undefined">
-    <button (click)="backToOverview()" type="button" class="btn btn-primary">
+    <button (click)="backToOverview()" type="button" class="btn ourBlueColor">
       <i class="fa fa-step-backward" aria-hidden="true" style="padding-right: 1vw;"></i>
       Back To Overview
       <i class="fa fa-step-backward" aria-hidden="true" style="padding-left: 1vw;"></i>

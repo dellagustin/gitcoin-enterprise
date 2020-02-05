@@ -3,13 +3,13 @@
 
   <span *ngIf="entryIdOfInterest===undefined">
 
-    <button (click)="downloadAsJSON()" type="button" class="btn btn-primary">
+    <button (click)="downloadAsJSON()" type="button" class="btn ourBlueColor">
       <i class="fa fa-usd" aria-hidden="true" style="padding-right: 1vw;"></i>
       Download as JSON
       <i class="fa fa-usd" aria-hidden="true" style="padding-left: 1vw;"></i>
     </button>
 
-    <button (click)="downloadAsCSV()" type="button" class="btn btn-success">
+    <button (click)="downloadAsCSV()" type="button" class="btn ourRedColor">
       <i class="fa fa-wrench" aria-hidden="true" style="padding-right: 1vw;"></i>
       Download as CSV
       <i class="fa fa-wrench" aria-hidden="true" style="padding-left: 1vw;"></i>
@@ -35,7 +35,7 @@
   </span>
 
   <span *ngIf="entryIdOfInterest!==undefined">
-    <button (click)="backToOverview()" type="button" class="btn btn-success">
+    <button (click)="backToOverview()" type="button" class="btn ourBlueColor">
       <i class="fa fa-step-backward" aria-hidden="true" style="padding-right: 1vw;"></i>
       Back To Overview
       <i class="fa fa-step-backward" aria-hidden="true" style="padding-left: 1vw;"></i>

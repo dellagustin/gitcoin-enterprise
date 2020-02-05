@@ -39,10 +39,10 @@
   top: 0;
 }
 
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 1600px) {
   .ellipsis {
     white-space: nowrap;
-    width: 60.82%;
+    /* width: 60.82%; */
     overflow: hidden;
     text-overflow: ellipsis;
   }
@@ -71,6 +71,12 @@
 }
 
 .logo {
+  width: 58px;
+  float: left;
+  text-align: left;
+  padding-left: 6px;
+  padding-top: 12px;
+  padding-bottom: 3px;
   max-width: 50px;
   position: relative;
   background: inherit;
