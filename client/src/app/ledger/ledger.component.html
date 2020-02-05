@@ -1,33 +1,79 @@
 <div class="container">
 
-  <button (click)="downloadAsJSON()" type="button" class="btn btn-primary">
-    <i class="fa fa-usd" aria-hidden="true" style="padding-right: 1vw;"></i>
-    Download as JSON
-    <i class="fa fa-usd" aria-hidden="true" style="padding-left: 1vw;"></i>
-  </button>
 
-  <button (click)="downloadAsCSV()" type="button" class="btn btn-success">
-    <i class="fa fa-wrench" aria-hidden="true" style="padding-right: 1vw;"></i>
-    Download as CSV
-    <i class="fa fa-wrench" aria-hidden="true" style="padding-left: 1vw;"></i>
-  </button>
+  <span *ngIf="entryIdOfInterest===undefined">
+
+    <button (click)="downloadAsJSON()" type="button" class="btn btn-primary">
+      <i class="fa fa-usd" aria-hidden="true" style="padding-right: 1vw;"></i>
+      Download as JSON
+      <i class="fa fa-usd" aria-hidden="true" style="padding-left: 1vw;"></i>
+    </button>
+
+    <button (click)="downloadAsCSV()" type="button" class="btn btn-success">
+      <i class="fa fa-wrench" aria-hidden="true" style="padding-right: 1vw;"></i>
+      Download as CSV
+      <i class="fa fa-wrench" aria-hidden="true" style="padding-left: 1vw;"></i>
+    </button>
+
+    <table class="table table-striped">
+      <thead class="thead-dark">
+        <tr>
+          <th>ID</th>
+          <th>Date</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ledgerEntry of ledger" (click)="onEntryClicked(ledgerEntry)">
+          <td>{{ledgerEntry.id}}</td>
+          <td>{{ledgerEntry.date}}</td>
+          <td>{{ledgerEntry.amount}}</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </span>
+
+  <span *ngIf="entryIdOfInterest!==undefined">
+    <button (click)="backToOverview()" type="button" class="btn btn-success">
+      <i class="fa fa-step-backward" aria-hidden="true" style="padding-right: 1vw;"></i>
+      Back To Overview
+      <i class="fa fa-step-backward" aria-hidden="true" style="padding-left: 1vw;"></i>
+    </button>
+
+    <table class="table table-striped">
+      <thead class="thead-dark">
+        <tr>
+          <th>Key</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Transaction ID</td>
+          <td>{{entryIdOfInterest.id}}</td>
+        </tr>
+        <tr>
+          <td>Date</td>
+          <td>{{entryIdOfInterest.date}}</td>
+        </tr>
+        <tr>
+          <td>From</td>
+          <td>{{entryIdOfInterest.sender}}</td>
+        </tr>
+        <tr>
+          <td>To</td>
+          <td>{{entryIdOfInterest.receiver}}</td>
+        </tr>
+        <tr>
+          <td>Amount</td>
+          <td>{{entryIdOfInterest.amount}}</td>
+        </tr>
+
+      </tbody>
+    </table>
+
+  </span>
 
 
-
-  <table class="table table-striped">
-    <thead class="thead-dark">
-      <tr>
-        <th>ID</th>
-        <th>Date</th>
-        <th>Amount</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let ledgerEntry of ledger" (click)="onEntryClicked()">
-        <td>{{ledgerEntry.id}}</td>
-        <td>{{ledgerEntry.date}}</td>
-        <td>{{ledgerEntry.amount}}</td>
-      </tr>
-    </tbody>
-  </table>
 </div>

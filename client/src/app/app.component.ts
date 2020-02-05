@@ -50,6 +50,11 @@ export class AppComponent {
         },
         {
           isActive: false,
+          text: 'Invite Friends',
+          href: 'inviteFriends',
+        },
+        {
+          isActive: false,
           text: 'Open Source',
           href: 'openSource',
         },

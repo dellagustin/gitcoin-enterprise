@@ -1,3 +1,6 @@
+
+import { LedgerComponent } from './ledger/ledger.component'
+import { LedgerEntryComponent } from './ledger-entry/ledger-entry.component'
 import { BrowserModule } from '@angular/platform-browser'
 import { NgModule } from '@angular/core'
 import { NavbarModule } from 'ng-responsive-navbar'
@@ -12,8 +15,8 @@ import { ButtonsModule } from 'ngx-bootstrap/buttons'
 import { FormsModule } from '@angular/forms'
 import { HttpClientModule } from '@angular/common/http'
 import { ProfileComponent } from './profile/profile.component'
-import { LedgerComponent } from './ledger/ledger.component'
-import { LedgerEntryComponent } from './ledger-entry/ledger-entry.component'
+import { InviteFriendComponent } from './invite-friend/invite-friend.component'
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,7 +26,9 @@ import { LedgerEntryComponent } from './ledger-entry/ledger-entry.component'
     ContactComponent,
     ProfileComponent,
     LedgerComponent,
-    LedgerEntryComponent
+    LedgerEntryComponent,
+    InviteFriendComponent
+
   ],
   imports: [
     HttpClientModule,

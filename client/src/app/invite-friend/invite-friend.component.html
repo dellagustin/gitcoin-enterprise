@@ -1,0 +1,26 @@
+<div>
+
+  <h3>
+    Invite a Friend
+  </h3>
+
+
+  <span style="margin-top: 100px; margin-bottom: 10vh">
+    <input type="text" class="form-control" placeholder="Please enter your friend's E-Mail Adress"
+      [(ngModel)]="eMailAdress" autofocus>
+  </span>
+
+  <span *ngIf="eMailAdress.length>0" style="margin-top: 100px; margin-bottom: 10vh">
+    <input style="margin-top: 100px" type="checkbox" [(ngModel)]="permissionGranted"> I hereby
+    confirm my friend wants to be invited by E-Mail
+  </span>
+
+  <span *ngIf="permissionGranted">
+    <button (click)="send()" type="button" class="btn btn-primary">
+      <i class="fa fa-usd" aria-hidden="true" style="padding-right: 1vw;"></i>
+      Invite
+      <i class="fa fa-usd" aria-hidden="true" style="padding-left: 1vw;"></i>
+    </button>
+  </span>
+
+</div>

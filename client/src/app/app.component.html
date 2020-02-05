@@ -33,6 +33,7 @@
   </div>
 
 
+
   <div *ngIf="mode=='downloadLedger'">
     <app-ledger></app-ledger>
   </div>
@@ -40,6 +41,10 @@
 
   <div *ngIf="mode=='solve'">
     <app-solve></app-solve>
+  </div>
+
+  <div *ngIf="mode=='inviteFriends'">
+    <app-invite-friend></app-invite-friend>
   </div>
 
   <div *ngIf="mode==='about'">

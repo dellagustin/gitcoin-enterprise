@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core'
 import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { IUser } from './profile/profile.component'
+import { ILedgerEntry } from './ledger/ledger.interface'
+import { backendURL } from '../configurations/configuration'
 
 export interface ITask {
   taskType: ETaskType
@@ -76,6 +78,10 @@ export class BackendService {
     return this.http.post<any>(urlWithClient, JSON.stringify(body), httpOptions)
   }
 
+  public getLedgerEntries() {
+    return this.get(`${backendURL}/getLedgerEntries`)
+  }
+
   public getFundedTasks(): ITask[] {
     const fundedTasks: ITask[] = []
     const task1 = this.getDefaultTaskForDemo()
@@ -140,6 +146,41 @@ export class BackendService {
     users.push(luisa)
 
     return users
+  }
+
+  public getDefaultLedgerEntriesForDemo(): ILedgerEntry[] {
+    const ledgerEntries: ILedgerEntry[] = []
+    const entry1: ILedgerEntry = {
+      id: '4711',
+      date: '2020-01-01',
+      amount: 100,
+      sender: 'Hugo',
+      receiver: 'Fritz',
+    }
+
+    ledgerEntries.push(entry1)
+
+    const entry2: ILedgerEntry = {
+      id: '4712',
+      date: '2020-01-02',
+      amount: 200,
+      sender: 'Laura',
+      receiver: 'Luisa',
+    }
+
+    ledgerEntries.push(entry2)
+
+    const entry3: ILedgerEntry = {
+      id: '4713',
+      date: '2020-01-01',
+      amount: 100,
+      sender: 'Alex',
+      receiver: 'Sascha-Michelle',
+    }
+
+    ledgerEntries.push(entry3)
+
+    return ledgerEntries
   }
 
 }

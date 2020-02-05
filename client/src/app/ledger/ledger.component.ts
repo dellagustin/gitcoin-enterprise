@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 import { ILedgerEntry } from './ledger.interface'
+import { BackendService } from '../backend.service'
 
 @Component({
   selector: 'app-ledger',
@@ -10,51 +11,33 @@ import { ILedgerEntry } from './ledger.interface'
 export class LedgerComponent implements OnInit {
 
   public ledger: ILedgerEntry[] = []
+  public entryIdOfInterest: ILedgerEntry
 
-  public constructor() { }
+  public constructor(private readonly backendService: BackendService) { }
 
   public ngOnInit(): void {
-
-    const entry1: ILedgerEntry = {
-      id: '4711',
-      date: '2020-01-01',
-      amount: 100,
-      sender: 'Hugo',
-      receiver: 'Fritz',
-    }
-
-    this.ledger.push(entry1)
-
-    const entry2: ILedgerEntry = {
-      id: '4712',
-      date: '2020-01-02',
-      amount: 200,
-      sender: 'Laura',
-      receiver: 'Luisa',
-    }
-
-    this.ledger.push(entry2)
-
-    const entry3: ILedgerEntry = {
-      id: '4713',
-      date: '2020-01-01',
-      amount: 100,
-      sender: 'Alex',
-      receiver: 'Sascha-Michelle',
-    }
-
-    this.ledger.push(entry3)
+    this.backendService.getLedgerEntries()
+      .subscribe((result: ILedgerEntry[]) => {
+        this.ledger = result
+      }, error => {
+        console.log('probably no connection to server - delivering demo data')
+        this.ledger = this.backendService.getDefaultLedgerEntriesForDemo()
+      })
   }
 
   public downloadAsCSV() {
-
+    alert('to be developed...')
   }
 
   public downloadAsJSON() {
-
+    alert('to be developed...')
   }
 
-  public onEntryClicked() {
+  public onEntryClicked(ledgerEntry: ILedgerEntry) {
+    this.entryIdOfInterest = ledgerEntry
+  }
 
+  public backToOverview() {
+    delete this.entryIdOfInterest
   }
 }
