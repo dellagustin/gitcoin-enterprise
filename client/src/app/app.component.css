@@ -25,8 +25,14 @@
   margin-bottom: 4vh;
 }
 
+input {
+  margin-bottom: 4vh;
+  margin-top: 3vh;
+}
+
 button {
-  font-weight: bolder;
+  font-weight: 520;
+  font-size: 21px;
   background-color: black;
   margin-top: 5vh;
   padding-top: 1.7vh;

@@ -41,14 +41,14 @@
       <i class="fa fa-step-backward" aria-hidden="true" style="padding-left: 1vw;"></i>
     </button>
 
-    <table class="table table-striped">
-      <thead class="thead-dark">
-        <tr>
-          <th>Key</th>
-          <th>Value</th>
-        </tr>
-      </thead>
-      <cdk-virtual-scroll-viewport itemSize="1000" [ngStyle]="{'height.px': 10000}" style="scrollbar-width: 0px; ">
+    <cdk-virtual-scroll-viewport itemSize="1000" [ngStyle]="{'height.px': 10000}" style="scrollbar-width: 0px; ">
+      <table class="table table-striped">
+        <thead class="thead-dark">
+          <tr>
+            <th>Key</th>
+            <th>Value</th>
+          </tr>
+        </thead>
         <tbody>
           <tr>
             <td>Transaction ID</td>
@@ -72,8 +72,8 @@
           </tr>
 
         </tbody>
-      </cdk-virtual-scroll-viewport>
-    </table>
+      </table>
+    </cdk-virtual-scroll-viewport>
 
   </span>
 
