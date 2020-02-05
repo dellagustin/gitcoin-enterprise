@@ -21,12 +21,14 @@
           <th>Funding <i class="fa fa-sort" style="padding-left: 2vw; padding-right: 2vw;" (click)="sort()"></i></th>
         </tr>
       </thead>
+      <cdk-virtual-scroll-viewport itemSize="1000" [ngStyle]="{'height.px': 10000}" style="scrollbar-width: 0px; ">
       <tbody>
         <tr *ngFor="let fundedTask of filteredTasks" (click)="onTaskClicked(fundedTask)">
           <td>{{fundedTask.name}}</td>
           <td>{{fundedTask.funding}}</td>
         </tr>
       </tbody>
+    </cdk-virtual-scroll-viewport>
     </table>
 
 

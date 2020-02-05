@@ -17,6 +17,7 @@ import { InviteFriendComponent } from './invite-friend/invite-friend.component'
 import { TaskCardComponent } from './task-card/task-card.component'
 import { UserCardComponent } from './user-card/user-card.component'
 import { NavbarComponent } from './navbar/navbar.component'
+import { ScrollingModule } from '@angular/cdk/scrolling'
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { NavbarComponent } from './navbar/navbar.component'
 
   ],
   imports: [
+    ScrollingModule,
     HttpClientModule,
     FormsModule,
     ButtonsModule.forRoot(),
