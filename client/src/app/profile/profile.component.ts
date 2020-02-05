@@ -5,6 +5,7 @@ export interface IUser {
   companyId: string
   firstName: string
   balance: number
+  link: string
 }
 
 @Component({

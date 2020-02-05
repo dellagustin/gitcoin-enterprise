@@ -57,6 +57,7 @@ export class BackendService {
       companyId: '',
       firstName: '',
       balance: 0,
+      link: '',
     }
 
     return user
@@ -98,9 +99,9 @@ export class BackendService {
     fundedTasks.push(task2)
 
     const task3 = this.getDefaultTaskForDemo()
-    task2.name = 'Yet another fancy task'
-    task2.funding = 3000
-    fundedTasks.push(task2)
+    task3.name = 'A very difficult task'
+    task3.funding = 10000
+    fundedTasks.push(task3)
 
     return fundedTasks
   }
@@ -128,28 +129,31 @@ export class BackendService {
   public getUsers() {
     const users: IUser[] = []
 
-    const lisa: IUser = {
+    const michael: IUser = {
       balance: 1000,
       companyId: 'd123',
-      firstName: 'Lisa',
+      firstName: 'Michael',
+      link: 'https://github.com/michael-spengler',
     }
-    users.push(lisa)
+    users.push(michael)
 
-    const laura: IUser = {
+    const akshay: IUser = {
       balance: 2000,
       companyId: 'd124',
-      firstName: 'Laura',
+      firstName: 'Akshay',
+      link: 'https://github.com/ibakshay',
     }
-    users.push(laura)
+    users.push(akshay)
 
 
-    const luisa: IUser = {
+    const fabian: IUser = {
       balance: 3000,
       companyId: 'd125',
-      firstName: 'Luisa',
+      firstName: 'Fabian',
+      link: 'https://github.com/fabianriewe'
     }
 
-    users.push(luisa)
+    users.push(fabian)
 
     return users
   }

@@ -4,7 +4,7 @@
     Profile
   </h4>
   <input type="text" class="form-control" placeholder="enter company user id - e.g. d123" [(ngModel)]="user.companyId"
-    autofocus>
+         autofocus>
 
   <span *ngIf="user.companyId.length>0">
     <button type="button" class="btn btn-success" (click)="onUserIdEntered()">
@@ -14,13 +14,7 @@
 </span>
 
 
-<div *ngIf="user.firstName!==''" class="card" style="width:100%; margin-top: 12vh;">
-  <img class="card-img-top" src="img_avatar1.png" alt="Card image" style="width:100%">
-  <div class="card-body">
-    <h4 class="card-title">{{user.firstName}}</h4>
-    <h5 class="card-title">{{user.companyId}}</h5>
-    Balance: {{user.balance}} EIC
+<span *ngIf="user.firstName!==''">
 
-    <!-- <a href="#" class="btn btn-primary">See Profile</a> -->
-  </div>
-</div>
+  <app-user-card [user]="user"></app-user-card>
+</span>

@@ -2,7 +2,6 @@
 import { LedgerComponent } from './ledger/ledger.component'
 import { BrowserModule } from '@angular/platform-browser'
 import { NgModule } from '@angular/core'
-import { NavbarModule } from 'ng-responsive-navbar'
 import { AppComponent } from './app.component'
 import { ServiceWorkerModule } from '@angular/service-worker'
 import { environment } from '../environments/environment'
@@ -16,6 +15,8 @@ import { HttpClientModule } from '@angular/common/http'
 import { ProfileComponent } from './profile/profile.component'
 import { InviteFriendComponent } from './invite-friend/invite-friend.component'
 import { TaskCardComponent } from './task-card/task-card.component'
+import { UserCardComponent } from './user-card/user-card.component'
+import { NavbarComponent } from './navbar/navbar.component'
 
 @NgModule({
   declarations: [
@@ -27,14 +28,15 @@ import { TaskCardComponent } from './task-card/task-card.component'
     ProfileComponent,
     LedgerComponent,
     InviteFriendComponent,
-    TaskCardComponent
+    TaskCardComponent,
+    UserCardComponent,
+    NavbarComponent
 
   ],
   imports: [
     HttpClientModule,
     FormsModule,
     ButtonsModule.forRoot(),
-    NavbarModule,
     BrowserModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
