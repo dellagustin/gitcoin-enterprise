@@ -1,6 +1,5 @@
 
 import { LedgerComponent } from './ledger/ledger.component'
-import { LedgerEntryComponent } from './ledger-entry/ledger-entry.component'
 import { BrowserModule } from '@angular/platform-browser'
 import { NgModule } from '@angular/core'
 import { NavbarModule } from 'ng-responsive-navbar'
@@ -16,6 +15,7 @@ import { FormsModule } from '@angular/forms'
 import { HttpClientModule } from '@angular/common/http'
 import { ProfileComponent } from './profile/profile.component'
 import { InviteFriendComponent } from './invite-friend/invite-friend.component'
+import { TaskCardComponent } from './task-card/task-card.component'
 
 @NgModule({
   declarations: [
@@ -26,8 +26,8 @@ import { InviteFriendComponent } from './invite-friend/invite-friend.component'
     ContactComponent,
     ProfileComponent,
     LedgerComponent,
-    LedgerEntryComponent,
-    InviteFriendComponent
+    InviteFriendComponent,
+    TaskCardComponent
 
   ],
   imports: [

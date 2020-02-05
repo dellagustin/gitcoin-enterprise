@@ -12,7 +12,6 @@ import { IUser } from '../profile/profile.component'
 export class FundComponent implements OnInit {
 
   public radioModel: any
-  public taskLink = 'https://github.com/cla-assistant/cla-assistant/issues/530'
   public user: IUser = BackendService.currentUser
   public task: ITask = BackendService.getInitialTask()
   public currentRange = 0
@@ -28,7 +27,7 @@ export class FundComponent implements OnInit {
   }
 
   public getInfoFromTaskLink() {
-    const sourceString = this.taskLink.split('https://github.com/')[1]
+    const sourceString = this.task.link.split('https://github.com/')[1]
     // cla-assistant/cla-assistant/issues/530
     const org = sourceString.split('/')[0]
     const repo = sourceString.split('/')[1].split('/')[0]
@@ -63,7 +62,7 @@ export class FundComponent implements OnInit {
     BackendService.currentUser = this.user
   }
 
-  private getTaskFromResponse(response: any) {
+  private getTaskFromResponse(response: any): ITask {
     return {
       taskType: ETaskType.GitHubIssue,
       name: response.title,
@@ -72,7 +71,9 @@ export class FundComponent implements OnInit {
       currency: 'EIC',
       status: ETaskStatus.created,
       funderRatedWith: 5,
-      solutionProviderRatedWith: 5
+      solutionProviderRatedWith: 5,
+      link: '',
+      dueDate: ''
     }
   }
 }

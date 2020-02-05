@@ -1,13 +1,20 @@
 .contentContainer {
   text-align: center;
-  width: 90%;
+  width: 92%;
   margin-left: auto;
   margin-right: auto;
   text-align: center;
+  margin-top: 12vh;
+  margin-bottom: 24vh;
 }
 
 .titleImage {
   width: 70%;
+}
+
+.titleBeneathImage {
+  margin-top: 4vh;
+  margin-bottom: 4vh;
 }
 
 button {
@@ -15,6 +22,14 @@ button {
   padding-top: 1.7vh;
   padding-bottom: 1.7vh;
   min-width: 100%;
+}
+
+.table {
+  margin-top: 3vh;
+}
+
+.adPad {
+  padding-top: 6vh;
 }
 
 @media screen and (min-width: 600px) {

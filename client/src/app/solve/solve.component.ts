@@ -10,6 +10,7 @@ import { BackendService, ITask } from '../backend.service'
 export class SolveComponent implements OnInit {
 
   public task: ITask
+  public taskOfInterest: ITask
   public fundedTasks: ITask[] = []
   public filteredTasks: ITask[] = []
   public searchTerm = ''
@@ -23,11 +24,20 @@ export class SolveComponent implements OnInit {
 
   public searchTask() {
     this.filteredTasks = this.fundedTasks.filter((entry: ITask) => {
-      if (entry.name.indexOf(this.searchTerm) !== -1) {
+      if (entry.name.toLowerCase().indexOf(this.searchTerm.toLowerCase()) !== -1) {
         return true
       } else {
         return false
       }
     })
   }
+
+  public onTaskClicked(taskOfInterest: ITask) {
+    this.taskOfInterest = taskOfInterest
+  }
+
+  public backToOverview() {
+    delete this.taskOfInterest
+  }
+
 }

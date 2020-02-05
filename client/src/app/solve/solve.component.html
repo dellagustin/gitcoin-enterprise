@@ -1,35 +1,44 @@
 <div class="taskExplorer">
-  Welcome to the Task Explorer
 
-  <div class="searchTask">
-    <input type="text" class="form-control" placeholder="What kind of task do you want to solve?"
-      [(ngModel)]="searchTerm" (change)=searchTask() autofocus>
-
-    <!-- <div *ngIf="searchTerm!==''">
-      <button type="button" class="btn btn-success" (click)="searchTask()">
-        Go
-      </button>
-    </div> -->
-
-  </div>
+  <span *ngIf="taskOfInterest===undefined">
+    <img src="../../assets/task-explorer.png" alt="" width="60%">
+    <h4 class="titleBeneathImage">
+      Task Explorer
+    </h4>
 
 
-  <div class="fundedTasks" style="width: 100%">
-    <div class="container">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Funding</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let fundedTask of filteredTasks">
-            <td>{{fundedTask.name}}</td>
-            <td>{{fundedTask.funding}}</td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="searchTask">
+      <input type="text" class="form-control" placeholder="What kind of task do you want to solve?"
+        [(ngModel)]="searchTerm" (keyup)="searchTask()" autofocus>
+
     </div>
-  </div>
+
+
+    <table class="table table-striped">
+      <thead class="thead-dark">
+        <tr>
+          <th>Title</th>
+          <th>Funding</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let fundedTask of filteredTasks" (click)="onTaskClicked(fundedTask)">
+          <td>{{fundedTask.name}}</td>
+          <td>{{fundedTask.funding}}</td>
+        </tr>
+      </tbody>
+    </table>
+
+
+  </span>
+  <span *ngIf="taskOfInterest!==undefined">
+    <button (click)="backToOverview()" type="button" class="btn btn-primary">
+      <i class="fa fa-step-backward" aria-hidden="true" style="padding-right: 1vw;"></i>
+      Back To Overview
+      <i class="fa fa-step-backward" aria-hidden="true" style="padding-left: 1vw;"></i>
+    </button>
+
+    <app-task-card [task]="taskOfInterest"></app-task-card>
+
+  </span>
 </div>

@@ -13,6 +13,8 @@ export interface ITask {
   status: ETaskStatus
   funderRatedWith: number
   solutionProviderRatedWith: number
+  link: string
+  dueDate: string
 }
 
 export enum ETaskStatus {
@@ -44,7 +46,9 @@ export class BackendService {
       currency: 'EIC',
       status: ETaskStatus.created,
       funderRatedWith: 5,
-      solutionProviderRatedWith: 5
+      solutionProviderRatedWith: 5,
+      link: 'https://github.com/cla-assistant/cla-assistant/issues/530',
+      dueDate: ''
     }
   }
 
@@ -105,7 +109,7 @@ export class BackendService {
     return this.getUsers().filter((entry: IUser) => entry.companyId === companyId)[0]
   }
 
-  public getDefaultTaskForDemo() {
+  public getDefaultTaskForDemo(): ITask {
     return {
       taskType: ETaskType.GitHubIssue,
       name: 'Just a Demo Task',
@@ -114,7 +118,9 @@ export class BackendService {
       currency: 'EIC',
       status: ETaskStatus.created,
       funderRatedWith: 5,
-      solutionProviderRatedWith: 5
+      solutionProviderRatedWith: 5,
+      link: 'https://github.com/cla-assistant/cla-assistant/issues/530',
+      dueDate: '2020-01-08'
     }
 
   }

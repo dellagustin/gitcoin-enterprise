@@ -17,7 +17,7 @@ export class InviteFriendComponent implements OnInit {
 
   public send() {
     if (confirm(`sending E-Mail to ${this.eMailAdress}`)) {
-      alert('yeah')
+      alert('to be developed')
     }
   }
 }
