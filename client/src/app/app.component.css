@@ -1,3 +1,11 @@
+.ourRedColor {
+  color: rgb(213, 54, 84);
+}
+
+.ourBlueColor {
+  color: rgb(93, 188, 210);
+}
+
 .contentContainer {
   text-align: center;
   width: 92%;
@@ -18,6 +26,8 @@
 }
 
 button {
+  font-weight: bolder;
+  background-color: black;
   margin-top: 5vh;
   padding-top: 1.7vh;
   padding-bottom: 1.7vh;

@@ -1,14 +1,19 @@
-import { Component } from '@angular/core'
-import { INavbarData } from 'ng-responsive-navbar'
+import { Component, OnInit } from '@angular/core'
+import { INavbarData } from './navbar/navbar.interfaces'
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+  public static deferredPrompt
   public mode = ''
   public navBarData: INavbarData = this.getNavBarData()
+
+  public ngOnInit() {
+    this.considerPWAInstallPrompt()
+  }
 
   public fundTask() {
     this.mode = 'fund'
@@ -55,6 +60,11 @@ export class AppComponent {
         },
         {
           isActive: false,
+          text: 'Use as App',
+          href: 'useAsApp',
+        },
+        {
+          isActive: false,
           text: 'Open Source',
           href: 'openSource',
         },
@@ -76,6 +86,36 @@ export class AppComponent {
     this.mode = target
     if (this.mode === 'openSource') {
       window.location.assign('https://github.com/gitcoin-enterprise/gitcoin-enterprise')
+    } else if (this.mode === 'useAsApp') {
+      this.mode = ''
+      this.useAsPWA()
     }
   }
+
+  private useAsPWA() {
+    setTimeout(() => {
+      if (AppComponent.deferredPrompt === undefined) {
+        alert('To use the App Version please click the Share Button at the bottom of your browser and click "Add to Homescreen".')
+      } else {
+        AppComponent.deferredPrompt.prompt()
+        AppComponent.deferredPrompt.userChoice.then(choiceResult => {
+          if (choiceResult.outcome === 'accepted') {
+            console.log('User accepted the A2HS prompt')
+          } else {
+            console.log('User dismissed the A2HS prompt')
+          }
+          AppComponent.deferredPrompt = null
+        })
+      }
+    }, 1 * 1000)
+
+  }
+
+  private considerPWAInstallPrompt() {
+    window.addEventListener('beforeinstallprompt', (event) => {
+      event.preventDefault()
+      AppComponent.deferredPrompt = event
+    })
+  }
+
 }

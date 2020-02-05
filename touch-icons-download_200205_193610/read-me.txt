@@ -1,0 +1,15 @@
+__________________________________________________________________
+|
+| Copyright: 2014 - 2020 Stephan Heller <heller@daik.de>
+| Lizenz: GNU General Public License
+|__________________________________________________________________
+
+ Das ist zu tun...
+
+ * Kopiere den Ordner "/_icons" mitsamt der Icons in das Root-Verzeichnis Deines Webservers.
+
+ * Kopiere das HTML aus der Datei "snippet.html" in den HEAD Deiner HTML-Seite.
+
+ * Falls Du die Icons in Deine Verzeichnisstuktur integrieren möchtest, passe die Pfade im "snippet.html" an.
+
+ * Bitte belasse den Kommentar mit dem Hinweis auf den Urherber im Quellcode.

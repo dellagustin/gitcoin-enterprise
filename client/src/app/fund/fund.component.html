@@ -14,7 +14,7 @@
 
       <div *ngIf="task.link!==''">
 
-        <button type="button" class="btn btn-primary" (click)="getInfoFromTaskLink()">
+        <button type="button" class="btn ourBlueColor" (click)="getInfoFromTaskLink()">
           Next
         </button>
 
@@ -38,7 +38,7 @@
         </div>
 
         <span *ngIf="task.funding>1">
-          <button type="button" class="btn btn-primary" (click)="saveFunding()">
+          <button type="button" class="btn ourBlueColor" (click)="saveFunding()">
             Save
           </button>
         </span>
@@ -50,7 +50,7 @@
           [(ngModel)]="user.companyId" autofocus>
 
         <span *ngIf="user.companyId.length>0">
-          <button type="button" class="btn btn-primary" (click)="onUserIdEntered()">
+          <button type="button" class="btn ourBlueColor" (click)="onUserIdEntered()">
             Next
           </button>
         </span>
