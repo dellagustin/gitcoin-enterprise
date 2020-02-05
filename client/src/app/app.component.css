@@ -9,8 +9,11 @@
 .titleImage {
   width: 70%;
 }
+
 button {
   margin-top: 5vh;
+  padding-top: 1.7vh;
+  padding-bottom: 1.7vh;
   min-width: 100%;
 }
 

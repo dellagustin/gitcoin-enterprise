@@ -17,8 +17,8 @@ export class AppService {
 
   public async getIssue(org: any, repo: any, issueId: any): Promise<IssueInfo> {
     this.loggerService.log(ELogLevel.Info, `getting Issue data for owner: ${org}, repo: ${repo}, issueId: ${issueId}`)
+    const issueInfo = {} as IssueInfo
     try {
-      const issueInfo = {} as IssueInfo
       const response = await octokit.issues.get({
         owner: org,
         repo,
@@ -26,11 +26,13 @@ export class AppService {
       })
       issueInfo.title = response.data.title
       issueInfo.description = response.data.body
-      return issueInfo
     } catch (error) {
       this.loggerService.log(ELogLevel.Error, `the github call to get the issue failed ${error}`)
+      issueInfo.title = 'Just a demo Title'
+      issueInfo.description = 'Just a demo Description'
     }
 
+    return issueInfo
   }
 
   public getGitHubToken(): string {

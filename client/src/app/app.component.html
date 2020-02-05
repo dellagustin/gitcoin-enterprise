@@ -1,13 +1,13 @@
 <lib-navbar [navBarData]="navBarData" (clickMenuEntry)="onClickMenuEntry($event)"></lib-navbar>
-<div class="contentContainer" style="margin-top: 17vh">
+<div class="contentContainer" style="margin-top: 15vh">
 
   <span *ngIf="mode===''">
     <img src="../assets/collaboration-1.png" alt="" class="titleImage">
     <!-- https://icons8.com -->
     <p><br></p>
+    <h3>Peer To Peer Collaboration Playground</h3>
   </span>
 
-  <h3>Peer To Peer Collaboration Playground</h3>
   <div *ngIf="mode===''" style="margin-top: 3vh">
 
     <button (click)="fundTask()" type="button" class="btn btn-primary">
@@ -32,6 +32,10 @@
     <app-profile></app-profile>
   </div>
 
+
+  <div *ngIf="mode=='downloadLedger'">
+    <app-ledger></app-ledger>
+  </div>
 
 
   <div *ngIf="mode=='solve'">

@@ -1,0 +1,33 @@
+<div class="container">
+
+  <button (click)="downloadAsJSON()" type="button" class="btn btn-primary">
+    <i class="fa fa-usd" aria-hidden="true" style="padding-right: 1vw;"></i>
+    Download as JSON
+    <i class="fa fa-usd" aria-hidden="true" style="padding-left: 1vw;"></i>
+  </button>
+
+  <button (click)="downloadAsCSV()" type="button" class="btn btn-success">
+    <i class="fa fa-wrench" aria-hidden="true" style="padding-right: 1vw;"></i>
+    Download as CSV
+    <i class="fa fa-wrench" aria-hidden="true" style="padding-left: 1vw;"></i>
+  </button>
+
+
+
+  <table class="table table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th>ID</th>
+        <th>Date</th>
+        <th>Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let ledgerEntry of ledger" (click)="onEntryClicked()">
+        <td>{{ledgerEntry.id}}</td>
+        <td>{{ledgerEntry.date}}</td>
+        <td>{{ledgerEntry.amount}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

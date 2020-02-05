@@ -69,10 +69,7 @@ export class AppComponent {
 
   public onClickMenuEntry(target: string) {
     this.mode = target
-    if (this.mode === 'downloadLedger') {
-      alert('Downloading Ledger in JSON Format')
-      this.mode = ''
-    } else if (this.mode === 'openSource') {
+    if (this.mode === 'openSource') {
       window.location.assign('https://github.com/gitcoin-enterprise/gitcoin-enterprise')
     }
   }

@@ -12,6 +12,8 @@ import { ButtonsModule } from 'ngx-bootstrap/buttons'
 import { FormsModule } from '@angular/forms'
 import { HttpClientModule } from '@angular/common/http'
 import { ProfileComponent } from './profile/profile.component'
+import { LedgerComponent } from './ledger/ledger.component'
+import { LedgerEntryComponent } from './ledger-entry/ledger-entry.component'
 @NgModule({
   declarations: [
     AppComponent,
@@ -19,7 +21,9 @@ import { ProfileComponent } from './profile/profile.component'
     FundComponent,
     SolveComponent,
     ContactComponent,
-    ProfileComponent
+    ProfileComponent,
+    LedgerComponent,
+    LedgerEntryComponent
   ],
   imports: [
     HttpClientModule,
