@@ -1,7 +1,7 @@
 {
   "configVersion": 1,
   "timestamp": 1580845849286,
-  "index": "/index.html",
+  "index": "/i-want-compression-via-route.html",
   "assetGroups": [
     {
       "name": "app",
@@ -9,7 +9,7 @@
       "updateMode": "prefetch",
       "urls": [
         "/favicon.ico",
-        "/index.html",
+        "/i-want-compression-via-route.html",
         "/main-es2015.bd8ddbd15a795d696a6b.js",
         "/main-es5.bd8ddbd15a795d696a6b.js",
         "/manifest.webmanifest",
@@ -56,7 +56,7 @@
     "/assets/icons/icon-96x96.png": "3914125a4b445bf111c5627875fc190f560daa41",
     "/assets/logo.png": "cb669a53e6c481a53929ea5a577f7dc432296f0c",
     "/favicon.ico": "22f6a4a3bcaafafb0254e0f2fa4ceb89e505e8b2",
-    "/index.html": "991d44ad1055366b69b71d94fc7e0ac9e91d4f6c",
+    "/i-want-compression-via-route.html": "991d44ad1055366b69b71d94fc7e0ac9e91d4f6c",
     "/main-es2015.bd8ddbd15a795d696a6b.js": "c1d023663d7ec0d9e179bfed6779451ac6c8c535",
     "/main-es5.bd8ddbd15a795d696a6b.js": "b1f61bd79acb4a22a2fc6b34ea4992eec5f509db",
     "/manifest.webmanifest": "5fd07573479840a6de0c4b4fe46f603c79b70a9a",
