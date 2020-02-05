@@ -38,7 +38,7 @@
       </span>
 
       <span *ngIf="user.firstName===''">
-        <input type="text" class="form-control" placeholder="Please enter your company user id"
+        <input type="text" class="form-control" placeholder="enter company user id - e.g. d123"
           [(ngModel)]="user.companyId" autofocus>
 
         <span *ngIf="user.companyId.length>0">

@@ -11,9 +11,9 @@ export class AppController {
     res.sendFile(`${pathToStaticAssets}/i-want-compression-via-route.html`)
   }
 
-  @Get('getissue/owner/:owner/repo/:repo/issueid/:issueId')
-  getIssue(@Param('owner') owner: string, @Param('repo') repo: string, @Param('issueId') issueId: number) {
-    return this.appService.getIssue(owner, repo, issueId)
+  @Get('/getIssueInfo/org/:org/repo/:repo/issueid/:issueId')
+  getIssue(@Param('org') org: string, @Param('repo') repo: string, @Param('issueId') issueId: number) {
+    return this.appService.getIssue(org, repo, issueId)
   }
 
 }

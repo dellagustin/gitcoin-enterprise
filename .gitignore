@@ -4,3 +4,4 @@ client/dist
 client/docs
 .env.json
 topsecret
+errors.json

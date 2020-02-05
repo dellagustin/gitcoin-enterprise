@@ -28,7 +28,12 @@ export class FundComponent implements OnInit {
   }
 
   public getInfoFromTaskLink() {
-    this.backendService.get(`${backendURL}/getissue/org/hi/repo/akshaywhats/issueId/up`)
+    const sourceString = this.taskLink.split('https://github.com/')[1]
+    // cla-assistant/cla-assistant/issues/530
+    const org = sourceString.split('/')[0]
+    const repo = sourceString.split('/')[1].split('/')[0]
+    const issueId = sourceString.split('/')[3]
+    this.backendService.get(`${backendURL}/getIssueInfo/org/${org}/repo/${repo}/issueId/${issueId}`)
       .subscribe((response: any) => {
         this.task = this.getTaskFromResponse(response)
       }, error => {
@@ -59,8 +64,8 @@ export class FundComponent implements OnInit {
   private getTaskFromResponse(response: any) {
     return {
       taskType: ETaskType.GitHubIssue,
-      name: response.issueTitle,
-      description: response.issueDescription,
+      name: response.title,
+      description: response.description,
       funding: 0,
       currency: 'EIC',
       status: ETaskStatus.created,

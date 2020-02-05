@@ -15,11 +15,12 @@ export class AppService {
     // tbd
   }
 
-   public async getIssue(owner: any, repo: any, issueId: any): Promise<IssueInfo> {
+  public async getIssue(org: any, repo: any, issueId: any): Promise<IssueInfo> {
+    this.loggerService.log(ELogLevel.Info, `getting Issue data for owner: ${org}, repo: ${repo}, issueId: ${issueId}`)
     try {
       const issueInfo = {} as IssueInfo
       const response = await octokit.issues.get({
-        owner,
+        owner: org,
         repo,
         issue_number: issueId,
       })
