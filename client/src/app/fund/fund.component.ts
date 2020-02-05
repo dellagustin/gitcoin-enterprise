@@ -13,7 +13,7 @@ export class FundComponent implements OnInit {
 
   public radioModel: any
   public taskLink = 'https://github.com/cla-assistant/cla-assistant/issues/530'
-  public user: IUser = BackendService.getInitialUser()
+  public user: IUser = BackendService.currentUser
   public task: ITask = BackendService.getInitialTask()
   public currentRange = 0
   public fundingCompleted = false
@@ -59,6 +59,8 @@ export class FundComponent implements OnInit {
       alert('Please enter a valid user ID')
       this.user = BackendService.getInitialUser()
     }
+
+    BackendService.currentUser = this.user
   }
 
   private getTaskFromResponse(response: any) {

@@ -15,11 +15,23 @@ export interface IUser {
 export class ProfileComponent implements OnInit {
 
   public users: IUser[] = []
-  public user = BackendService.getInitialUser()
+  public user = BackendService.currentUser
 
   public constructor(private readonly backendService: BackendService) { }
 
   public ngOnInit(): void {
     this.users = this.backendService.getUsers()
   }
+
+  public onUserIdEntered() {
+
+    this.user = this.backendService.getUser(this.user.companyId)
+    if (this.user === undefined) {
+      alert('Please enter a valid user ID')
+      this.user = BackendService.getInitialUser()
+    }
+
+    BackendService.currentUser = this.user
+  }
+
 }

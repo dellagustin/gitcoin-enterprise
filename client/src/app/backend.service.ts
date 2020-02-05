@@ -29,9 +29,9 @@ export enum ETaskType {
   providedIn: 'root'
 })
 export class BackendService {
+  public static currentUser: IUser = BackendService.getInitialUser()
+
   public constructor(private readonly http: HttpClient) { }
-
-
 
   public static getInitialTask(): ITask {
     return {

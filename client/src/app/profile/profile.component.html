@@ -1,4 +1,16 @@
-<div class="card" style="width:100%; margin-top: 12vh;">
+<span *ngIf="user.firstName===''">
+  <input type="text" class="form-control" placeholder="enter company user id - e.g. d123" [(ngModel)]="user.companyId"
+         autofocus>
+
+  <span *ngIf="user.companyId.length>0">
+    <button type="button" class="btn btn-success" (click)="onUserIdEntered()">
+      Next
+    </button>
+  </span>
+</span>
+
+
+<div *ngIf="user.firstName!==''" class="card" style="width:100%; margin-top: 12vh;">
   <img class="card-img-top" src="img_avatar1.png" alt="Card image" style="width:100%">
   <div class="card-body">
     <h4 class="card-title">{{user.firstName}}</h4>
