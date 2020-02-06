@@ -25,7 +25,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let ledgerEntry of ledgerEntries" (click)="onEntryClicked(ledgerEntry)">
-          <td>{{ledgerEntry.id}}</td>
+          <td>...{{ledgerEntry.id.substr(ledgerEntry.id.length - 7, 7)}}</td>
           <td>{{ledgerEntry.date}}</td>
           <td>{{ledgerEntry.amount}}</td>
         </tr>
