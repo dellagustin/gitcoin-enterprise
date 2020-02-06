@@ -7,7 +7,7 @@ import * as moment from 'moment'
 import { IssueInfo, ITask, ETaskStatus, ETaskType, IUser, IFunding, ITaskAndFunding } from './interfaces'
 import { LoggerService, ELogLevel } from './logger/logger.service'
 import { ILedgerEntry } from './ledger-connector.interface'
-import { LedgerConnector } from './ledger-connector-file-system/ledger-connector-file-system.service'
+import { LedgerConnector } from './ledger-connector/ledger-connector-file-system.service'
 
 @Injectable()
 export class AppService {

@@ -3,8 +3,8 @@ import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { LoggerService } from './logger/logger.service'
 import { EmailService } from './email/email.service'
-import { LedgerConnector } from './ledger-connector-file-system/ledger-connector-file-system.service'
-import { EthereumLedgerConnector } from './ledger-connector-file-system/ledger-connector-ethereum'
+import { LedgerConnector } from './ledger-connector/ledger-connector-file-system.service'
+import { EthereumLedgerConnector } from './ledger-connector/ledger-connector-ethereum'
 import * as path from 'path'
 import * as fs from 'fs-sync'
 
@@ -19,7 +19,7 @@ function getLedgerConnector() {
 }
 
 const ledgerConnectorProvider = {
-  provide: 'LedgerConnector', // or string token 'AppService'
+  provide: 'LedgerConnector',
   useClass: getLedgerConnector(),
 }
 
