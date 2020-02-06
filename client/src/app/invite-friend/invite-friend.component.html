@@ -1,9 +1,10 @@
 <img src="../../assets/invite-friends.png" alt="" width="100%">
-<h4 class="titleBeneathImage">
-  Invite Friends
-</h4>
 
 <div *ngIf="!sent">
+  <h4 class="titleBeneathImage">
+    Invite Friends
+  </h4>
+
 
   <span style="margin-top: 100px; margin-bottom: 10vh">
     <input type="email" class="form-control" placeholder="Please enter your friend's E-Mail Adress"
@@ -33,8 +34,11 @@
   </span>
 </div>
 
-<span *ngIf="sent">
-  <h2>
-    Invitation Sent. <p></p> You can invite 1 friend per day.
+<div *ngIf="sent" class="adPad">
+  <h2 class="ourBlueColor">
+    Thank You
   </h2>
-</span>
+  <p></p>
+  You can invite 1 friend per day. <br>
+  C u tomorrow ;)
+</div>

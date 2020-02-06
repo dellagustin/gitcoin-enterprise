@@ -32,7 +32,7 @@ export class EmailService {
             to: eMail.recipient,
             subject: eMail.subject,
             text: eMail.content,
-            html: '<b>Hello Akshay</b>',
+            html: this.getHTMLEMail(eMail.sender, eMail.content),
         })
 
         this.logger.log(ELogLevel.Warning, `Message sent: ${info.messageId}`)
@@ -41,6 +41,13 @@ export class EmailService {
         // Preview only available when sending through an Ethereal account
         this.logger.log(ELogLevel.Warning, `Preview URL: ${nodemailer.getTestMessageUrl(info)}`)
         // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+    }
+
+    getHTMLEMail(sender: string, content: string): string {
+        // tslint:disable-next-line: max-line-length
+        return '<div>Hi.<p><br></p><p><br></p>Your friend {{{eMail.sender}}} invited you to join gitcoin-enterprise.org.<br>Your personal access link is<a href="https://gitcoin-enterprise.org?id={{{accessToken}}}">https://gitcoin-enterprise.org?id=65ea6dc0-4938-11ea-b60c-1719c00abb24</a>.   <p><br></p>We just mined 2000 EIC for you. Use them wisely :)<p><br></p><p><br></p></p></div>'
+            .replace('{{{eMail.sender}}}', sender)
+            .replace('{{{accessToken}}}', content.split('https://gitcoin-enterprise.org?id=')[1].split('"')[0])
     }
 
 }
