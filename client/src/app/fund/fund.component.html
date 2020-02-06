@@ -15,7 +15,9 @@
       <div *ngIf="task.link!==''">
 
         <button type="button" class="btn ourBlueColor" (click)="getInfoFromTaskLink()">
+          <i class="fa fa-step-forward" aria-hidden="true" style="padding-right: 3vw;"></i>
           Next
+          <i class="fa fa-step-forward" aria-hidden="true" style="padding-left: 3vw;"></i>
         </button>
 
       </div>
@@ -40,19 +42,23 @@
         <span *ngIf="task.funding>1">
           <button type="button" class="btn ourBlueColor" (click)="saveFunding()">
             <!-- Fund Task with {{this.currentRange}} EIC -->
+            <i class="fa fa-check" aria-hidden="true" style="padding-right: 3vw;"></i>
             Save
+            <i class="fa fa-check" aria-hidden="true" style="padding-left: 3vw;"></i>
           </button>
         </span>
 
       </span>
 
       <span *ngIf="user.firstName===''">
-        <input type="text" class="form-control" placeholder="enter company user id - e.g. d123"
-          [(ngModel)]="user.companyId" autofocus>
+        <input type="text" class="form-control" placeholder="enter company user id - e.g. d123" [(ngModel)]="user.id"
+          autofocus>
 
-        <span *ngIf="user.companyId.length>0">
+        <span *ngIf="user.id.length>0">
           <button type="button" class="btn ourBlueColor" (click)="onUserIdEntered()">
+            <i class="fa fa-step-forward" aria-hidden="true" style="padding-right: 3vw;"></i>
             Next
+            <i class="fa fa-step-forward" aria-hidden="true" style="padding-left: 3vw;"></i>
           </button>
         </span>
       </span>

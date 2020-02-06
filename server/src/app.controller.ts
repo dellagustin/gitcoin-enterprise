@@ -38,4 +38,9 @@ export class AppController {
     return this.eMailService.sendEMail(req.body)
   }
 
+  @Post('/saveFunding')
+  saveFunding(@Req() req: any): void {
+    return this.appService.saveFunding(req.body, req.headers.companyuserid)
+  }
+
 }

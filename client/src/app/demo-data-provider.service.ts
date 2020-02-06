@@ -30,6 +30,7 @@ export class DemoDataProviderService {
 
   public getDefaultTaskForDemo(): ITask {
     return {
+      id: '1',
       taskType: ETaskType.GitHubIssue,
       name: 'Just a Demo Task',
       description: 'Just a Demo Description',

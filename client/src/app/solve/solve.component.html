@@ -6,13 +6,11 @@
       Task Explorer
     </h4>
 
-
     <div class="searchTask">
       <input type="text" class="form-control" placeholder="What kind of task do you want to solve?"
-             [(ngModel)]="searchTerm" (keyup)="searchTask()" autofocus>
+        [(ngModel)]="searchTerm" (keyup)="searchTask()" autofocus>
 
     </div>
-
 
     <cdk-virtual-scroll-viewport itemSize="1000" [ngStyle]="{'height.px': 10000}">
       <div class="gce-table">

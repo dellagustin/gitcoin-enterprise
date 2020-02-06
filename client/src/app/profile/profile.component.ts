@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core'
 import { BackendService } from '../backend.service'
 
 export interface IUser {
-  companyId: string
+  id: string
   firstName: string
   balance: number
   link: string
@@ -21,7 +21,7 @@ export class ProfileComponent implements OnInit {
 
   public static getInitialUser() {
     const user: IUser = {
-      companyId: '',
+      id: '',
       firstName: '',
       balance: 0,
       link: '',
@@ -34,18 +34,21 @@ export class ProfileComponent implements OnInit {
   public constructor(private readonly backendService: BackendService) { }
 
   public ngOnInit(): void {
-    this.users = this.backendService.getUsers()
+    // this.backendService.getUsers()
+    //   .subscribe((result: IUser[]) => this.users = result )
   }
 
   public onUserIdEntered() {
 
-    this.user = this.backendService.getUser(this.user.companyId)
-    if (this.user === undefined) {
-      alert('Please enter a valid user ID')
-      this.user = ProfileComponent.getInitialUser()
-    }
-
-    ProfileComponent.currentUser = this.user
+    this.backendService.getUser(this.user.id)
+      .subscribe((user: IUser) => {
+        if (user === undefined) {
+          alert('Please enter a valid user ID')
+        } else {
+          this.user = user
+          ProfileComponent.currentUser = this.user
+        }
+      }, error => alert(error.message))
   }
 
 

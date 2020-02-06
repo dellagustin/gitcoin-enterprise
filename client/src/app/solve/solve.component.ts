@@ -19,7 +19,11 @@ export class SolveComponent implements OnInit {
   public constructor(private readonly backendService: BackendService) { }
 
   public ngOnInit(): void {
-    this.filteredTasks = this.sortDescending(this.fundedTasks)
+    this.backendService.getFundedTasks()
+      .subscribe((result: ITask[]) => {
+        this.fundedTasks = result
+        this.filteredTasks = this.sortDescending(this.fundedTasks)
+      })
   }
 
   public searchTask() {

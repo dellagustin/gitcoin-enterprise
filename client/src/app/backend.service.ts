@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core'
 import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { IUser } from './profile/profile.component'
-import { ILedgerEntry } from './ledger/ledger.interface'
 import { backendURL } from '../configurations/configuration'
 import { IEmail } from './email/email.component'
 
 export interface ITask {
+  id: string
   taskType: ETaskType
   name: string
   description: string
@@ -55,14 +55,15 @@ export class BackendService {
     return this.http.get<any>(url)
   }
 
-  public post(url: string, body: any) {
+  public post(url: string, body: any, key: string) {
     // const urlWithClient = `${url}?client=${document.URL}`;
     const urlWithClient = url
     console.log(`calling to post to ${urlWithClient}`)
 
     const httpOptions = {
       headers: new HttpHeaders({
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        companyuserid: key
       })
     }
 
@@ -74,13 +75,13 @@ export class BackendService {
     return this.get(`${backendURL}/getLedgerEntries`)
   }
 
-  public sendEMail(eMail: IEmail): any {
-    return this.post(`${backendURL}/sendEMail`, eMail)
+  public sendEMail(eMail: IEmail, key: string): any {
+    return this.post(`${backendURL}/sendEMail`, eMail, key)
   }
 
 
-  public getUser(companyId: string) {
-    return this.get(`${backendURL}/getUser`, companyId)
+  public getUser(id: string) {
+    return this.get(`${backendURL}/getUser`, id)
   }
 
   public getFundedTasks() {
@@ -88,37 +89,7 @@ export class BackendService {
   }
 
 
-  public getUsers() {
-    const users: IUser[] = []
 
-    const michael: IUser = {
-      balance: 1000,
-      companyId: 'd123',
-      firstName: 'Michael',
-      link: 'https://github.com/michael-spengler',
-    }
-    users.push(michael)
-
-    const akshay: IUser = {
-      balance: 2000,
-      companyId: 'd124',
-      firstName: 'Akshay',
-      link: 'https://github.com/ibakshay',
-    }
-    users.push(akshay)
-
-
-    const fabian: IUser = {
-      balance: 3000,
-      companyId: 'd125',
-      firstName: 'Fabian',
-      link: 'https://github.com/fabianriewe'
-    }
-
-    users.push(fabian)
-
-    return users
-  }
 
 
 }

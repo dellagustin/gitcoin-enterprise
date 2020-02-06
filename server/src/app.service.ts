@@ -3,13 +3,13 @@ const { Octokit } = require('@octokit/rest')
 const octokit = new Octokit()
 import * as fs from 'fs-sync'
 import * as path from 'path'
-import { IssueInfo, ITask, ILedgerEntry, ETaskStatus, ETaskType, IUser } from './interfaces'
+import * as moment from 'moment'
+import { IssueInfo, ITask, ILedgerEntry, ETaskStatus, ETaskType, IUser, IFunding, ITaskAndFunding } from './interfaces'
 import { LoggerService, ELogLevel } from './logger/logger.service'
 
 @Injectable()
 export class AppService {
 
-  private gitHubToken = ''
   private fundedTasksFileId = path.join(__dirname, '../operational-data/funded-tasks.json')
   private ledgerEntriesFileId = path.join(__dirname, '../operational-data/ledger-entries.json')
   private usersFileId = path.join(__dirname, '../operational-data/users.json')
@@ -19,8 +19,8 @@ export class AppService {
   }
 
   public getUser(userId: string): IUser {
-
-    return fs.readJSON(this.usersFileId).filter((user: IUser) => user.companyId === userId)[0]
+    this.loggerService.log(ELogLevel.Info, `getting user ${userId}`)
+    return fs.readJSON(this.usersFileId).filter((user: IUser) => user.id === userId)[0]
   }
 
   public async getIssue(org: any, repo: any, issueId: any): Promise<IssueInfo> {
@@ -56,12 +56,20 @@ export class AppService {
   }
 
   public getFundedTasks(): ITask[] {
+    // this.initializeSystem()
     return fs.readJSON(this.fundedTasksFileId)
 
   }
 
+  private initializeSystem() {
+    fs.write(this.fundedTasksFileId, '[]')
+    fs.write(this.ledgerEntriesFileId, '[]')
+    fs.write(this.usersFileId, JSON.stringify(this.getDemoUsers()))
+  }
+
   public getDefaultTaskForDemo(): ITask {
     return {
+      id: '1',
       taskType: ETaskType.GitHubIssue,
       name: 'Just a Demo Task',
       description: 'Just a Demo Description',
@@ -73,7 +81,6 @@ export class AppService {
       link: 'https://github.com/cla-assistant/cla-assistant/issues/530',
       dueDate: '2020-01-08',
     }
-
   }
 
   public getLedgerEntries(): ILedgerEntry[] {
@@ -81,4 +88,92 @@ export class AppService {
     return fs.readJSON(this.ledgerEntriesFileId)
   }
 
+  public saveFunding(taskAndFunding: ITaskAndFunding, key: string): any {
+
+    const user = fs.readJSON(this.usersFileId).filter((entry: IUser) => entry.id === key)[0]
+
+    if (user === undefined) {
+      return {
+        message: 'I could not find an authorized user with this id.',
+      }
+    }
+
+    this.createLedgerEntry(taskAndFunding.funding)
+
+    const tasks = fs.readJSON(this.fundedTasksFileId)
+    const existingTask = tasks.filter((entry: IUser) => entry.link === taskAndFunding.task.link)[0]
+
+    let task: ITask
+    if (existingTask === undefined) {
+      task = taskAndFunding.task
+      task.id = Date.now().toString()
+    } else {
+      task = existingTask
+      task.funding = task.funding + taskAndFunding.funding.amount
+      const indexOfExistingTasks = tasks.indexOf(existingTask)
+      tasks.splice(indexOfExistingTasks, 1)
+    }
+
+    tasks.push(task)
+
+    fs.write(this.fundedTasksFileId, JSON.stringify(tasks))
+
+    this.postCommentAboutSuccessfullFunding(taskAndFunding.task.link, taskAndFunding.funding)
+    return {
+      message: 'successfully funded the task',
+    }
+
+  }
+
+  private postCommentAboutSuccessfullFunding(linkToIssue: string, funding: IFunding) {
+    // ask Akshay how to post a comment to github issue - "A nice person funded this task with ...""
+    this.loggerService.log(ELogLevel.Info, linkToIssue)
+    this.loggerService.log(ELogLevel.Info, JSON.stringify(funding))
+  }
+
+  private createLedgerEntry(funding: IFunding) {
+    const entries: ILedgerEntry[] = fs.readJSON(this.ledgerEntriesFileId)
+    const entry: ILedgerEntry = {
+      id: Date.now().toString(),
+      date: moment().format('YYYY MM DD'),
+      amount: funding.amount,
+      sender: funding.funderId,
+      receiver: funding.taskId,
+    }
+
+    entries.push(entry)
+
+    fs.write(this.ledgerEntriesFileId, JSON.stringify(entries))
+  }
+
+  public getDemoUsers() {
+    const users: IUser[] = []
+
+    const michael: IUser = {
+      balance: 1000,
+      id: 'd123',
+      firstName: 'Michael',
+      link: 'https://github.com/michael-spengler',
+    }
+    users.push(michael)
+
+    const akshay: IUser = {
+      balance: 2000,
+      id: 'd124',
+      firstName: 'Akshay',
+      link: 'https://github.com/ibakshay',
+    }
+    users.push(akshay)
+
+    const fabian: IUser = {
+      balance: 3000,
+      id: 'd125',
+      firstName: 'Fabian',
+      link: 'https://github.com/fabianriewe',
+    }
+
+    users.push(fabian)
+
+    return users
+  }
 }

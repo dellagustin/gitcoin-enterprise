@@ -3,6 +3,7 @@ import { IEmail } from '../email/email.component'
 
 import * as uuidv1 from 'uuid/v1'
 import { BackendService } from '../backend.service'
+import { ProfileComponent } from '../profile/profile.component'
 
 @Component({
   selector: 'app-invite-friend',
@@ -15,7 +16,7 @@ export class InviteFriendComponent implements OnInit {
   public url = 'https://gitcoin-enterprise.org'
   public eMailAdress = 'akshay.iyyaudarai.balasundaram@sap.com'
   public invitingUsersAdress = 'michael@spengler.biz'
-  public sending = false
+  public sent = false
   public permissionGranted = false
   public eMail: IEmail
   public personalAuthenticationToken
@@ -35,9 +36,9 @@ export class InviteFriendComponent implements OnInit {
   }
 
   public send() {
-    this.sending = true
+    this.sent = true
     if (confirm(`sending E-Mail to ${this.eMailAdress}`)) {
-      this.backendService.sendEMail(this.eMail)
+      this.backendService.sendEMail(this.eMail, ProfileComponent.currentUser.id)
         .subscribe()
     }
   }

@@ -5,6 +5,7 @@ import { backendURL } from '../../configurations/configuration'
 import { IUser, ProfileComponent } from '../profile/profile.component'
 import { DemoDataProviderService } from '../demo-data-provider.service'
 import { TaskHelper } from '../task-card/task-helper'
+import { IFunding, ITaskAndFunding } from '../interfaces'
 
 @Component({
   selector: 'app-fund',
@@ -50,24 +51,41 @@ export class FundComponent implements OnInit {
   }
 
   public saveFunding() {
-    // if (confirm("Are you sure?")) {
     this.fundingCompleted = true
-    // }
+    const saveFundingURL = `${backendURL}/saveFunding`
+
+    const funding: IFunding = {
+      id: '',
+      taskId: this.task.id,
+      funderId: ProfileComponent.currentUser.id,
+      amount: this.currentRange,
+    }
+    const taskAndFunding: ITaskAndFunding = {
+      task: this.task,
+      funding
+    }
+    this.backendService.post(saveFundingURL, taskAndFunding, ProfileComponent.currentUser.id)
+      .subscribe()
+
   }
 
   public onUserIdEntered() {
 
-    this.user = this.backendService.getUser(this.user.companyId)
-    if (this.user === undefined) {
-      alert('Please enter a valid user ID')
-      this.user = ProfileComponent.getInitialUser()
-    }
+    this.backendService.getUser(this.user.id)
+      .subscribe((user: IUser) => {
+        if (user === undefined) {
+          alert('Please enter a valid user ID')
+        } else {
+          this.user = user
+          ProfileComponent.currentUser = this.user
+        }
+      }, error => alert(error.message))
 
-    ProfileComponent.currentUser = this.user
   }
 
   private getTaskFromResponse(response: any): ITask {
     return {
+      id: '1',
       taskType: ETaskType.GitHubIssue,
       name: response.title,
       description: response.description,

@@ -3,6 +3,7 @@ import { ETaskType, ITask, ETaskStatus } from '../backend.service'
 export class TaskHelper {
   public static getInitialTask(): ITask {
     return {
+      id: '',
       taskType: ETaskType.GitHubIssue,
       name: '',
       description: '',
