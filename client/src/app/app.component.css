@@ -6,6 +6,13 @@
   color: rgb(93, 188, 210);
 }
 
+.ourRedBackgroundColor {
+  background-color: rgb(213, 54, 84);
+}
+
+.ourBlueBackgroundColor {
+  background-color: rgb(93, 188, 210);
+}
 .contentContainer {
   text-align: center;
   width: 92%;
@@ -26,7 +33,7 @@
 }
 
 input {
-  margin-bottom: 4vh;
+  margin-bottom: 1vh;
   margin-top: 3vh;
 }
 
@@ -40,8 +47,8 @@ button {
   min-width: 100%;
 }
 
-.table {
-  margin-top: 3vh;
+.gce-table {
+  margin-top: 2vh;
 }
 
 .adPad {

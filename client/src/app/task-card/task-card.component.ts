@@ -9,6 +9,8 @@ import { ITask } from '../backend.service'
 export class TaskCardComponent implements OnInit {
 
   @Input() task: ITask
+
+
   public constructor() { }
 
   ngOnInit(): void {

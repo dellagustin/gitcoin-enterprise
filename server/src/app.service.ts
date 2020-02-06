@@ -3,13 +3,15 @@ const { Octokit } = require('@octokit/rest')
 const octokit = new Octokit()
 import * as fs from 'fs-sync'
 import * as path from 'path'
-import { IssueInfo } from './interfaces'
+import { IssueInfo, ITask, ILedgerEntry, ETaskStatus, ETaskType } from './interfaces'
 import { LoggerService, ELogLevel } from './logger/logger.service'
 
 @Injectable()
 export class AppService {
 
   private gitHubToken = ''
+  private fundedTasksFileId = path.join(__dirname, '../operational-data/funded-tasks.json')
+  private ledgerEntriesFileId = path.join(__dirname, '../operational-data/ledger-entries.json')
 
   public constructor(private readonly loggerService: LoggerService) {
     // tbd
@@ -37,6 +39,40 @@ export class AppService {
 
   public getGitHubToken(): string {
     return fs.readJSON(path.join(__dirname, '../.env.json')).gitHubToken
+  }
+
+  public saveFundedTasks(fundedTasks: ITask[]): void {
+    return fs.write(this.fundedTasksFileId, JSON.stringify(fundedTasks))
+  }
+
+  public saveLedgerEntries(ledgerEntries: ILedgerEntry[]): void {
+    return fs.write(this.ledgerEntriesFileId, JSON.stringify(ledgerEntries))
+  }
+
+  public getFundedTasks(): ITask[] {
+    return fs.readJSON(this.fundedTasksFileId)
+
+  }
+
+  public getDefaultTaskForDemo(): ITask {
+    return {
+      taskType: ETaskType.GitHubIssue,
+      name: 'Just a Demo Task',
+      description: 'Just a Demo Description',
+      funding: 0,
+      currency: 'EIC',
+      status: ETaskStatus.created,
+      funderRatedWith: 5,
+      solutionProviderRatedWith: 5,
+      link: 'https://github.com/cla-assistant/cla-assistant/issues/530',
+      dueDate: '2020-01-08',
+    }
+
+  }
+
+  public getLedgerEntries(): ILedgerEntry[] {
+
+    return fs.readJSON(this.ledgerEntriesFileId)
   }
 
 }

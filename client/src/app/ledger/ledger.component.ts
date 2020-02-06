@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, Input } from '@angular/core'
 import { ILedgerEntry } from './ledger.interface'
 import { BackendService } from '../backend.service'
+import { DemoDataProviderService } from '../demo-data-provider.service'
 
 @Component({
   selector: 'app-ledger',
@@ -10,19 +11,13 @@ import { BackendService } from '../backend.service'
 
 export class LedgerComponent implements OnInit {
 
-  public ledger: ILedgerEntry[] = []
+  @Input() public ledgerEntries: ILedgerEntry[] = []
   public entryIdOfInterest: ILedgerEntry
 
-  public constructor(private readonly backendService: BackendService) { }
+  public constructor(private readonly backendService: BackendService,
+                     private readonly demoDataProvider: DemoDataProviderService) { }
 
   public ngOnInit(): void {
-    this.backendService.getLedgerEntries()
-      .subscribe((result: ILedgerEntry[]) => {
-        this.ledger = result
-      }, error => {
-        console.log('probably no connection to server - delivering demo data')
-        this.ledger = this.backendService.getDefaultLedgerEntriesForDemo()
-      })
   }
 
   public downloadAsCSV() {

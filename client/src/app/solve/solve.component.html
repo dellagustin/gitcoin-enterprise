@@ -9,27 +9,30 @@
 
     <div class="searchTask">
       <input type="text" class="form-control" placeholder="What kind of task do you want to solve?"
-        [(ngModel)]="searchTerm" (keyup)="searchTask()" autofocus>
+             [(ngModel)]="searchTerm" (keyup)="searchTask()" autofocus>
 
     </div>
 
 
     <cdk-virtual-scroll-viewport itemSize="1000" [ngStyle]="{'height.px': 10000}">
-    <table class="table table-striped">
-      <thead class="thead-dark">
-        <tr>
-          <th>Title</th>
-          <th>Funding <i class="fa fa-sort" style="padding-left: 2vw; padding-right: 2vw;" (click)="sort()"></i></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let fundedTask of filteredTasks" (click)="onTaskClicked(fundedTask)">
-          <td>{{fundedTask.name}}</td>
-          <td>{{fundedTask.funding}}</td>
-        </tr>
-      </tbody>
-    </table>
-  </cdk-virtual-scroll-viewport>
+      <div class="gce-table">
+        <table class="table table-striped">
+          <thead class="thead-dark">
+            <tr>
+              <th>Title</th>
+              <th>Funding <i class="fa fa-sort" style="padding-left: 2vw; padding-right: 2vw;" (click)="sort()"></i>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let fundedTask of filteredTasks" (click)="onTaskClicked(fundedTask)">
+              <td>{{fundedTask.name}}</td>
+              <td>{{fundedTask.funding}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </cdk-virtual-scroll-viewport>
 
 
   </span>

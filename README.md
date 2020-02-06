@@ -10,7 +10,7 @@ This project is inspired by [gitcoin.co](https://gitcoin.co/).
 1. Someone who wants to delegate a task funds this task
 2. Someone who solves this task receives the reward / funding aka. bounty
 
-For legal simplification GitCoin Enterprise - for the time being - can not use a crypto currency / e.g. ERC20 token (which could easily be traded for "real" money) but just an enterprise-internal GitCoin Enterprise Coin which is only meant to optimize **Peer To Peer Collaboration**.
+For legal simplification GitCoin Enterprise - for the time being - can not use a crypto currency / e.g. ERC20 token (which could easily be traded for "real" money) but just an enterprise-internal Coin which is only meant to optimize **Peer To Peer Collaboration**. You can call it **Collaboration Token**.
 
 A playground to explore the features can be found [here](https://gitcoin-enterprise.org).
 

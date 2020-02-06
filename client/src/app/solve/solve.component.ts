@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, Input } from '@angular/core'
 import { BackendService, ITask } from '../backend.service'
 
 
@@ -9,9 +9,9 @@ import { BackendService, ITask } from '../backend.service'
 })
 export class SolveComponent implements OnInit {
 
-  public task: ITask
+  @Input() public fundedTasks: ITask[] = []
+
   public taskOfInterest: ITask
-  public fundedTasks: ITask[] = []
   public filteredTasks: ITask[] = []
   public searchTerm = ''
   public sortingDirectionDown = false
@@ -19,7 +19,6 @@ export class SolveComponent implements OnInit {
   public constructor(private readonly backendService: BackendService) { }
 
   public ngOnInit(): void {
-    this.fundedTasks = this.backendService.getFundedTasks()
     this.filteredTasks = this.sortDescending(this.fundedTasks)
   }
 

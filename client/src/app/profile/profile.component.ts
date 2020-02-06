@@ -15,8 +15,21 @@ export interface IUser {
 })
 export class ProfileComponent implements OnInit {
 
+  public static currentUser: IUser = ProfileComponent.getInitialUser()
   public users: IUser[] = []
-  public user = BackendService.currentUser
+  public user = ProfileComponent.currentUser
+
+  public static getInitialUser() {
+    const user: IUser = {
+      companyId: '',
+      firstName: '',
+      balance: 0,
+      link: '',
+    }
+
+    return user
+  }
+
 
   public constructor(private readonly backendService: BackendService) { }
 
@@ -29,10 +42,11 @@ export class ProfileComponent implements OnInit {
     this.user = this.backendService.getUser(this.user.companyId)
     if (this.user === undefined) {
       alert('Please enter a valid user ID')
-      this.user = BackendService.getInitialUser()
+      this.user = ProfileComponent.getInitialUser()
     }
 
-    BackendService.currentUser = this.user
+    ProfileComponent.currentUser = this.user
   }
+
 
 }

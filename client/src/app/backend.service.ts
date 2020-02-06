@@ -33,35 +33,8 @@ export enum ETaskType {
   providedIn: 'root'
 })
 export class BackendService {
-  public static currentUser: IUser = BackendService.getInitialUser()
 
   public constructor(private readonly http: HttpClient) { }
-
-  public static getInitialTask(): ITask {
-    return {
-      taskType: ETaskType.GitHubIssue,
-      name: '',
-      description: '',
-      funding: 0,
-      currency: 'EIC',
-      status: ETaskStatus.created,
-      funderRatedWith: 5,
-      solutionProviderRatedWith: 5,
-      link: 'https://github.com/cla-assistant/cla-assistant/issues/530',
-      dueDate: ''
-    }
-  }
-
-  public static getInitialUser() {
-    const user: IUser = {
-      companyId: '',
-      firstName: '',
-      balance: 0,
-      link: '',
-    }
-
-    return user
-  }
 
   public get(url: any): any {
     console.log(`calling to get ${url}`)
@@ -87,44 +60,15 @@ export class BackendService {
     return this.get(`${backendURL}/getLedgerEntries`)
   }
 
-  public getFundedTasks(): ITask[] {
-    const fundedTasks: ITask[] = []
-    const task1 = this.getDefaultTaskForDemo()
-    task1.funding = 1000
-    fundedTasks.push(task1)
-
-    const task2 = this.getDefaultTaskForDemo()
-    task2.name = 'Another fancy task'
-    task2.funding = 2000
-    fundedTasks.push(task2)
-
-    const task3 = this.getDefaultTaskForDemo()
-    task3.name = 'A very difficult task'
-    task3.funding = 10000
-    fundedTasks.push(task3)
-
-    return fundedTasks
-  }
 
   public getUser(companyId: string) {
     return this.getUsers().filter((entry: IUser) => entry.companyId === companyId)[0]
   }
 
-  public getDefaultTaskForDemo(): ITask {
-    return {
-      taskType: ETaskType.GitHubIssue,
-      name: 'Just a Demo Task',
-      description: 'Just a Demo Description',
-      funding: 0,
-      currency: 'EIC',
-      status: ETaskStatus.created,
-      funderRatedWith: 5,
-      solutionProviderRatedWith: 5,
-      link: 'https://github.com/cla-assistant/cla-assistant/issues/530',
-      dueDate: '2020-01-08'
-    }
-
+  public getFundedTasks() {
+    return this.get(`${backendURL}/getFundedTasks`)
   }
+
 
   public getUsers() {
     const users: IUser[] = []
@@ -158,39 +102,5 @@ export class BackendService {
     return users
   }
 
-  public getDefaultLedgerEntriesForDemo(): ILedgerEntry[] {
-    const ledgerEntries: ILedgerEntry[] = []
-    const entry1: ILedgerEntry = {
-      id: '4711',
-      date: '2020-01-01',
-      amount: 100,
-      sender: 'Hugo',
-      receiver: 'Fritz',
-    }
-
-    ledgerEntries.push(entry1)
-
-    const entry2: ILedgerEntry = {
-      id: '4712',
-      date: '2020-01-02',
-      amount: 200,
-      sender: 'Laura',
-      receiver: 'Luisa',
-    }
-
-    ledgerEntries.push(entry2)
-
-    const entry3: ILedgerEntry = {
-      id: '4713',
-      date: '2020-01-01',
-      amount: 100,
-      sender: 'Alex',
-      receiver: 'Sascha-Michelle',
-    }
-
-    ledgerEntries.push(entry3)
-
-    return ledgerEntries
-  }
 
 }

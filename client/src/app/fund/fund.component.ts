@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core'
 import { BackendService, ITask, ETaskType, ETaskStatus } from '../backend.service'
 import { backendURL } from '../../configurations/configuration'
 
-import { IUser } from '../profile/profile.component'
+import { IUser, ProfileComponent } from '../profile/profile.component'
+import { DemoDataProviderService } from '../demo-data-provider.service'
+import { TaskHelper } from '../task-card/task-helper'
 
 @Component({
   selector: 'app-fund',
@@ -12,8 +14,8 @@ import { IUser } from '../profile/profile.component'
 export class FundComponent implements OnInit {
 
   public radioModel: any
-  public user: IUser = BackendService.currentUser
-  public task: ITask = BackendService.getInitialTask()
+  public user: IUser = ProfileComponent.currentUser
+  public task: ITask = TaskHelper.getInitialTask()
   public currentRange = 0
   public fundingCompleted = false
   public initialRange = 70
@@ -21,7 +23,8 @@ export class FundComponent implements OnInit {
   public maximumRange = 100
 
 
-  public constructor(private readonly backendService: BackendService) { }
+  public constructor(private readonly backendService: BackendService,
+                     private readonly demoDataProvider: DemoDataProviderService) { }
 
   public ngOnInit(): void {
   }
@@ -37,7 +40,7 @@ export class FundComponent implements OnInit {
         this.task = this.getTaskFromResponse(response)
       }, error => {
         console.log(error.message)
-        this.task = this.backendService.getDefaultTaskForDemo()
+        this.task = this.demoDataProvider.getDefaultTaskForDemo()
       })
   }
 
@@ -56,10 +59,10 @@ export class FundComponent implements OnInit {
     this.user = this.backendService.getUser(this.user.companyId)
     if (this.user === undefined) {
       alert('Please enter a valid user ID')
-      this.user = BackendService.getInitialUser()
+      this.user = ProfileComponent.getInitialUser()
     }
 
-    BackendService.currentUser = this.user
+    ProfileComponent.currentUser = this.user
   }
 
   private getTaskFromResponse(response: any): ITask {

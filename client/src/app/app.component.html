@@ -36,12 +36,12 @@
 
 
   <div *ngIf="mode=='downloadLedger'">
-    <app-ledger></app-ledger>
+    <app-ledger [ledgerEntries]="ledgerEntries"></app-ledger>
   </div>
 
 
   <div *ngIf="mode=='solve'">
-    <app-solve></app-solve>
+    <app-solve [fundedTasks]="fundedTasks"></app-solve>
   </div>
 
   <div *ngIf="mode=='inviteFriends'">

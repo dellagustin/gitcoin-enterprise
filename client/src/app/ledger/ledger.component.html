@@ -24,7 +24,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let ledgerEntry of ledger" (click)="onEntryClicked(ledgerEntry)">
+        <tr *ngFor="let ledgerEntry of ledgerEntries" (click)="onEntryClicked(ledgerEntry)">
           <td>{{ledgerEntry.id}}</td>
           <td>{{ledgerEntry.date}}</td>
           <td>{{ledgerEntry.amount}}</td>
