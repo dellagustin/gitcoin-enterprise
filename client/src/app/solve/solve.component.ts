@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core'
 import { BackendService, ITask } from '../backend.service'
+import { ProfileComponent } from '../profile/profile.component'
+import { backendURL } from '../../configurations/configuration'
 
 
 @Component({
@@ -24,6 +26,11 @@ export class SolveComponent implements OnInit {
         this.fundedTasks = result
         this.filteredTasks = this.sortDescending(this.fundedTasks)
       })
+  }
+
+  public applyForSolving() {
+    this.backendService.get(`${backendURL}/applyForSolving`, ProfileComponent.currentUser.id)
+      .subscribe()
   }
 
   public searchTask() {

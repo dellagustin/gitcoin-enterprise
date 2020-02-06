@@ -23,6 +23,11 @@ export class AppController {
     return this.appService.getLedgerEntries()
   }
 
+  @Get('/applyForSolving')
+  applyForSolving(@Req() req: any): void {
+    return this.appService.applyForSolving(req.headers.companyuserid, req.body.profileLink, req.body.taskLink)
+  }
+
   @Get('/getUser')
   getUser(@Req() req: any): IUser {
     return this.appService.getUser(req.headers.companyuserid)

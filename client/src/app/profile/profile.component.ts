@@ -38,6 +38,10 @@ export class ProfileComponent implements OnInit {
     //   .subscribe((result: IUser[]) => this.users = result )
   }
 
+  public clickBountiesAndFundings() {
+    alert('to be developed')
+  }
+
   public onUserIdEntered() {
 
     this.backendService.getUser(this.user.id)

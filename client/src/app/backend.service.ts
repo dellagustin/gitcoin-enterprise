@@ -37,6 +37,7 @@ export class BackendService {
 
   public constructor(private readonly http: HttpClient) { }
 
+
   public get(url: any, key?: string): any {
 
     if (key !== undefined) {
@@ -70,6 +71,7 @@ export class BackendService {
     console.log(JSON.stringify(body))
     return this.http.post<any>(urlWithClient, JSON.stringify(body), httpOptions)
   }
+
 
   public getLedgerEntries() {
     return this.get(`${backendURL}/getLedgerEntries`)

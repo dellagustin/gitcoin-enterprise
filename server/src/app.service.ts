@@ -23,6 +23,14 @@ export class AppService {
     return fs.readJSON(this.usersFileId).filter((user: IUser) => user.id === userId)[0]
   }
 
+  public applyForSolving(userId: string, profileLink: string, taskLink: string): void {
+    const existingUser = fs.readJSON(this.usersFileId).filter((user: IUser) => user.id === userId)[0]
+    if (existingUser === undefined) {
+      throw new Error('User not found')
+    }
+    this.postCommentAboutApplication(profileLink, taskLink)
+  }
+
   public async getIssue(org: any, repo: any, issueId: any): Promise<IssueInfo> {
     this.loggerService.log(ELogLevel.Info, `getting Issue data for owner: ${org}, repo: ${repo}, issueId: ${issueId}`)
     const issueInfo = {} as IssueInfo
@@ -129,6 +137,12 @@ export class AppService {
     // ask Akshay how to post a comment to github issue - "A nice person funded this task with ...""
     this.loggerService.log(ELogLevel.Info, linkToIssue)
     this.loggerService.log(ELogLevel.Info, JSON.stringify(funding))
+  }
+
+  private postCommentAboutApplication(profileLink: string, taskLink: string) {
+    // ask Akshay how to post a comment to github issue - "A nice person applied for solving this task ...""
+    this.loggerService.log(ELogLevel.Info, profileLink)
+    this.loggerService.log(ELogLevel.Info, taskLink)
   }
 
   private createLedgerEntry(funding: IFunding) {

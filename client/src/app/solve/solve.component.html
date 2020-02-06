@@ -43,5 +43,12 @@
 
     <app-task-card [task]="taskOfInterest"></app-task-card>
 
+    <span *ngIf="taskOfInterest.status===1">
+      <button (click)="applyForSolving()" type="button" class="btn ourRedColor">
+        <i class="fa fa-wrench" aria-hidden="true" style="padding-right: 1vw;"></i>
+        Apply For Solving This
+        <i class="fa fa-wrench" aria-hidden="true" style="padding-left: 1vw;"></i>
+      </button>
+    </span>
   </span>
 </div>

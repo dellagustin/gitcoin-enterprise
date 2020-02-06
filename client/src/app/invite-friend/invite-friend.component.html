@@ -3,35 +3,38 @@
   Invite Friends
 </h4>
 
-<span style="margin-top: 100px; margin-bottom: 10vh">
-  <input type="email" class="form-control" placeholder="Please enter your friend's E-Mail Adress"
-    [(ngModel)]="eMailAdress" autofocus>
-</span>
+<div *ngIf="!sent">
 
-<span *ngIf="eMailAdress.length>0" style="margin-top: 100px;">
-  <input type="checkbox" [(ngModel)]="permissionGranted"> I hereby
-  confirm my friend wants to be invited by E-Mail
-</span>
+  <span style="margin-top: 100px; margin-bottom: 10vh">
+    <input type="email" class="form-control" placeholder="Please enter your friend's E-Mail Adress"
+      [(ngModel)]="eMailAdress" autofocus>
+  </span>
 
-<span *ngIf="permissionGranted">
+  <span *ngIf="eMailAdress.length>0" style="margin-top: 100px;">
+    <input type="checkbox" [(ngModel)]="permissionGranted"> I hereby
+    confirm my friend wants to be invited by E-Mail
+  </span>
 
-  <div class="adPad">
+  <span *ngIf="permissionGranted">
 
-    I will send the following e-mail to {{eMailAdress}}:
+    <div class="adPad">
 
-    <app-email [eMail]=eMail></app-email>
+      I will send the following e-mail to {{eMailAdress}}:
 
-  </div>
+      <app-email [eMail]=eMail></app-email>
 
-  <button (click)="send()" type="button" class="btn ourBlueColor">
-    <i class="fa fa-paper-plane" aria-hidden="true" style="padding-right: 1vw;"></i>
-    Invite
-    <i class="fa fa-paper-plane" aria-hidden="true" style="padding-left: 1vw;"></i>
-  </button>
-</span>
+    </div>
+
+    <button (click)="send()" type="button" class="btn ourBlueColor">
+      <i class="fa fa-paper-plane" aria-hidden="true" style="padding-right: 1vw;"></i>
+      Invite
+      <i class="fa fa-paper-plane" aria-hidden="true" style="padding-left: 1vw;"></i>
+    </button>
+  </span>
+</div>
 
 <span *ngIf="sent">
   <h2>
-    Invitation Sent. You can invite 1 friend per day.
+    Invitation Sent. <p></p> You can invite 1 friend per day.
   </h2>
 </span>
