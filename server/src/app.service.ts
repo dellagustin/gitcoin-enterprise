@@ -4,17 +4,19 @@ const octokit = new Octokit()
 import * as fs from 'fs-sync'
 import * as path from 'path'
 import * as moment from 'moment'
-import { IssueInfo, ITask, ILedgerEntry, ETaskStatus, ETaskType, IUser, IFunding, ITaskAndFunding } from './interfaces'
+import { IssueInfo, ITask, ETaskStatus, ETaskType, IUser, IFunding, ITaskAndFunding } from './interfaces'
 import { LoggerService, ELogLevel } from './logger/logger.service'
+import { ILedgerEntry } from './ledger-connector.interface'
+import { LedgerConnector } from './ledger-connector-file-system/ledger-connector-file-system.service'
 
 @Injectable()
 export class AppService {
 
   private fundedTasksFileId = path.join(__dirname, '../operational-data/funded-tasks.json')
-  private ledgerEntriesFileId = path.join(__dirname, '../operational-data/ledger-entries.json')
   private usersFileId = path.join(__dirname, '../operational-data/users.json')
 
-  public constructor(private readonly loggerService: LoggerService) {
+  // Interface would be cool but interfaces are design-time only in the current context :)
+  public constructor(private readonly loggerService: LoggerService, private readonly ledgerConnector: LedgerConnector) {
     // tbd
   }
 
@@ -59,10 +61,6 @@ export class AppService {
     return fs.write(this.fundedTasksFileId, JSON.stringify(fundedTasks))
   }
 
-  public saveLedgerEntries(ledgerEntries: ILedgerEntry[]): void {
-    return fs.write(this.ledgerEntriesFileId, JSON.stringify(ledgerEntries))
-  }
-
   public getFundedTasks(): ITask[] {
     // this.initializeSystem()
     return fs.readJSON(this.fundedTasksFileId)
@@ -71,7 +69,7 @@ export class AppService {
 
   private initializeSystem() {
     fs.write(this.fundedTasksFileId, '[]')
-    fs.write(this.ledgerEntriesFileId, '[]')
+    fs.write(this.ledgerConnector.saveLedgerEntries, '[]')
     fs.write(this.usersFileId, JSON.stringify(this.getDemoUsers()))
   }
 
@@ -93,7 +91,7 @@ export class AppService {
 
   public getLedgerEntries(): ILedgerEntry[] {
 
-    return fs.readJSON(this.ledgerEntriesFileId)
+    return this.ledgerConnector.getLedgerEntries()
   }
 
   public saveFunding(taskAndFunding: ITaskAndFunding, key: string): any {
@@ -146,7 +144,7 @@ export class AppService {
   }
 
   private createLedgerEntry(funding: IFunding) {
-    const entries: ILedgerEntry[] = fs.readJSON(this.ledgerEntriesFileId)
+    const entries: ILedgerEntry[] = this.ledgerConnector.getLedgerEntries()
     const entry: ILedgerEntry = {
       id: Date.now().toString(),
       date: moment().format('YYYY MM DD'),
@@ -157,7 +155,7 @@ export class AppService {
 
     entries.push(entry)
 
-    fs.write(this.ledgerEntriesFileId, JSON.stringify(entries))
+    this.ledgerConnector.saveLedgerEntries(entries)
   }
 
   public getDemoUsers() {

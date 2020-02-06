@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core'
-import { AppModule } from './app.module'
+import { AppModule, config } from './app.module'
 import * as cors from 'cors'
 import * as path from 'path'
 import * as fs from 'fs-sync'
@@ -8,7 +8,6 @@ import { LoggerService, ELogLevel } from './logger/logger.service'
 const compression = require('compression')
 
 export const pathToStaticAssets = path.join(__dirname, '../docs')
-export const config = fs.readJSON(path.join(__dirname, '../.env.json'))
 
 async function bootstrap() {
   const logger = new LoggerService()

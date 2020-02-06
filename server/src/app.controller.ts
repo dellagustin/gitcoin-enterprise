@@ -1,8 +1,9 @@
 import { Controller, Get, Param, Res, Post, Req } from '@nestjs/common'
 import { AppService } from './app.service'
 import { pathToStaticAssets } from './gitcoin-enterprise-server'
-import { ITask, ILedgerEntry, IUser } from './interfaces'
+import { ITask, IUser } from './interfaces'
 import { EmailService } from './email/email.service'
+import { ILedgerEntry } from './ledger-connector.interface'
 
 @Controller()
 export class AppController {

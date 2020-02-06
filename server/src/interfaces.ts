@@ -29,14 +29,6 @@ export enum ETaskType {
   'tbd...' = 2,
 }
 
-export interface ILedgerEntry {
-  id: string,
-  date: string,
-  amount: number,
-  sender: string
-  receiver: string
-}
-
 export interface IEmail {
   sender: string,
   recipient: string,

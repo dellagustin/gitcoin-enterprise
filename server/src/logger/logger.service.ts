@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import * as fs from 'fs-sync'
 import * as path from 'path'
-import { config } from '../gitcoin-enterprise-server'
+import { config } from '../app.module'
 
 export enum ELogLevel {
     Error = 1,

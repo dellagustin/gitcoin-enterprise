@@ -77,3 +77,5 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
 ## Personal Learning Experiences along the way
 How to get https right: https://certbot.eff.org/
+
+Interfaces & Dependency Injection: https://stackoverflow.com/questions/52969037/nestjs-dependency-injection-and-ddd-clean-architecture
