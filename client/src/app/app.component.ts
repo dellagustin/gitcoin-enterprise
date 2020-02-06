@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core'
 import { INavbarData } from './navbar/navbar.interfaces'
 import { BackendService, ITask } from './backend.service'
 import { ILedgerEntry } from './ledger/ledger.interface'
-
+import { ActivatedRoute } from '@angular/router'
+import { ProfileComponent, IUser } from './profile/profile.component'
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -10,17 +11,41 @@ import { ILedgerEntry } from './ledger/ledger.interface'
 })
 export class AppComponent implements OnInit {
   public static deferredPrompt
+  public static url = 'https://gitcoin-enterprise.org'
   public mode = ''
   public fundedTasks: ITask[] = []
   public ledgerEntries: ILedgerEntry[] = []
   public navBarData: INavbarData = this.getNavBarData()
+  public queryParameters: any
 
-  public constructor(private readonly backendService: BackendService) { }
+  public constructor(private readonly backendService: BackendService, private route: ActivatedRoute) { }
   public ngOnInit() {
     this.considerPWAInstallPrompt()
+    this.getQueryParametersAndUser()
     this.getFundedTasks()
     this.getLedgerEntries()
   }
+
+  private getQueryParametersAndUser() {
+    this.route
+      .queryParamMap
+      .subscribe((result: any) => {
+        if (result.params !== undefined && result.params.id !== undefined) {
+          this.queryParameters = result.params
+          if (this.queryParameters !== undefined) {
+            this.backendService.getUser(this.queryParameters.id)
+              .subscribe((user: IUser) => {
+                if (user === null || user === undefined) {
+                  alert('Please enter a valid user ID')
+                } else {
+                  ProfileComponent.currentUser = user
+                }
+              })
+          }
+        }
+      })
+  }
+
 
   private getFundedTasks() {
     this.backendService.getFundedTasks()

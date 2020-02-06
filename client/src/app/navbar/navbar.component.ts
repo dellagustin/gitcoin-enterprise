@@ -11,12 +11,12 @@ export class NavbarComponent implements OnInit {
   public static firstFancyCity = ''
   public static forFreePartners = []
 
-  constructor() {}
+  constructor() { }
 
 
   @Input() navBarData: INavbarData
   @Output() clickMenuEntry = new EventEmitter<string>()
-    public readyForPrompt: boolean
+  public readyForPrompt: boolean
 
   public ngOnInit() {
     // alert(this.navBarData.logoURL);
@@ -45,5 +45,6 @@ export class NavbarComponent implements OnInit {
   }
 
   public clickTitle() {
+    window.location.assign('https://gitcoin-enterprise.org')
   }
 }

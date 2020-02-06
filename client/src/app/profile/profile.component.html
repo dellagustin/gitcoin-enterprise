@@ -1,10 +1,10 @@
 <span *ngIf="user.firstName===''">
-  <img src="../../assets/avatar-2.png" alt="" width="77%">
+  <img src="../../assets/avatar-2.png" alt="">
   <h4 class="titleBeneathImage">
     Profile
   </h4>
   <input type="text" class="form-control" placeholder="enter company user id - e.g. d123" [(ngModel)]="user.companyId"
-         autofocus>
+    autofocus>
 
   <span *ngIf="user.companyId.length>0">
     <button type="button" class="btn ourBlueColor" (click)="onUserIdEntered()">

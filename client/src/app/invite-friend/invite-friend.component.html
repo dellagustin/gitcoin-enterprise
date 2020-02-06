@@ -14,6 +14,15 @@
 </span>
 
 <span *ngIf="permissionGranted">
+
+  <div class="adPad">
+
+    I will send the following e-mail to {{eMailAdress}}:
+
+    <app-email [eMail]=eMail></app-email>
+
+  </div>
+
   <button (click)="send()" type="button" class="btn ourBlueColor">
     <i class="fa fa-paper-plane" aria-hidden="true" style="padding-right: 1vw;"></i>
     Invite
@@ -21,3 +30,6 @@
   </button>
 </span>
 
+<span *ngIf="sending">
+
+</span>

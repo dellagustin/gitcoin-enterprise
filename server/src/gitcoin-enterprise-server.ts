@@ -15,8 +15,7 @@ async function bootstrap() {
 
   let app
 
-  if (config.port.indexOf('443') !== -1) {
-
+  if (config.port !== undefined && config.port.indexOf('443') !== -1) {
     const keyFile = config.certificatePrivateKeyFile
     const certFile = config.certificateFile
     const privateKey = fs.read(keyFile)
@@ -24,8 +23,7 @@ async function bootstrap() {
     const credentials = { key: privateKey, cert: certificate }
     app = await NestFactory.create(AppModule, { httpsOptions: credentials })
     logger.log(ELogLevel.Info, 'starting https server')
-    logger.log(ELogLevel.Info, typeof(app))
-
+    logger.log(ELogLevel.Info, typeof (app))
   } else {
     app = await NestFactory.create(AppModule)
   }

@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { IUser } from './profile/profile.component'
 import { ILedgerEntry } from './ledger/ledger.interface'
 import { backendURL } from '../configurations/configuration'
+import { IEmail } from './email/email.component'
 
 export interface ITask {
   taskType: ETaskType
@@ -36,7 +37,20 @@ export class BackendService {
 
   public constructor(private readonly http: HttpClient) { }
 
-  public get(url: any): any {
+  public get(url: any, key?: string): any {
+
+    if (key !== undefined) {
+
+      const options = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          companyuserid: key
+        })
+      }
+      console.log(`calling to get ${url}`)
+      return this.http.get<any>(url, options)
+    }
+
     console.log(`calling to get ${url}`)
     return this.http.get<any>(url)
   }
@@ -60,9 +74,13 @@ export class BackendService {
     return this.get(`${backendURL}/getLedgerEntries`)
   }
 
+  public sendEMail(eMail: IEmail): any {
+    return this.post(`${backendURL}/sendEMail`, eMail)
+  }
+
 
   public getUser(companyId: string) {
-    return this.getUsers().filter((entry: IUser) => entry.companyId === companyId)[0]
+    return this.get(`${backendURL}/getUser`, companyId)
   }
 
   public getFundedTasks() {

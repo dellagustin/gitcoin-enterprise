@@ -3,7 +3,7 @@ const { Octokit } = require('@octokit/rest')
 const octokit = new Octokit()
 import * as fs from 'fs-sync'
 import * as path from 'path'
-import { IssueInfo, ITask, ILedgerEntry, ETaskStatus, ETaskType } from './interfaces'
+import { IssueInfo, ITask, ILedgerEntry, ETaskStatus, ETaskType, IUser } from './interfaces'
 import { LoggerService, ELogLevel } from './logger/logger.service'
 
 @Injectable()
@@ -12,9 +12,15 @@ export class AppService {
   private gitHubToken = ''
   private fundedTasksFileId = path.join(__dirname, '../operational-data/funded-tasks.json')
   private ledgerEntriesFileId = path.join(__dirname, '../operational-data/ledger-entries.json')
+  private usersFileId = path.join(__dirname, '../operational-data/users.json')
 
   public constructor(private readonly loggerService: LoggerService) {
     // tbd
+  }
+
+  public getUser(userId: string): IUser {
+
+    return fs.readJSON(this.usersFileId).filter((user: IUser) => user.companyId === userId)[0]
   }
 
   public async getIssue(org: any, repo: any, issueId: any): Promise<IssueInfo> {

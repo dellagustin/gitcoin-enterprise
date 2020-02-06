@@ -18,6 +18,8 @@ import { TaskCardComponent } from './task-card/task-card.component'
 import { UserCardComponent } from './user-card/user-card.component'
 import { NavbarComponent } from './navbar/navbar.component'
 import { ScrollingModule } from '@angular/cdk/scrolling'
+import { EmailComponent } from './email/email.component'
+import { RouterModule } from '@angular/router'
 
 @NgModule({
   declarations: [
@@ -31,10 +33,12 @@ import { ScrollingModule } from '@angular/cdk/scrolling'
     InviteFriendComponent,
     TaskCardComponent,
     UserCardComponent,
-    NavbarComponent
+    NavbarComponent,
+    EmailComponent
 
   ],
   imports: [
+    RouterModule.forRoot([]),
     ScrollingModule,
     HttpClientModule,
     FormsModule,

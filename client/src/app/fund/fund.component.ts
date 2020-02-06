@@ -14,6 +14,7 @@ import { TaskHelper } from '../task-card/task-helper'
 export class FundComponent implements OnInit {
 
   public radioModel: any
+  public taskLink = 'https://github.com/cla-assistant/cla-assistant/issues/530'
   public user: IUser = ProfileComponent.currentUser
   public task: ITask = TaskHelper.getInitialTask()
   public currentRange = 0
@@ -23,14 +24,13 @@ export class FundComponent implements OnInit {
   public maximumRange = 100
 
 
-  public constructor(private readonly backendService: BackendService,
-                     private readonly demoDataProvider: DemoDataProviderService) { }
+  public constructor(private readonly backendService: BackendService, private readonly demoDataProvider: DemoDataProviderService) { }
 
   public ngOnInit(): void {
   }
 
   public getInfoFromTaskLink() {
-    const sourceString = this.task.link.split('https://github.com/')[1]
+    const sourceString = this.taskLink.split('https://github.com/')[1]
     // cla-assistant/cla-assistant/issues/530
     const org = sourceString.split('/')[0]
     const repo = sourceString.split('/')[1].split('/')[0]
@@ -38,6 +38,7 @@ export class FundComponent implements OnInit {
     this.backendService.get(`${backendURL}/getIssueInfo/org/${org}/repo/${repo}/issueId/${issueId}`)
       .subscribe((response: any) => {
         this.task = this.getTaskFromResponse(response)
+        this.task.link = this.taskLink
       }, error => {
         console.log(error.message)
         this.task = this.demoDataProvider.getDefaultTaskForDemo()
