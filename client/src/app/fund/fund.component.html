@@ -9,7 +9,7 @@
     <span *ngIf="task.name===''">
       Please enter the link to the issue on GitHub.
       <p></p>
-      <input type="text" class="form-control" id="usr"
+      <input type="text" class="form-control" id="taskLink"
         placeholder="https://github.com/cla-assistant/cla-assistant/issues/530" [(ngModel)]="taskLink">
 
       <div *ngIf="task.link!==''">
