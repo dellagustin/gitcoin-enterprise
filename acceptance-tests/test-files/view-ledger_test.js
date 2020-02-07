@@ -9,10 +9,10 @@ Scenario("test something", async I => {
   if (config.mode === "demo") {
     await I.wait(1); // just for demo reasons making sure people can follow
   }
-  I.click(locate("#burgerMenu"));
-  if (config.mode === "demo") {
-    await I.wait(1); // just for demo reasons making sure people can follow
-  }
+  // I.click(locate("#burgerMenu"));
+  // if (config.mode === "demo") {
+  //   await I.wait(1); // just for demo reasons making sure people can follow
+  // }
 
   // I.click("Download Ledger");
   //   if (config.mode === "demo") {

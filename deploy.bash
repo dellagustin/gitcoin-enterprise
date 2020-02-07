@@ -14,3 +14,7 @@ mv ../server/docs/index.html ../server/docs/i-want-compression-via-route.html
 cd ../server
 npm run compress
 pm2 restart gitcoin-enterprise-server
+cd ../acceptance-tests
+npm i 
+npm run acceptance-tests
+

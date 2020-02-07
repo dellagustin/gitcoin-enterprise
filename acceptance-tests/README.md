@@ -3,17 +3,18 @@
 If you would like to contribute to this project it yould be great if you did so by applying Acceptance Test Driven Development.  
 In this project we use [codecept.io](https://codecept.io/) for our Acceptance Tests.
 
-## Generate a Test
+## Execute the Test Suite in Demo Mode
+
+Make sure to have the [Brave Browser](https://brave.com) installed to enjoy the whole show.
 
 ```
-1. cd acceptance-tests
-2. npx codeceptjs gt
+npm run acceptance-tests-demo
 ```
 
 ## Execute the Test Suite
 
 ```
-npx codeceptjs run --steps
+npm run acceptance-tests
 ```
 
 ## Execute a Single Test
@@ -22,18 +23,9 @@ npx codeceptjs run --steps
 npx codeceptjs run --steps --grep "Fund a Task"
 ```
 
-## Showing Browser During Execution
-
-You can set the
+## Generate a Test
 
 ```
-show: true
-´´´
-
-or
+1. cd acceptance-tests
+2. npx codeceptjs gt
 ```
-
-show: false
-´´´
-
-within codecept.conf.js
