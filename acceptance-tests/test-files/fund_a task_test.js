@@ -4,19 +4,24 @@ const config = fs.readJSON(path.join(__dirname, "../.env.json"));
 
 Feature("Fund a Task");
 
-Scenario("test something", async I => {
+Scenario("test funding a task", async (I) => {
   I.amOnPage("/");
-  if (config.mode === "demo") {
-    await I.wait(1); // just for demo reasons making sure people can follow
-  }
-  I.click("Fund a Task");
+  pause(I)
+
+  I.click(locate("Fund a Task"));
+  pause(I)
+  
   I.see("Please enter the link to the issue on GitHub.");
   I.fillField(
     locate("#taskLink"),
     "https://github.com/cla-assistant/cla-assistant/issues/530"
   );
-  if (config.mode === "demo") {
-    await I.wait(1.5); // just for demo reasons making sure people can follow
-  }
   // I.click(locate("Next"));
 });
+
+
+async function pause(I) {
+  (config.mode === "demo") ?
+  await I.wait(4) : 
+  await I.wait(3)
+}

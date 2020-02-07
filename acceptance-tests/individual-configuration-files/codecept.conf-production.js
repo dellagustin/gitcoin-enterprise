@@ -9,14 +9,10 @@ exports.config = {
   output: "./output",
   helpers: {
     Puppeteer: {
-      url: "https://gitcoin-enterprise.org",
+      url: "http://gitcoin-enterprise.org",
       show: false,
-      browsers: ['ChromeHeadlessNoSandbox'],
-      customLaunchers: {
-        ChromeHeadlessNoSandbox: {
-          base: 'ChromeHeadless',
-          flags: ['--no-sandbox']
-        }
+      chrome: {
+        args: ["--no-sandbox"]
       },
     }
   },

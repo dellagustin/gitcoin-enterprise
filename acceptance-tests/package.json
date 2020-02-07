@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "acceptance-tests-prod": "cp ./individual-configuration-files/.env.template-prod-mode.json ./.env.json && cp individual-configuration-files/codecept.conf-production.js codecept.conf.js && ./setup.sh demo && npx codeceptjs run --steps",
-    "acceptance-tests-demo": "cp ./individual-configuration-files/.env.template-demo-mode.json ./.env.json && cp individual-configuration-files/codecept.conf-demo.js codecept.conf.js && ./setup.sh demo && npx codeceptjs run --steps",
-    "acceptance-tests": "cp ./.env.template.json ./.env.json && cp individual-configuration-files/codecept.conf-regular.js codecept.conf.js && ./setup.sh && npx codeceptjs run --steps"
+    "acceptance-tests-prod": "cp ./individual-configuration-files/.env.template-prod-mode.json ./.env.json && cp individual-configuration-files/codecept.conf-production.js codecept.conf.js && ./setup.sh demo && npx codeceptjs run --steps --grep 'Check Profile'",
+    "acceptance-tests-demo": "cp ./individual-configuration-files/.env.template-demo-mode.json ./.env.json && cp individual-configuration-files/codecept.conf-demo.js codecept.conf.js && ./setup.sh demo && npx codeceptjs run --steps  --grep 'Check Profile'",
+    "acceptance-tests": "cp ./.env.template.json ./.env.json && cp individual-configuration-files/codecept.conf-regular.js codecept.conf.js && ./setup.sh && npx codeceptjs run --steps  --grep 'Check Profile'"
   },
   "keywords": [],
   "author": "",
