@@ -1,7 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { BackendService, ITask } from '../backend.service'
-import { ProfileComponent } from '../profile/profile.component'
+import { ProfileComponent, IUser } from '../profile/profile.component'
 import { backendURL } from '../../configurations/configuration'
+import { IApplication } from '../interfaces'
 
 
 @Component({
@@ -15,7 +16,11 @@ export class SolveComponent implements OnInit {
   public taskOfInterest: ITask
   public filteredTasks: ITask[] = []
   public searchTerm = ''
+  public solutionApproach = ''
   public sortingDirectionDown = false
+  public userWantsToApply = false
+  public applicationCompleted = false
+  public user: IUser = ProfileComponent.currentUser
 
   public constructor(private readonly backendService: BackendService) { }
 
@@ -27,9 +32,32 @@ export class SolveComponent implements OnInit {
       })
   }
 
+  public applyForSolvingAfterUserIdAdded() {
+
+    this.backendService.getUser(this.user.id)
+      .subscribe((result: IUser) => {
+        this.user = result
+        ProfileComponent.currentUser = this.user
+        this.apply()
+      })
+  }
+
   public applyForSolving() {
-    this.backendService.get(`${backendURL}/applyForSolving`, ProfileComponent.currentUser.id)
-      .subscribe()
+    this.userWantsToApply = true
+    this.apply()
+  }
+
+  public apply() {
+    if (ProfileComponent.currentUser.firstName !== '') {
+      this.applicationCompleted = true
+      const application: IApplication = {
+        profileLink: this.user.link,
+        taskLink: this.taskOfInterest.link,
+        solutionApproach: this.solutionApproach
+      }
+      this.backendService.post(`${backendURL}/applyForSolving`, application, ProfileComponent.currentUser.id)
+        .subscribe()
+    }
   }
 
   public searchTask() {
