@@ -38,10 +38,15 @@ export class InviteFriendComponent implements OnInit {
   }
 
   public send() {
-    this.sent = true
     if (confirm(`sending E-Mail to ${this.eMailAdress}`)) {
       this.backendService.sendEMail(this.eMail, ProfileComponent.currentUser.id)
-        .subscribe()
+        .subscribe((result: any) => {
+          if (result.success === false) {
+            alert('Sending Invitations is not yet active.')
+          } else {
+            this.sent = true
+          }
+        })
     }
   }
 }

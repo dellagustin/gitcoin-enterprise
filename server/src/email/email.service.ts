@@ -11,7 +11,12 @@ export class EmailService {
 
     public constructor(private readonly logger: LoggerService) { }
 
-    public sendEMail(eMail: IEmail) {
+    public sendEMail(eMail: IEmail): any {
+        if (!this.isInvitationAllowed()) {
+            return {
+                success: false,
+            }
+        }
         const nodemailer = require('nodemailer')
 
         const transporter = nodemailer.createTransport({
@@ -38,7 +43,15 @@ export class EmailService {
                 throw new Error(error)
             }
             this.logger.log(ELogLevel.Warning, `Message sent: ${info.response}`)
+
+            return {
+                success: true,
+            }
         })
+    }
+
+    private isInvitationAllowed() {
+        return false // wait some more days to do it right :)
     }
 
     private getHTMLEMail(sender: string, content: string): string {
