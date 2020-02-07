@@ -16,5 +16,6 @@ npm run compress
 pm2 restart gitcoin-enterprise-server
 cd ../acceptance-tests
 npm i 
-npm run acceptance-tests
+npm run acceptance-tests-prod
+echo "if npm run acceptance-tests-prod fails, autosend a telegram message to 24*7 operations team, generate an issue + transfer 50% of last committers balance - funding this issue which will probably be solved by operations team"
 

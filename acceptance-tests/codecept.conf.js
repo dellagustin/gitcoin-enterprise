@@ -10,7 +10,7 @@ exports.config = {
   helpers: {
     Puppeteer: {
       url: "http://localhost:4200",
-      show: true
+      show: false
     }
   },
   include: {
@@ -21,6 +21,9 @@ exports.config = {
   name: "acceptance-tests",
   plugins: {
     retryFailedStep: {
+      enabled: true
+    },
+    puppeteerCoverage: {
       enabled: true
     },
     screenshotOnFail: {
