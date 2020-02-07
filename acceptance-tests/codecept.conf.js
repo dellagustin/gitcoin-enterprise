@@ -23,9 +23,6 @@ exports.config = {
     retryFailedStep: {
       enabled: true
     },
-    puppeteerCoverage: {
-      enabled: true
-    },
     screenshotOnFail: {
       enabled: true
     }
