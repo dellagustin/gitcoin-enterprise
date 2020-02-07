@@ -17,7 +17,7 @@ const octokit = new Octokit({
 })
 
 @Injectable()
-export class AppServic {
+export class AppService {
 
   private fundedTasksFileId = path.join(__dirname, '../operational-data/funded-tasks.json')
   private usersFileId = path.join(__dirname, '../operational-data/users.json')
