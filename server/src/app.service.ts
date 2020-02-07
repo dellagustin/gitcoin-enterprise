@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common'
-const { Octokit } = require('@octokit/rest')
-const octokit = new Octokit()
+const { Octokit } = require('@octokit/rest'
+)
+
 import * as fs from 'fs-sync'
 import * as path from 'path'
 import * as moment from 'moment'
@@ -9,8 +10,14 @@ import { LoggerService, ELogLevel } from './logger/logger.service'
 import { ILedgerEntry } from './ledger-connector.interface'
 import { LedgerConnector } from './ledger-connector/ledger-connector-file-system.service'
 
+//set personal acceess token for posting issue comment
+const config = fs.readJSON(path.join(__dirname, '../.env.json'))
+const octokit = new Octokit({
+  auth: config.token,
+})
+
 @Injectable()
-export class AppService {
+export class AppServic{
 
   private fundedTasksFileId = path.join(__dirname, '../operational-data/funded-tasks.json')
   private usersFileId = path.join(__dirname, '../operational-data/users.json')
@@ -20,12 +27,12 @@ export class AppService {
     // tbd
   }
 
-  public getUser(userId: string): IUser {
+  public getUser(userId: string): IUser{
     this.loggerService.log(ELogLevel.Info, `getting user ${userId}`)
     return fs.readJSON(this.usersFileId).filter((user: IUser) => user.id === userId)[0]
   }
 
-  public applyForSolving(userId: string, profileLink: string, taskLink: string): void {
+  public applyForSolving(userId: string, profileLink: string, taskLink: string): void{
     const existingUser = fs.readJSON(this.usersFileId).filter((user: IUser) => user.id === userId)[0]
     if (existingUser === undefined) {
       throw new Error('User not found')
@@ -33,7 +40,7 @@ export class AppService {
     this.postCommentAboutApplication(profileLink, taskLink)
   }
 
-  public async getIssue(org: any, repo: any, issueId: any): Promise<IssueInfo> {
+  public async getIssue(org: any, repo: any, issueId: any): Promise<IssueInfo>{
     this.loggerService.log(ELogLevel.Info, `getting Issue data for owner: ${org}, repo: ${repo}, issueId: ${issueId}`)
     const issueInfo = {} as IssueInfo
     try {
@@ -53,7 +60,7 @@ export class AppService {
     return issueInfo
   }
 
-  public getGitHubToken(): string {
+  public getGitHubToken(): string{
     return fs.readJSON(path.join(__dirname, '../.env.json')).gitHubToken
   }
 
@@ -61,13 +68,13 @@ export class AppService {
     return fs.write(this.fundedTasksFileId, JSON.stringify(fundedTasks))
   }
 
-  public getFundedTasks(): ITask[] {
+  public getFundedTasks(): ITask[]{
     // this.initializeSystem()
     return fs.readJSON(this.fundedTasksFileId)
 
   }
 
-  private initializeSystem() {
+  private initializeSystem(){
     fs.write(this.fundedTasksFileId, '[]')
     this.ledgerConnector.saveLedgerEntries([])
     fs.write(this.usersFileId, JSON.stringify(this.getDemoUsers()))
@@ -89,12 +96,12 @@ export class AppService {
     }
   }
 
-  public getLedgerEntries(): ILedgerEntry[] {
+  public getLedgerEntries(): ILedgerEntry[]{
 
     return this.ledgerConnector.getLedgerEntries()
   }
 
-  public saveFunding(taskAndFunding: ITaskAndFunding, key: string): any {
+  public saveFunding(taskAndFunding: ITaskAndFunding, key: string): any{
 
     const user = fs.readJSON(this.usersFileId).filter((entry: IUser) => entry.id === key)[0]
 
@@ -131,14 +138,48 @@ export class AppService {
 
   }
 
-  private postCommentAboutSuccessfullFunding(linkToIssue: string, funding: IFunding) {
-    // ask Akshay how to post a comment to github issue - "A nice person funded this task with ...""
+  private async postCommentAboutSuccessfullFunding(linkToIssue: string, funding: IFunding) {
+    const body = "peer2peer collaborating is awesome (funder)";
+    // cla-assistant/cla-assistant/issues/530
+    const owner = linkToIssue.split('/')[3]
+    const repoName = linkToIssue.split('/')[4]
+    const issueNo = linkToIssue.split('/')[6]
+
+    try {
+      await octokit.issues.createComment({
+        owner,
+        repo: repoName,
+        issue_number: issueNo,
+        body,
+      })
+
+    } catch (error) {
+      this.loggerService.log(ELogLevel.Error, `the github call to create a comment for  the issue failed ${error}`)
+
+    }
+
     this.loggerService.log(ELogLevel.Info, linkToIssue)
     this.loggerService.log(ELogLevel.Info, JSON.stringify(funding))
   }
 
-  private postCommentAboutApplication(profileLink: string, taskLink: string) {
-    // ask Akshay how to post a comment to github issue - "A nice person applied for solving this task ...""
+  private async postCommentAboutApplication(profileLink: string, taskLink: string) {
+    const body = "peer2peer collaborating is awesome (contributor) ";
+
+    const owner = taskLink.split('/')[3]
+    const repoName = taskLink.split('/')[4]
+    const issueNo = taskLink.split('/')[6]
+    try {
+      await octokit.issues.createComment({
+        owner,
+        repo: repoName,
+        issue_number: issueNo,
+        body,
+      })
+
+    } catch (error) {
+      this.loggerService.log(ELogLevel.Error, `the github call to create a comment for  the issue failed ${error}`)
+
+    }
     this.loggerService.log(ELogLevel.Info, profileLink)
     this.loggerService.log(ELogLevel.Info, taskLink)
   }
