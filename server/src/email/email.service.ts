@@ -1,18 +1,21 @@
 import { Injectable } from '@nestjs/common'
 // import nodemailer = require('nodemailer')
-import { IEmail } from '../interfaces'
+import { IEmail, IInvitation } from '../interfaces'
 import { LoggerService, ELogLevel } from '../logger/logger.service'
 import { config } from '../app.module'
 import * as fs from 'fs-sync'
 import * as path from 'path'
+import moment = require('moment')
 
 @Injectable()
 export class EmailService {
 
+    private fileIdInvitations = path.join(__dirname, '../../operational-data/invitations.json')
+
     public constructor(private readonly logger: LoggerService) { }
 
     public sendEMail(eMail: IEmail): any {
-        if (!this.isInvitationAllowed()) {
+        if (!this.isInvitationAllowed(eMail.sender)) {
             return {
                 success: false,
             }
@@ -50,8 +53,20 @@ export class EmailService {
         })
     }
 
-    private isInvitationAllowed() {
-        return false // wait some more days to do it right :)
+    private isInvitationAllowed(userID: string) {
+        const invitationsFromThisUserToday = fs.readJSON(this.fileIdInvitations).filter((invitation: IInvitation) => {
+            if (invitation.from === userID) {
+                return true
+            } else {
+                return false
+            }
+        })
+
+        if (invitationsFromThisUserToday.length > config.invitationsPerUserPerDay) {
+            return false // wait some more days to do it right :)
+        } else {
+            return true
+        }
     }
 
     private getHTMLEMail(sender: string, content: string): string {
