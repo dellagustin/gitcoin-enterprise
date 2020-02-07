@@ -3,6 +3,12 @@ export interface IssueInfo {
   description: string
 }
 
+export interface IApplication {
+  profileLink: string
+  taskLink: string
+  solutionApproach: string
+}
+
 export interface ITask {
   id: string,
   taskType: ETaskType

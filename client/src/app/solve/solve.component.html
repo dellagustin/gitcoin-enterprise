@@ -1,54 +1,102 @@
 <div class="taskExplorer">
 
-  <span *ngIf="taskOfInterest===undefined">
-    <img src="../../assets/task-explorer.png" alt="" width="60%">
-    <h4 class="titleBeneathImage">
-      Task Explorer
-    </h4>
+  <div *ngIf="!applicationCompleted">
 
-    <div class="searchTask">
-      <input type="text" class="form-control" placeholder="What kind of task do you want to solve?"
-        [(ngModel)]="searchTerm" (keyup)="searchTask()" autofocus>
 
-    </div>
+    <span *ngIf="taskOfInterest===undefined">
+      <img src="../../assets/task-explorer.png" alt="" width="60%">
+      <h4 class="titleBeneathImage">
+        Task Explorer
+      </h4>
 
-    <cdk-virtual-scroll-viewport itemSize="1000" [ngStyle]="{'height.px': 10000}">
-      <div class="gce-table">
-        <table class="table table-striped">
-          <thead class="thead-dark">
-            <tr>
-              <th style="width:60%">Title</th>
-              <th>Funding <i class="fa fa-sort" style="padding-left: 1vh;" (click)="sort()"></i>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let fundedTask of filteredTasks" (click)="onTaskClicked(fundedTask)">
-              <td>{{fundedTask.name}}</td>
-              <td>{{fundedTask.funding}}</td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="searchTask">
+        <input type="text" class="form-control" placeholder="What kind of task do you want to solve?"
+          [(ngModel)]="searchTerm" (keyup)="searchTask()" autofocus>
+
       </div>
-    </cdk-virtual-scroll-viewport>
+
+      <cdk-virtual-scroll-viewport itemSize="1000" [ngStyle]="{'height.px': 10000}">
+        <div class="gce-table">
+          <table class="table table-striped">
+            <thead class="thead-dark">
+              <tr>
+                <th style="width:60%">Title</th>
+                <th>Funding <i class="fa fa-sort" style="padding-left: 1vh;" (click)="sort()"></i>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let fundedTask of filteredTasks" (click)="onTaskClicked(fundedTask)">
+                <td>{{fundedTask.name}}</td>
+                <td>{{fundedTask.funding}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </cdk-virtual-scroll-viewport>
 
 
-  </span>
-  <span *ngIf="taskOfInterest!==undefined">
-    <button (click)="backToOverview()" type="button" class="btn ourBlueColor">
-      <i class="fa fa-step-backward" aria-hidden="true" style="padding-right: 1vw;"></i>
-      Back To Overview
-      <i class="fa fa-step-backward" aria-hidden="true" style="padding-left: 1vw;"></i>
-    </button>
+    </span>
+    <span *ngIf="taskOfInterest!==undefined">
+      <button (click)="backToOverview()" type="button" class="btn ourBlueColor">
+        <i class="fa fa-step-backward" aria-hidden="true" style="padding-right: 1vw;"></i>
+        Back To Overview
+        <i class="fa fa-step-backward" aria-hidden="true" style="padding-left: 1vw;"></i>
+      </button>
+
+      <app-task-card [task]="taskOfInterest"></app-task-card>
+
+      <span *ngIf="taskOfInterest.status===1 && !userWantsToApply">
+        <button (click)="applyForSolving()" type="button" class="btn ourRedColor">
+          <i class="fa fa-wrench" aria-hidden="true" style="padding-right: 1vw;"></i>
+          Apply For Solving This
+          <i class="fa fa-wrench" aria-hidden="true" style="padding-left: 1vw;"></i>
+        </button>
+      </span>
+
+      <span *ngIf="user.firstName==='' && userWantsToApply">
+        <input type="text" class="form-control" placeholder="enter company user id - e.g. d123" [(ngModel)]="user.id"
+          autofocus>
+
+        <span *ngIf="user.id.length>0">
+
+          <span>
+            <textarea [(ngModel)]="solutionApproach" style="width: 100%;" rows="4"
+              placeholder="Describe a rough plan. How are you going to solve this task? I will post this content as a comment on the issue automatically."></textarea>
+          </span>
+          <span *ngIf="!(solutionApproach==='')">
+            <button (click)="applyForSolvingAfterUserIdAdded()" type="button" class="btn ourRedColor">
+              <i class="fa fa-wrench" aria-hidden="true" style="padding-right: 1vw;"></i>
+              Apply Now
+              <i class="fa fa-wrench" aria-hidden="true" style="padding-left: 1vw;"></i>
+            </button>
+          </span>
+        </span>
+      </span>
+
+      <span *ngIf="!userWantsToApply">
+
+
+        <a href="{{taskOfInterest.link}}" target="__blank">
+          <button type="button" class="btn ourBlueColor">
+            <i class="fa fa-github" aria-hidden="true" style="padding-right: 1vw;"></i>
+            Check it on GitHub
+            <i class="fa fa-github" aria-hidden="true" style="padding-left: 1vw;"></i>
+          </button>
+        </a>
+      </span>
+
+    </span>
+
+  </div>
+  <div *ngIf="applicationCompleted">
+
+    <img src="../../assets/avatar-1.png" alt="" width="70%">
+    <h4 class="titleBeneathImage">
+      Applied Successfully
+    </h4>
 
     <app-task-card [task]="taskOfInterest"></app-task-card>
 
-    <span *ngIf="taskOfInterest.status===1">
-      <button (click)="applyForSolving()" type="button" class="btn ourRedColor">
-        <i class="fa fa-wrench" aria-hidden="true" style="padding-right: 1vw;"></i>
-        Apply For Solving This
-        <i class="fa fa-wrench" aria-hidden="true" style="padding-left: 1vw;"></i>
-      </button>
-    </span>
-  </span>
+  </div>
 </div>

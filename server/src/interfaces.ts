@@ -29,6 +29,11 @@ export enum ETaskType {
   'tbd...' = 2,
 }
 
+export interface IApplication {
+  profileLink: string
+  taskLink: string
+}
+
 export interface IEmail {
   sender: string,
   recipient: string,
