@@ -11,7 +11,6 @@ import { ProfileComponent, IUser } from './profile/profile.component'
 })
 export class AppComponent implements OnInit {
   public static deferredPrompt
-  public static url = 'https://gitcoin-enterprise.org'
   public mode = ''
   public fundedTasks: ITask[] = []
   public ledgerEntries: ILedgerEntry[] = []

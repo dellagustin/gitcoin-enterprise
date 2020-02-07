@@ -15,7 +15,7 @@ import { IFunding, ITaskAndFunding } from '../interfaces'
 export class FundComponent implements OnInit {
 
   public radioModel: any
-  public taskLink = 'https://github.com/cla-assistant/cla-assistant/issues/530'
+  public taskLink = 'https://github.com/gitcoin-enterprise/gitcoin-enterprise/issues/16'
   public user: IUser = ProfileComponent.currentUser
   public task: ITask = TaskHelper.getInitialTask()
   public currentRange = 0
