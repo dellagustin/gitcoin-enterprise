@@ -11,8 +11,7 @@ import { backendURL } from '../../configurations/configuration'
 })
 export class SolveComponent implements OnInit {
 
-  @Input() public fundedTasks: ITask[] = []
-
+  public fundedTasks: ITask[] = []
   public taskOfInterest: ITask
   public filteredTasks: ITask[] = []
   public searchTerm = ''

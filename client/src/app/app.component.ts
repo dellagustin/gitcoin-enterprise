@@ -22,8 +22,6 @@ export class AppComponent implements OnInit {
   public ngOnInit() {
     this.considerPWAInstallPrompt()
     this.getQueryParametersAndUser()
-    this.getFundedTasks()
-    this.getLedgerEntries()
   }
 
   private getQueryParametersAndUser() {
@@ -46,16 +44,6 @@ export class AppComponent implements OnInit {
       })
   }
 
-
-  private getFundedTasks() {
-    this.backendService.getFundedTasks()
-      .subscribe((result: ITask[]) => this.fundedTasks = result)
-  }
-
-  private getLedgerEntries() {
-    this.backendService.getLedgerEntries()
-      .subscribe((result: ILedgerEntry[]) => this.ledgerEntries = result)
-  }
 
   public fundTask() {
     this.mode = 'fund'
