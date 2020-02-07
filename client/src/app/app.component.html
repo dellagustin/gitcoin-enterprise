@@ -44,6 +44,10 @@
     <app-solve></app-solve>
   </div>
 
+  <div *ngIf="mode==='viewSpecificTask'">
+    <app-solve [taskOfInterest]="taskOfInterest"></app-solve>
+  </div>
+
   <div *ngIf="mode=='inviteFriends'">
     <app-invite-friend></app-invite-friend>
   </div>
@@ -54,10 +58,6 @@
 
   <div *ngIf="mode==='contact'">
     <app-contact></app-contact>
-  </div>
-
-  <div *ngIf="mode==='viewSpecificTask'">
-    <app-task-card [task]=taskOfInterest></app-task-card>
   </div>
 
 </div>

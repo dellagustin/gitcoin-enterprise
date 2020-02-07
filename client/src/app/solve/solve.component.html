@@ -39,9 +39,9 @@
     </span>
     <span *ngIf="taskOfInterest!==undefined">
       <button (click)="backToOverview()" type="button" class="btn ourBlueColor">
-        <i class="fa fa-step-backward" aria-hidden="true" style="padding-right: 1vw;"></i>
-        Back To Overview
-        <i class="fa fa-step-backward" aria-hidden="true" style="padding-left: 1vw;"></i>
+        <i class="fa fa-wpexplorer" aria-hidden="true" style="padding-right: 1vw;"></i>
+        Task Explorer
+        <i class="fa fa-wpexplorer" aria-hidden="true" style="padding-left: 1vw;"></i>
       </button>
 
       <app-task-card [task]="taskOfInterest"></app-task-card>
@@ -77,13 +77,7 @@
       <span *ngIf="!userWantsToApply">
 
 
-        <a href="{{taskOfInterest.link}}" target="__blank">
-          <button type="button" class="btn ourBlueColor">
-            <i class="fa fa-github" aria-hidden="true" style="padding-right: 1vw;"></i>
-            Check it on GitHub
-            <i class="fa fa-github" aria-hidden="true" style="padding-left: 1vw;"></i>
-          </button>
-        </a>
+        <app-check-it-on-github [taskOfInterest]="taskOfInterest"></app-check-it-on-github>
       </span>
 
     </span>
@@ -98,13 +92,7 @@
 
     <app-task-card [task]="taskOfInterest"></app-task-card>
 
-    <a href="{{taskOfInterest.link}}" target="__blank">
-      <button type="button" class="btn ourBlueColor">
-        <i class="fa fa-github" aria-hidden="true" style="padding-right: 1vw;"></i>
-        Check it on GitHub
-        <i class="fa fa-github" aria-hidden="true" style="padding-left: 1vw;"></i>
-      </button>
-    </a>
+    <app-check-it-on-github [taskOfInterest]="taskOfInterest"></app-check-it-on-github>
 
   </div>
 </div>

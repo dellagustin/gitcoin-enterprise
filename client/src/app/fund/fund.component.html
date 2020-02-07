@@ -80,13 +80,7 @@
 
     <app-task-card [task]="task"></app-task-card>
 
-    <a href="{{task.link}}" target="__blank">
-      <button type="button" class="btn ourBlueColor">
-        <i class="fa fa-github" aria-hidden="true" style="padding-right: 1vw;"></i>
-        Check it on GitHub
-        <i class="fa fa-github" aria-hidden="true" style="padding-left: 1vw;"></i>
-      </button>
-    </a>
+    <app-check-it-on-github [taskOfInterest]="task"></app-check-it-on-github>
 
   </span>
 
