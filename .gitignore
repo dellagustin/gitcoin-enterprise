@@ -5,3 +5,4 @@ client/docs
 .env.json
 topsecret
 errors.json
+operational-data

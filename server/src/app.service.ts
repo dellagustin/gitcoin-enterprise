@@ -69,7 +69,7 @@ export class AppService {
 
   private initializeSystem() {
     fs.write(this.fundedTasksFileId, '[]')
-    fs.write(this.ledgerConnector.saveLedgerEntries, '[]')
+    this.ledgerConnector.saveLedgerEntries([])
     fs.write(this.usersFileId, JSON.stringify(this.getDemoUsers()))
   }
 
