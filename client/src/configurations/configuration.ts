@@ -1,1 +1,1 @@
-export const backendURL = 'https://gitcoin-enterprise.org'
+export const backendURL = 'http://localhost:3000'

@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'
 import { INavbarData } from './navbar.interfaces'
+import { backendURL } from '../../configurations/configuration'
 
 
 @Component({
@@ -11,8 +12,7 @@ export class NavbarComponent implements OnInit {
   public static firstFancyCity = ''
   public static forFreePartners = []
 
-  constructor() { }
-
+  public constructor() { }
 
   @Input() navBarData: INavbarData
   @Output() clickMenuEntry = new EventEmitter<string>()
@@ -45,6 +45,6 @@ export class NavbarComponent implements OnInit {
   }
 
   public clickTitle() {
-    window.location.assign('https://gitcoin-enterprise.org')
+    window.location.assign(backendURL)
   }
 }

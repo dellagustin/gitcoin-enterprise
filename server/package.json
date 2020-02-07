@@ -11,7 +11,7 @@
     "setup": "./setup.sh && ./initializeOperationalDataIfNeeded.sh && npm run buildAndCopyAssetsFromClientWhishShallBeServedOnBaseRoot",
     "start": "npm run setup && ts-node -r tsconfig-paths/register src/gitcoin-enterprise-server.ts",
     "start:dev": "npm run setup && nodemon",
-    "buildAndCopyAssetsFromClientWhishShallBeServedOnBaseRoot": "cd ../client && npm run build-prod && cd ../server && cp -r ../client/docs ./",
+    "buildAndCopyAssetsFromClientWhishShallBeServedOnBaseRoot": "cd ../client && npm run build && cd ../server && cp -r ../client/docs ./",
     "start:debug": "nodemon --config nodemon-debug.json",
     "prestart:prod": "rimraf dist && npm run build",
     "start:prod": "node dist/main.js",

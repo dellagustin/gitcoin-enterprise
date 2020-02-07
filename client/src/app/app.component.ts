@@ -17,28 +17,43 @@ export class AppComponent implements OnInit {
   public ledgerEntries: ILedgerEntry[] = []
   public navBarData: INavbarData = this.getNavBarData()
   public queryParameters: any
+  public taskOfInterest: ITask
 
   public constructor(private readonly backendService: BackendService, private route: ActivatedRoute) { }
   public ngOnInit() {
     this.considerPWAInstallPrompt()
-    this.getQueryParametersAndUser()
+    this.getQueryParameterBasedData()
   }
 
-  private getQueryParametersAndUser() {
+  private getQueryParameterBasedData() {
     this.route
       .queryParamMap
       .subscribe((result: any) => {
-        if (result.params !== undefined && result.params.id !== undefined) {
+        if (result.params !== undefined) {
           this.queryParameters = result.params
           if (this.queryParameters !== undefined) {
-            this.backendService.getUser(this.queryParameters.id)
-              .subscribe((user: IUser) => {
-                if (user === null || user === undefined) {
-                  alert('Please enter a valid user ID')
-                } else {
-                  ProfileComponent.currentUser = user
-                }
-              })
+            if (this.queryParameters.id !== undefined) {
+              this.backendService.getUser(this.queryParameters.id)
+                .subscribe((user: IUser) => {
+                  if (user === null || user === undefined) {
+                    alert('Please enter a valid user ID')
+                  } else {
+                    ProfileComponent.currentUser = user
+                  }
+                })
+            }
+            if (this.queryParameters.taskId !== undefined) {
+              this.backendService.getFundedTasks()
+                .subscribe((fundedTasks: ITask[]) => {
+                  this.fundedTasks = fundedTasks
+                  this.taskOfInterest = this.fundedTasks.filter((entry: ITask) => entry.id === this.queryParameters.taskId)[0]
+                  if (this.taskOfInterest === undefined) {
+                    alert(`I could not find a task with the ID: ${this.queryParameters.taskId}`)
+                  } else {
+                    this.mode = 'viewSpecificTask'
+                  }
+                })
+            }
           }
         }
       })
@@ -103,12 +118,12 @@ export class AppComponent implements OnInit {
         },
         {
           isActive: false,
-          text: 'Fund an Issue',
+          text: 'Fund a Task',
           href: 'fund',
         },
         {
           isActive: false,
-          text: 'Solve an Issue',
+          text: 'Solve a Task',
           href: 'solve',
         },
         {

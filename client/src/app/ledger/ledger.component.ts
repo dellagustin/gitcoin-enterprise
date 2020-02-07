@@ -3,6 +3,7 @@ import { ILedgerEntry } from './ledger.interface'
 import { BackendService } from '../backend.service'
 import { DemoDataProviderService } from '../demo-data-provider.service'
 import * as moment from 'moment'
+import { backendURL } from '../../configurations/configuration'
 
 @Component({
   selector: 'app-ledger',
@@ -47,7 +48,7 @@ export class LedgerComponent implements OnInit {
     const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(line)
     const downloadAnchorNode = document.createElement('a')
     downloadAnchorNode.setAttribute('href', dataStr)
-    downloadAnchorNode.setAttribute('download', `${moment().format('YYYY-MM-DD')} gitcoin-enterprise.org` + '.csv')
+    downloadAnchorNode.setAttribute('download', `${moment().format('YYYY-MM-DD')} ${backendURL.split('https://')[1]}` + '.csv')
     document.body.appendChild(downloadAnchorNode) // required for firefox
     downloadAnchorNode.click()
     downloadAnchorNode.remove()
@@ -57,7 +58,7 @@ export class LedgerComponent implements OnInit {
     const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(this.ledgerEntries))
     const downloadAnchorNode = document.createElement('a')
     downloadAnchorNode.setAttribute('href', dataStr)
-    downloadAnchorNode.setAttribute('download', `${moment().format('YYYY-MM-DD')} gitcoin-enterprise.org` + '.json')
+    downloadAnchorNode.setAttribute('download', `${moment().format('YYYY-MM-DD')} ${backendURL.split('https://')[1]}` + '.json')
     document.body.appendChild(downloadAnchorNode) // required for firefox
     downloadAnchorNode.click()
     downloadAnchorNode.remove()

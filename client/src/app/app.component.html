@@ -56,4 +56,8 @@
     <app-contact></app-contact>
   </div>
 
+  <div *ngIf="mode==='viewSpecificTask'">
+    <app-task-card [task]=taskOfInterest></app-task-card>
+  </div>
+
 </div>
