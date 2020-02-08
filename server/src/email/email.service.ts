@@ -23,15 +23,14 @@ export class EmailService {
         const nodemailer = require('nodemailer')
 
         const transporter = nodemailer.createTransport({
-                    host: 'smtp.goneo.de',
-                    port: 587,
-                    secure: false, // true for 465, false for other ports like 587
-                    auth: {
-                        user: config.eMail,
-                        pass: config.pw,
-                    },
-                },
-            )
+            host: config.smtpHost,
+            port: 587,
+            secure: false, // true for 465, false for other ports like 587
+            auth: {
+                user: config.eMail,
+                pass: config.pw,
+            },
+        })
 
         const mailOptions = {
             from: config.eMail,
