@@ -44,6 +44,10 @@
     <app-solve></app-solve>
   </div>
 
+  <div *ngIf="mode==='viewSpecificTask'">
+    <app-solve [taskOfInterest]="taskOfInterest"></app-solve>
+  </div>
+
   <div *ngIf="mode=='inviteFriends'">
     <app-invite-friend></app-invite-friend>
   </div>

@@ -9,8 +9,11 @@ exports.config = {
   output: "./output",
   helpers: {
     Puppeteer: {
-      url: "https://gitcoin-enterprise.org",
-      show: false
+      url: "http://gitcoin-enterprise.org",
+      show: false,
+      chrome: {
+        args: ["--no-sandbox"]
+      },
     }
   },
   include: {

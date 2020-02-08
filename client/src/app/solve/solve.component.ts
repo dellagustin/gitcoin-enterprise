@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, Input } from '@angular/core'
 import { BackendService, ITask } from '../backend.service'
 import { ProfileComponent, IUser } from '../profile/profile.component'
 import { backendURL } from '../../configurations/configuration'
@@ -12,8 +12,8 @@ import { IApplication } from '../interfaces'
 })
 export class SolveComponent implements OnInit {
 
+  @Input() public taskOfInterest: ITask
   public fundedTasks: ITask[] = []
-  public taskOfInterest: ITask
   public filteredTasks: ITask[] = []
   public searchTerm = ''
   public solutionApproach = ''

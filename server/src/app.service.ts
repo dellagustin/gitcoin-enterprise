@@ -17,7 +17,7 @@ const octokit = new Octokit({
 })
 
 @Injectable()
-export class AppServic {
+export class AppService {
 
   private fundedTasksFileId = path.join(__dirname, '../operational-data/funded-tasks.json')
   private usersFileId = path.join(__dirname, '../operational-data/users.json')
@@ -91,7 +91,7 @@ export class AppServic {
       status: ETaskStatus.created,
       funderRatedWith: 5,
       solutionProviderRatedWith: 5,
-      link: 'https://github.com/cla-assistant/cla-assistant/issues/530',
+      link: 'https://github.com/gitcoin-enterprise/gitcoin-enterprise/issues/16',
       dueDate: '2020-01-08',
     }
   }

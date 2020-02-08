@@ -3,7 +3,7 @@
   <h4 class="titleBeneathImage">
     Profile
   </h4>
-  <input type="text" class="form-control" placeholder="enter company user id - e.g. d123" [(ngModel)]="user.id"
+  <input id="userId" type="text" class="form-control" placeholder="enter company user id - e.g. d123" [(ngModel)]="user.id"
     autofocus>
 
   <span *ngIf="user.id.length>0">

@@ -1,7 +1,7 @@
 Feature("Solve a Task");
 
-Scenario("test something", async I => {
+Scenario("test solving a task", async I => {
   I.amOnPage("/");
-  I.click("Solve a Task");
+  // I.click("Solve a Task");
   // I.see("Task Explorer");
 });

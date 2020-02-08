@@ -29,6 +29,12 @@ export enum ETaskType {
   'tbd...' = 2,
 }
 
+export interface IInvitation {
+  from: string
+  to: string
+  date: string
+}
+
 export interface IApplication {
   profileLink: string
   taskLink: string

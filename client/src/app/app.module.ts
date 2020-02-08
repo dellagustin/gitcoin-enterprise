@@ -20,6 +20,7 @@ import { NavbarComponent } from './navbar/navbar.component'
 import { ScrollingModule } from '@angular/cdk/scrolling'
 import { EmailComponent } from './email/email.component'
 import { RouterModule } from '@angular/router'
+import { CheckItOnGithubComponent } from './check-it-on-github/check-it-on-github.component'
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { RouterModule } from '@angular/router'
     TaskCardComponent,
     UserCardComponent,
     NavbarComponent,
-    EmailComponent
+    EmailComponent,
+    CheckItOnGithubComponent
 
   ],
   imports: [
