@@ -5,7 +5,7 @@ const { setHeadlessWhen } = require("@codeceptjs/configure");
 setHeadlessWhen(process.env.HEADLESS);
 
 exports.config = {
-  tests: "./test-files/*_test.js",
+  tests: "./test-files/*-test.js",
   output: "./output",
   helpers: {
     Puppeteer: {
@@ -23,9 +23,6 @@ exports.config = {
   mocha: {},
   name: "acceptance-tests",
   plugins: {
-    retryFailedStep: {
-      enabled: true
-    },
     screenshotOnFail: {
       enabled: true
     }

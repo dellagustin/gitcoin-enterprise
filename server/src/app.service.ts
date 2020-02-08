@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common'
-const { Octokit } = require('@octokit/rest',
-)
+const { Octokit } = require('@octokit/rest')
 
 import * as fs from 'fs-sync'
 import * as path from 'path'

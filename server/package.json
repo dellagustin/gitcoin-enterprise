@@ -2,8 +2,8 @@
   "name": "server",
   "version": "0.0.1",
   "description": "",
-  "author": "",
-  "license": "MIT",
+  "author": "Michael Spengler",
+  "license": "GPL-3.0-or-later",
   "scripts": {
     "build": "rm -rf dist && tsc -p tsconfig.build.json",
     "compress": "npx gzipper --verbose ./docs",

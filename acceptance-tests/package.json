@@ -5,16 +5,16 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "copy-configuration-prod": "cp codecept.conf-production.js codecept.conf.js && ./setup.sh demo",
-    "copy-configuration-demo": "cp codecept.conf-demo.js codecept.conf.js && ./setup.sh demo",
-    "copy-configuration-dev": "cp codecept.conf-regular.js codecept.conf.js && ./setup.sh && npx codeceptjs run --steps",
+    "copy-configuration-prod": "cp codecept.conf-production.js codecept.conf.js demo",
+    "copy-configuration-demo": "cp codecept.conf-demo.js codecept.conf.js && npx codeceptjs run --steps",
+    "copy-configuration-dev": "cp codecept.conf-dev.js codecept.conf.js && npx codeceptjs run --steps",
+    "acceptance-tests": "npm run copy-configuration-dev && npx codeceptjs run --steps",
     "acceptance-tests-demo": "npm run copy-configuration-demo && npx codeceptjs run --steps",
-    "acceptance-tests-prod": "npm run copy-configuration-prod && npx codeceptjs run --steps",
-    "acceptance-tests": "npm run copy-configuration-dev && npx codeceptjs run --steps"
+    "acceptance-tests-prod": "npm run copy-configuration-prod && npx codeceptjs run --steps"
   },
   "keywords": [],
-  "author": "",
-  "license": "MIT",
+  "author": "Michael Spengler",
+  "license": "GPL-3.0-or-later",
   "dependencies": {
     "codeceptjs": "^2.4.3",
     "fs-sync": "^1.0.6",
