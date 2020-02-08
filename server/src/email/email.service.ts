@@ -73,8 +73,7 @@ export class EmailService {
                 user: config.eMail,
                 pass: config.pw,
             },
-        },
-        )
+        })
 
         const mailOptions = {
             from: config.eMail,

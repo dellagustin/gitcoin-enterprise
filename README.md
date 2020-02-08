@@ -21,6 +21,7 @@ To support the emergence of fluid Inner Source- & Peer To Peer collaboration sty
 GitCoin Enterprise focuses on optimizing **Inner Source & Peer To Peer collaboration** within restricted and disregulated systems suffering from income tax and other penalties for creating value.
 
 ## Spinning it up locally using a docker container
+
 tbd
 
 ## Status
@@ -38,3 +39,7 @@ visit http://localhost:3000
 cd client
 ng serve
 visit http://localhost:4200
+
+## Personal Learnings along the way
+
+see LEARNINGS.md file
