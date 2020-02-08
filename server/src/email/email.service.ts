@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 // import nodemailer = require('nodemailer')
-import { IEmail, IInvitation } from '../interfaces'
+import { IEmail, IInvitedFriend, IInvitationListFromUser } from '../interfaces'
 import { LoggerService, ELogLevel } from '../logger/logger.service'
 import { config } from '../app.module'
 import * as fs from 'fs-sync'
@@ -10,28 +10,71 @@ import moment = require('moment')
 @Injectable()
 export class EmailService {
 
-    private fileIdInvitations = path.join(__dirname, '../../operational-data/invitations.json')
+    private fileIdInvitationLists = path.join(__dirname, '../../operational-data/invitation-list.json')
+    // private fileIdLastInvitation = path.join(__dirname, '../../operational-data/last-invitations.json')
 
     public constructor(private readonly logger: LoggerService) { }
 
     public sendEMail(eMail: IEmail): any {
-        if (!this.isInvitationAllowed(eMail.sender)) {
+        const invitationLists: IInvitationListFromUser[] = fs.readJSON(this.fileIdInvitationLists)
+
+        if (this.isInvitationAllowed(eMail.sender, invitationLists)) {
+            if (config.port === '443') {
+                this.sendEMailViaNodeMailer(eMail)
+            }
+            this.addInvitationToFile(eMail, invitationLists)
+            return {
+                success: true,
+            }
+        } else {
             return {
                 success: false,
             }
         }
+    }
+
+    private addInvitationToFile(eMail: IEmail, invitationLists: IInvitationListFromUser[]) {
+        let invitationListFromUser: IInvitationListFromUser =
+            invitationLists.filter((entry: IInvitationListFromUser) => entry.from === eMail.sender)[0]
+
+        if (invitationListFromUser === undefined) {
+            invitationListFromUser = {
+                from: eMail.sender,
+                invitedFriends: [],
+            }
+        }
+
+        const invitedFriendsFromUser: IInvitedFriend[] = invitationListFromUser.invitedFriends
+
+        const invitedFriend: IInvitedFriend = {
+            eMail: eMail.recipient,
+            date: moment().toString(),
+        }
+
+        invitedFriendsFromUser.push(invitedFriend)
+        invitationLists.splice(invitationLists.indexOf(invitationListFromUser), 1)
+
+        invitationListFromUser.invitedFriends = invitedFriendsFromUser
+
+        invitationLists.push(invitationListFromUser)
+
+        fs.write(this.fileIdInvitationLists, JSON.stringify(invitationLists))
+
+    }
+
+    private sendEMailViaNodeMailer(eMail: IEmail) {
         const nodemailer = require('nodemailer')
 
         const transporter = nodemailer.createTransport({
-                    host: 'smtp.goneo.de',
-                    port: 587,
-                    secure: false, // true for 465, false for other ports like 587
-                    auth: {
-                        user: config.eMail,
-                        pass: config.pw,
-                    },
-                },
-            )
+            host: config.smtpHost,
+            port: 587,
+            secure: false, // true for 465, false for other ports like 587
+            auth: {
+                user: config.eMail,
+                pass: config.pw,
+            },
+        },
+        )
 
         const mailOptions = {
             from: config.eMail,
@@ -53,19 +96,29 @@ export class EmailService {
         })
     }
 
-    private isInvitationAllowed(userID: string) {
-        const invitationsFromThisUserToday = fs.readJSON(this.fileIdInvitations).filter((invitation: IInvitation) => {
-            if (invitation.from === userID) {
-                return true
-            } else {
-                return false
-            }
-        })
+    private isInvitationAllowed(userID: string, invitationLists: IInvitationListFromUser[]): boolean {
+        // const lastInvitationOfUser = fs.readJSON(this.fileIdLastInvitation).filter((lastInvitation: IInvitation) => )
+        const invitationListFromThisUser: IInvitationListFromUser =
+            invitationLists.filter((invitation: IInvitationListFromUser) => invitation.from === userID)[0]
 
-        if (invitationsFromThisUserToday.length > config.invitationsPerUserPerDay) {
-            return false // wait some more days to do it right :)
-        } else {
+        const invitedFriends: IInvitedFriend[] = (invitationListFromThisUser === undefined) ? [] : invitationListFromThisUser.invitedFriends
+        const lastInvitation: IInvitedFriend = invitedFriends[invitedFriends.length - 1]
+
+        if (lastInvitation === undefined) {
             return true
+        } else {
+            const minutes: moment.unitOfTime.DurationConstructor = 'seconds'
+
+            return this.isItLongerAgoThan(3, minutes, lastInvitation.date)
+        }
+
+    }
+
+    private isItLongerAgoThan(value: number, unit: moment.unitOfTime.DurationConstructor, previousMoment: any) {
+        if (moment().subtract(value, unit).isAfter(previousMoment)) {
+            return true
+        } else {
+            return false
         }
     }
 

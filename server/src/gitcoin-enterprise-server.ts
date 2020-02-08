@@ -36,24 +36,27 @@ async function bootstrap() {
   logger.log(ELogLevel.Info, `app is listening on port: ${config.port}`)
 
   if (config.port === '443') {
-    const httpForwarderAPP = express()
-
-    httpForwarderAPP.get('*', (req, res) => {
-      logger.log(ELogLevel.Info, `forwarding an http request to https`)
-      logger.log(ELogLevel.Info, req.headers.host)
-      let unsafeHost
-      if (req.headers.host.indexOf('http://') === -1) {
-        unsafeHost = `http://${req.headers.host}`
-      } else {
-        unsafeHost = req.headers.host
-      }
-      const saveHost = unsafeHost.replace('http://', 'https://')
-      logger.log(ELogLevel.Info, saveHost)
-      res.redirect(saveHost)
-    })
-
-    httpForwarderAPP.listen(80)
+    ensureRedirectingFromUnsafeHostToSaveHost()
   }
 
 }
 bootstrap()
+
+function ensureRedirectingFromUnsafeHostToSaveHost() {
+  const httpForwarderAPPListeningOnUnsafePort = express()
+
+  httpForwarderAPPListeningOnUnsafePort.get('*', (req, res) => {
+    let unsafeHost = req.headers.host
+    if (unsafeHost.indexOf('http://') === -1) {
+      unsafeHost = `http://${unsafeHost}`
+    } else {
+      unsafeHost = req.headers.host
+    }
+
+    const saveHost = req.headers.host.replace('http://', 'https://')
+
+    res.send(`This page is only available via secure https: ${saveHost}`)
+  })
+
+  httpForwarderAPPListeningOnUnsafePort.listen(80)
+}

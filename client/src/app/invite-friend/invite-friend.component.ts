@@ -42,7 +42,7 @@ export class InviteFriendComponent implements OnInit {
       this.backendService.sendEMail(this.eMail, ProfileComponent.currentUser.id)
         .subscribe((result: any) => {
           if (result.success === false) {
-            alert('Sending Invitations is not yet active.')
+            alert('I did not send this E-Mail. Perhaps there had already been an invitation related to this E-Mail before.')
           } else {
             this.sent = true
           }

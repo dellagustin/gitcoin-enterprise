@@ -29,9 +29,13 @@ export enum ETaskType {
   'tbd...' = 2,
 }
 
-export interface IInvitation {
+export interface IInvitationListFromUser {
   from: string
-  to: string
+  invitedFriends: IInvitedFriend[]
+}
+
+export interface IInvitedFriend {
+  eMail: string,
   date: string
 }
 
