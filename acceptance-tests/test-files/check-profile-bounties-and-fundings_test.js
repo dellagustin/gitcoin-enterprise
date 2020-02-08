@@ -1,17 +1,13 @@
-const fs = require("fs-sync");
-const path = require("path");
-const config = fs.readJSON(path.join(__dirname, "../.env.json"));
-
 Feature("Check Profile, Bounties and Fundings");
 
 Scenario("test profile, bounties and fundings", async (I) => {
   I.amOnPage("/");
-  pause(I)
+  await I.wait(4)
   I.click(locate("#burgerMenu"));
-  pause(I)
+  await I.wait(4)
 
   I.click("Profile");
-  pause(I)
+  await I.wait(4)
   
   // I.fillField(locate({id: 'userId'}), 'd123')
   // pause(I)
@@ -23,8 +19,3 @@ Scenario("test profile, bounties and fundings", async (I) => {
 
 });
 
-async function pause(I) {
-  (config.mode === "demo") ?
-  await I.wait(4) : 
-  await I.wait(3)
-}
