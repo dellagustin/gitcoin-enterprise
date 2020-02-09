@@ -3,8 +3,8 @@
   <h4 class="titleBeneathImage">
     Profile
   </h4>
-  <input id="userId" type="text" class="form-control" placeholder="enter company user id - e.g. d123" [(ngModel)]="user.id"
-    autofocus>
+  <input id="userId" type="text" class="form-control" placeholder="enter your id or click your invitation link"
+    [(ngModel)]="user.id" autofocus>
 
   <span *ngIf="user.id.length>0">
     <button type="button" class="btn ourBlueColor" (click)="onUserIdEntered()">

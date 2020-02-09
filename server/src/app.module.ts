@@ -6,6 +6,7 @@ import { EmailService } from './email/email.service'
 import { LedgerConnector } from './ledger-connector/ledger-connector-file-system.service'
 import { EthereumLedgerConnector } from './ledger-connector/ledger-connector-ethereum'
 import { GithubIntegrationService } from './github-integration/github-integration.service'
+import { SupportNotifierService } from './support-notifier/support-notifier.service'
 import * as path from 'path'
 import * as fs from 'fs-sync'
 
@@ -27,6 +28,6 @@ const ledgerConnectorProvider = {
 @Module({
   imports: [],
   controllers: [AppController],
-  providers: [AppService, LoggerService, EmailService, ledgerConnectorProvider, GithubIntegrationService],
+  providers: [AppService, LoggerService, EmailService, ledgerConnectorProvider, GithubIntegrationService, SupportNotifierService],
 })
 export class AppModule { }

@@ -15,23 +15,23 @@
 
       </div>
 
-        <div class="gce-table">
-          <table class="table table-striped">
-            <thead class="thead-dark">
-              <tr>
-                <th style="width:60%">Title</th>
-                <th>Funding <i class="fa fa-sort" style="padding-left: 1vh;" (click)="sort()"></i>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let fundedTask of filteredTasks" (click)="onTaskClicked(fundedTask)">
-                <td id="taskId-{{fundedTask.id}}">{{fundedTask.name}}</td>
-                <td>{{fundedTask.funding}}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+      <div class="gce-table">
+        <table class="table table-striped">
+          <thead class="thead-dark">
+            <tr>
+              <th style="width:60%">Title</th>
+              <th>Funding <i class="fa fa-sort" style="padding-left: 1vh;" (click)="sort()"></i>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let fundedTask of filteredTasks" (click)="onTaskClicked(fundedTask)">
+              <td id="taskId-{{fundedTask.id}}">{{fundedTask.name}}</td>
+              <td>{{fundedTask.funding}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
 
     </span>
@@ -53,8 +53,8 @@
       </span>
 
       <span *ngIf="user.firstName==='' && userWantsToApply">
-        <input type="text" class="form-control" placeholder="enter company user id - e.g. d123" [(ngModel)]="user.id"
-          autofocus>
+        <input type="text" class="form-control" placeholder="enter your id or click your invitation link"
+          [(ngModel)]="user.id" autofocus>
 
         <span *ngIf="user.id.length>0">
 

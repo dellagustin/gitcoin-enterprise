@@ -5,6 +5,7 @@ import * as uuidv1 from 'uuid/v1'
 import { BackendService } from '../backend.service'
 import { ProfileComponent } from '../profile/profile.component'
 import { backendURL } from '../../configurations/configuration'
+import { IUser } from '../interfaces'
 
 @Component({
   selector: 'app-invite-friend',
@@ -21,6 +22,7 @@ export class InviteFriendComponent implements OnInit {
   public sent = false
   public permissionGranted = false
   public eMail: IEmail
+  public user: IUser = ProfileComponent.currentUser
   public personalAuthenticationToken
 
   public constructor(private readonly backendService: BackendService) { }
@@ -46,5 +48,19 @@ export class InviteFriendComponent implements OnInit {
           this.sent = true
         }
       })
+  }
+
+  public onUserIdEntered() {
+
+    this.backendService.getUser(this.user.id)
+      .subscribe((user: IUser) => {
+        if (user === undefined) {
+          alert('Please enter a valid user ID')
+        } else {
+          this.user = user
+          ProfileComponent.currentUser = this.user
+        }
+      }, error => alert(error.message))
+
   }
 }

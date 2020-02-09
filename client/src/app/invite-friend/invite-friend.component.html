@@ -5,32 +5,49 @@
     Invite Friends
   </h4>
 
+  {{user.firstName}}
+  <span *ngIf="user.firstName===''">
+    <input id="userId" type="text" class="form-control" placeholder="enter your id or click your invitation link"
+      [(ngModel)]="user.id" autofocus>
 
-  <span style="margin-top: 100px; margin-bottom: 10vh">
-    <input id="eMailAddress" type="email" class="form-control" placeholder="Please enter your friend's E-Mail Address"
-      [(ngModel)]="eMailAddress" autofocus>
+    <span *ngIf="user.id.length>0">
+      <button id="next" type="button" class="btn ourBlueColor" (click)="onUserIdEntered()">
+        <i class="fa fa-step-forward" aria-hidden="true" style="padding-right: 3vw;"></i>
+        Next
+        <i class="fa fa-step-forward" aria-hidden="true" style="padding-left: 3vw;"></i>
+      </button>
+    </span>
   </span>
 
-  <span *ngIf="eMailAddress.length>0" style="margin-top: 100px;">
-    <input id="confirmationCheckbox" type="checkbox" [(ngModel)]="permissionGranted"> I hereby
-    confirm my friend wants to be invited by E-Mail
-  </span>
+  <span *ngIf="user.firstName!==''">
 
-  <span *ngIf="permissionGranted">
+    <span style="margin-top: 100px; margin-bottom: 10vh">
+      <input id="eMailAddress" type="email" class="form-control" placeholder="Please enter your friend's E-Mail Address"
+        [(ngModel)]="eMailAddress" autofocus>
+    </span>
 
-    <div class="adPad">
+    <span *ngIf="eMailAddress.length>0" style="margin-top: 100px;">
+      <input id="confirmationCheckbox" type="checkbox" [(ngModel)]="permissionGranted"> I hereby
+      confirm my friend wants to be invited by E-Mail
+    </span>
 
-      I will send the following e-mail to {{eMailAddress}}:
+    <span *ngIf="permissionGranted">
 
-      <app-email [eMail]=eMail></app-email>
+      <div class="adPad">
 
-    </div>
+        I will send the following e-mail to {{eMailAddress}}:
 
-    <button id="invite" (click)="send()" type="button" class="btn ourBlueColor">
-      <i class="fa fa-paper-plane" aria-hidden="true" style="padding-right: 1vw;"></i>
-      Invite
-      <i class="fa fa-paper-plane" aria-hidden="true" style="padding-left: 1vw;"></i>
-    </button>
+        <app-email [eMail]=eMail></app-email>
+
+      </div>
+
+      <button id="invite" (click)="send()" type="button" class="btn ourBlueColor">
+        <i class="fa fa-paper-plane" aria-hidden="true" style="padding-right: 1vw;"></i>
+        Invite
+        <i class="fa fa-paper-plane" aria-hidden="true" style="padding-left: 1vw;"></i>
+      </button>
+    </span>
+
   </span>
 </div>
 

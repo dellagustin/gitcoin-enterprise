@@ -1,7 +1,6 @@
 const fs = require("fs-sync");
 const path = require("path");
 
-console.log("hhhhhhhaaaaaaaaaaaalllllooooo");
 const fileIdFundedTasks = path.join(
   path.resolve(),
   "../server/operational-data/funded-tasks.json"

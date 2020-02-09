@@ -1,11 +1,13 @@
 import { Injectable } from '@nestjs/common'
 // import nodemailer = require('nodemailer')
-import { IEmail, IInvitedFriend, IInvitationListFromUser } from '../interfaces'
-import { LoggerService, ELogLevel } from '../logger/logger.service'
+import { IEmail, IInvitedFriend, IInvitationListFromUser, IUser } from '../interfaces'
+import { LoggerService } from '../logger/logger.service'
 import { config } from '../app.module'
+import { Helper } from '../helper'
 import * as fs from 'fs-sync'
 import * as path from 'path'
 import moment = require('moment')
+import { ELogLevel } from '../logger/logger-interface'
 
 @Injectable()
 export class EmailService {
@@ -13,10 +15,16 @@ export class EmailService {
     private fileIdInvitationLists = path.join(__dirname, '../../operational-data/invitation-lists.json')
     // private fileIdLastInvitation = path.join(__dirname, '../../operational-data/last-invitations.json')
 
-    public constructor(private readonly logger: LoggerService) { }
+    public constructor(private readonly lg: LoggerService) { }
 
     public sendEMail(eMail: IEmail): any {
         const invitationLists: IInvitationListFromUser[] = fs.readJSON(this.fileIdInvitationLists)
+
+        if (!this.isUserAllowedToTriggerEMails(eMail.sender)) {
+            return {
+                success: false,
+            }
+        }
 
         if (this.isInvitationAllowed(eMail.sender, invitationLists)) {
             if (config.port === '443') {
@@ -66,7 +74,7 @@ export class EmailService {
 
     }
 
-    private sendEMailViaNodeMailer(eMail: IEmail) {
+    private async sendEMailViaNodeMailer(eMail: IEmail): Promise<void> {
         const nodemailer = require('nodemailer')
 
         const transporter = nodemailer.createTransport({
@@ -87,11 +95,11 @@ export class EmailService {
             html: this.getHTMLEMail(eMail.sender, eMail.content),
         }
 
-        transporter.sendMail(mailOptions, (error, info) => {
+        transporter.sendMail(mailOptions, async (error, info) => {
             if (error) {
                 throw new Error(error)
             }
-            this.logger.log(ELogLevel.Warning, `Message sent: ${info.response}`)
+            await this.lg.log(ELogLevel.Warning, `Message sent: ${info.response}`)
 
             return {
                 success: true,
@@ -112,17 +120,9 @@ export class EmailService {
         } else {
             const minutes: moment.unitOfTime.DurationConstructor = 'minutes'
 
-            return this.isItLongerAgoThan(60, minutes, lastInvitation.date)
+            return Helper.isItLongerAgoThan(60, minutes, lastInvitation.date)
         }
 
-    }
-
-    private isItLongerAgoThan(value: number, unit: moment.unitOfTime.DurationConstructor, previousMoment: any) {
-        if (moment().subtract(value, unit).isAfter(previousMoment)) {
-            return true
-        } else {
-            return false
-        }
     }
 
     private getHTMLEMail(sender: string, content: string): string {
@@ -134,4 +134,21 @@ export class EmailService {
             .replace(/accessToken/g, content.split(`${config.backendURL}?id=`)[1].split('"')[0])
     }
 
+    private async isUserAllowedToTriggerEMails(senderId: string): Promise<boolean> {
+        const fileId = path.join(__dirname, '../../operational-data/template-users.json')
+
+        const users: IUser[] = fs.readJSON(fileId)
+
+        if (users.length === 0) {
+            throw new Error('No Users - No E-Mail :)')
+        }
+
+        const demoUserWithThisId = users.filter((user: IUser) => user.id === senderId)[0]
+        if (demoUserWithThisId === undefined) {
+            return true
+        } else {
+            await this.lg.log(ELogLevel.Info, 'Demo users shall not trigger too many E-Mails - therefore skipping the post comment feature :)')
+            return false
+        }
+    }
 }

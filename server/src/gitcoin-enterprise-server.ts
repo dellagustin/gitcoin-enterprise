@@ -4,13 +4,15 @@ import * as cors from 'cors'
 import * as path from 'path'
 import * as fs from 'fs-sync'
 import * as express from 'express'
-import { LoggerService, ELogLevel } from './logger/logger.service'
+import { LoggerService } from './logger/logger.service'
+import { SupportNotifierService } from './support-notifier/support-notifier.service'
+import { ELogLevel } from './logger/logger-interface'
 const compression = require('compression')
 
 export const pathToStaticAssets = path.join(__dirname, '../docs')
 
 async function bootstrap() {
-  const logger = new LoggerService()
+  const logger = new LoggerService(new SupportNotifierService())
 
   let app
 

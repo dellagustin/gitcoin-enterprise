@@ -2,12 +2,12 @@ import { Injectable } from '@nestjs/common'
 
 import * as fs from 'fs-sync'
 import * as path from 'path'
-import { IssueInfo, ITask, ETaskStatus, ETaskType, IUser, IFunding, ITaskAndFunding } from './interfaces'
-import { LoggerService, ELogLevel } from './logger/logger.service'
-import { ILedgerEntry } from './ledger-connector.interface'
+import { ITask, ETaskStatus, ETaskType, IUser, IFunding, ITaskAndFunding } from './interfaces'
+import { LoggerService } from './logger/logger.service'
 import { LedgerConnector } from './ledger-connector/ledger-connector-file-system.service'
-import { EmailService } from './email/email.service'
 import { GithubIntegrationService } from './github-integration/github-integration.service'
+import { ILedgerEntry } from './ledger-connector/ledger-connector.interface'
+import { ELogLevel } from './logger/logger-interface'
 
 // set personal acceess token for posting issue comment
 const config = fs.readJSON(path.join(__dirname, '../.env.json'))
@@ -19,12 +19,12 @@ export class AppService {
   private usersFileId = path.join(__dirname, '../operational-data/users.json')
 
   // Interface would be cool for LedgerConnector... The reason why I could not use interface polymorphism here is interfaces are design-time only in the current context :)
-  public constructor(private readonly loggerService: LoggerService, private readonly ledgerConnector: LedgerConnector, private readonly gitHubIntegration: GithubIntegrationService) {
+  public constructor(private readonly lg: LoggerService, private readonly ledgerConnector: LedgerConnector, private readonly gitHubIntegration: GithubIntegrationService) {
     // tbd
   }
 
-  public getUser(userId: string): IUser {
-    this.loggerService.log(ELogLevel.Info, `getting user ${userId}`)
+  public async getUser(userId: string): Promise<IUser> {
+    await this.lg.log(ELogLevel.Info, `getting user ${userId}`)
     return fs.readJSON(this.usersFileId).filter((user: IUser) => user.id === userId)[0]
   }
 
