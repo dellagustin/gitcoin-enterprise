@@ -24,5 +24,4 @@ exports.config = {
       enabled: true
     }
   },
-  require: ["ts-node/register"]
 };
