@@ -1,7 +1,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <div class="topnav" id="myTopnav" style="margin-bottom:1em">
-  <!-- <app-rotating-logo></app-rotating-logo> -->
   <span (click)="clickTitle()">
     <img class=" logo" src="{{navBarData.logoURL}}" alt="">
     <a class="ellipsis" style="font-size: 25px; text-align: center; margin-left: 11px">
@@ -11,7 +10,6 @@
     <a id="{{item.href}}" style="font-size: 21px" class="hide" [ngClass]="{active: item.isActive}"
       (click)="clickEntry(item.href)">{{item.text}}</a>
   </span>
-  <!-- <a  (click)="clickFind()" [ngClass]="{active: router.url==='/', hide: true}" style="font-size: 21px">{{filter}}</a> -->
   <a class="icon" (click)="myFunction()" style="font-size:24px">
     <i id="burgerMenu" class="fa fa-bars"></i>
   </a>

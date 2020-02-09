@@ -33,6 +33,10 @@ export class EmailService {
         }
     }
 
+    public initializeData() {
+        fs.write(this.fileIdInvitationLists, '[]')
+    }
+
     private addInvitationToFile(eMail: IEmail, invitationLists: IInvitationListFromUser[]) {
         let invitationListFromUser: IInvitationListFromUser =
             invitationLists.filter((entry: IInvitationListFromUser) => entry.from === eMail.sender)[0]

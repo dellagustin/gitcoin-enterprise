@@ -13,6 +13,7 @@ import { backendURL } from '../../configurations/configuration'
 
 export class LedgerComponent implements OnInit {
 
+  @Input() transactionId = ''
   public ledgerEntries: ILedgerEntry[] = []
   public entryIdOfInterest: ILedgerEntry
 
@@ -20,7 +21,12 @@ export class LedgerComponent implements OnInit {
 
   public ngOnInit(): void {
     this.backendService.getLedgerEntries()
-      .subscribe((result: ILedgerEntry[]) => this.ledgerEntries = result)
+      .subscribe((result: ILedgerEntry[]) => {
+        this.ledgerEntries = result
+        setTimeout(() => {
+          window.scrollTo(0, document.body.scrollHeight)
+        }, 700)
+      })
   }
 
   public getSum(): number {
@@ -66,9 +72,24 @@ export class LedgerComponent implements OnInit {
 
   public onEntryClicked(ledgerEntry: ILedgerEntry) {
     this.entryIdOfInterest = ledgerEntry
+    window.scrollTo(0, 0)
   }
 
   public backToOverview() {
     delete this.entryIdOfInterest
+  }
+
+  public getSource() {
+    return 'User'
+  }
+
+  public getTarget() {
+    return 'Task'
+  }
+
+  public cellStyle(value, row, index) {
+    return {
+      classes: value.trim() === 'YES' ? 'yes' : 'no'
+    }
   }
 }

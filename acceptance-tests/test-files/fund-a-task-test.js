@@ -12,4 +12,22 @@ Scenario("test funding a task", async I => {
   );
   await I.wait(2)
   I.click(locate("#next"));
+  await I.wait(2)
+  
+  I.fillField(locate('#userId'), 'd123')
+  await I.wait(2)
+  
+  I.click(locate("#next"));
+  await I.wait(2)
+  
+  I.click(locate('#saveFunding'))
+  await I.wait(2)
+  
+  I.see("Funded Successfully")
+  I.see("View Transaction in Ledger")
+  I.see("Check it on GitHub")
+  
+  
+  I.click(locate('#viewTransactionInLedger'))
+  await I.wait(2)
 });

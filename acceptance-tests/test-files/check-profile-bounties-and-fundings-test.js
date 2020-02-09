@@ -1,21 +1,25 @@
 Feature("Check Profile, Bounties and Fundings");
 
-Scenario("test profile, bounties and fundings", async (I) => {
+Scenario("test checking profile, bounties and fundings", async (I) => {
+
   I.amOnPage("/");
   await I.wait(2)
-  I.click(locate("#burgerMenu"));
-  await I.wait(2)
 
-  I.click("Profile");
-  await I.wait(2)
+  I.say('For this test it is important to be online also when testing locally - because accessing <i id="burgerMenu" class="fa fa-bars"></i>...')
   
-  // I.fillField(locate({id: 'userId'}), 'd123')
-  // pause(I)
+  I.click(locate("#burgerMenu"));
 
-  // I.click("Next");
-  // pause(I)
+  await I.wait(2)
+  I.click(locate("#profile"));
+  await I.wait(2)
 
-  // I.see("Bounties and Fundings")
+  I.fillField(locate('#userId'), 'd123')
+  await I.wait(2)
+
+  I.click("Next");
+  await I.wait(2)
+
+  I.see("Bounties & Fundings")
 
 });
 

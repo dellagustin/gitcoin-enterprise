@@ -40,6 +40,9 @@ Interfaces & Dependency Injection: https://stackoverflow.com/questions/52969037/
 
 As Interfaces are currently design time only, I needed to play a trick for mimicing Interface Polymorphism / Interface based Dependency Injection - can be checked in server/src/app.module.ts
 
+## Docker Related
+For starters [this video](https://www.youtube.com/watch?v=CsWoMpK3EtE) seems helpful.
+
 ## Shell / Bash Script Related
 
 FILE=./.env.json

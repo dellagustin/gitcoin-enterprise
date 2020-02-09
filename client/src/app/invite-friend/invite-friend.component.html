@@ -7,12 +7,12 @@
 
 
   <span style="margin-top: 100px; margin-bottom: 10vh">
-    <input type="email" class="form-control" placeholder="Please enter your friend's E-Mail Adress"
-      [(ngModel)]="eMailAdress" autofocus>
+    <input id="eMailAddress" type="email" class="form-control" placeholder="Please enter your friend's E-Mail Address"
+      [(ngModel)]="eMailAddress" autofocus>
   </span>
 
-  <span *ngIf="eMailAdress.length>0" style="margin-top: 100px;">
-    <input type="checkbox" [(ngModel)]="permissionGranted"> I hereby
+  <span *ngIf="eMailAddress.length>0" style="margin-top: 100px;">
+    <input id="confirmationCheckbox" type="checkbox" [(ngModel)]="permissionGranted"> I hereby
     confirm my friend wants to be invited by E-Mail
   </span>
 
@@ -20,13 +20,13 @@
 
     <div class="adPad">
 
-      I will send the following e-mail to {{eMailAdress}}:
+      I will send the following e-mail to {{eMailAddress}}:
 
       <app-email [eMail]=eMail></app-email>
 
     </div>
 
-    <button (click)="send()" type="button" class="btn ourBlueColor">
+    <button id="invite" (click)="send()" type="button" class="btn ourBlueColor">
       <i class="fa fa-paper-plane" aria-hidden="true" style="padding-right: 1vw;"></i>
       Invite
       <i class="fa fa-paper-plane" aria-hidden="true" style="padding-left: 1vw;"></i>

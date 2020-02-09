@@ -8,6 +8,7 @@ import { IssueInfo, ITask, ETaskStatus, ETaskType, IUser, IFunding, ITaskAndFund
 import { LoggerService, ELogLevel } from './logger/logger.service'
 import { ILedgerEntry } from './ledger-connector.interface'
 import { LedgerConnector } from './ledger-connector/ledger-connector-file-system.service'
+import { EmailService } from './email/email.service'
 
 // set personal acceess token for posting issue comment
 const config = fs.readJSON(path.join(__dirname, '../.env.json'))
@@ -68,12 +69,11 @@ export class AppService {
   }
 
   public getFundedTasks(): ITask[] {
-    // this.initializeSystem()
     return fs.readJSON(this.fundedTasksFileId)
 
   }
 
-  private initializeSystem() {
+  public initializeData() {
     fs.write(this.fundedTasksFileId, '[]')
     this.ledgerConnector.saveLedgerEntries([])
     fs.write(this.usersFileId, JSON.stringify(this.getDemoUsers()))
@@ -100,17 +100,15 @@ export class AppService {
     return this.ledgerConnector.getLedgerEntries()
   }
 
-  public saveFunding(taskAndFunding: ITaskAndFunding, key: string): any {
+  public saveFunding(taskAndFunding: ITaskAndFunding, key: string): ILedgerEntry {
 
     const user = fs.readJSON(this.usersFileId).filter((entry: IUser) => entry.id === key)[0]
 
     if (user === undefined) {
-      return {
-        message: 'I could not find an authorized user with this id.',
-      }
+      throw new Error('I could not find an authorized user with this id.')
     }
 
-    this.createLedgerEntry(taskAndFunding.funding)
+    const newLedgerEntry: ILedgerEntry = this.createLedgerEntry(taskAndFunding.funding)
 
     const tasks = fs.readJSON(this.fundedTasksFileId)
     const existingTask = tasks.filter((entry: IUser) => entry.link === taskAndFunding.task.link)[0]
@@ -131,9 +129,7 @@ export class AppService {
     fs.write(this.fundedTasksFileId, JSON.stringify(tasks))
 
     this.postCommentAboutSuccessfullFunding(taskAndFunding.task.link, taskAndFunding.funding)
-    return {
-      message: 'successfully funded the task',
-    }
+    return newLedgerEntry
 
   }
 
@@ -183,11 +179,11 @@ export class AppService {
     this.loggerService.log(ELogLevel.Info, taskLink)
   }
 
-  private createLedgerEntry(funding: IFunding) {
+  private createLedgerEntry(funding: IFunding): ILedgerEntry {
     const entries: ILedgerEntry[] = this.ledgerConnector.getLedgerEntries()
     const entry: ILedgerEntry = {
-      id: Date.now().toString(),
-      date: moment().format('YYYY MM DD'),
+      id: `tr-${Date.now().toString()}`,
+      date: new Date().toISOString(),
       amount: funding.amount,
       sender: funding.funderId,
       receiver: funding.taskId,
@@ -196,6 +192,8 @@ export class AppService {
     entries.push(entry)
 
     this.ledgerConnector.saveLedgerEntries(entries)
+
+    return entry
   }
 
   public getDemoUsers() {

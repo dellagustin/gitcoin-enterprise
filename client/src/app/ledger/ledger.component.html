@@ -25,16 +25,23 @@
       </thead>
       <tbody>
         <tr *ngFor="let ledgerEntry of ledgerEntries" (click)="onEntryClicked(ledgerEntry)">
-          <td>...{{ledgerEntry.id.substr(ledgerEntry.id.length - 7, 7)}}</td>
-          <td>{{ledgerEntry.date}}</td>
-          <td>{{ledgerEntry.amount}}</td>
+
+          <td *ngIf="ledgerEntry.id===transactionId" class="highlighted">
+            ...{{ledgerEntry.id.substr(ledgerEntry.id.length - 7, 7)}}</td>
+          <td *ngIf="ledgerEntry.id===transactionId" class="highlighted">{{ledgerEntry.date}}</td>
+          <td *ngIf="ledgerEntry.id===transactionId" class="highlighted">{{ledgerEntry.amount}}</td>
+
+          <td *ngIf="ledgerEntry.id!==transactionId">...{{ledgerEntry.id.substr(ledgerEntry.id.length - 7, 7)}}</td>
+          <td *ngIf="ledgerEntry.id!==transactionId">{{ledgerEntry.date}}</td>
+          <td *ngIf="ledgerEntry.id!==transactionId">{{ledgerEntry.amount}}</td>
         </tr>
+
 
       </tbody>
     </table>
 
     <div class="adPad">
-      This makes a total of <p></p>
+      Transaction Volume <p></p>
       <h2 class="ourBlueColor">
         {{getSum()}} EIC
       </h2>
@@ -49,39 +56,37 @@
       <i class="fa fa-step-backward" aria-hidden="true" style="padding-left: 1vw;"></i>
     </button>
 
-    <cdk-virtual-scroll-viewport itemSize="1000" [ngStyle]="{'height.px': 10000}" style="scrollbar-width: 0px; ">
-      <table class="table table-striped">
-        <thead class="thead-dark">
-          <tr>
-            <th>Key</th>
-            <th>Value</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Transaction ID</td>
-            <td>{{entryIdOfInterest.id}}</td>
-          </tr>
-          <tr>
-            <td>Date</td>
-            <td>{{entryIdOfInterest.date}}</td>
-          </tr>
-          <tr>
-            <td>From</td>
-            <td>{{entryIdOfInterest.sender}}</td>
-          </tr>
-          <tr>
-            <td>To</td>
-            <td>{{entryIdOfInterest.receiver}}</td>
-          </tr>
-          <tr>
-            <td>Amount</td>
-            <td>{{entryIdOfInterest.amount}}</td>
-          </tr>
+    <table class="table table-striped">
+      <thead class="thead-dark">
+        <tr>
+          <th>Key</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Transaction ID</td>
+          <td>{{entryIdOfInterest.id}}</td>
+        </tr>
+        <tr>
+          <td>Date</td>
+          <td>{{entryIdOfInterest.date}}</td>
+        </tr>
+        <tr>
+          <td>From {{getSource()}}</td>
+          <td>{{entryIdOfInterest.sender}}</td>
+        </tr>
+        <tr>
+          <td>To {{getTarget()}}</td>
+          <td>{{entryIdOfInterest.receiver}}</td>
+        </tr>
+        <tr>
+          <td>Amount</td>
+          <td>{{entryIdOfInterest.amount}}</td>
+        </tr>
 
-        </tbody>
-      </table>
-    </cdk-virtual-scroll-viewport>
+      </tbody>
+    </table>
 
   </span>
 

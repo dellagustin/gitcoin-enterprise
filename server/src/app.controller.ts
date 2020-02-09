@@ -40,7 +40,7 @@ export class AppController {
   }
 
   @Post('/saveFunding')
-  saveFunding(@Req() req: any): void {
+  saveFunding(@Req() req: any): ILedgerEntry {
     return this.appService.saveFunding(req.body, req.headers.companyuserid)
   }
 

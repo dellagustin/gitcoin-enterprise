@@ -15,9 +15,9 @@ export class InviteFriendComponent implements OnInit {
 
 
   public url = backendURL
-  // public eMailAdress = 'akshay.iyyaudarai.balasundaram@sap.com'
-  public eMailAdress = 'michael@peer2peer-enterprise.org'
-  public invitingUsersAdress = 'michael@spengler.biz'
+  // public eMailAddress = 'akshay.iyyaudarai.balasundaram@sap.com'
+  public eMailAddress = 'michael@peer2peer-enterprise.org'
+  public invitingUsersAddress = 'michael.spengler@sap.com'
   public sent = false
   public permissionGranted = false
   public eMail: IEmail
@@ -29,24 +29,22 @@ export class InviteFriendComponent implements OnInit {
 
     this.personalAuthenticationToken = uuidv1()
     this.eMail = {
-      sender: this.invitingUsersAdress,
-      recipient: this.eMailAdress,
+      sender: this.invitingUsersAddress,
+      recipient: this.eMailAddress,
       subject: `Invitation to ${this.url}`,
       // tslint:disable-next-line: max-line-length
-      content: `Hi. Your friend ${this.invitingUsersAdress} invited you to join ${this.url}. Your personal access link is ${this.url}?id=${this.personalAuthenticationToken}. Everyone who has this link can trigger actions in your name. Please store it securely.`
+      content: `Hi. Your friend ${this.invitingUsersAddress} invited you to join ${this.url}. Your personal access link is ${this.url}?id=${this.personalAuthenticationToken}. Everyone who has this link can trigger actions in your name. Please store it securely.`
     }
   }
 
   public send() {
-    if (confirm(`sending E-Mail to ${this.eMailAdress}`)) {
-      this.backendService.sendEMail(this.eMail, ProfileComponent.currentUser.id)
-        .subscribe((result: any) => {
-          if (result.success === false) {
-            alert('I did not send this E-Mail. Perhaps there had already been an invitation related to this E-Mail before.')
-          } else {
-            this.sent = true
-          }
-        })
-    }
+    this.backendService.sendEMail(this.eMail, ProfileComponent.currentUser.id)
+      .subscribe((result: any) => {
+        if (result.success === false) {
+          alert('I did not send this E-Mail. Perhaps there had already been an invitation related to this E-Mail before.')
+        } else {
+          this.sent = true
+        }
+      })
   }
 }

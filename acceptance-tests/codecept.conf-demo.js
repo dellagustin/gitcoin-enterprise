@@ -13,9 +13,6 @@ exports.config = {
       show: true
     }
   },
-  include: {
-    I: "./test-files/steps_file.js"
-  },
   bootstrap: null,
   mocha: {},
   name: "acceptance-tests",

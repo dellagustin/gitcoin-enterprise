@@ -6,29 +6,29 @@ import { IUser, ProfileComponent } from '../profile/profile.component'
 import { DemoDataProviderService } from '../demo-data-provider.service'
 import { TaskHelper } from '../task-card/task-helper'
 import { IFunding, ITaskAndFunding } from '../interfaces'
+import { ILedgerEntry } from '../ledger/ledger.interface'
 
 @Component({
   selector: 'app-fund',
   templateUrl: './fund.component.html',
   styleUrls: ['./fund.component.css', '../app.component.css']
 })
-export class FundComponent implements OnInit {
+export class FundComponent {
 
   public radioModel: any
   public taskLink = 'https://github.com/gitcoin-enterprise/gitcoin-enterprise/issues/16'
   public user: IUser = ProfileComponent.currentUser
   public task: ITask = TaskHelper.getInitialTask()
-  public currentRange = 0
+  public currentRange = 200
   public fundingCompleted = false
   public initialRange = 70
   public minimumRange = 10
   public maximumRange = 100
+  public viewTransactionInLedger = false
+  public newLedgerEntry: ILedgerEntry
 
 
   public constructor(private readonly backendService: BackendService, private readonly demoDataProvider: DemoDataProviderService) { }
-
-  public ngOnInit(): void {
-  }
 
   public getInfoFromTaskLink() {
     const sourceString = this.taskLink.split('https://github.com/')[1]
@@ -40,6 +40,7 @@ export class FundComponent implements OnInit {
       .subscribe((response: any) => {
         this.task = this.getTaskFromResponse(response)
         this.task.link = this.taskLink
+        this.task.funding = this.currentRange
       }, error => {
         console.log(error.message)
         this.task = this.demoDataProvider.getDefaultTaskForDemo()
@@ -48,6 +49,10 @@ export class FundComponent implements OnInit {
 
   public handleRangeSetting() {
     this.task.funding = this.currentRange
+  }
+
+  public clickViewTransactionInLedger() {
+    this.viewTransactionInLedger = true
   }
 
   public saveFunding() {
@@ -65,8 +70,9 @@ export class FundComponent implements OnInit {
       funding
     }
     this.backendService.post(saveFundingURL, taskAndFunding, ProfileComponent.currentUser.id)
-      .subscribe()
-
+      .subscribe((newLedgerEntry: ILedgerEntry) => {
+        this.newLedgerEntry = newLedgerEntry
+      })
   }
 
   public onUserIdEntered() {
