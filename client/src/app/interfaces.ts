@@ -44,6 +44,7 @@ export interface ILedgerEntry {
 }
 
 export interface IEmail {
+  senderUserId: string
   sender: string,
   recipient: string,
   subject: string

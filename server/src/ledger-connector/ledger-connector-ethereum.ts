@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common'
-import { ILedgerConnector, ILedgerEntry } from '../ledger-connector.interface'
+import { ILedgerConnector, ILedgerEntry } from './ledger-connector.interface'
 
 @Injectable()
 export class EthereumLedgerConnector implements ILedgerConnector {

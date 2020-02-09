@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
-import { ILedgerConnector, ILedgerEntry } from '../ledger-connector.interface'
 import * as fs from 'fs-sync'
 import * as path from 'path'
+import { ILedgerConnector, ILedgerEntry } from './ledger-connector.interface'
 
 @Injectable()
 export class LedgerConnector implements ILedgerConnector {

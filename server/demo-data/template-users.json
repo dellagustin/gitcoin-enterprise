@@ -1,0 +1,20 @@
+[
+    {
+        "balance": 1000,
+        "id": "d123",
+        "firstName": "Michael",
+        "link": "https://github.com/michael-spengler"
+    },
+    {
+        "balance": 2000,
+        "id": "d124",
+        "firstName": "Akshay",
+        "link": "https://github.com/ibakshay"
+    },
+    {
+        "balance": 3000,
+        "id": "d125",
+        "firstName": "Fabian",
+        "link": "https://github.com/fabianriewe"
+    }
+]

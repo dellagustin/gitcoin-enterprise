@@ -40,13 +40,14 @@ describe('EmailService', () => {
     expect(service).toBeDefined()
   })
 
-  it('should add an invitation via sendEMail', () => {
+  it('should add an invitation via sendEMail', async () => {
     const eMail: IEmail = {
+      senderUserId: 'd123',
       sender: 'michael@spengler.biz',
       recipient: 'michael.spengler@sap.com',
       subject: 'I love unit testing',
       content: 'It is a great invention. By the way I also love Ethereum.',
     }
-    expect(service.sendEMail(eMail)).toEqual({ success: true })
+    expect(await service.sendEMail(eMail)).toEqual({ success: true })
   })
 })

@@ -45,8 +45,9 @@ export interface IApplication {
 }
 
 export interface IEmail {
-  sender: string,
-  recipient: string,
+  senderUserId: string
+  sender: string
+  recipient: string
   subject: string
   content: string
 }
