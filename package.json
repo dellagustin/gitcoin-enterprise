@@ -10,7 +10,10 @@
     "test": "npm run lint && npm run ut && npm run at",
     "ut": "cd server && npm run test",
     "at": "cd acceptance-tests && npm run acceptance-tests",
-    "lint": "cd server && npm run lint && cd ../client && npm run lint"
+    "lint": "cd server && npm run lint && cd ../client && npm run lint",
+    "docker-build": "docker build -t gitcoin-enterprise-docker-image",
+    "start-via-docker-test": "docker run -it -p 3000:3000 my-docker-image",
+    "start-via-docker": "docker run -it -p 3000:3000 gitcoin-enterprise-docker-image"
   },
   "husky": {
     "hooks": {
