@@ -5,7 +5,6 @@
     Invite Friends
   </h4>
 
-  {{user.firstName}}
   <span *ngIf="user.firstName===''">
     <input id="userId" type="text" class="form-control" placeholder="enter your id or click your invitation link"
       [(ngModel)]="user.id" autofocus>

@@ -8,6 +8,7 @@ import * as fs from 'fs-sync'
 import * as path from 'path'
 import moment = require('moment')
 import { ELogLevel } from '../logger/logger-interface'
+import * as uuidv1 from 'uuid/v1'
 
 @Injectable()
 export class EmailService {
@@ -19,7 +20,7 @@ export class EmailService {
 
     public sendEMail(eMail: IEmail): any {
         const invitationLists: IInvitationListFromUser[] = fs.readJSON(this.fileIdInvitationLists)
-
+        this.lg.log(ELogLevel.Info, `I received an eMail request ${JSON.stringify(eMail)}`)
         if (!this.isUserAllowedToTriggerEMails(eMail.sender)) {
             return {
                 success: false,
@@ -27,7 +28,7 @@ export class EmailService {
         }
 
         if (this.isInvitationAllowed(eMail.sender, invitationLists)) {
-            if (config.port === '443') {
+            if (config.port === '443' || config.port === '3000') {
                 this.sendEMailViaNodeMailer(eMail)
             }
             this.addInvitationToFile(eMail, invitationLists)
@@ -87,11 +88,13 @@ export class EmailService {
             },
         })
 
+        const personalAccessToken = uuidv1().substr(4, 8)
+
         const mailOptions = {
             from: config.eMail,
             to: eMail.recipient,
             subject: 'Invitation for Peer2Peer Enterprise',
-            text: eMail.content,
+            text: eMail.content.replace('accessToken', personalAccessToken),
             html: this.getHTMLEMail(eMail.sender, eMail.content),
         }
 
@@ -107,43 +110,49 @@ export class EmailService {
         })
     }
 
-    private isInvitationAllowed(userID: string, invitationLists: IInvitationListFromUser[]): boolean {
+    private isInvitationAllowed(userId: string, invitationLists: IInvitationListFromUser[]): boolean {
         // const lastInvitationOfUser = fs.readJSON(this.fileIdLastInvitation).filter((lastInvitation: IInvitation) => )
         const invitationListFromThisUser: IInvitationListFromUser =
-            invitationLists.filter((invitation: IInvitationListFromUser) => invitation.from === userID)[0]
+            invitationLists.filter((invitation: IInvitationListFromUser) => invitation.from === userId)[0]
 
         const invitedFriends: IInvitedFriend[] = (invitationListFromThisUser === undefined) ? [] : invitationListFromThisUser.invitedFriends
         const lastInvitation: IInvitedFriend = invitedFriends[invitedFriends.length - 1]
-
         if (lastInvitation === undefined) {
             return true
         } else {
             const minutes: moment.unitOfTime.DurationConstructor = 'minutes'
 
-            return Helper.isItLongerAgoThan(60, minutes, lastInvitation.date)
+            return Helper.isItLongerAgoThan(60, minutes, moment(lastInvitation.date))
         }
 
     }
 
-    private getHTMLEMail(sender: string, content: string): string {
+    private getHTMLEMail(sender: string, personalAccessToken: string): string {
         const templateHTMLFileId = path.join(__dirname, './email-template.html')
-        return fs.read(templateHTMLFileId)
-            .replace(/eMail.sender/g, sender)
-            .replace(/backendURL/g, config.backendURL)
-            .replace(/backendURLShort/g, config.backendURL.split('https:// ')[1])
-            .replace(/accessToken/g, content.split(`${config.backendURL}?id=`)[1].split('"')[0])
+        const templateHTML = fs.read(templateHTMLFileId)
+        try {
+            return templateHTML
+                .replace(/eMail.sender/g, sender)
+                .replace(/backendURL/g, config.backendURL)
+                .replace(/backendURLShort/g, config.backendURL.split('https:// ')[1])
+                .replace(/accessToken/g, personalAccessToken)
+        } catch (error) {
+            this.lg.log(ELogLevel.Error, `Something seems wrong with the E-Mail HTML: ${templateHTML}`)
+        }
     }
 
     private async isUserAllowedToTriggerEMails(senderId: string): Promise<boolean> {
         const fileId = path.join(__dirname, '../../operational-data/template-users.json')
 
-        const users: IUser[] = fs.readJSON(fileId)
+        const templateUsers: IUser[] = fs.readJSON(fileId)
 
-        if (users.length === 0) {
-            throw new Error('No Users - No E-Mail :)')
+        if (templateUsers.length === 0) {
+            const message = 'No Demo Users in system - something seems strange - No E-Mail :)'
+            this.lg.log(ELogLevel.Error, message)
+            throw new Error(message)
         }
 
-        const demoUserWithThisId = users.filter((user: IUser) => user.id === senderId)[0]
+        const demoUserWithThisId = templateUsers.filter((user: IUser) => user.id === senderId)[0]
         if (demoUserWithThisId === undefined) {
             return true
         } else {

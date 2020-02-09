@@ -3,8 +3,8 @@ import { AppService } from './app.service'
 import { pathToStaticAssets } from './gitcoin-enterprise-server'
 import { ITask, IUser } from './interfaces'
 import { EmailService } from './email/email.service'
-import { ILedgerEntry } from './ledger-connector.interface'
 import { GithubIntegrationService } from './github-integration/github-integration.service'
+import { ILedgerEntry } from './ledger-connector/ledger-connector.interface'
 
 @Controller()
 export class AppController {
@@ -28,7 +28,7 @@ export class AppController {
   }
 
   @Get('/getUser')
-  getUser(@Req() req: any): IUser {
+  getUser(@Req() req: any): Promise<IUser> {
     return this.appService.getUser(req.headers.companyuserid)
   }
 

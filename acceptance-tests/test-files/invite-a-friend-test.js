@@ -1,6 +1,15 @@
+const fs = require("fs-sync");
+const path = require("path");
+
 Feature("Invite a Friend");
 
 Scenario("test inviting a friend", async I => {
+
+  const fileIdInvitationLists = path.join(
+    path.resolve(),
+    "../server/operational-data/invitation-lists.json"
+  );
+
   I.amOnPage("/");
   await I.wait(2);
 
@@ -30,4 +39,10 @@ Scenario("test inviting a friend", async I => {
 
   I.see("I will send the following e-mail to");
   I.click(locate("#invite"));
+
+  I.wait(20)
+
+  fs.write(fileIdInvitationLists, '[]')
 });
+
+// michael.spengler@sap.com
