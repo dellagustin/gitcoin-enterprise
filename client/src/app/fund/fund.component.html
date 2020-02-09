@@ -10,7 +10,7 @@
       Please enter the link to the issue on GitHub.
       <p></p>
       <input type="text" class="form-control" id="taskLink"
-        placeholder="https://github.com/gitcoin-enterprise/gitcoin-enterprise/issues/16" [(ngModel)]="taskLink">
+             placeholder="https://github.com/gitcoin-enterprise/gitcoin-enterprise/issues/16" [(ngModel)]="taskLink">
 
       <div *ngIf="task.link!==''">
 
@@ -34,7 +34,7 @@
         <p></p>
         <div class="sliderDiv">
           <input type="range" min="{{minimumRange}}" max="{{ user.balance }}" class="slider" [(ngModel)]="currentRange"
-            (change)="handleRangeSetting()" />
+                 (change)="handleRangeSetting()" />
           <p></p>
           {{this.currentRange}} Enterprise Internal Coins (EIC)
         </div>
@@ -51,8 +51,8 @@
       </span>
 
       <span *ngIf="user.firstName===''">
-        <input id="userId" type="text" class="form-control" placeholder="enter company user id - e.g. d123" [(ngModel)]="user.id"
-          autofocus>
+        <input id="userId" type="text" class="form-control" placeholder="enter company user id - e.g. d123"
+               [(ngModel)]="user.id" autofocus>
 
         <span *ngIf="user.id.length>0">
           <button id="next" type="button" class="btn ourBlueColor" (click)="onUserIdEntered()">
@@ -77,8 +77,14 @@
     <h4 class="titleBeneathImage">
       Funded Successfully
     </h4>
-    Adding {{newLedgerEntry.amount}} EIC to the Bounty for this task
+    I added {{newLedgerEntry.amount}} EIC to the Bounty for this task <p></p>
+
     <app-task-card [task]="task"></app-task-card>
+
+    The transaction ID is
+    <b id="transactionId">
+      {{newLedgerEntry.id}}
+    </b>
 
     <button id="viewTransactionInLedger" type="button" class="btn ourRedColor" (click)="clickViewTransactionInLedger()">
       <i class="fa fa-step-forward" aria-hidden="true" style="padding-right: 3vw;"></i>

@@ -110,9 +110,9 @@ export class EmailService {
         if (lastInvitation === undefined) {
             return true
         } else {
-            const minutes: moment.unitOfTime.DurationConstructor = 'seconds'
+            const minutes: moment.unitOfTime.DurationConstructor = 'minutes'
 
-            return this.isItLongerAgoThan(3, minutes, lastInvitation.date)
+            return this.isItLongerAgoThan(60, minutes, lastInvitation.date)
         }
 
     }

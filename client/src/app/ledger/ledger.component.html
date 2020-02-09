@@ -1,4 +1,3 @@
-<div class="container">
 
 
   <span *ngIf="entryIdOfInterest===undefined">
@@ -26,13 +25,13 @@
       <tbody>
         <tr *ngFor="let ledgerEntry of ledgerEntries" (click)="onEntryClicked(ledgerEntry)">
 
-          <td *ngIf="ledgerEntry.id===transactionId" class="highlighted">
-            ...{{ledgerEntry.id.substr(ledgerEntry.id.length - 7, 7)}}</td>
-          <td *ngIf="ledgerEntry.id===transactionId" class="highlighted">{{ledgerEntry.date}}</td>
+          <td id="taskId-{{ledgerEntry.id}}" *ngIf="ledgerEntry.id===transactionId" class="highlighted">
+            ...{{ledgerEntry.id.substr(ledgerEntry.id.length - 4, 4)}}</td>
+          <td *ngIf="ledgerEntry.id===transactionId" class="highlighted">{{ledgerEntry.date.substr(0, ledgerEntry.date.length -5)}}</td>
           <td *ngIf="ledgerEntry.id===transactionId" class="highlighted">{{ledgerEntry.amount}}</td>
 
-          <td *ngIf="ledgerEntry.id!==transactionId">...{{ledgerEntry.id.substr(ledgerEntry.id.length - 7, 7)}}</td>
-          <td *ngIf="ledgerEntry.id!==transactionId">{{ledgerEntry.date}}</td>
+          <td id="taskId-{{ledgerEntry.id}}"  *ngIf="ledgerEntry.id!==transactionId">...{{ledgerEntry.id.substr(ledgerEntry.id.length - 4, 4)}}</td>
+          <td *ngIf="ledgerEntry.id!==transactionId">{{ledgerEntry.date.substr(0, ledgerEntry.date.length -5)}}</td>
           <td *ngIf="ledgerEntry.id!==transactionId">{{ledgerEntry.amount}}</td>
         </tr>
 
@@ -91,4 +90,3 @@
   </span>
 
 
-</div>

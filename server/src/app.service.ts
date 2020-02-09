@@ -1,20 +1,16 @@
 import { Injectable } from '@nestjs/common'
-const { Octokit } = require('@octokit/rest')
 
 import * as fs from 'fs-sync'
 import * as path from 'path'
-import * as moment from 'moment'
 import { IssueInfo, ITask, ETaskStatus, ETaskType, IUser, IFunding, ITaskAndFunding } from './interfaces'
 import { LoggerService, ELogLevel } from './logger/logger.service'
 import { ILedgerEntry } from './ledger-connector.interface'
 import { LedgerConnector } from './ledger-connector/ledger-connector-file-system.service'
 import { EmailService } from './email/email.service'
+import { GithubIntegrationService } from './github-integration/github-integration.service'
 
 // set personal acceess token for posting issue comment
 const config = fs.readJSON(path.join(__dirname, '../.env.json'))
-const octokit = new Octokit({
-  auth: config.token,
-})
 
 @Injectable()
 export class AppService {
@@ -23,7 +19,9 @@ export class AppService {
   private usersFileId = path.join(__dirname, '../operational-data/users.json')
 
   // Interface would be cool but interfaces are design-time only in the current context :)
-  public constructor(private readonly loggerService: LoggerService, private readonly ledgerConnector: LedgerConnector) {
+  public constructor(private readonly loggerService: LoggerService,
+                     private readonly ledgerConnector: LedgerConnector,
+                     private readonly gitHubIntegration: GithubIntegrationService) {
     // tbd
   }
 
@@ -32,32 +30,12 @@ export class AppService {
     return fs.readJSON(this.usersFileId).filter((user: IUser) => user.id === userId)[0]
   }
 
-  public applyForSolving(userId: string, profileLink: string, taskLink: string): void {
+  public applyForSolving(userId: string, profileLink: string, taskLink: string, solutionApproach: string): void {
     const existingUser = fs.readJSON(this.usersFileId).filter((user: IUser) => user.id === userId)[0]
     if (existingUser === undefined) {
       throw new Error('User not found')
     }
-    this.postCommentAboutApplication(profileLink, taskLink)
-  }
-
-  public async getIssue(org: any, repo: any, issueId: any): Promise<IssueInfo> {
-    this.loggerService.log(ELogLevel.Info, `getting Issue data for owner: ${org}, repo: ${repo}, issueId: ${issueId}`)
-    const issueInfo = {} as IssueInfo
-    try {
-      const response = await octokit.issues.get({
-        owner: org,
-        repo,
-        issue_number: issueId,
-      })
-      issueInfo.title = response.data.title
-      issueInfo.description = response.data.body
-    } catch (error) {
-      this.loggerService.log(ELogLevel.Error, `the github call to get the issue failed ${error}`)
-      issueInfo.title = 'Just a demo Title'
-      issueInfo.description = 'Just a demo Description'
-    }
-
-    return issueInfo
+    this.gitHubIntegration.postCommentAboutApplication(profileLink, taskLink, solutionApproach)
   }
 
   public getGitHubToken(): string {
@@ -128,55 +106,9 @@ export class AppService {
 
     fs.write(this.fundedTasksFileId, JSON.stringify(tasks))
 
-    this.postCommentAboutSuccessfullFunding(taskAndFunding.task.link, taskAndFunding.funding)
+    this.gitHubIntegration.postCommentAboutSuccessfullFunding(taskAndFunding.task.link, taskAndFunding.funding)
     return newLedgerEntry
 
-  }
-
-  private async postCommentAboutSuccessfullFunding(linkToIssue: string, funding: IFunding) {
-    const body = 'peer2peer collaborating is awesome (funder)'
-    // cla-assistant/cla-assistant/issues/530
-    const owner = linkToIssue.split('/')[3]
-    const repoName = linkToIssue.split('/')[4]
-    const issueNo = linkToIssue.split('/')[6]
-
-    try {
-      await octokit.issues.createComment({
-        owner,
-        repo: repoName,
-        issue_number: issueNo,
-        body,
-      })
-
-    } catch (error) {
-      this.loggerService.log(ELogLevel.Error, `the github call to create a comment for  the issue failed ${error}`)
-
-    }
-
-    this.loggerService.log(ELogLevel.Info, linkToIssue)
-    this.loggerService.log(ELogLevel.Info, JSON.stringify(funding))
-  }
-
-  private async postCommentAboutApplication(profileLink: string, taskLink: string) {
-    const body = 'peer2peer collaborating is awesome (contributor) '
-
-    const owner = taskLink.split('/')[3]
-    const repoName = taskLink.split('/')[4]
-    const issueNo = taskLink.split('/')[6]
-    try {
-      await octokit.issues.createComment({
-        owner,
-        repo: repoName,
-        issue_number: issueNo,
-        body,
-      })
-
-    } catch (error) {
-      this.loggerService.log(ELogLevel.Error, `the github call to create a comment for  the issue failed ${error}`)
-
-    }
-    this.loggerService.log(ELogLevel.Info, profileLink)
-    this.loggerService.log(ELogLevel.Info, taskLink)
   }
 
   private createLedgerEntry(funding: IFunding): ILedgerEntry {

@@ -26,7 +26,7 @@
             </thead>
             <tbody>
               <tr *ngFor="let fundedTask of filteredTasks" (click)="onTaskClicked(fundedTask)">
-                <td>{{fundedTask.name}}</td>
+                <td id="taskId-{{fundedTask.id}}">{{fundedTask.name}}</td>
                 <td>{{fundedTask.funding}}</td>
               </tr>
             </tbody>

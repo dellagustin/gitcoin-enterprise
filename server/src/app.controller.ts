@@ -4,10 +4,13 @@ import { pathToStaticAssets } from './gitcoin-enterprise-server'
 import { ITask, IUser } from './interfaces'
 import { EmailService } from './email/email.service'
 import { ILedgerEntry } from './ledger-connector.interface'
+import { GithubIntegrationService } from './github-integration/github-integration.service'
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService, private readonly eMailService: EmailService) { }
+  constructor(private readonly appService: AppService,
+              private readonly eMailService: EmailService,
+              private readonly gitHubIntegration: GithubIntegrationService) { }
 
   @Get()
   getHello(@Res() res: any): void {
@@ -31,7 +34,7 @@ export class AppController {
 
   @Get('/getIssueInfo/org/:org/repo/:repo/issueid/:issueId')
   getIssue(@Param('org') org: string, @Param('repo') repo: string, @Param('issueId') issueId: number) {
-    return this.appService.getIssue(org, repo, issueId)
+    return this.gitHubIntegration.getIssue(org, repo, issueId)
   }
 
   @Post('/sendEMail')
@@ -46,7 +49,7 @@ export class AppController {
 
   @Post('/applyForSolving')
   applyForSolving(@Req() req: any): void {
-    return this.appService.applyForSolving(req.headers.companyuserid, req.body.profileLink, req.body.taskLink)
+    return this.appService.applyForSolving(req.headers.companyuserid, req.body.profileLink, req.body.taskLink, req.body.solutionApproach)
   }
 
 }

@@ -32,7 +32,6 @@ export class FundComponent {
 
   public getInfoFromTaskLink() {
     const sourceString = this.taskLink.split('https://github.com/')[1]
-    // cla-assistant/cla-assistant/issues/530
     const org = sourceString.split('/')[0]
     const repo = sourceString.split('/')[1].split('/')[0]
     const issueId = sourceString.split('/')[3]
