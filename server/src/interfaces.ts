@@ -40,6 +40,8 @@ export interface IInvitedFriend {
 }
 
 export interface IApplication {
+  applicantUserId: string
+  plan: string
   profileLink: string
   taskLink: string
 }

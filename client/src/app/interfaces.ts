@@ -4,9 +4,10 @@ export interface IssueInfo {
 }
 
 export interface IApplication {
+  applicantUserId: string
+  plan: string
   profileLink: string
   taskLink: string
-  solutionApproach: string
 }
 
 export interface ITask {

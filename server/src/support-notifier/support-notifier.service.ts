@@ -10,7 +10,7 @@ export class SupportNotifierService implements ISupportNotifier {
     private static bot
 
     public static initializeOnlyOnce() {
-        if (this.started || config.notifierToken === '') {
+        if (this.started || config === undefined || config.notifierToken === '') {
             return
         }
         SupportNotifierService.started = true

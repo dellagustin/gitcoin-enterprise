@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common'
-import { IFunding, IssueInfo, IUser } from '../interfaces'
+import { IFunding, IssueInfo, IUser, IApplication } from '../interfaces'
 import { LoggerService } from '../logger/logger.service'
 import { config } from '../app.module'
 import * as fs from 'fs-sync'
 import * as path from 'path'
 import * as moment from 'moment'
-import { Helper } from '../helper'
+import { Helper } from '../helpers/helper'
 import { ELogLevel } from '../logger/logger-interface'
 
 const { Octokit } = require('@octokit/rest')
@@ -60,7 +60,7 @@ export class GithubIntegrationService {
             throw new Error(errorMessage)
         }
 
-        if (!this.isUserAllowedToTriggerComments(funding.funderId)) {
+        if (Helper.isUserADemoUser(funding.funderId)) {
             return
         }
 
@@ -88,7 +88,7 @@ export class GithubIntegrationService {
         await this.lg.log(ELogLevel.Info, JSON.stringify(funding))
     }
 
-    public async postCommentAboutApplication(profileLink: string, taskLink: string, plan: string) {
+    public async postCommentAboutApplication(application: IApplication, plan: string) {
 
         const seconds: moment.unitOfTime.DurationConstructor = 'seconds'
 
@@ -97,16 +97,16 @@ export class GithubIntegrationService {
             await this.lg.log(ELogLevel.Error, errorMessage)
             throw new Error(errorMessage)
         }
-        if (!this.isUserAllowedToTriggerComments('tbd')) {
+        if (Helper.isUserADemoUser(application.applicantUserId)) {
             return
         }
 
         const templateFileId = path.join(__dirname, './comment-on-application.md')
-        const body = fs.read(templateFileId).toString().replace('{{{applicant}}}', profileLink).replace('{{{plan}}}', plan)
+        const body = fs.read(templateFileId).toString().replace('{{{applicant}}}', application.profileLink).replace('{{{plan}}}', plan)
 
-        const owner = taskLink.split('/')[3]
-        const repoName = taskLink.split('/')[4]
-        const issueNo = taskLink.split('/')[6]
+        const owner = application.taskLink.split('/')[3]
+        const repoName = application.taskLink.split('/')[4]
+        const issueNo = application.taskLink.split('/')[6]
         try {
             await this.octokit.issues.createComment({
                 owner,
@@ -119,25 +119,8 @@ export class GithubIntegrationService {
             await this.lg.log(ELogLevel.Error, `the github call to create a comment for  the issue failed ${error}`)
 
         }
-        await this.lg.log(ELogLevel.Info, profileLink)
-        await this.lg.log(ELogLevel.Info, taskLink)
+        await this.lg.log(ELogLevel.Info, application.profileLink)
+        await this.lg.log(ELogLevel.Info, application.taskLink)
     }
 
-    private async isUserAllowedToTriggerComments(funderId: string): Promise<boolean> {
-        const fileId = path.join(__dirname, '../../operational-data/template-users.json')
-
-        const users: IUser[] = fs.readJSON(fileId)
-
-        if (users.length === 0) {
-            throw new Error('No Users - No Comment :)')
-        }
-
-        const demoUserWithThisId = users.filter((user: IUser) => user.id === funderId)[0]
-        if (demoUserWithThisId === undefined) {
-            return true
-        } else {
-            await this.lg.log(ELogLevel.Info, 'Demo users shall not trigger too many comments - therefore skipping the post comment feature :)')
-            return false
-        }
-    }
 }
