@@ -18,10 +18,8 @@ export class AppService {
   private fundedTasksFileId = path.join(__dirname, '../operational-data/funded-tasks.json')
   private usersFileId = path.join(__dirname, '../operational-data/users.json')
 
-  // Interface would be cool but interfaces are design-time only in the current context :)
-  public constructor(private readonly loggerService: LoggerService,
-                     private readonly ledgerConnector: LedgerConnector,
-                     private readonly gitHubIntegration: GithubIntegrationService) {
+  // Interface would be cool for LedgerConnector... The reason why I could not use interface polymorphism here is interfaces are design-time only in the current context :)
+  public constructor(private readonly loggerService: LoggerService, private readonly ledgerConnector: LedgerConnector, private readonly gitHubIntegration: GithubIntegrationService) {
     // tbd
   }
 
@@ -49,12 +47,6 @@ export class AppService {
   public getFundedTasks(): ITask[] {
     return fs.readJSON(this.fundedTasksFileId)
 
-  }
-
-  public initializeData() {
-    fs.write(this.fundedTasksFileId, '[]')
-    this.ledgerConnector.saveLedgerEntries([])
-    fs.write(this.usersFileId, JSON.stringify(this.getDemoUsers()))
   }
 
   public getDefaultTaskForDemo(): ITask {
@@ -128,34 +120,4 @@ export class AppService {
     return entry
   }
 
-  public getDemoUsers() {
-    const users: IUser[] = []
-
-    const michael: IUser = {
-      balance: 1000,
-      id: 'd123',
-      firstName: 'Michael',
-      link: 'https://github.com/michael-spengler',
-    }
-    users.push(michael)
-
-    const akshay: IUser = {
-      balance: 2000,
-      id: 'd124',
-      firstName: 'Akshay',
-      link: 'https://github.com/ibakshay',
-    }
-    users.push(akshay)
-
-    const fabian: IUser = {
-      balance: 3000,
-      id: 'd125',
-      firstName: 'Fabian',
-      link: 'https://github.com/fabianriewe',
-    }
-
-    users.push(fabian)
-
-    return users
-  }
 }

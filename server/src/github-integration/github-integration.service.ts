@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common'
-import { IFunding, IssueInfo } from '../interfaces'
+import { IFunding, IssueInfo, IUser } from '../interfaces'
 import { ELogLevel, LoggerService } from '../logger/logger.service'
 import { config } from '../app.module'
 import * as fs from 'fs-sync'
@@ -16,7 +16,8 @@ export class GithubIntegrationService {
     public constructor(private readonly loggerService: LoggerService) { }
 
     public async getIssue(org: any, repo: any, issueId: any): Promise<IssueInfo> {
-        this.loggerService.log(ELogLevel.Info, `getting Issue data for owner: ${org}, repo: ${repo}, issueId: ${issueId}`)
+
+        this.loggerService.log(ELogLevel.Info, `getting Issue data for owner: ${org}, repo: ${repo}, issueId: ${issueId} with token ${config.token}`)
         const issueInfo = {} as IssueInfo
         try {
             const response = await this.octokit.issues.get({
@@ -35,29 +36,32 @@ export class GithubIntegrationService {
         return issueInfo
     }
 
-    public async postCommentAboutSuccessfullFunding(linkToIssue: string, funding: IFunding) {
-        const templateFileId = path.join(__dirname, './comment-on-funding.md')
-        const body = fs.read(templateFileId).toString().replace('{{{amount}}}', funding.amount)
+    public async postCommentAboutSuccessfullFunding(linkToIssue: string, funding: IFunding): Promise<void> {
 
-        const owner = linkToIssue.split('/')[3]
-        const repoName = linkToIssue.split('/')[4]
-        const issueNo = linkToIssue.split('/')[6]
+        if (this.isUserAllowedToTriggerComments(funding.funderId)) {
+            const templateFileId = path.join(__dirname, './comment-on-funding.md')
+            const body = fs.read(templateFileId).toString().replace('{{{amount}}}', funding.amount)
 
-        try {
-            await this.octokit.issues.createComment({
-                owner,
-                repo: repoName,
-                issue_number: issueNo,
-                body,
-            })
+            const owner = linkToIssue.split('/')[3]
+            const repoName = linkToIssue.split('/')[4]
+            const issueNo = linkToIssue.split('/')[6]
 
-        } catch (error) {
-            this.loggerService.log(ELogLevel.Error, `the github call to create a comment for  the issue failed ${error}`)
+            try {
+                await this.octokit.issues.createComment({
+                    owner,
+                    repo: repoName,
+                    issue_number: issueNo,
+                    body,
+                })
 
+            } catch (error) {
+                this.loggerService.log(ELogLevel.Error, `the github call to create a comment for  the issue failed ${error}`)
+
+            }
+
+            this.loggerService.log(ELogLevel.Info, linkToIssue)
+            this.loggerService.log(ELogLevel.Info, JSON.stringify(funding))
         }
-
-        this.loggerService.log(ELogLevel.Info, linkToIssue)
-        this.loggerService.log(ELogLevel.Info, JSON.stringify(funding))
     }
 
     public async postCommentAboutApplication(profileLink: string, taskLink: string, plan: string) {
@@ -81,5 +85,23 @@ export class GithubIntegrationService {
         }
         this.loggerService.log(ELogLevel.Info, profileLink)
         this.loggerService.log(ELogLevel.Info, taskLink)
+    }
+
+    private isUserAllowedToTriggerComments(funderId: string): boolean {
+        const fileId = path.join(__dirname, '../../operational-data/template-users.json')
+
+        const users: IUser[] = fs.readJSON(fileId)
+
+        if (users.length === 0) {
+            throw new Error('No Users - No Comment :)')
+        }
+
+        const demoUserWithThisId = users.filter((user: IUser) => user.id === funderId)[0]
+        if (demoUserWithThisId === undefined) {
+            return true
+        } else {
+            this.loggerService.log(ELogLevel.Info, 'Demo users shall not trigger too many comments - therefore skipping the post comment feature :)')
+            return false
+        }
     }
 }

@@ -10,7 +10,7 @@ import moment = require('moment')
 @Injectable()
 export class EmailService {
 
-    private fileIdInvitationLists = path.join(__dirname, '../../operational-data/invitation-list.json')
+    private fileIdInvitationLists = path.join(__dirname, '../../operational-data/invitation-lists.json')
     // private fileIdLastInvitation = path.join(__dirname, '../../operational-data/last-invitations.json')
 
     public constructor(private readonly logger: LoggerService) { }
