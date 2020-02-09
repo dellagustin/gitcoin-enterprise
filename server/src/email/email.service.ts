@@ -22,8 +22,14 @@ export class EmailService {
         const invitationLists: IInvitationListFromUser[] = fs.readJSON(this.fileIdInvitationLists)
         this.lg.log(ELogLevel.Info, `I received an eMail request ${JSON.stringify(eMail)}`)
 
-        if (Helper.isInvitationAllowed(eMail.sender, invitationLists)) {
-            if (config.port === '443') {
+        if (Helper.hasUserAlreadyInvitedThisFriend(eMail.sender, eMail.recipient, invitationLists)) {
+            return {
+                success: false,
+            }
+        }
+
+        if (Helper.isInvitationAllowed(eMail.senderUserId, invitationLists)) {
+            if (config.port === '443' || config.port === '3000') {
                 this.sendEMailViaNodeMailer(eMail)
             }
             this.addInvitationToFile(eMail, invitationLists)
@@ -83,7 +89,7 @@ export class EmailService {
             },
         })
 
-        const personalAccessToken = uuidv1().substr(0, 8)
+        const personalAccessToken = uuidv1().substr(11, 5)
 
         const mailOptions = {
             from: config.eMail,

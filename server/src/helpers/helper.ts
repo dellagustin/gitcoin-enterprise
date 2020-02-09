@@ -4,6 +4,22 @@ import * as fs from 'fs-sync'
 import * as path from 'path'
 
 export class Helper {
+    static hasUserAlreadyInvitedThisFriend(invitingUserEMail: string, friendsEMailAddress: string, invitationLists: IInvitationListFromUser[]): any {
+        const invitationListFromThisUser: IInvitationListFromUser =
+            invitationLists.filter((invitation: IInvitationListFromUser) => invitation.from === invitingUserEMail)[0]
+
+        if (invitationListFromThisUser === undefined) {
+            return false
+        }
+
+        for (const invitedFriend of invitationListFromThisUser.invitedFriends) {
+            if (invitedFriend.eMail === friendsEMailAddress) {
+                return true
+            }
+        }
+
+        return false
+    }
 
     public static isItLongerAgoThan(value: number, unit: moment.unitOfTime.DurationConstructor, previousMoment: any) {
         if (moment().subtract(value, unit).isAfter(previousMoment)) {
@@ -14,7 +30,7 @@ export class Helper {
     }
 
     public static isUserADemoUser(userId: string): boolean {
-        const fileId = path.join(__dirname, '../../operational-data/template-users.json')
+        const fileId = path.join(__dirname, '../../demo-data/template-users.json')
 
         const templateUsers: IUser[] = fs.readJSON(fileId)
 

@@ -1,11 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core'
+import { IEmail } from '../interfaces'
 
-export interface IEmail {
-  sender: string,
-  recipient: string,
-  subject: string
-  content: string
-}
 @Component({
   selector: 'app-email',
   templateUrl: './email.component.html',

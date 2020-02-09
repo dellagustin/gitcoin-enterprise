@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core'
 import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { IUser } from './profile/profile.component'
 import { backendURL } from '../configurations/configuration'
-import { IEmail } from './email/email.component'
+import { IEmail } from './interfaces'
 
 export interface ITask {
   id: string
