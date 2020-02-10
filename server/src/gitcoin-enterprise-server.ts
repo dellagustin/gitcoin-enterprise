@@ -57,7 +57,7 @@ function ensureRedirectingFromUnsafeHostToSaveHost() {
 
     const saveHost = req.headers.host.replace('http://', 'https://')
 
-    res.send(`This page is only available via secure https: ${saveHost}`)
+    res.send(`This page is only available via secure <a href="https:${saveHost}">https:${saveHost}</a>`)
   })
 
   httpForwarderAPPListeningOnUnsafePort.listen(80)
