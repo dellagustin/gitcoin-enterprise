@@ -132,18 +132,18 @@ export class AppComponent implements OnInit {
         },
         {
           isActive: false,
-          text: 'Download Ledger',
+          text: 'Ledger',
           href: 'downloadLedger',
-        },
-        {
-          isActive: false,
-          text: 'Invite Friends',
-          href: 'inviteFriends',
         },
         {
           isActive: false,
           text: 'Use as App',
           href: 'useAsApp',
+        },
+        {
+          isActive: false,
+          text: 'Invite Friends',
+          href: 'inviteFriends',
         },
         {
           isActive: false,

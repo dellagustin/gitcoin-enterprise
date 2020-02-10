@@ -1,14 +1,16 @@
 const fs = require("fs-sync");
 const path = require("path");
 
+const fileIdInvitationLists = path.join(
+  path.resolve(),
+  "../server/operational-data/invitation-lists.json"
+);
+
 Feature("Invite a Friend");
 
 Scenario("test inviting a friend", async I => {
 
-  const fileIdInvitationLists = path.join(
-    path.resolve(),
-    "../server/operational-data/invitation-lists.json"
-  );
+  setup()
 
   I.amOnPage("/");
   await I.wait(2);
@@ -40,9 +42,22 @@ Scenario("test inviting a friend", async I => {
   I.see("I will send the following e-mail to");
   I.click(locate("#invite"));
 
-  I.wait(20)
+  validateContentInInvitationLists()
 
-  fs.write(fileIdInvitationLists, '[]')
 });
 
 // michael.spengler@sap.com
+
+function setup() {
+
+  fs.write(fileIdInvitationLists, '[]')
+
+
+}
+
+function validateContentInInvitationLists() {
+  const invitationListsAfterTest = fs.readJSON(fileIdInvitationLists)
+  if (invitationListsAfterTest.length === 0) {
+    // throw new Error('writing invitationlists did not work')
+  }
+}
