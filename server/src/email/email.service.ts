@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common'
 // import nodemailer = require('nodemailer')
-import { IEmail, IInvitedFriend, IInvitationListFromUser, IUser } from '../interfaces'
+import { IEmail, IInvitedFriend, IInvitationListFromUser } from '../interfaces'
 import { LoggerService } from '../logger/logger.service'
 import { config } from '../app.module'
-import { Helper } from '../helper'
+import { Helper } from '../helpers/helper'
 import * as fs from 'fs-sync'
 import * as path from 'path'
 import moment = require('moment')
@@ -21,13 +21,14 @@ export class EmailService {
     public sendEMail(eMail: IEmail): any {
         const invitationLists: IInvitationListFromUser[] = fs.readJSON(this.fileIdInvitationLists)
         this.lg.log(ELogLevel.Info, `I received an eMail request ${JSON.stringify(eMail)}`)
-        if (!this.isUserAllowedToTriggerEMails(eMail.sender)) {
+
+        if (Helper.hasUserAlreadyInvitedThisFriend(eMail.sender, eMail.recipient, invitationLists)) {
             return {
                 success: false,
             }
         }
 
-        if (this.isInvitationAllowed(eMail.sender, invitationLists)) {
+        if (Helper.isInvitationAllowed(eMail.senderUserId, invitationLists)) {
             if (config.port === '443' || config.port === '3000') {
                 this.sendEMailViaNodeMailer(eMail)
             }
@@ -88,14 +89,14 @@ export class EmailService {
             },
         })
 
-        const personalAccessToken = uuidv1().substr(4, 8)
+        const personalAccessToken = uuidv1().substr(11, 5)
 
         const mailOptions = {
             from: config.eMail,
             to: eMail.recipient,
             subject: 'Invitation for Peer2Peer Enterprise',
             text: eMail.content.replace('accessToken', personalAccessToken),
-            html: this.getHTMLEMail(eMail.sender, eMail.content),
+            html: this.getHTMLEMail(eMail.sender, personalAccessToken),
         }
 
         transporter.sendMail(mailOptions, async (error, info) => {
@@ -108,23 +109,6 @@ export class EmailService {
                 success: true,
             }
         })
-    }
-
-    private isInvitationAllowed(userId: string, invitationLists: IInvitationListFromUser[]): boolean {
-        // const lastInvitationOfUser = fs.readJSON(this.fileIdLastInvitation).filter((lastInvitation: IInvitation) => )
-        const invitationListFromThisUser: IInvitationListFromUser =
-            invitationLists.filter((invitation: IInvitationListFromUser) => invitation.from === userId)[0]
-
-        const invitedFriends: IInvitedFriend[] = (invitationListFromThisUser === undefined) ? [] : invitationListFromThisUser.invitedFriends
-        const lastInvitation: IInvitedFriend = invitedFriends[invitedFriends.length - 1]
-        if (lastInvitation === undefined) {
-            return true
-        } else {
-            const minutes: moment.unitOfTime.DurationConstructor = 'minutes'
-
-            return Helper.isItLongerAgoThan(60, minutes, moment(lastInvitation.date))
-        }
-
     }
 
     private getHTMLEMail(sender: string, personalAccessToken: string): string {
@@ -141,23 +125,4 @@ export class EmailService {
         }
     }
 
-    private async isUserAllowedToTriggerEMails(senderId: string): Promise<boolean> {
-        const fileId = path.join(__dirname, '../../operational-data/template-users.json')
-
-        const templateUsers: IUser[] = fs.readJSON(fileId)
-
-        if (templateUsers.length === 0) {
-            const message = 'No Demo Users in system - something seems strange - No E-Mail :)'
-            this.lg.log(ELogLevel.Error, message)
-            throw new Error(message)
-        }
-
-        const demoUserWithThisId = templateUsers.filter((user: IUser) => user.id === senderId)[0]
-        if (demoUserWithThisId === undefined) {
-            return true
-        } else {
-            await this.lg.log(ELogLevel.Info, 'Demo users shall not trigger too many E-Mails - therefore skipping the post comment feature :)')
-            return false
-        }
-    }
 }

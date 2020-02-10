@@ -40,13 +40,16 @@ export interface IInvitedFriend {
 }
 
 export interface IApplication {
+  applicantUserId: string
+  plan: string
   profileLink: string
   taskLink: string
 }
 
 export interface IEmail {
-  sender: string,
-  recipient: string,
+  senderUserId: string
+  sender: string
+  recipient: string
   subject: string
   content: string
 }

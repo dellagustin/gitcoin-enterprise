@@ -4,9 +4,10 @@ export interface IssueInfo {
 }
 
 export interface IApplication {
+  applicantUserId: string
+  plan: string
   profileLink: string
   taskLink: string
-  solutionApproach: string
 }
 
 export interface ITask {
@@ -44,6 +45,7 @@ export interface ILedgerEntry {
 }
 
 export interface IEmail {
+  senderUserId: string
   sender: string,
   recipient: string,
   subject: string

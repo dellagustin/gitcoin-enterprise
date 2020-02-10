@@ -51,9 +51,10 @@ export class SolveComponent implements OnInit {
     if (ProfileComponent.currentUser.firstName !== '') {
       this.applicationCompleted = true
       const application: IApplication = {
+        applicantUserId: this.user.id,
         profileLink: this.user.link,
         taskLink: this.taskOfInterest.link,
-        solutionApproach: this.solutionApproach
+        plan: this.solutionApproach
       }
       this.backendService.post(`${backendURL}/applyForSolving`, application, ProfileComponent.currentUser.id)
         .subscribe()

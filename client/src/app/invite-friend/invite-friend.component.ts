@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core'
-import { IEmail } from '../email/email.component'
 
 import { BackendService } from '../backend.service'
 import { ProfileComponent } from '../profile/profile.component'
 import { backendURL } from '../../configurations/configuration'
-import { IUser } from '../interfaces'
+import { IUser, IEmail } from '../interfaces'
+import { AppComponent } from '../app.component'
 
 @Component({
   selector: 'app-invite-friend',
@@ -28,6 +28,7 @@ export class InviteFriendComponent implements OnInit {
   public ngOnInit(): void {
 
     this.eMail = {
+      senderUserId: ProfileComponent.currentUser.id,
       sender: this.invitingUsersAddress,
       recipient: this.eMailAddress,
       subject: `Invitation to ${this.url}`,
@@ -37,6 +38,7 @@ export class InviteFriendComponent implements OnInit {
   }
 
   public send() {
+    this.eMail.senderUserId = ProfileComponent.currentUser.id
     this.backendService.sendEMail(this.eMail, ProfileComponent.currentUser.id)
       .subscribe((result: any) => {
         if (result.success === false) {

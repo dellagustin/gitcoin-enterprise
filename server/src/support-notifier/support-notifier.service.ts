@@ -10,7 +10,7 @@ export class SupportNotifierService implements ISupportNotifier {
     private static bot
 
     public static initializeOnlyOnce() {
-        if (this.started) {
+        if (this.started || config === undefined || config.notifierToken === '') {
             return
         }
         SupportNotifierService.started = true
@@ -28,6 +28,8 @@ export class SupportNotifierService implements ISupportNotifier {
     }
 
     public async sendMessageToSupportChannel(message: string): Promise<any> {
-        return SupportNotifierService.bot.sendMessage(config.notifierSupportChannel, message)
+        if (config.notifierToken !== '') {
+            return SupportNotifierService.bot.sendMessage(config.notifierSupportChannel, message)
+        }
     }
 }
