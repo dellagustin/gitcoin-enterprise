@@ -60,10 +60,6 @@ export class GithubIntegrationService {
             throw new Error(errorMessage)
         }
 
-        if (Helper.isUserADemoUser(funding.funderId)) {
-            return
-        }
-
         const templateFileId = path.join(__dirname, './comment-on-funding.md')
         const body = fs.read(templateFileId).toString().replace('{{{amount}}}', funding.amount)
 
@@ -88,7 +84,7 @@ export class GithubIntegrationService {
         await this.lg.log(ELogLevel.Info, JSON.stringify(funding))
     }
 
-    public async postCommentAboutApplication(application: IApplication, plan: string) {
+    public async postCommentAboutApplication(application: IApplication) {
 
         const seconds: moment.unitOfTime.DurationConstructor = 'seconds'
 
@@ -97,12 +93,9 @@ export class GithubIntegrationService {
             await this.lg.log(ELogLevel.Error, errorMessage)
             throw new Error(errorMessage)
         }
-        if (Helper.isUserADemoUser(application.applicantUserId)) {
-            return
-        }
 
         const templateFileId = path.join(__dirname, './comment-on-application.md')
-        const body = fs.read(templateFileId).toString().replace('{{{applicant}}}', application.profileLink).replace('{{{plan}}}', plan)
+        const body = fs.read(templateFileId).toString().replace('{{{applicant}}}', application.profileLink).replace('{{{plan}}}', application.plan)
 
         const owner = application.taskLink.split('/')[3]
         const repoName = application.taskLink.split('/')[4]

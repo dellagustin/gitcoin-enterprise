@@ -29,23 +29,6 @@ export class Helper {
         }
     }
 
-    public static isUserADemoUser(userId: string): boolean {
-        const fileId = path.join(__dirname, '../../demo-data/template-users.json')
-
-        const templateUsers: IUser[] = fs.readJSON(fileId)
-
-        if (templateUsers.length === 0) {
-            return true
-        }
-
-        const demoUserWithThisId = templateUsers.filter((user: IUser) => user.id === userId)[0]
-        if (demoUserWithThisId !== undefined) {
-            return true
-        } else {
-            return false
-        }
-    }
-
     public static doesUserExist(userId: string) {
         const fileId = path.join(__dirname, '../../operational-data/users.json')
 
@@ -60,10 +43,6 @@ export class Helper {
     }
 
     public static isInvitationAllowed(userId: string, invitationLists: IInvitationListFromUser[]): boolean {
-        if (Helper.isUserADemoUser(userId)) {
-            return false
-        }
-
         if (!Helper.doesUserExist(userId)) {
             return false
         }

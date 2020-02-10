@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common'
 
 import * as fs from 'fs-sync'
 import * as path from 'path'
-import { ITask, ETaskStatus, ETaskType, IUser, IFunding, ITaskAndFunding } from './interfaces'
+import { ITask, ETaskStatus, ETaskType, IUser, IFunding, ITaskAndFunding, IApplication } from './interfaces'
 import { LoggerService } from './logger/logger.service'
 import { LedgerConnector } from './ledger-connector/ledger-connector-file-system.service'
 import { GithubIntegrationService } from './github-integration/github-integration.service'
@@ -28,12 +28,12 @@ export class AppService {
     return fs.readJSON(this.usersFileId).filter((user: IUser) => user.id === userId)[0]
   }
 
-  public applyForSolving(userId: string, profileLink: string, taskLink: string, solutionApproach: string): void {
+  public applyForSolving(userId: string, application: IApplication): void {
     const existingUser = fs.readJSON(this.usersFileId).filter((user: IUser) => user.id === userId)[0]
     if (existingUser === undefined) {
       throw new Error('User not found')
     }
-    this.gitHubIntegration.postCommentAboutApplication(profileLink, taskLink, solutionApproach)
+    this.gitHubIntegration.postCommentAboutApplication(application)
   }
 
   public getGitHubToken(): string {
@@ -44,9 +44,23 @@ export class AppService {
     return fs.write(this.fundedTasksFileId, JSON.stringify(fundedTasks))
   }
 
+  public authorizeInstallation(): void {
+    const userId = '123'
+    this.lg.log(ELogLevel.Info, `User: ${userId} authorized installation.`)
+  }
+
+  public handleOAuthCallbackRequest(): void {
+    const calbackRequestData = 'calbackRequestData'
+    this.lg.log(ELogLevel.Info, `OAuthCallBackRequest Received: ${calbackRequestData}`)
+  }
+
+  public ghAppWebHookURL(): void {
+    const trigger = 'tbd'
+    this.lg.log(ELogLevel.Info, `Webhook URL: ${trigger}`)
+  }
+
   public getFundedTasks(): ITask[] {
     return fs.readJSON(this.fundedTasksFileId)
-
   }
 
   public getDefaultTaskForDemo(): ITask {

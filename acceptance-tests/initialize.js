@@ -21,12 +21,6 @@ const fileIdUsers = path.join(
   "../server/operational-data/users.json"
 );
 
-const fileIdTemplateUsers = path.join(
-  path.resolve(),
-  "../server/operational-data/template-users.json"
-);
-
 fs.write(fileIdInvitationLists, "[]");
 fs.write(fileIdLedgerEntries, "[]");
 fs.write(fileIdFundedTasks, "[]");
-fs.write(fileIdUsers, JSON.stringify(fs.readJSON(fileIdTemplateUsers)));

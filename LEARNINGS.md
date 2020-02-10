@@ -43,6 +43,18 @@ As Interfaces are currently design time only, I needed to play a trick for mimic
 ## Docker Related
 For starters [this video](https://www.youtube.com/watch?v=CsWoMpK3EtE) seems helpful.
 
+## Authentication Related
+### In General
+http://www.passportjs.org/docs/
+
+### GitHub based Authentication
+**Rather Classic**
+http://www.passportjs.org/packages/passport-github/ resp.
+http://www.passportjs.org/packages/passport-github2/
+
+**Using GitHub Apps**
+https://developer.github.com/apps/building-github-apps/identifying-and-authorizing-users-for-github-apps/
+
 ## Shell / Bash Script Related
 
 FILE=./.env.json

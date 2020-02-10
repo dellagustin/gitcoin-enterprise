@@ -17,7 +17,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "echo temp"
+      "pre-commit": "npm run test"
     }
   },
   "repository": {

@@ -1,11 +1,19 @@
+const fs = require("fs-sync");
+const path = require("path");
 
+const fileIdInvitationLists = path.join(
+  path.resolve(),
+  "../server/operational-data/invitation-lists.json"
+);
 
 Feature("Minimal Viable Service");
 
+const testUserId = 'f-i-r-s-t'
+
 Scenario("test minimal viable service", async (I) => {
 
-  copyDemoUsersToUsersFile() // setup
-  
+  setup()
+
   I.amOnPage("/");
   await I.wait(2)
 
@@ -30,7 +38,7 @@ async function fundATask(I) {
   I.click(locate("#next"));
   await I.wait(2)
 
-  I.fillField(locate('#userId'), 'd123')
+  I.fillField(locate('#userId'), testUserId)
   await I.wait(2)
 
   I.click(locate("#next"));
@@ -74,23 +82,22 @@ async function solveATask(I, transactionId) {
   // I.see("Task Explorer");
 }
 
-function copyDemoUsersToUsersFile() {
-
-  const fs = require("fs-sync");
-  const path = require("path");
-
+function setup() {
 
   const fileIdUsers = path.join(
     path.resolve(),
     "../server/operational-data/users.json"
   );
+  fs.write(fileIdInvitationLists, '[]')
+  fs.write(fileIdUsers, JSON.stringify(getAFirstUser()))
+}
 
 
-  const fileIdDemoUsers = path.join(
-    path.resolve(),
-    "../server/demo-data/template-users.json"
-  );
-  
-  fs.write(fileIdUsers, JSON.stringify(fs.readJSON(fileIdDemoUsers)))
-
+function getAFirstUser() {
+  return [{
+    "balance": 1000,
+    "id": "f-i-r-s-t",
+    "firstName": "Michael",
+    "link": "https://github.com/michael-spengler"
+  }]
 }

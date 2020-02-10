@@ -21,7 +21,6 @@ describe('EmailService', () => {
     })
 
     it('should check whether invitation is allowed', () => {
-        expect(Helper.isUserADemoUser('d123')).toEqual(true)
         expect(Helper.isInvitationAllowed('d123', [])).toEqual(false)
         expect(Helper.doesUserExist('d1234')).toEqual(false)
         expect(Helper.isInvitationAllowed('d1234', [])).toEqual(false)

@@ -1,17 +1,17 @@
 
-const fileIdInvitationLists = path.join(
-  path.resolve(),
-  "../server/operational-data/invitation-lists.json"
-);
+const fs = require("fs-sync");
+const path = require("path");
+
+  const fileIdInvitationLists = path.join(
+    path.resolve(),
+    "../server/operational-data/invitation-lists.json"
+  );
+
 
 Feature("Invite a Friend");
 
 Scenario("test inviting a friend", async I => {
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 171b3fec4fde11bddade45f77a3084f9d95d2ff9
   setup()
 
   I.amOnPage("/");
@@ -60,14 +60,6 @@ function validateContentInInvitationLists() {
 
 
 function setup() {
-
-  const fs = require("fs-sync");
-  const path = require("path");
-
-  const fileIdInvitationLists = path.join(
-    path.resolve(),
-    "../server/operational-data/invitation-lists.json"
-  );
 
   const fileIdUsers = path.join(
     path.resolve(),
