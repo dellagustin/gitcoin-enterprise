@@ -29,7 +29,7 @@ export class EmailService {
         }
 
         if (Helper.isInvitationAllowed(eMail.senderUserId, invitationLists)) {
-            if (config.port === '443' || config.port === '3000') {
+            if (config.port === '443') {
                 this.sendEMailViaNodeMailer(eMail)
             }
             this.addInvitationToFile(eMail, invitationLists)
