@@ -17,7 +17,7 @@ export class AppController {
     this.githubOAuth = require('./github-oauth/gh-oauth-implement-a-typescript-version-soon.js')({
       githubClient: config.gitHubOAuthClient,
       githubSecret: config.gitHubOAuthSecret,
-      baseURL: 'http://localhost',
+      baseURL: config.backendURL,
       loginURI: '/login',
       callbackURI: '/callback',
       scope: 'user', // optional, default scope is set to user

@@ -10,10 +10,10 @@ exports.config = {
   helpers: {
     Puppeteer: {
       url: "http://localhost:4200",
-      show: true
+      show: false
     }
   },
-  bootstrap: "./initialize.js",
+  bootstrap: null,
   mocha: {},
   name: "acceptance-tests",
   plugins: {
