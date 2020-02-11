@@ -9,7 +9,7 @@ import { ELogLevel, ILogger } from './logger-interface'
 export class LoggerService implements ILogger {
 
     private static readonly currentPath = path.resolve(path.dirname(''))
-    public static readonly errorsFileID = path.join(LoggerService.currentPath, 'errors', 'errors.json')
+    private static readonly errorsFileID = path.join(LoggerService.currentPath, 'errors', 'errors.json')
 
     private logLevel = config.logLevel
 

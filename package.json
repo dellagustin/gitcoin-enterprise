@@ -7,7 +7,7 @@
     "doc": "docs"
   },
   "scripts": {
-    "tslint": "tslint -p server/ -c tslint.json && tslint -p client/ -c tslint.json",
+    "tslint": "tslint -p client/ -c tslint.json && tslint -p server/ -c tslint.json",
     "test": "npm run lint && npm run ut && npm run at",
     "ut": "cd server && npm run test",
     "at": "cd acceptance-tests && npm run acceptance-tests",

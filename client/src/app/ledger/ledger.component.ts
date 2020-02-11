@@ -35,15 +35,17 @@ export class LedgerComponent implements OnInit {
     for (const e of this.ledgerEntries) {
       sum = sum + e.amount
     }
+
     return sum
   }
 
-  public downloadAsCSV() {
+
+  public downloadAsCSV(): void {
     const replacer = (key, value) => value === null ? '' : value // specify how you want to handle null values here
     const header = Object.keys(this.ledgerEntries[0])
     let line = `${header}\n`
     let index = 0
-    this.ledgerEntries.map(row => header.map(fieldName => {
+    this.ledgerEntries.map((row) => header.map(fieldName => {
       index++
       if (index < header.length) {
         line = `${line}${JSON.stringify(row[fieldName], replacer)},`
@@ -61,7 +63,7 @@ export class LedgerComponent implements OnInit {
     downloadAnchorNode.remove()
   }
 
-  public downloadAsJSON() {
+  public downloadAsJSON(): void {
     const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(this.ledgerEntries))
     const downloadAnchorNode = document.createElement('a')
     downloadAnchorNode.setAttribute('href', dataStr)
@@ -80,17 +82,14 @@ export class LedgerComponent implements OnInit {
     delete this.entryIdOfInterest
   }
 
-  public getSource() {
+  public getSource(): string {
+    // tbd
     return 'User'
   }
 
-  public getTarget() {
+  public getTarget(): string {
+    // tbd
     return 'Task'
   }
 
-  public cellStyle(value, row, index) {
-    return {
-      classes: value.trim() === 'YES' ? 'yes' : 'no'
-    }
-  }
 }
