@@ -13,12 +13,12 @@ import * as uuidv1 from 'uuid/v1'
 @Injectable()
 export class EmailService {
 
-    private fileIdInvitationLists = path.join(__dirname, '../../operational-data/invitation-lists.json')
+    private readonly fileIdInvitationLists = path.join(__dirname, '../../operational-data/invitation-lists.json')
     // private fileIdLastInvitation = path.join(__dirname, '../../operational-data/last-invitations.json')
 
     public constructor(private readonly lg: LoggerService) { }
 
-    public sendEMail(eMail: IEmail): any {
+    public async sendEMail(eMail: IEmail): Promise<any> {
         const invitationLists: IInvitationListFromUser[] = fs.readJSON(this.fileIdInvitationLists)
         this.lg.log(ELogLevel.Info, `I received an eMail request ${JSON.stringify(eMail)}`)
 
@@ -30,9 +30,10 @@ export class EmailService {
 
         if (Helper.isInvitationAllowed(eMail.senderUserId, invitationLists)) {
             if (config.port === '443') {
-                this.sendEMailViaNodeMailer(eMail)
+                await this.sendEMailViaNodeMailer(eMail)
             }
             this.addInvitationToFile(eMail, invitationLists)
+
             return {
                 success: true,
             }
@@ -99,7 +100,7 @@ export class EmailService {
             html: this.getHTMLEMail(eMail.sender, personalAccessToken),
         }
 
-        transporter.sendMail(mailOptions, async (error, info) => {
+        transporter.sendMail(mailOptions, async (error: any, info: any) => {
             if (error) {
                 throw new Error(error)
             }
@@ -111,8 +112,8 @@ export class EmailService {
         })
     }
 
-    private getHTMLEMail(sender: string, personalAccessToken: string): string {
-        const templateHTMLFileId = path.join(__dirname, './email-template.html')
+    private async getHTMLEMail(sender: string, personalAccessToken: string): Promise<string> {
+        const templateHTMLFileId: string = path.join(__dirname, './email-template.html')
         const templateHTML = fs.read(templateHTMLFileId)
         try {
             return templateHTML
@@ -121,7 +122,7 @@ export class EmailService {
                 .replace(/backendURLShort/g, config.backendURL.split('https:// ')[1])
                 .replace(/accessToken/g, personalAccessToken)
         } catch (error) {
-            this.lg.log(ELogLevel.Error, `Something seems wrong with the E-Mail HTML: ${templateHTML}`)
+            await this.lg.log(ELogLevel.Error, `Something seems wrong with the E-Mail HTML: ${templateHTML}`)
         }
     }
 

@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, Input } from '@angular/core'
 import { BackendService } from '../backend.service'
+import { backendURL } from '../../configurations/configuration'
 
 export interface IUser {
   id: string
@@ -16,7 +17,9 @@ export interface IUser {
 export class ProfileComponent implements OnInit {
 
   public static currentUser: IUser = ProfileComponent.getInitialUser()
+  @Input() public sessionWithoutCookies = ''
   public users: IUser[] = []
+  public userIsAuthorized = false
   public user = ProfileComponent.currentUser
 
   public static getInitialUser() {
@@ -28,6 +31,10 @@ export class ProfileComponent implements OnInit {
     }
 
     return user
+  }
+
+  public login() {
+    window.location.assign(`${backendURL}/login?sessionWithoutCookies=${this.sessionWithoutCookies}`)
   }
 
 

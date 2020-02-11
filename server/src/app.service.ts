@@ -15,6 +15,7 @@ const config = fs.readJSON(path.join(__dirname, '../.env.json'))
 @Injectable()
 export class AppService {
 
+  public static currentSessionWithoutCookiesLogin = ''
   private fundedTasksFileId = path.join(__dirname, '../operational-data/funded-tasks.json')
   private usersFileId = path.join(__dirname, '../operational-data/users.json')
 
@@ -71,9 +72,9 @@ export class AppService {
     this.lg.log(ELogLevel.Info, `OAuthCallBackRequest Received: ${calbackRequestData}`)
   }
 
-  public ghAppWebHookURL(): void {
+  public async ghAppWebHookURL(): Promise<void> {
     const trigger = 'tbd'
-    this.lg.log(ELogLevel.Info, `Webhook URL: ${trigger}`)
+    await this.lg.log(ELogLevel.Info, `Webhook URL: ${trigger}`)
   }
 
   public getFundedTasks(): ITask[] {
@@ -103,7 +104,8 @@ export class AppService {
 
   public saveFunding(taskAndFunding: ITaskAndFunding, key: string): ILedgerEntry {
 
-    const user = fs.readJSON(this.usersFileId).filter((entry: IUser) => entry.id === key)[0]
+    const user = fs.readJSON(this.usersFileId)
+      .filter((entry: IUser) => entry.id === key)[0]
 
     if (user === undefined) {
       throw new Error('I could not find an authorized user with this id.')

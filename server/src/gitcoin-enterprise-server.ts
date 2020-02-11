@@ -23,8 +23,8 @@ async function bootstrap() {
     const certificate = fs.read(certFile)
     const credentials = { key: privateKey, cert: certificate }
     app = await NestFactory.create(AppModule, { httpsOptions: credentials })
-    logger.log(ELogLevel.Info, 'starting https server')
-    logger.log(ELogLevel.Info, typeof (app))
+    await logger.log(ELogLevel.Info, 'starting https server')
+    await  logger.log(ELogLevel.Info, typeof (app))
   } else {
     app = await NestFactory.create(AppModule)
   }
