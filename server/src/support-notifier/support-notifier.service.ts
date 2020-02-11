@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { config } from '../app.module'
 import { ISupportNotifier } from './support-notifier-interface'
-const TeleBot = require('telebot')
+const teleBot = require('telebot')
 
 @Injectable()
 export class SupportNotifierService implements ISupportNotifier {
@@ -9,12 +9,12 @@ export class SupportNotifierService implements ISupportNotifier {
     private static started = false
     private static bot
 
-    public static initializeOnlyOnce() {
-        if (this.started || config === undefined || config.notifierToken === '') {
+    public static initializeOnlyOnce(): void {
+        if (SupportNotifierService.started || config === undefined || config.notifierToken === '') {
             return
         }
         SupportNotifierService.started = true
-        SupportNotifierService.bot = new TeleBot({ token: config.notifierToken })
+        SupportNotifierService.bot = new teleBot({ token: config.notifierToken })
         SupportNotifierService.bot.on('text', (msg: any) => {
             // console.log(JSON.stringify(msg))
             msg.reply.text(`Selber ${msg.text}`)

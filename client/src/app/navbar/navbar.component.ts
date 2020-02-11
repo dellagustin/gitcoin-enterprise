@@ -9,10 +9,6 @@ import { backendURL } from '../../configurations/configuration'
   styleUrls: ['./navbar.component.css', '../app.component.css']
 })
 export class NavbarComponent implements OnInit {
-  public static firstFancyCity = ''
-  public static forFreePartners = []
-
-  public constructor() { }
 
   @Input() navBarData: INavbarData
   @Output() clickMenuEntry = new EventEmitter<string>()
@@ -22,7 +18,7 @@ export class NavbarComponent implements OnInit {
     // alert(this.navBarData.logoURL);
   }
 
-  public clickEntry(target: string) {
+  public clickEntry(target: string): void {
     this.myFunction()
     for (const entry of this.navBarData.menuEntries) {
       if (entry.href === target) {
@@ -35,7 +31,7 @@ export class NavbarComponent implements OnInit {
     this.clickMenuEntry.emit(target)
   }
 
-  public myFunction() {
+  public myFunction(): void {
     const x = document.getElementById('myTopnav')
     if (x.className === 'topnav') {
       x.className += ' responsive'

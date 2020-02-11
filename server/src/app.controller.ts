@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Res, Post, Req } from '@nestjs/common'
+import { Controller, Get, Param, Res, Post, Req, Query } from '@nestjs/common'
 import { AppService } from './app.service'
 import { pathToStaticAssets } from './gitcoin-enterprise-server'
 import { ITask, IUser } from './interfaces'
@@ -35,13 +35,9 @@ export class AppController {
     })
 
     this.githubOAuth.on('token', (token, serverResponse, tokenResp, req) => {
-      // getting the Authorization from headers
-        // tslint:disable-next-line: no-console
-      console.log('req.headers.Authorization')
       try {
-        // tslint:disable-next-line: no-console
-        console.log(req.headers.Authorization)
-        this.authorizationService.storeAuthorization(token, req.headers.Authorization)
+        this.authorizationService.storeAuthorization(token, AppService.currentSessionWithoutCookiesLogin)
+        AppService.currentSessionWithoutCookiesLogin = ''
       } catch (error) {
         // tslint:disable-next-line: no-console
         console.log(error.message)
@@ -90,8 +86,13 @@ export class AppController {
   }
 
   @Get('/login')
-  login(@Req() req: any, @Res() res: any): void {
-    return this.githubOAuth.login(req, res)
+  login(@Req() req: any, @Res() res: any, @Query('sessionWithoutCookies') sessionWithoutCookies: string): void {
+    if (AppService.currentSessionWithoutCookiesLogin !== '') {
+      res.send('Currently there is too much traffic on this Hobby Server :) Please try again later.')
+    } else {
+      AppService.currentSessionWithoutCookiesLogin = sessionWithoutCookies
+      return this.githubOAuth.login(req, res)
+    }
   }
 
   @Get('/callback')

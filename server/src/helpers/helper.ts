@@ -4,7 +4,7 @@ import * as fs from 'fs-sync'
 import * as path from 'path'
 
 export class Helper {
-    static hasUserAlreadyInvitedThisFriend(invitingUserEMail: string, friendsEMailAddress: string, invitationLists: IInvitationListFromUser[]): any {
+    public static hasUserAlreadyInvitedThisFriend(invitingUserEMail: string, friendsEMailAddress: string, invitationLists: IInvitationListFromUser[]): any {
         const invitationListFromThisUser: IInvitationListFromUser =
             invitationLists.filter((invitation: IInvitationListFromUser) => invitation.from === invitingUserEMail)[0]
 
@@ -24,9 +24,8 @@ export class Helper {
     public static isItLongerAgoThan(value: number, unit: moment.unitOfTime.DurationConstructor, previousMoment: any) {
         if (moment().subtract(value, unit).isAfter(previousMoment)) {
             return true
-        } else {
-            return false
         }
+        return false
     }
 
     public static doesUserExist(userId: string) {
@@ -55,10 +54,9 @@ export class Helper {
         const lastInvitation: IInvitedFriend = invitedFriends[invitedFriends.length - 1]
         if (lastInvitation === undefined) {
             return true
-        } else {
-            const minutes: moment.unitOfTime.DurationConstructor = 'minutes'
-
-            return Helper.isItLongerAgoThan(60, minutes, moment(lastInvitation.date))
         }
+        const minutes: moment.unitOfTime.DurationConstructor = 'minutes'
+
+        return Helper.isItLongerAgoThan(60, minutes, moment(lastInvitation.date))
     }
 }

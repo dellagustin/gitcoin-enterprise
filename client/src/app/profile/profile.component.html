@@ -3,20 +3,18 @@
   <h4 class="titleBeneathImage">
     Profile
   </h4>
-  <input id="userId" type="text" class="form-control" placeholder="enter your id or click your invitation link"
-    [(ngModel)]="user.id" autofocus>
+</span>
 
-  <span *ngIf="user.id.length>0">
-    <button type="button" class="btn ourBlueColor" (click)="onUserIdEntered()">
-      <i class="fa fa-step-forward" aria-hidden="true" style="padding-right: 3vw;"></i>
-      Next
-      <i class="fa fa-step-forward" aria-hidden="true" style="padding-left: 3vw;"></i>
-    </button>
-  </span>
+<span *ngIf="!userIsAuthorized">
+  <button id="next" type="button" class="btn ourBlueColor" (click)="login()">
+    <i class="fa fa-step-forward" aria-hidden="true" style="padding-right: 3vw;"></i>
+    Login To Fund This Task
+    <i class="fa fa-step-forward" aria-hidden="true" style="padding-left: 3vw;"></i>
+  </button>
 </span>
 
 
-<span *ngIf="user.firstName!==''">
+<span *ngIf="userIsAuthorized">
 
   <div style="width: 90%; margin-left: auto; margin-right: auto; margin-top: 90px;">
     <app-user-card [user]="user"></app-user-card>

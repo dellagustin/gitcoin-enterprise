@@ -3,13 +3,13 @@ import * as fs from 'fs-sync'
 import * as path from 'path'
 import { config } from '../app.module'
 import { SupportNotifierService } from '../support-notifier/support-notifier.service'
-import { ILogger, ELogLevel } from './logger-interface'
+import { ELogLevel, ILogger } from './logger-interface'
 
 @Injectable()
 export class LoggerService implements ILogger {
 
-    private static currentPath = path.resolve(path.dirname(''))
-    public static errorsFileID = path.join(LoggerService.currentPath, 'errors', 'errors.json')
+    private static readonly currentPath = path.resolve(path.dirname(''))
+    private static readonly errorsFileID = path.join(LoggerService.currentPath, 'errors', 'errors.json')
 
     private logLevel = config.logLevel
 

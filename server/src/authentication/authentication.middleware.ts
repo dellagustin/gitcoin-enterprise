@@ -5,7 +5,7 @@ const axios = require('axios')
 
 export class AuthenticationMiddleware implements NestMiddleware {
   // tslint:disable-next-line: ban-types
-  async use(req: Request, res: Response, next: Function) {
+  public async use(req: Request, res: Response, next: Function): Promise<void> {
 
     // await axios.get(`${config.backendService}/login`)
     next()
