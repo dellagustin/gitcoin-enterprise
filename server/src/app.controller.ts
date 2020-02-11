@@ -6,15 +6,19 @@ import { EmailService } from './email/email.service'
 import { GithubIntegrationService } from './github-integration/github-integration.service'
 import { ILedgerEntry } from './ledger-connector/ledger-connector.interface'
 import { config } from './app.module'
+import { AuthorizationService } from './authorization/authorization.service'
+import * as fs from 'fs-sync'
+import * as uuidv1 from 'uuid/v1'
 
 @Controller()
 export class AppController {
 
   private githubOAuth: any
+  userService: any
 
-  constructor(private readonly appService: AppService, private readonly eMailService: EmailService, private readonly gitHubIntegration: GithubIntegrationService) {
+  constructor(private readonly appService: AppService, private readonly eMailService: EmailService, private readonly gitHubIntegration: GithubIntegrationService, private authorizationService: AuthorizationService) {
 
-    this.githubOAuth = require('./github-oauth/gh-oauth-implement-a-typescript-version-soon.js')({
+    this.githubOAuth = require('./github-oauth/gh-oauth-implement-a-typescript-version-soon.ts')({
       githubClient: config.gitHubOAuthClient,
       githubSecret: config.gitHubOAuthSecret,
       baseURL: config.backendURL,
@@ -31,12 +35,17 @@ export class AppController {
     this.githubOAuth.on('token', (token, serverResponse) => {
       // tslint:disable-next-line: no-console
       console.log('here is your shiny new github oauth token', token)
+      this.authorizationService.storeAuthorization(token)
       serverResponse.end(JSON.stringify(token))
     })
   }
 
-  @Get()
+  @Get('')
   getHello(@Res() res: any): void {
+    const sessionWithoutCookies = uuidv1()
+    fs.write(`${pathToStaticAssets}/i-want-compression-via-route.html`, fs.read(`${pathToStaticAssets}/i-want-compression-via-route.html`)
+      .replace('toBeReplacedBeforeDeliveringTheIndex.html', sessionWithoutCookies))
+    this.appService.addUser(sessionWithoutCookies)
     res.sendFile(`${pathToStaticAssets}/i-want-compression-via-route.html`)
   }
 

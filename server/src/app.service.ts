@@ -23,6 +23,21 @@ export class AppService {
     // tbd
   }
 
+  public addUser(id: string) {
+    const users: IUser[] = fs.readJSON(this.usersFileId)
+
+    const newUser: IUser = {
+      id,
+      firstName: '',
+      balance: 0,
+      link: '',
+    }
+
+    users.push(newUser)
+
+    fs.write(this.usersFileId, JSON.stringify(users))
+  }
+
   public async getUser(userId: string): Promise<IUser> {
     await this.lg.log(ELogLevel.Info, `getting user ${userId}`)
     return fs.readJSON(this.usersFileId).filter((user: IUser) => user.id === userId)[0]

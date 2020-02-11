@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, Input } from '@angular/core'
 import { INavbarData } from './navbar/navbar.interfaces'
 import { BackendService, ITask } from './backend.service'
 import { ILedgerEntry } from './ledger/ledger.interface'
@@ -11,6 +11,8 @@ import { ProfileComponent, IUser } from './profile/profile.component'
 })
 export class AppComponent implements OnInit {
   public static deferredPrompt
+
+  @Input() sessionWithoutCookieId = ''
   public mode = ''
   public fundedTasks: ITask[] = []
   public ledgerEntries: ILedgerEntry[] = []
