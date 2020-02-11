@@ -44,6 +44,9 @@ As Interfaces are currently design time only, I needed to play a trick for mimic
 For starters [this video](https://www.youtube.com/watch?v=CsWoMpK3EtE) seems helpful.
 
 ## Authentication Related
+### E-Mail based Authentication
+I decided now to leave E-Mail based Authentication behind. GitHub based Authentication seems best in the context of GitCoin Enterprise.
+
 ### In General
 http://www.passportjs.org/docs/
 
@@ -64,3 +67,4 @@ else
     echo '{"mode": "real"}' >> .env.json
     echo "I created $FILE with default values successfully"
 fi
+
