@@ -26,7 +26,6 @@ export class InviteFriendComponent implements OnInit {
   public constructor(private readonly backendService: BackendService) { }
 
   public ngOnInit(): void {
-
     this.eMail = {
       senderUserId: ProfileComponent.currentUser.id,
       sender: this.invitingUsersAddress,
@@ -49,10 +48,6 @@ export class InviteFriendComponent implements OnInit {
       })
   }
 
-  public copyLinkToClipboard() {
-    alert('to be developed')
-  }
-
   public onUserIdEntered() {
 
     this.backendService.getUser(this.user.id)
@@ -64,6 +59,23 @@ export class InviteFriendComponent implements OnInit {
           ProfileComponent.currentUser = this.user
         }
       }, error => alert(error.message))
+  }
 
+  public copyText() {
+    const selBox = document.createElement('textarea')
+    selBox.style.position = 'fixed'
+    selBox.style.left = '0'
+    selBox.style.top = '0'
+    selBox.style.opacity = '0'
+    selBox.value = document.URL
+    document.body.appendChild(selBox)
+    selBox.focus()
+    selBox.select()
+    selBox.setSelectionRange(0, 9999)
+    document.execCommand('copy')
+    document.body.removeChild(selBox)
+
+    // alert(NavbarComponent.operatingSystem);
+    alert('Link copied to clipboard')
   }
 }

@@ -27,20 +27,30 @@ export class AppController {
       scope: 'user', // optional, default scope is set to user
     })
 
-    this.githubOAuth.on('error', (err) => {
+    // this.githubOAuth.on('error', (err, resp, tokenResp, req) => {
+    this.githubOAuth.on('error', (body, err, resp, tokenResp, req) => {
       // tslint:disable-next-line: no-console
       console.error('there was a login error', err)
+      // console.error('there was a login error', body)
     })
 
-    this.githubOAuth.on('token', (token, serverResponse) => {
-      // tslint:disable-next-line: no-console
-      console.log('here is your shiny new github oauth token', token)
-      this.authorizationService.storeAuthorization(token)
-      serverResponse.end(JSON.stringify(token))
+    this.githubOAuth.on('token', (token, serverResponse, tokenResp, req) => {
+      // getting the Authorization from headers
+        // tslint:disable-next-line: no-console
+      console.log('req.headers.Authorization')
+      try {
+        // tslint:disable-next-line: no-console
+        console.log(req.headers.Authorization)
+        this.authorizationService.storeAuthorization(token, req.headers.Authorization)
+      } catch (error) {
+        // tslint:disable-next-line: no-console
+        console.log(error.message)
+      }
+      serverResponse.redirect(config.backendURL)
     })
   }
 
-  @Get('')
+  @Get('/')
   getHello(@Res() res: any): void {
     const sessionWithoutCookies = uuidv1()
     fs.write(`${pathToStaticAssets}/i-want-compression-via-route.html`, fs.read(`${pathToStaticAssets}/i-want-compression-via-route.html`)
@@ -48,36 +58,6 @@ export class AppController {
     this.appService.addUser(sessionWithoutCookies)
     res.sendFile(`${pathToStaticAssets}/i-want-compression-via-route.html`)
   }
-
-  @Get('/login')
-  login(@Req() req: any, @Res() res: any): void {
-    return this.githubOAuth.login(req, res)
-  }
-
-  @Get('/callback')
-  callback(@Req() req: any, @Res() res: any): void {
-    return this.githubOAuth.callback(req, res)
-  }
-
-  @Get('/ghAppUserAuthorizationCallbackURL')
-  authorizeInstallation(): void {
-    this.appService.authorizeInstallation()
-  }
-
-  @Get('/ghAppWebHookURL')
-  ghAppWebHookURL(): void {
-    this.appService.ghAppWebHookURL()
-  }
-
-  @Get('/getFundedTasks')
-  getFundedTasks(): ITask[] {
-    return this.appService.getFundedTasks()
-  }
-
-  // @Get('/testGHAppsBasedAuthentication')
-  // async testGHAppsBasedAuthentication(): Promise<void> {
-  //   await this.authenticationService.testGHAppsBasedAuthentication()
-  // }
 
   @Get('/getLedgerEntries')
   getLedgerEntries(): ILedgerEntry[] {
@@ -94,19 +74,50 @@ export class AppController {
     return this.gitHubIntegration.getIssue(org, repo, issueId)
   }
 
-  @Post('/sendEMail')
-  sendEMail(@Req() req: any) {
-    return this.eMailService.sendEMail(req.body)
+  @Get('/getFundedTasks')
+  getFundedTasks(): ITask[] {
+    return this.appService.getFundedTasks()
   }
 
-  @Post('/saveFunding')
+  @Post('/postFunding')
   saveFunding(@Req() req: any): ILedgerEntry {
     return this.appService.saveFunding(req.body, req.headers.companyuserid)
   }
 
-  @Post('/applyForSolving')
+  @Post('/postApplication')
   applyForSolving(@Req() req: any): void {
     return this.appService.applyForSolving(req.headers.companyuserid, req.body)
   }
+
+  @Get('/login')
+  login(@Req() req: any, @Res() res: any): void {
+    return this.githubOAuth.login(req, res)
+  }
+
+  @Get('/callback')
+  callback(@Req() req: any, @Res() res: any): void {
+    // this method handles the code - this is NOT THE ACCESS TOKEN yet
+    return this.githubOAuth.callback(req, res)
+  }
+
+  // @Post('/sendEMail')
+  // sendEMail(@Req() req: any) {
+  //   return this.eMailService.sendEMail(req.body)
+  // }
+
+  // @Get('/ghAppUserAuthorizationCallbackURL')
+  // authorizeInstallation(): void {
+  //   this.appService.authorizeInstallation()
+  // }
+
+  // @Get('/ghAppWebHookURL')
+  // ghAppWebHookURL(): void {
+  //   this.appService.ghAppWebHookURL()
+  // }
+
+  // @Get('/testGHAppsBasedAuthentication')
+  // async testGHAppsBasedAuthentication(): Promise<void> {
+  //   await this.authenticationService.testGHAppsBasedAuthentication()
+  // }
 
 }

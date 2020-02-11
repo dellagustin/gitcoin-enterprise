@@ -33,9 +33,11 @@ export class AppService {
       link: '',
     }
 
-    users.push(newUser)
+    if (users.filter((user: IUser) => user.id === newUser.id)[0] === undefined) {
+      users.push(newUser)
+      fs.write(this.usersFileId, JSON.stringify(users))
+    }
 
-    fs.write(this.usersFileId, JSON.stringify(users))
   }
 
   public async getUser(userId: string): Promise<IUser> {

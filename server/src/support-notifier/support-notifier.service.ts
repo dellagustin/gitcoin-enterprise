@@ -15,7 +15,7 @@ export class SupportNotifierService implements ISupportNotifier {
         }
         SupportNotifierService.started = true
         SupportNotifierService.bot = new TeleBot({ token: config.notifierToken })
-        SupportNotifierService.bot.on('text', (msg) => {
+        SupportNotifierService.bot.on('text', (msg: any) => {
             // console.log(JSON.stringify(msg))
             msg.reply.text(`Selber ${msg.text}`)
         })

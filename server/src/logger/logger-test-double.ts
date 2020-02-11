@@ -1,5 +1,5 @@
-import { ELogLevel } from './logger-interface'
 import { SupportNotifierService } from '../support-notifier/support-notifier.service'
+import { ELogLevel } from './logger-interface'
 
 export class LoggerDouble {
     constructor(private readonly notifierService: SupportNotifierService) {

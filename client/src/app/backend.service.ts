@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { IUser } from './profile/profile.component'
 import { backendURL } from '../configurations/configuration'
 import { IEmail } from './interfaces'
+import { AppComponent } from './app.component'
 
 export interface ITask {
   id: string
@@ -38,23 +39,19 @@ export class BackendService {
   public constructor(private readonly http: HttpClient) { }
 
 
-  public get(url: any, key?: string): any {
+  public get(url: any, key: string): any {
 
-    if (key !== undefined) {
 
-      const options = {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json',
-          companyuserid: key
-        })
-      }
-      console.log(`calling to get ${url}`)
-      return this.http.get<any>(url, options)
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${key}`
+      })
     }
-
     console.log(`calling to get ${url}`)
-    return this.http.get<any>(url)
+    return this.http.get<any>(url, options)
   }
+
 
   public post(url: string, body: any, key: string) {
     // const urlWithClient = `${url}?client=${document.URL}`;
@@ -73,8 +70,8 @@ export class BackendService {
   }
 
 
-  public getLedgerEntries() {
-    return this.get(`${backendURL}/getLedgerEntries`)
+  public getLedgerEntries(key: string) {
+    return this.get(`${backendURL}/getLedgerEntries`, key)
   }
 
   public sendEMail(eMail: IEmail, key: string): any {
@@ -86,8 +83,8 @@ export class BackendService {
     return this.get(`${backendURL}/getUser`, id)
   }
 
-  public getFundedTasks() {
-    return this.get(`${backendURL}/getFundedTasks`)
+  public getFundedTasks(key: string) {
+    return this.get(`${backendURL}/getFundedTasks`, key)
   }
 
 

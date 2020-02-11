@@ -5,11 +5,17 @@
     Invite Friends
   </h4>
 
-  <button id="next" type="button" class="btn ourBlueColor" (click)="copyLinkToClipboard()">
-    <i class="fa fa-clipboard" aria-hidden="true" style="padding-right: 3vw;"></i>
+  <button id="next" type="button" class="btn ourBlueColor" (click)="copyText()">
+    <!-- <i class="fa fa-clipboard" aria-hidden="true" style="padding-right: 3vw;"></i> -->
+    <i class="fa fa-copy fa-1x" aria-hidden="true" style="padding-right: 3vw;"></i>
     Copy Link To Clipboard
-    <i class="fa fa-step-forward" aria-hidden="true" style="padding-left: 3vw;"></i>
+    <i class="fa fa-copy fa-1x" aria-hidden="true" style="padding-left: 3vw;"></i>
   </button>
+
+    <!-- <input #userinput type="text" value="{{card.linkToThisItem}}" contenteditable="true" style="display: none"> -->
+
+    <p></p>
+
 
   <!-- <span *ngIf="user.firstName===''">
     <input id="userId" type="text" class="form-control" placeholder="enter your id or click your invitation link"

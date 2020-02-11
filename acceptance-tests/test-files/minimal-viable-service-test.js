@@ -17,11 +17,11 @@ Scenario("test minimal viable service", async (I) => {
   I.amOnPage("/");
   await I.wait(2)
 
-  let transactionId = await fundATask(I)
+  // let transactionId = await fundATask(I)
 
-  await validateSuccessfulFunding(I, transactionId)
+  // await validateSuccessfulFunding(I, transactionId)
 
-  await solveATask(I, transactionId)
+  // await solveATask(I, transactionId)
 
 });
 

@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common'
+import { Module, MiddlewareConsumer, RequestMethod } from '@nestjs/common'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { LoggerService } from './logger/logger.service'
@@ -8,6 +8,8 @@ import { EthereumLedgerConnector } from './ledger-connector/ledger-connector-eth
 import { GithubIntegrationService } from './github-integration/github-integration.service'
 import { SupportNotifierService } from './support-notifier/support-notifier.service'
 import { AuthorizationService } from './authorization/authorization.service'
+import { AuthenticationService } from './authentication/authentication.service'
+import { AuthenticationMiddleware } from './authentication/authentication.middleware'
 import * as path from 'path'
 import * as fs from 'fs-sync'
 
@@ -29,6 +31,18 @@ const ledgerConnectorProvider = {
 @Module({
   imports: [],
   controllers: [AppController],
-  providers: [AppService, LoggerService, EmailService, ledgerConnectorProvider, GithubIntegrationService, SupportNotifierService, AuthorizationService],
+  providers: [AppService, LoggerService, EmailService, ledgerConnectorProvider, GithubIntegrationService, SupportNotifierService, AuthorizationService, AuthenticationService],
 })
-export class AppModule { }
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(AuthenticationMiddleware)
+      .exclude('')
+      // .forRoutes({ path: '*', method: RequestMethod.ALL })
+      // .forRoutes({ path: lettersRegexp, method: RequestMethod.ALL })
+      .forRoutes({ path: 'post*', method: RequestMethod.ALL }, { path: 'get*', method: RequestMethod.ALL })
+  }
+}
+
+    // const lettersRegexp = /^[A-Za-z]+$/
+    // console.log(lettersRegexp.test('getUser')

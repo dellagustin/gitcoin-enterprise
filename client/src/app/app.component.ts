@@ -12,7 +12,7 @@ import { ProfileComponent, IUser } from './profile/profile.component'
 export class AppComponent implements OnInit {
   public static deferredPrompt
 
-  @Input() sessionWithoutCookieId = ''
+  public sessionWithoutCookieId
   public mode = ''
   public fundedTasks: ITask[] = []
   public ledgerEntries: ILedgerEntry[] = []
@@ -21,7 +21,9 @@ export class AppComponent implements OnInit {
   public taskOfInterest: ITask
 
   public constructor(private readonly backendService: BackendService, private route: ActivatedRoute) { }
+
   public ngOnInit() {
+    this.sessionWithoutCookieId = document.getElementById('sessionWithoutCookieId').innerHTML
     this.considerPWAInstallPrompt()
     this.getQueryParameterBasedData()
   }
@@ -44,7 +46,7 @@ export class AppComponent implements OnInit {
                 })
             }
             if (this.queryParameters.taskId !== undefined) {
-              this.backendService.getFundedTasks()
+              this.backendService.getFundedTasks(this.sessionWithoutCookieId)
                 .subscribe((fundedTasks: ITask[]) => {
                   this.fundedTasks = fundedTasks
                   this.taskOfInterest = this.fundedTasks.filter((entry: ITask) => entry.id === this.queryParameters.taskId)[0]

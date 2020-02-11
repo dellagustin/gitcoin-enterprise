@@ -13,6 +13,7 @@ import { IApplication } from '../interfaces'
 export class SolveComponent implements OnInit {
 
   @Input() public taskOfInterest: ITask
+  @Input() public sessionWithoutCookies = ''
   public fundedTasks: ITask[] = []
   public filteredTasks: ITask[] = []
   public searchTerm = ''
@@ -25,7 +26,7 @@ export class SolveComponent implements OnInit {
   public constructor(private readonly backendService: BackendService) { }
 
   public ngOnInit(): void {
-    this.backendService.getFundedTasks()
+    this.backendService.getFundedTasks(this.sessionWithoutCookies)
       .subscribe((result: ITask[]) => {
         this.fundedTasks = result
         this.filteredTasks = this.sortDescending(this.fundedTasks)
@@ -56,7 +57,7 @@ export class SolveComponent implements OnInit {
         taskLink: this.taskOfInterest.link,
         plan: this.solutionApproach
       }
-      this.backendService.post(`${backendURL}/applyForSolving`, application, ProfileComponent.currentUser.id)
+      this.backendService.post(`${backendURL}/postApplication`, application, ProfileComponent.currentUser.id)
         .subscribe()
     }
   }
