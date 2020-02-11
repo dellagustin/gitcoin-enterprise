@@ -59,7 +59,8 @@ export class ProfileComponent implements OnInit {
           this.user = user
           ProfileComponent.currentUser = this.user
         }
-      }, error => alert(error.message))
+      },
+      error => alert(error.message))
   }
 
 

@@ -72,15 +72,15 @@ export class SolveComponent implements OnInit {
     })
   }
 
-  public onTaskClicked(taskOfInterest: ITask) {
+  public onTaskClicked(taskOfInterest: ITask): void {
     this.taskOfInterest = taskOfInterest
   }
 
-  public backToOverview() {
+  public backToOverview(): void {
     delete this.taskOfInterest
   }
 
-  public sort() {
+  public sort(): ITask[] {
     this.sortingDirectionDown = !this.sortingDirectionDown
 
     return (this.sortingDirectionDown) ?
@@ -88,7 +88,7 @@ export class SolveComponent implements OnInit {
       this.sortDescending(this.filteredTasks)
   }
 
-  private sortAscending(tasks: ITask[]) {
+  private sortAscending(tasks: ITask[]): ITask[] {
     return tasks.sort((task1: ITask, task2: ITask) => {
       if (task1.funding > task2.funding) {
         return 1
@@ -102,7 +102,7 @@ export class SolveComponent implements OnInit {
     })
   }
 
-  private sortDescending(tasks: ITask[]) {
+  private sortDescending(tasks: ITask[]): ITask[] {
     return tasks.sort((task1: ITask, task2: ITask) => {
       if (task1.funding < task2.funding) {
         return 1
