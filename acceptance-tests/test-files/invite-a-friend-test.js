@@ -28,23 +28,23 @@ Scenario("test inviting a friend", async I => {
 
   I.see("Invite Friends");
 
-  I.fillField(locate("#userId"), "f-i-r-s-t");
-  await I.wait(2);
+  // I.fillField(locate("#userId"), "f-i-r-s-t");
+  // await I.wait(2);
 
-  I.click(locate("#next"));
-  await I.wait(2);
+  // I.click(locate("#next"));
+  // await I.wait(2);
 
-  I.fillField(locate("#eMailAddress"), "michael@gitcoin-enterprise.org");
-  await I.wait(0.2);
-  I.see("I hereby confirm my friend wants to be invited by E-Mail");
+  // I.fillField(locate("#eMailAddress"), "michael@gitcoin-enterprise.org");
+  // await I.wait(0.2);
+  // I.see("I hereby confirm my friend wants to be invited by E-Mail");
 
-  I.click(locate("#confirmationCheckbox"));
-  await I.wait(0.2);
+  // I.click(locate("#confirmationCheckbox"));
+  // await I.wait(0.2);
 
-  I.see("I will send the following e-mail to");
-  I.click(locate("#invite"));
+  // I.see("I will send the following e-mail to");
+  // I.click(locate("#invite"));
 
-  validateContentInInvitationLists()
+  // validateContentInInvitationLists()
 
 });
 

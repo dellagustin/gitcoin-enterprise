@@ -49,6 +49,10 @@ export class InviteFriendComponent implements OnInit {
       })
   }
 
+  public copyLinkToClipboard() {
+    alert('to be developed')
+  }
+
   public onUserIdEntered() {
 
     this.backendService.getUser(this.user.id)

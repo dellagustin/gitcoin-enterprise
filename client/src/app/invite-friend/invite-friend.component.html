@@ -5,7 +5,13 @@
     Invite Friends
   </h4>
 
-  <span *ngIf="user.firstName===''">
+  <button id="next" type="button" class="btn ourBlueColor" (click)="copyLinkToClipboard()">
+    <i class="fa fa-clipboard" aria-hidden="true" style="padding-right: 3vw;"></i>
+    Copy Link To Clipboard
+    <i class="fa fa-step-forward" aria-hidden="true" style="padding-left: 3vw;"></i>
+  </button>
+
+  <!-- <span *ngIf="user.firstName===''">
     <input id="userId" type="text" class="form-control" placeholder="enter your id or click your invitation link"
       [(ngModel)]="user.id" autofocus>
 
@@ -47,14 +53,14 @@
       </button>
     </span>
 
-  </span>
+  </span> -->
 </div>
 
-<div *ngIf="sent" class="adPad">
+<!-- <div *ngIf="sent" class="adPad">
   <h2 class="ourBlueColor">
     Thank You
   </h2>
   <p></p>
   You can invite 1 friend per hour. <br>
   C u later ;)
-</div>
+</div> -->

@@ -18,7 +18,7 @@ export class AppController {
 
   constructor(private readonly appService: AppService, private readonly eMailService: EmailService, private readonly gitHubIntegration: GithubIntegrationService, private authorizationService: AuthorizationService) {
 
-    this.githubOAuth = require('./github-oauth/gh-oauth-implement-a-typescript-version-soon.ts')({
+    this.githubOAuth = require('./github-oauth/gh-oauth-implement-a-typescript-version-soon')({
       githubClient: config.gitHubOAuthClient,
       githubSecret: config.gitHubOAuthSecret,
       baseURL: config.backendURL,
