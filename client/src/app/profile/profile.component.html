@@ -1,9 +1,8 @@
-<span *ngIf="user.firstName===''">
-  <img src="../../assets/avatar-2.png" alt="" width="82%">
-  <h4 class="titleBeneathImage">
-    Profile
-  </h4>
-</span>
+<img src="../../assets/avatar-2.png" alt="" width="82%">
+<h4 class="titleBeneathImage">
+  Profile
+</h4>
+
 
 <span *ngIf="!userIsAuthorized">
   <button id="next" type="button" class="btn ourBlueColor" (click)="login()">
@@ -17,10 +16,10 @@
 <span *ngIf="userIsAuthorized">
 
   <div style="width: 90%; margin-left: auto; margin-right: auto; margin-top: 90px;">
-    <app-user-card [user]="user"></app-user-card>
+    <app-user-card></app-user-card>
   </div>
 
-  <div class="adPad2">
+  <!-- <div class="adPad2">
 
     <button type="button" class="btn ourRedColor" (click)="clickBountiesAndFundings()">
       <i class="fa fa-gift" aria-hidden="true" style="padding-right: 1vw;"></i>
@@ -35,5 +34,5 @@
         <i class="fa fa-github" aria-hidden="true" style="padding-left: 1vw;"></i>
       </button>
     </a>
-  </div>
+  </div> -->
 </span>

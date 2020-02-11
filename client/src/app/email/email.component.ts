@@ -6,14 +6,7 @@ import { IEmail } from '../interfaces'
   templateUrl: './email.component.html',
   styleUrls: ['./email.component.css']
 })
-export class EmailComponent implements OnInit {
+export class EmailComponent {
 
   @Input() eMail: IEmail
-
-  constructor() { }
-
-  ngOnInit(): void {
-
-  }
-
 }

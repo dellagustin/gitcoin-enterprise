@@ -21,7 +21,7 @@ export class SolveComponent implements OnInit {
   public sortingDirectionDown = false
   public userWantsToApply = false
   public applicationCompleted = false
-  public user: IUser = ProfileComponent.currentUser
+  // public user: IUser = ProfileComponent.currentUser
 
   public constructor(private readonly backendService: BackendService) { }
 
@@ -35,12 +35,12 @@ export class SolveComponent implements OnInit {
 
   public applyForSolvingAfterUserIdAdded() {
 
-    this.backendService.getUser(this.user.id)
-      .subscribe((result: IUser) => {
-        this.user = result
-        ProfileComponent.currentUser = this.user
-        this.apply()
-      })
+    // this.backendService.getUser(this.user.id)
+    //   .subscribe((result: IUser) => {
+    //     this.user = result
+    //     ProfileComponent.currentUser = this.user
+    //     this.apply()
+    //   })
   }
 
   public applyForSolving(): void {
@@ -49,17 +49,16 @@ export class SolveComponent implements OnInit {
   }
 
   public apply(): void {
-    if (ProfileComponent.currentUser.firstName !== '') {
-      this.applicationCompleted = true
-      const application: IApplication = {
-        applicantUserId: this.user.id,
-        profileLink: this.user.link,
-        taskLink: this.taskOfInterest.link,
-        plan: this.solutionApproach
-      }
-      this.backendService.post(`${backendURL}/postApplication`, application, ProfileComponent.currentUser.id)
-        .subscribe()
+    this.applicationCompleted = true
+    const application: IApplication = {
+      applicantUserId: this.sessionWithoutCookies,
+      profileLink: 'attribute to be deleted soon', // probably this attribute can be deleted
+      taskLink: this.taskOfInterest.link,
+      plan: this.solutionApproach
     }
+    this.backendService.post(`${backendURL}/postApplication`, application, this.sessionWithoutCookies)
+      .subscribe()
+
   }
 
   public searchTask(): void {

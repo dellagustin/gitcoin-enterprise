@@ -37,11 +37,11 @@ export class AppController {
     this.githubOAuth.on('token', (token, serverResponse, tokenResp, req) => {
       try {
         this.authorizationService.storeAuthorization(token, AppService.currentSessionWithoutCookiesLogin)
-        AppService.currentSessionWithoutCookiesLogin = ''
       } catch (error) {
         // tslint:disable-next-line: no-console
         console.log(error.message)
       }
+      AppService.currentSessionWithoutCookiesLogin = ''
       serverResponse.redirect(config.backendURL)
     })
   }

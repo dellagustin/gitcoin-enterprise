@@ -61,7 +61,7 @@ export class BackendService {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        companyuserid: key
+        Authorization: `Bearer ${key}`
       })
     }
 

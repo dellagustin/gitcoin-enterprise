@@ -7,8 +7,6 @@ import { ILedgerEntry } from './ledger/ledger.interface'
 })
 export class DemoDataProviderService {
 
-  public constructor() { }
-
   public getFundedTasks(): ITask[] {
     const fundedTasks: ITask[] = []
     const task1 = this.getDefaultTaskForDemo()

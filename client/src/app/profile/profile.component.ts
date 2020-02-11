@@ -16,11 +16,11 @@ export interface IUser {
 })
 export class ProfileComponent implements OnInit {
 
-  public static currentUser: IUser = ProfileComponent.getInitialUser()
+  // public static currentUser: IUser = ProfileComponent.getInitialUser()
   @Input() public sessionWithoutCookies = ''
   public users: IUser[] = []
   public userIsAuthorized = false
-  public user = ProfileComponent.currentUser
+  // public user = ProfileComponent.currentUser
 
   public static getInitialUser() {
     const user: IUser = {

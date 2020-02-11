@@ -36,14 +36,15 @@ export class AppComponent implements OnInit {
           this.queryParameters = result.params
           if (this.queryParameters !== undefined) {
             if (this.queryParameters.id !== undefined) {
-              this.backendService.getUser(this.queryParameters.id)
-                .subscribe((user: IUser) => {
-                  if (user === null || user === undefined) {
-                    alert('Please enter a valid user ID')
-                  } else {
-                    ProfileComponent.currentUser = user
-                  }
-                })
+              alert('reconsider which query parameters are still valuable')
+              // this.backendService.getUser(this.queryParameters.id)
+              //   .subscribe((user: IUser) => {
+              //     if (user === null || user === undefined) {
+              //       alert('Please enter a valid user ID')
+              //     } else {
+              //       ProfileComponent.currentUser = user
+              //     }
+              //   })
             }
             if (this.queryParameters.taskId !== undefined) {
               this.backendService.getFundedTasks(this.sessionWithoutCookies)

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core'
+import { Component, Input, OnInit } from '@angular/core'
 import { IUser } from '../profile/profile.component'
 
 @Component({
@@ -6,8 +6,11 @@ import { IUser } from '../profile/profile.component'
   templateUrl: './user-card.component.html',
   styleUrls: ['./user-card.component.css', '../app.component.css']
 })
-export class UserCardComponent {
+export class UserCardComponent implements OnInit {
 
-  @Input() public user: IUser
+  public user: IUser
 
+  public ngOnInit() {
+    // implement the call here with this.sessionWithoutCookies
+  }
 }

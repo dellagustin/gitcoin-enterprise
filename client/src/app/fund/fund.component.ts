@@ -18,7 +18,6 @@ export class FundComponent {
   @Input() public sessionWithoutCookies = ''
   public radioModel: any
   public taskLink = 'https://github.com/gitcoin-enterprise/gitcoin-enterprise/issues/16'
-  public user: IUser = ProfileComponent.currentUser
   public task: ITask = TaskHelper.getInitialTask()
   public currentRange = 200
   public fundingCompleted = false
@@ -67,32 +66,32 @@ export class FundComponent {
     const funding: IFunding = {
       id: '',
       taskId: this.task.id,
-      funderId: ProfileComponent.currentUser.id,
+      funderId: this.sessionWithoutCookies,
       amount: this.currentRange,
     }
     const taskAndFunding: ITaskAndFunding = {
       task: this.task,
       funding
     }
-    this.backendService.post(saveFundingURL, taskAndFunding, ProfileComponent.currentUser.id)
+    this.backendService.post(saveFundingURL, taskAndFunding, this.sessionWithoutCookies)
       .subscribe((newLedgerEntry: ILedgerEntry) => {
         this.newLedgerEntry = newLedgerEntry
       })
   }
 
-  public onUserIdEntered() {
+  // public onUserIdEntered() {
 
-    this.backendService.getUser(this.user.id)
-      .subscribe((user: IUser) => {
-        if (user === undefined) {
-          alert('Please enter a valid user ID')
-        } else {
-          this.user = user
-          ProfileComponent.currentUser = this.user
-        }
-      }, error => alert(error.message))
+  //   this.backendService.getUser(this.user.id)
+  //     .subscribe((user: IUser) => {
+  //       if (user === undefined) {
+  //         alert('Please enter a valid user ID')
+  //       } else {
+  //         this.user = user
+  //         ProfileComponent.currentUser = this.user
+  //       }
+  //     }, error => alert(error.message))
 
-  }
+  // }
 
   private getTaskFromResponse(response: any): ITask {
     return {

@@ -52,25 +52,25 @@
         </button>
       </span>
 
-      <span *ngIf="user.firstName==='' && userWantsToApply">
-        <input type="text" class="form-control" placeholder="enter your id or click your invitation link"
-          [(ngModel)]="user.id" autofocus>
 
-        <span *ngIf="user.id.length>0">
+      <!-- <input type="text" class="form-control" placeholder="enter your id or click your invitation link"
+        [(ngModel)]="user.id" autofocus> -->
 
-          <span>
-            <textarea [(ngModel)]="solutionApproach" style="width: 100%;" rows="4"
-              placeholder="Describe a rough plan. How are you going to solve this task? I will post this content as a comment on the issue automatically."></textarea>
-          </span>
-          <span *ngIf="!(solutionApproach==='')">
-            <button (click)="applyForSolvingAfterUserIdAdded()" type="button" class="btn ourRedColor">
-              <i class="fa fa-wrench" aria-hidden="true" style="padding-right: 1vw;"></i>
-              Apply Now
-              <i class="fa fa-wrench" aria-hidden="true" style="padding-left: 1vw;"></i>
-            </button>
-          </span>
-        </span>
+      <!-- <span *ngIf="user.id.length>0"> -->
+
+      <span>
+        <textarea [(ngModel)]="solutionApproach" style="width: 100%;" rows="4"
+          placeholder="Describe a rough plan. How are you going to solve this task? I will post this content as a comment on the issue automatically."></textarea>
       </span>
+      <span *ngIf="!(solutionApproach==='')">
+        <button (click)="applyForSolvingAfterUserIdAdded()" type="button" class="btn ourRedColor">
+          <i class="fa fa-wrench" aria-hidden="true" style="padding-right: 1vw;"></i>
+          Apply Now
+          <i class="fa fa-wrench" aria-hidden="true" style="padding-left: 1vw;"></i>
+        </button>
+      </span>
+      <!-- </span> -->
+
 
       <span *ngIf="!userWantsToApply">
 
