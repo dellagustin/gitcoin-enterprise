@@ -40,20 +40,20 @@ function getTestDataInvitationsList(): any {
             from: 'michael.spengler@sap.com',
             invitedFriends: [
                 {
-                    eMail: 'michael@peer2peer-enterprise.org',
                     date: 'Sun Feb 09 2020 22:38:51 GMT+0100',
+                    eMail: 'michael@peer2peer-enterprise.org',
                 },
                 {
-                    eMail: 'michael@peer2peer-enterprise.org',
                     date: 'Sun Feb 09 2020 22:40:39 GMT+0100',
+                    eMail: 'michael@peer2peer-enterprise.org',
                 },
                 {
-                    eMail: 'michael@peer2peer-enterprise.org',
                     date: 'Sun Feb 09 2020 22:41:45 GMT+0100',
+                    eMail: 'michael@peer2peer-enterprise.org',
                 },
                 {
-                    eMail: 'michael@peer2peer-enterprise.org',
                     date: 'Sun Feb 09 2020 22:44:34 GMT+0100',
+                    eMail: 'michael@peer2peer-enterprise.org',
                 },
             ],
         },

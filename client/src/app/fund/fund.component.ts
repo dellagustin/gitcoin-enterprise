@@ -53,7 +53,7 @@ export class FundComponent {
   }
 
   public login() {
-    window.location.assign(`${backendURL}/login`)
+    window.location.assign(`${backendURL}/login?sessionWithoutCookies=${this.sessionWithoutCookies}`)
   }
 
   public clickViewTransactionInLedger() {

@@ -4,7 +4,7 @@ import * as fs from 'fs-sync'
 import * as path from 'path'
 
 export class Helper {
-    static hasUserAlreadyInvitedThisFriend(invitingUserEMail: string, friendsEMailAddress: string, invitationLists: IInvitationListFromUser[]): any {
+    public static hasUserAlreadyInvitedThisFriend(invitingUserEMail: string, friendsEMailAddress: string, invitationLists: IInvitationListFromUser[]): any {
         const invitationListFromThisUser: IInvitationListFromUser =
             invitationLists.filter((invitation: IInvitationListFromUser) => invitation.from === invitingUserEMail)[0]
 
