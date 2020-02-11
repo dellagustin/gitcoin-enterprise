@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core'
+import { Component, Input } from '@angular/core'
 import { ITask, ETaskStatus, } from '../backend.service'
 import { Helper } from '../helper'
 
@@ -7,15 +7,9 @@ import { Helper } from '../helper'
   templateUrl: './task-card.component.html',
   styleUrls: ['./task-card.component.css', '../app.component.css']
 })
-export class TaskCardComponent implements OnInit {
+export class TaskCardComponent {
 
   @Input() task: ITask
-
-
-  public constructor() { }
-
-  ngOnInit(): void {
-  }
 
   public getStatusText(value: any): string {
     return Helper.getENUMValueAsString(ETaskStatus, value)

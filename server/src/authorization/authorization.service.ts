@@ -2,10 +2,16 @@ import { Injectable } from '@nestjs/common'
 import * as fs from 'fs-sync'
 import * as path from 'path'
 import { IUser } from '../interfaces'
+import { LoggerService } from '../logger/logger.service'
+import { ELogLevel } from '../logger/logger-interface'
 
 @Injectable()
 export class AuthorizationService {
+
+    public constructor(private readonly lg: LoggerService) { }
+
     public storeAuthorization(authorization: any, sessionWithoutCookie: string): void {
+        this.lg.log(ELogLevel.Info, `Storing the following Authorization: ${JSON.stringify(authorization)}`)
         const fileId = path.join(path.resolve(''), './operational-data/authorizations.json')
         const authorizations = fs.readJSON(fileId)
         authorizations.push(authorization)
@@ -15,7 +21,7 @@ export class AuthorizationService {
     }
 
     public enrichProfileLink(authorization: any, sessionWithoutCookie: string) {
-        const fileId = path.join(path.resolve(''), '../../operational-data/users.json')
+        const fileId = path.join(path.resolve(''), './operational-data/users.json')
         const users = fs.readJSON(fileId)
         const currentUser = users.filter((user: IUser) => user.id === sessionWithoutCookie)[0]
         if (currentUser === undefined) {

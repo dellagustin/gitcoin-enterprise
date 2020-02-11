@@ -43,12 +43,12 @@ export class SolveComponent implements OnInit {
       })
   }
 
-  public applyForSolving() {
+  public applyForSolving(): void {
     this.userWantsToApply = true
     this.apply()
   }
 
-  public apply() {
+  public apply(): void {
     if (ProfileComponent.currentUser.firstName !== '') {
       this.applicationCompleted = true
       const application: IApplication = {
@@ -62,7 +62,7 @@ export class SolveComponent implements OnInit {
     }
   }
 
-  public searchTask() {
+  public searchTask(): void {
     this.filteredTasks = this.fundedTasks.filter((entry: ITask) => {
       if (entry.name.toLowerCase().indexOf(this.searchTerm.toLowerCase()) !== -1) {
         return true

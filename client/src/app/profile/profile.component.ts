@@ -49,19 +49,19 @@ export class ProfileComponent implements OnInit {
     alert('to be developed')
   }
 
-  public onUserIdEntered() {
+  // public onUserIdEntered() {
 
-    this.backendService.getUser(this.user.id)
-      .subscribe((user: IUser) => {
-        if (user === undefined) {
-          alert('Please enter a valid user ID')
-        } else {
-          this.user = user
-          ProfileComponent.currentUser = this.user
-        }
-      },
-      error => alert(error.message))
-  }
+  //   this.backendService.getUser(this.user.id)
+  //     .subscribe((user: IUser) => {
+  //       if (user === undefined) {
+  //         alert('Please enter a valid user ID')
+  //       } else {
+  //         this.user = user
+  //         ProfileComponent.currentUser = this.user
+  //       }
+  //     },
+  //     (error) => alert(error.message))
+  // }
 
 
 }
