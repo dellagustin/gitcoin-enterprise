@@ -25,40 +25,43 @@ export class AppComponent implements OnInit {
   public ngOnInit() {
     this.sessionWithoutCookies = document.getElementById('sessionWithoutCookies').innerHTML
     this.considerPWAInstallPrompt()
-    this.getQueryParameterBasedData()
+    if (this.sessionWithoutCookies !== '') {
+      this.getQueryParameterBasedData()
+    }
   }
 
   private getQueryParameterBasedData() {
     this.route
       .queryParamMap
       .subscribe((result: any) => {
-        if (result.params !== undefined) {
-          this.queryParameters = result.params
-          if (this.queryParameters !== undefined) {
-            if (this.queryParameters.id !== undefined) {
-              alert('reconsider which query parameters are still valuable')
-              // this.backendService.getUser(this.queryParameters.id)
-              //   .subscribe((user: IUser) => {
-              //     if (user === null || user === undefined) {
-              //       alert('Please enter a valid user ID')
-              //     } else {
-              //       ProfileComponent.currentUser = user
-              //     }
-              //   })
-            }
-            if (this.queryParameters.taskId !== undefined) {
-              this.backendService.getFundedTasks(this.sessionWithoutCookies)
-                .subscribe((fundedTasks: ITask[]) => {
-                  this.fundedTasks = fundedTasks
-                  this.taskOfInterest = this.fundedTasks.filter((entry: ITask) => entry.id === this.queryParameters.taskId)[0]
-                  if (this.taskOfInterest === undefined) {
-                    alert(`I could not find a task with the ID: ${this.queryParameters.taskId}`)
-                  } else {
-                    this.mode = 'viewSpecificTask'
-                  }
-                })
-            }
+        this.queryParameters = result.params
+        if (this.queryParameters !== undefined) {
+
+          if (this.queryParameters.action === 'fund') {
+            // lead the guy directly to fund ...
+
+            // this.backendService.getUser(this.queryParameters.id)
+            //   .subscribe((user: IUser) => {
+            //     if (user === null || user === undefined) {
+            //       alert('Please enter a valid user ID')
+            //     } else {
+            //       ProfileComponent.currentUser = user
+            //     }
+            //   })
           }
+          if (this.queryParameters.taskId !== undefined) {
+            this.backendService.getFundedTasks(this.sessionWithoutCookies)
+              .subscribe((fundedTasks: ITask[]) => {
+                this.fundedTasks = fundedTasks
+                this.taskOfInterest = this.fundedTasks.filter((entry: ITask) => entry.id === this.queryParameters.taskId)[0]
+                if (this.taskOfInterest === undefined) {
+                  alert(`I could not find a task with the ID: ${this.queryParameters.taskId}`)
+                } else {
+                  this.mode = 'viewSpecificTask'
+                }
+              })
+          }
+
         }
       })
   }

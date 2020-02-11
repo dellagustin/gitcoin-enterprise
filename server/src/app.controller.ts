@@ -35,6 +35,7 @@ export class AppController {
     })
 
     this.githubOAuth.on('token', (token, serverResponse, tokenResp, req) => {
+
       try {
         this.authorizationService.storeAuthorization(token, AppService.currentSessionWithoutCookiesLogin)
       } catch (error) {
@@ -48,7 +49,7 @@ export class AppController {
 
   @Get('/')
   getHello(@Res() res: any): void {
-    const sessionWithoutCookies = uuidv1()
+    const sessionWithoutCookies = uuidv1().replace(/-/g, '').substr(0, 10)
     fs.write(`${pathToStaticAssets}/i-want-compression-via-route.html`, fs.read(`${pathToStaticAssets}/i-want-compression-via-route.html`)
       .replace('toBeReplacedBeforeDeliveringTheIndex.html', sessionWithoutCookies))
     this.appService.addUser(sessionWithoutCookies)
@@ -75,6 +76,12 @@ export class AppController {
     return this.appService.getFundedTasks()
   }
 
+  @Get('/postFunding')
+  getIt(@Req() req: any): void {
+
+    // return this.appService.saveFunding(req.body, req.headers.companyuserid)
+  }
+
   @Post('/postFunding')
   saveFunding(@Req() req: any): ILedgerEntry {
     return this.appService.saveFunding(req.body, req.headers.companyuserid)
@@ -91,6 +98,9 @@ export class AppController {
       res.send('Currently there is too much traffic on this Hobby Server :) Please try again later.')
     } else {
       AppService.currentSessionWithoutCookiesLogin = sessionWithoutCookies
+      setTimeout(() => {
+        AppService.currentSessionWithoutCookiesLogin = ''
+      }, 3 * 60 * 1000)
       return this.githubOAuth.login(req, res)
     }
   }
@@ -98,7 +108,11 @@ export class AppController {
   @Get('/callback')
   callback(@Req() req: any, @Res() res: any): void {
     // this method handles the code - this is NOT THE ACCESS TOKEN yet
-    return this.githubOAuth.callback(req, res)
+    if (AppService.currentSessionWithoutCookiesLogin === '') { // the timeout initialized it
+      res.send('Currently there is too much traffic on this Hobby Server :) Please try again later.')
+    } else {
+      return this.githubOAuth.callback(req, res)
+    }
   }
 
   // @Post('/sendEMail')

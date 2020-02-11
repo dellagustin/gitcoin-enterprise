@@ -1,8 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core'
 import { BackendService, ITask, ETaskType, ETaskStatus } from '../backend.service'
 import { backendURL } from '../../configurations/configuration'
-
-import { IUser, ProfileComponent } from '../profile/profile.component'
 import { DemoDataProviderService } from '../demo-data-provider.service'
 import { TaskHelper } from '../task-card/task-helper'
 import { IFunding, ITaskAndFunding } from '../interfaces'
@@ -21,11 +19,11 @@ export class FundComponent {
   public task: ITask = TaskHelper.getInitialTask()
   public currentRange = 200
   public fundingCompleted = false
-  public userIsAuthorized = false
   public initialRange = 70
   public minimumRange = 10
   public maximumRange = 2000
   public viewTransactionInLedger = false
+  public userIsAuthenticated = BackendService.userIsAuthenticated
   public newLedgerEntry: ILedgerEntry
 
 
@@ -51,9 +49,9 @@ export class FundComponent {
     this.task.funding = this.currentRange
   }
 
-  public login() {
-    window.location.assign(`${backendURL}/login?sessionWithoutCookies=${this.sessionWithoutCookies}`)
-  }
+  // public login() {
+  //   window.location.assign(`${backendURL}/login?sessionWithoutCookies=${this.sessionWithoutCookies}`)
+  // }
 
   public clickViewTransactionInLedger() {
     this.viewTransactionInLedger = true

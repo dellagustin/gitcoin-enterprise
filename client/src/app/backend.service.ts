@@ -36,6 +36,8 @@ export enum ETaskType {
 })
 export class BackendService {
 
+  public static userIsAuthenticated = false
+
   public constructor(private readonly http: HttpClient) { }
 
 
@@ -45,7 +47,7 @@ export class BackendService {
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${key}`
+        michaelsfriendskey: key
       })
     }
     console.log(`calling to get ${url}`)
@@ -61,7 +63,7 @@ export class BackendService {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${key}`
+        michaelsfriendskey: key
       })
     }
 

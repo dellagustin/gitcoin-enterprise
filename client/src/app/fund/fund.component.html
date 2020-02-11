@@ -36,15 +36,15 @@
       <p></p>
       {{this.currentRange}} Enterprise Internal Coins (EIC)
 
-      <span *ngIf="!userIsAuthorized">
-        <button id="next" type="button" class="btn ourBlueColor" (click)="login()">
+      <span *ngIf="!userIsAuthenticated">
+        <button id="next" type="button" class="btn ourBlueColor" (click)="saveFunding()">
           <i class="fa fa-step-forward" aria-hidden="true" style="padding-right: 3vw;"></i>
           Login To Fund This Task
           <i class="fa fa-step-forward" aria-hidden="true" style="padding-left: 3vw;"></i>
         </button>
       </span>
 
-      <span *ngIf="userIsAuthorized">
+      <span *ngIf="userIsAuthenticated">
         <button id="saveFunding" type="button" class="btn ourBlueColor" (click)="saveFunding()">
           <!-- Fund Task with {{this.currentRange}} EIC -->
           <i class="fa fa-check" aria-hidden="true" style="padding-right: 3vw;"></i>
