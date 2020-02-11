@@ -13,7 +13,7 @@ import * as uuidv1 from 'uuid/v1'
 @Injectable()
 export class EmailService {
 
-    private fileIdInvitationLists = path.join(__dirname, '../../operational-data/invitation-lists.json')
+    private readonly fileIdInvitationLists = path.join(__dirname, '../../operational-data/invitation-lists.json')
     // private fileIdLastInvitation = path.join(__dirname, '../../operational-data/last-invitations.json')
 
     public constructor(private readonly lg: LoggerService) { }
@@ -33,6 +33,7 @@ export class EmailService {
                 this.sendEMailViaNodeMailer(eMail)
             }
             this.addInvitationToFile(eMail, invitationLists)
+
             return {
                 success: true,
             }
@@ -112,7 +113,7 @@ export class EmailService {
     }
 
     private getHTMLEMail(sender: string, personalAccessToken: string): string {
-        const templateHTMLFileId = path.join(__dirname, './email-template.html')
+        const templateHTMLFileId: string = path.join(__dirname, './email-template.html')
         const templateHTML = fs.read(templateHTMLFileId)
         try {
             return templateHTML

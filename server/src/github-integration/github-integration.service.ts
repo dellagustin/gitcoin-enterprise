@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common'
-import { IFunding, IssueInfo, IUser, IApplication } from '../interfaces'
+import { IFunding, IssueInfo, IApplication } from '../interfaces'
 import { LoggerService } from '../logger/logger.service'
 import { config } from '../app.module'
 import * as fs from 'fs-sync'
@@ -31,6 +31,7 @@ export class GithubIntegrationService {
             throw new Error(errorMessage)
         }
 
+        this.lastGetIssueRequest = moment()
         await this.lg.log(ELogLevel.Info, `getting Issue data for owner: ${org}, repo: ${repo}, issueId: ${issueId}`)
         const issueInfo = {} as IssueInfo
         try {
@@ -66,13 +67,13 @@ export class GithubIntegrationService {
         const owner = linkToIssue.split('/')[3]
         const repoName = linkToIssue.split('/')[4]
         const issueNo = linkToIssue.split('/')[6]
-
+        this.lastPostCommentRequest = moment()
         try {
             await this.octokit.issues.createComment({
-                owner,
-                repo: repoName,
-                issue_number: issueNo,
                 body,
+                owner,
+                issue_number: issueNo,
+                repo: repoName,
             })
 
         } catch (error) {
@@ -84,7 +85,7 @@ export class GithubIntegrationService {
         await this.lg.log(ELogLevel.Info, JSON.stringify(funding))
     }
 
-    public async postCommentAboutApplication(application: IApplication) {
+    public async postCommentAboutApplication(application: IApplication): Promise<void> {
 
         const seconds: moment.unitOfTime.DurationConstructor = 'seconds'
 

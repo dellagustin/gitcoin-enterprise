@@ -34,7 +34,7 @@ describe('EmailService', () => {
 
 })
 
-function getTestDataInvitationsList() {
+function getTestDataInvitationsList(): any {
     return [
         {
             from: 'michael.spengler@sap.com',

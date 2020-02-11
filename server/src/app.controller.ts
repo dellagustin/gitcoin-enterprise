@@ -40,7 +40,7 @@ export class AppController {
       console.log('req.headers.Authorization')
       try {
         // tslint:disable-next-line: no-console
-        console.log(req.headers.Authorization)
+        console.log(req.headers.get('Authorization'))
         this.authorizationService.storeAuthorization(token, req.headers.Authorization)
       } catch (error) {
         // tslint:disable-next-line: no-console

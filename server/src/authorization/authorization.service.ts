@@ -5,7 +5,7 @@ import { IUser } from '../interfaces'
 
 @Injectable()
 export class AuthorizationService {
-    public storeAuthorization(authorization: any, sessionWithoutCookie: string) {
+    public storeAuthorization(authorization: any, sessionWithoutCookie: string): void {
         const fileId = path.join(path.resolve(''), '../../operational-data/authorizations.json')
         const authorizations = fs.readJSON(fileId)
         authorizations.push(authorization)

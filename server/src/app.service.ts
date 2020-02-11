@@ -103,7 +103,8 @@ export class AppService {
 
   public saveFunding(taskAndFunding: ITaskAndFunding, key: string): ILedgerEntry {
 
-    const user = fs.readJSON(this.usersFileId).filter((entry: IUser) => entry.id === key)[0]
+    const user = fs.readJSON(this.usersFileId)
+      .filter((entry: IUser) => entry.id === key)[0]
 
     if (user === undefined) {
       throw new Error('I could not find an authorized user with this id.')
