@@ -25,7 +25,6 @@ export class AppComponent implements OnInit {
 
   public ngOnInit() {
     this.authenticationToken = document.getElementById('authentificationToken').innerHTML
-    alert(this.authenticationToken)
     this.considerPWAInstallPrompt()
     if (this.authenticationToken !== '') {
       this.getQueryParameterBasedData()
