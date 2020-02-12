@@ -11,9 +11,9 @@ export class LoggerService implements ILogger {
     private static readonly currentPath = path.resolve(path.dirname(''))
     private static readonly errorsFileID = path.join(LoggerService.currentPath, 'errors', 'errors.json')
 
-    private logLevel = config.logLevel
+    public logLevel = config.logLevel
 
-    public constructor(private readonly notifierService: SupportNotifierService) { }
+    public constructor(public readonly notifierService: SupportNotifierService) { }
     public async log(messageType: ELogLevel, message: string): Promise<void> {
         if (this.logLevel >= messageType) {
             // tslint:disable-next-line: no-console
@@ -21,16 +21,15 @@ export class LoggerService implements ILogger {
         }
 
         if (messageType === ELogLevel.Error) {
-            this.addErrorToFile(message)
+
+            const errorFileContent = fs.readJSON(LoggerService.errorsFileID)
+            errorFileContent.push({ message })
+            fs.write(LoggerService.errorsFileID, JSON.stringify(errorFileContent))
+
             if (this.notifierService !== undefined) {
                 await this.notifierService.sendMessageToSupportChannel(message)
             }
         }
     }
 
-    private addErrorToFile(message: string) {
-        const errorFileContent = fs.readJSON(LoggerService.errorsFileID)
-        errorFileContent.push({ message })
-        fs.write(LoggerService.errorsFileID, JSON.stringify(errorFileContent))
-    }
 }

@@ -1,26 +1,33 @@
-import { NestMiddleware, Logger } from '@nestjs/common'
-import { Request, Response } from 'express'
+import { NestMiddleware, Injectable } from '@nestjs/common'
+import { Response } from 'express'
 import { config } from '../app.module'
 import { LoggerService } from '../logger/logger.service'
 import { ELogLevel } from '../logger/logger-interface'
 import { SupportNotifierService } from '../support-notifier/support-notifier.service'
+import { AuthenticationService } from './authentication.service'
 const axios = require('axios')
 
 export class AuthenticationMiddleware implements NestMiddleware {
-  // tslint:disable-next-line: ban-types
-  public constructor(private readonly lg: LoggerService) {
+
+  private readonly lg: LoggerService
+  private readonly authenticationService: AuthenticationService
+  public constructor() {
     this.lg = new LoggerService(new SupportNotifierService())
+    // this.authenticationService = new AuthenticationService(this.lg)
   }
-  // tslint:disable-next-line: ban-types
-  public async use(req: any, res: Response, next: Function): Promise<void> {
-    this.lg.log(ELogLevel.Info, req.headers.michaelsfriendskey)
-    if (this.isUserAuthenticated()) {
+
+  public async use(req: any, res: Response, next: any): Promise<void> {
+    // tslint:disable-next-line: no-console
+    console.log('middleware executed')
+    if (this.isUserAuthenticated(req.headers.michaelsfriendskey)) {
       next()
     } else {
       res.redirect(`${config.backendURL}/login`)
     }
   }
-  private isUserAuthenticated(): boolean {
-    return true
+
+  private isUserAuthenticated(userId): boolean {
+    return false
   }
+
 }

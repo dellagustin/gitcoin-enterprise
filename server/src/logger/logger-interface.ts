@@ -6,5 +6,6 @@ export enum ELogLevel {
 }
 
 export interface ILogger {
+    logLevel: ELogLevel
     log(messageType: ELogLevel, message: string): Promise<void>
 }

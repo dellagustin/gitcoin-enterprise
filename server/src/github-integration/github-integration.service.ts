@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common'
-import { IFunding, IssueInfo, IApplication } from '../interfaces'
+import { IFunding, IssueInfo, IApplication, IAuthenticationData } from '../interfaces'
 import { LoggerService } from '../logger/logger.service'
 import { config } from '../app.module'
 import * as fs from 'fs-sync'
@@ -7,6 +7,7 @@ import * as path from 'path'
 import * as moment from 'moment'
 import { Helper } from '../helpers/helper'
 import { ELogLevel } from '../logger/logger-interface'
+import { threadId } from 'worker_threads'
 
 const { Octokit } = require('@octokit/rest')
 
@@ -20,6 +21,21 @@ export class GithubIntegrationService {
     private lastPostCommentRequest = moment()
 
     public constructor(private readonly lg: LoggerService) { }
+
+    public async getAuthenticationData(token: string): Promise<IAuthenticationData> {
+        const octokitForRetrievingUserData = new Octokit({
+            auth: token,
+        })
+
+        const user = await octokitForRetrievingUserData.users.getAuthenticated()
+        this.lg.log(ELogLevel.Info, user)
+
+        const authenticationData: IAuthenticationData = {
+            login: user.data.login,
+            token,
+        }
+        return authenticationData
+    }
 
     public async getIssue(org: any, repo: any, issueId: any): Promise<IssueInfo> {
 

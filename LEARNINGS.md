@@ -68,3 +68,7 @@ else
     echo "I created $FILE with default values successfully"
 fi
 
+
+
+### Experimental
+https://www.js-tutorials.com/javascript-tutorial/use-localstorage-sessionstorage-using-webstorage-angular4/

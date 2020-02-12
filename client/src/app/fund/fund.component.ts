@@ -57,6 +57,11 @@ export class FundComponent {
     this.viewTransactionInLedger = true
   }
 
+  public loginViaGitHub() {
+    const authenticationURL = `${backendURL}/login`
+    location.assign(authenticationURL)
+  }
+
   public saveFunding() {
     this.fundingCompleted = true
     const saveFundingURL = `${backendURL}/postFunding`

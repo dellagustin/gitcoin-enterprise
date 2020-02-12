@@ -1,8 +1,13 @@
 import { SupportNotifierService } from '../support-notifier/support-notifier.service'
-import { ELogLevel } from './logger-interface'
+import { ELogLevel, ILogger } from './logger-interface'
+import { config } from '../app.module'
 
-export class LoggerDouble {
-    constructor(private readonly notifierService: SupportNotifierService) {
+export class LoggerDouble implements ILogger {
+
+    public logLevel = config.logLevel
+    public readonly notifierService: SupportNotifierService
+
+    constructor() {
         //
     }
 

@@ -2,13 +2,12 @@ import { Controller, Get, Param, Res, Post, Req, Query } from '@nestjs/common'
 import { AppService } from './app.service'
 import { pathToStaticAssets } from './gitcoin-enterprise-server'
 import { ITask, IUser } from './interfaces'
-import { EmailService } from './email/email.service'
 import { GithubIntegrationService } from './github-integration/github-integration.service'
 import { ILedgerEntry } from './ledger-connector/ledger-connector.interface'
 import { config } from './app.module'
-import { AuthorizationService } from './authorization/authorization.service'
 import * as fs from 'fs-sync'
 import * as uuidv1 from 'uuid/v1'
+import { AuthenticationService } from './authentication/authentication.service'
 
 @Controller()
 export class AppController {
@@ -16,7 +15,7 @@ export class AppController {
   private githubOAuth: any
   userService: any
 
-  constructor(private readonly appService: AppService, private readonly eMailService: EmailService, private readonly gitHubIntegration: GithubIntegrationService, private authorizationService: AuthorizationService) {
+  constructor(private readonly appService: AppService, private readonly gitHubIntegration: GithubIntegrationService, private readonly authenticationService: AuthenticationService) {
 
     this.githubOAuth = require('./github-oauth/gh-oauth-implement-a-typescript-version-soon')({
       githubClient: config.gitHubOAuthClient,
@@ -34,25 +33,23 @@ export class AppController {
       // console.error('there was a login error', body)
     })
 
-    this.githubOAuth.on('token', (token, serverResponse, tokenResp, req) => {
+    this.githubOAuth.on('token', async (token, serverResponse, tokenResp, req) => {
 
-      try {
-        this.authorizationService.storeAuthorization(token, AppService.currentSessionWithoutCookiesLogin)
-      } catch (error) {
-        // tslint:disable-next-line: no-console
-        console.log(error.message)
-      }
-      AppService.currentSessionWithoutCookiesLogin = ''
-      serverResponse.redirect(config.backendURL)
+      AppService.authenticationData = await this.gitHubIntegration.getAuthenticationData(token.access_token)
+
+      // fs.write(`${pathToStaticAssets}/i-want-compression-via-route.html`, fs.read(`${pathToStaticAssets}/i-want-compression-via-route.html`)
+      //   .replace('authentificationTokenContent', AppService.authenticationData.token))
+
+      serverResponse.send(fs.read(`${pathToStaticAssets}/i-want-compression-via-route.html`)
+        .replace('authentificationTokenContent', AppService.authenticationData.token))
+      // serverResponse.sendFile(`${pathToStaticAssets}/i-want-compression-via-route.html`)
+      // serverResponse.redirect(`${config.backendURL}?token=${AppService.authenticationData.token}`)
     })
   }
 
   @Get('/')
   getHello(@Res() res: any): void {
-    const sessionWithoutCookies = uuidv1().replace(/-/g, '').substr(0, 10)
-    fs.write(`${pathToStaticAssets}/i-want-compression-via-route.html`, fs.read(`${pathToStaticAssets}/i-want-compression-via-route.html`)
-      .replace('toBeReplacedBeforeDeliveringTheIndex.html', sessionWithoutCookies))
-    this.appService.addUser(sessionWithoutCookies)
+    // const sessionWithoutCookies = uuidv1().replace(/-/g, '').substr(0, 10)
     res.sendFile(`${pathToStaticAssets}/i-want-compression-via-route.html`)
   }
 
@@ -94,6 +91,7 @@ export class AppController {
 
   @Get('/login')
   login(@Req() req: any, @Res() res: any, @Query('sessionWithoutCookies') sessionWithoutCookies: string): void {
+    AppService.currentSessionWithoutCookiesLogin = ''
     if (AppService.currentSessionWithoutCookiesLogin !== '') {
       res.send('Currently there is too much traffic on this Hobby Server :) Please try again later.')
     } else {
@@ -108,11 +106,8 @@ export class AppController {
   @Get('/callback')
   callback(@Req() req: any, @Res() res: any): void {
     // this method handles the code - this is NOT THE ACCESS TOKEN yet
-    if (AppService.currentSessionWithoutCookiesLogin === '') { // the timeout initialized it
-      res.send('Currently there is too much traffic on this Hobby Server :) Please try again later.')
-    } else {
-      return this.githubOAuth.callback(req, res)
-    }
+    return this.githubOAuth.callback(req, res)
+
   }
 
   // @Post('/sendEMail')

@@ -1,3 +1,8 @@
+export interface IAuthenticationData {
+  login: string
+  token: string
+}
+
 export interface IssueInfo {
   title: string
   description: string

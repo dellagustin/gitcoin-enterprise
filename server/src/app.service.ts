@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common'
 
 import * as fs from 'fs-sync'
 import * as path from 'path'
-import { ITask, ETaskStatus, ETaskType, IUser, IFunding, ITaskAndFunding, IApplication } from './interfaces'
+import { ITask, ETaskStatus, ETaskType, IUser, IFunding, ITaskAndFunding, IApplication, IAuthenticationData } from './interfaces'
 import { LoggerService } from './logger/logger.service'
 import { LedgerConnector } from './ledger-connector/ledger-connector-file-system.service'
 import { GithubIntegrationService } from './github-integration/github-integration.service'
@@ -14,6 +14,12 @@ const config = fs.readJSON(path.join(__dirname, '../.env.json'))
 
 @Injectable()
 export class AppService {
+
+  public static authenticatedUsers: IAuthenticationData[] = []
+  public static authenticationData = {
+    token: '',
+    login: '',
+  }
 
   public static currentSessionWithoutCookiesLogin = ''
   private fundedTasksFileId = path.join(__dirname, '../operational-data/funded-tasks.json')

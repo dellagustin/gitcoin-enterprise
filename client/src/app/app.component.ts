@@ -12,7 +12,8 @@ import { ProfileComponent, IUser } from './profile/profile.component'
 export class AppComponent implements OnInit {
   public static deferredPrompt
 
-  public sessionWithoutCookies
+  public authenticationToken
+  public sessionWithoutCookies = ''
   public mode = ''
   public fundedTasks: ITask[] = []
   public ledgerEntries: ILedgerEntry[] = []
@@ -23,9 +24,10 @@ export class AppComponent implements OnInit {
   public constructor(private readonly backendService: BackendService, private route: ActivatedRoute) { }
 
   public ngOnInit() {
-    this.sessionWithoutCookies = document.getElementById('sessionWithoutCookies').innerHTML
+    this.authenticationToken = document.getElementById('authentificationToken').innerHTML
+    alert(this.authenticationToken)
     this.considerPWAInstallPrompt()
-    if (this.sessionWithoutCookies !== '') {
+    if (this.authenticationToken !== '') {
       this.getQueryParameterBasedData()
     }
   }
