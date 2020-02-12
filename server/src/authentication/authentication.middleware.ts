@@ -20,7 +20,8 @@ export class AuthenticationMiddleware implements NestMiddleware {
 
   public async use(req: any, res: Response, next: any): Promise<void> {
     // tslint:disable-next-line: no-console
-    console.log(`middleware executed for ${req.url}`)
+    const requestURL = req.protocol + '://' + req.get('host') + req.originalUrl
+    this.lg.log(ELogLevel.Info, `middleware executed for ${requestURL}`)
     if (this.isUserAuthenticated(req.headers.michaelsfriendskey)) {
       next()
     } else {

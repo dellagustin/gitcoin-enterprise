@@ -22,16 +22,33 @@ export class AppComponent implements OnInit {
   public navBarData: INavbarData = this.getNavBarData()
   public queryParameters: any
   public taskOfInterest: ITask
+  public action
+
+  private authenticationToken
   private readonly modesRequiringAuthentication: string[] = ['fund', 'solve']
 
+
   // public constructor(private readonly backendService: BackendService, private route: ActivatedRoute) { }
-  public constructor(private readonly backendService: BackendService) { }
+  public constructor(private readonly backendService: BackendService) {
+
+    try {
+      this.authenticationToken = document.getElementById('authenticationToken').innerHTML.trim()
+      this.action = document.getElementById('actionID').innerHTML.trim()
+    } catch (error) {
+      console.log(`Hier liegt der Hase im Pfeffer ${error.message}`)
+    }
+  }
 
   public ngOnInit() {
     this.considerPWAInstallPrompt()
     this.authenticationData = this.backendService.authenticationData
     this.getQueryParameterBasedData()
-    // alert(this.mode)
+    if (this.authenticationToken !== 'authenticationTokenContent') {
+      this.backendService.getAuthenticationData() // this will only work if header can be set to the replacement of authenticationTokenContent
+        .subscribe((authenticationData) => this.authenticationData = authenticationData)
+    }
+
+    this.mode = (this.action === 'actionsForRedirectingConvenientlyAfterLogin') ? '' : this.action
   }
 
   private getQueryParameterBasedData() {

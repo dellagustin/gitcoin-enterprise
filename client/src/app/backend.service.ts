@@ -35,36 +35,21 @@ export enum ETaskType {
 export class BackendService {
   public authenticationData: IAuthenticationData
 
-  public actionsForRedirectingConvenientlyAfterLogin
-  private authenticationToken
-
+  private token = ''
   public constructor(private readonly http: HttpClient) {
-    try {
-      this.authenticationToken = document.getElementById('authenticationToken').innerHTML.trim()
-      this.actionsForRedirectingConvenientlyAfterLogin = document.getElementById('actionID').innerHTML.trim()
-    } catch (error) {
-      console.log(error.message)
-    }
-
-    if (this.authenticationToken !== 'authenticationTokenContent') {
-      this.getAuthenticationData() // this will only work if header can be set to the replacement of authenticationTokenContent
-        .subscribe((authenticationData) => this.authenticationData = authenticationData)
-    }
-
   }
 
   public get(url: any): any {
-
+    this.token = (this.authenticationData === undefined) ? '' : this.authenticationData.token
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        michaelsfriendskey: this.authenticationToken
+        michaelsfriendskey: this.token
       })
     }
     console.log(`calling to get ${url}`)
     return this.http.get<any>(url, options)
   }
-
 
   public post(url: string, body: any) {
     // const urlWithClient = `${url}?client=${document.URL}`;
@@ -74,7 +59,7 @@ export class BackendService {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        michaelsfriendskey: this.authenticationToken
+        michaelsfriendskey: this.token
       })
     }
 
