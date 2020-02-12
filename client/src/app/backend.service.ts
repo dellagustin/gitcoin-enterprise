@@ -35,12 +35,19 @@ export enum ETaskType {
 export class BackendService {
   public authenticationData: IAuthenticationData
 
-  public actionsForRedirectingConvenientlyAfterLogin = document.getElementById('actionsForRedirectingConvenientlyAfterLoginID').innerHTML.trim()
-  private authenticationToken = document.getElementById('authenticationToken').innerHTML.trim()
+  public actionsForRedirectingConvenientlyAfterLogin
+  private authenticationToken
 
   public constructor(private readonly http: HttpClient) {
+    try {
+      this.authenticationToken = document.getElementById('authenticationToken').innerHTML.trim()
+      this.actionsForRedirectingConvenientlyAfterLogin = document.getElementById('actionID').innerHTML.trim()
+    } catch (error) {
+      console.log(error.message)
+    }
+
     if (this.authenticationToken !== 'authenticationTokenContent') {
-      this.getAuthenticationData()
+      this.getAuthenticationData() // this will only work if header can be set to the replacement of authenticationTokenContent
         .subscribe((authenticationData) => this.authenticationData = authenticationData)
     }
 
