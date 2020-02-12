@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core'
+import { Injectable, OnInit } from '@angular/core'
 import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { backendURL } from '../configurations/configuration'
-import { IEmail } from './interfaces'
+import { IEmail, IAuthenticationData } from './interfaces'
 
 export interface ITask {
   id: string
@@ -33,19 +33,24 @@ export enum ETaskType {
   providedIn: 'root'
 })
 export class BackendService {
+  public authenticationData: IAuthenticationData
 
-  public static authenticationToken = ''
+  private authenticationToken = document.getElementById('authenticationToken').innerHTML.trim()
 
-  public constructor(private readonly http: HttpClient) { }
+  public constructor(private readonly http: HttpClient) {
+    if (this.authenticationToken !== 'authenticationTokenContent') {
+      this.getAuthenticationData()
+        .subscribe((authenticationData) => this.authenticationData = authenticationData)
+    }
 
+  }
 
   public get(url: any): any {
-
 
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        michaelsfriendskey: BackendService.authenticationToken
+        michaelsfriendskey: this.authenticationToken
       })
     }
     console.log(`calling to get ${url}`)
@@ -61,7 +66,7 @@ export class BackendService {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        michaelsfriendskey: BackendService.authenticationToken
+        michaelsfriendskey: this.authenticationToken
       })
     }
 
@@ -87,6 +92,9 @@ export class BackendService {
     return this.get(`${backendURL}/getFundedTasks`)
   }
 
+  public getAuthenticationData() {
+    return this.get(`${backendURL}/getAuthenticationData`)
+  }
 
 
 

@@ -3,6 +3,8 @@ import { INavbarData } from './navbar/navbar.interfaces'
 import { BackendService, ITask } from './backend.service'
 import { ILedgerEntry } from './ledger/ledger.interface'
 import { ActivatedRoute } from '@angular/router'
+import { backendURL } from '../configurations/configuration'
+import { IAuthenticationData } from './interfaces'
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -11,7 +13,7 @@ import { ActivatedRoute } from '@angular/router'
 export class AppComponent implements OnInit {
   public static deferredPrompt
 
-  public authenticationToken
+  public authenticationData: IAuthenticationData
   public sessionWithoutCookies = ''
   public mode = ''
   public fundedTasks: ITask[] = []
@@ -20,62 +22,33 @@ export class AppComponent implements OnInit {
   public queryParameters: any
   public taskOfInterest: ITask
 
-  public constructor(private readonly backendService: BackendService, private route: ActivatedRoute) { }
+  public constructor(private readonly backendService: BackendService) { }
 
   public ngOnInit() {
-    BackendService.authenticationToken = document.getElementById('authentificationToken').innerHTML
     this.considerPWAInstallPrompt()
-    if (this.authenticationToken !== '') {
-      this.getQueryParameterBasedData()
+    this.authenticationData = this.backendService.authenticationData
+  }
+
+  public fundTask() {
+    if (this.authenticationData === undefined) {
+      this.loginViaGitHub()
+    } else {
+      this.mode = 'fund'
     }
   }
 
-  private getQueryParameterBasedData() {
-    this.route
-      .queryParamMap
-      .subscribe((result: any) => {
-        this.queryParameters = result.params
-        if (this.queryParameters !== undefined) {
-
-          if (this.queryParameters.action === 'fund') {
-            // lead the guy directly to fund ...
-
-            // this.backendService.getUser(this.queryParameters.id)
-            //   .subscribe((user: IUser) => {
-            //     if (user === null || user === undefined) {
-            //       alert('Please enter a valid user ID')
-            //     } else {
-            //       ProfileComponent.currentUser = user
-            //     }
-            //   })
-          }
-          if (this.queryParameters.taskId !== undefined) {
-            this.backendService.getFundedTasks()
-              .subscribe((fundedTasks: ITask[]) => {
-                this.fundedTasks = fundedTasks
-                this.taskOfInterest = this.fundedTasks.filter((entry: ITask) => entry.id === this.queryParameters.taskId)[0]
-                if (this.taskOfInterest === undefined) {
-                  alert(`I could not find a task with the ID: ${this.queryParameters.taskId}`)
-                } else {
-                  this.mode = 'viewSpecificTask'
-                }
-              })
-          }
-
-        }
-      })
-  }
-
-
-  public fundTask() {
-    this.mode = 'fund'
-  }
-
   public solveTask() {
-    this.mode = 'solve'
+    if (this.authenticationData === undefined) {
+      this.loginViaGitHub()
+    } else {
+      this.mode = 'solve'
+    }
   }
 
-
+  private loginViaGitHub() {
+    const authenticationURL = `${backendURL}/login`
+    location.assign(authenticationURL)
+  }
 
   public onClickMenuEntry(target: string) {
     this.mode = target

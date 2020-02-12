@@ -31,6 +31,7 @@ export class GithubIntegrationService {
         this.lg.log(ELogLevel.Info, user)
 
         const authenticationData: IAuthenticationData = {
+            avatarURL: user.data.avatar_url,
             login: user.data.login,
             token,
             balance: 200, // start amount for each user

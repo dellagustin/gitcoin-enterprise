@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core'
 import { BackendService } from '../backend.service'
 import { ProfileComponent } from '../profile/profile.component'
 import { backendURL } from '../../configurations/configuration'
-import { IUser, IEmail } from '../interfaces'
+import { IUser, IEmail, IAuthenticationData } from '../interfaces'
 
 @Component({
   selector: 'app-invite-friend',
@@ -19,18 +19,12 @@ export class InviteFriendComponent implements OnInit {
   public sent = false
   public permissionGranted = false
   public eMail: IEmail
+  authenticationData: IAuthenticationData
 
-  public constructor() { }
+  public constructor(private readonly backendService: BackendService) { }
 
   public ngOnInit(): void {
-    // this.eMail = {
-    //   senderUserId: ProfileComponent.currentUser.id,
-    //   sender: this.invitingUsersAddress,
-    //   recipient: this.eMailAddress,
-    //   subject: `Invitation to ${this.url}`,
-    //   // tslint:disable-next-line: max-line-length
-    //   content: `Hi. Your friend ${this.invitingUsersAddress} invited you to join ${this.url}. Your personal access link is ${this.url}?id=accessToken. Everyone who has this link can trigger actions in your name. Please store it securely.`
-    // }
+    this.authenticationData = this.backendService.authenticationData
   }
 
   // public send() {

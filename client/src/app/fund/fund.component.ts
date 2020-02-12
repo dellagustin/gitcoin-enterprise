@@ -1,9 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { BackendService, ITask, ETaskType, ETaskStatus } from '../backend.service'
 import { backendURL } from '../../configurations/configuration'
 import { DemoDataProviderService } from '../demo-data-provider.service'
 import { TaskHelper } from '../task-card/task-helper'
-import { IFunding, ITaskAndFunding } from '../interfaces'
+import { IFunding, ITaskAndFunding, IAuthenticationData } from '../interfaces'
 import { ILedgerEntry } from '../ledger/ledger.interface'
 
 @Component({
@@ -11,7 +11,7 @@ import { ILedgerEntry } from '../ledger/ledger.interface'
   templateUrl: './fund.component.html',
   styleUrls: ['./fund.component.css', '../app.component.css']
 })
-export class FundComponent {
+export class FundComponent implements OnInit {
 
   public radioModel: any
   public taskLink = 'https://github.com/gitcoin-enterprise/gitcoin-enterprise/issues/16'
@@ -22,18 +22,22 @@ export class FundComponent {
   public minimumRange = 10
   public maximumRange = 2000
   public viewTransactionInLedger = false
-  public userIsAuthenticated = (BackendService.authenticationToken === '') ? false : true
   public newLedgerEntry: ILedgerEntry
+  public authenticationData: IAuthenticationData
 
 
   public constructor(private readonly backendService: BackendService, private readonly demoDataProvider: DemoDataProviderService) { }
+
+  public ngOnInit() {
+    this.authenticationData = this.backendService.authenticationData
+  }
 
   public getInfoFromTaskLink() {
     const sourceString = this.taskLink.split('https://github.com/')[1]
     const org = sourceString.split('/')[0]
     const repo = sourceString.split('/')[1].split('/')[0]
     const issueId = sourceString.split('/')[3]
-    this.backendService.get(`${backendURL}/getIssueInfo/org/${org}/repo/${repo}/issueId/${issueId}`)
+    this.backendService.get(`${backendURL}/loadIssueInfo/org/${org}/repo/${repo}/issueId/${issueId}`)
       .subscribe((response: any) => {
         this.task = this.getTaskFromResponse(response)
         this.task.link = this.taskLink
@@ -48,17 +52,8 @@ export class FundComponent {
     this.task.funding = this.currentRange
   }
 
-  // public login() {
-  //   window.location.assign(`${backendURL}/login?sessionWithoutCookies=${this.sessionWithoutCookies}`)
-  // }
-
   public clickViewTransactionInLedger() {
     this.viewTransactionInLedger = true
-  }
-
-  public loginViaGitHub() {
-    const authenticationURL = `${backendURL}/login`
-    location.assign(authenticationURL)
   }
 
   public saveFunding() {

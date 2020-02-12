@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core'
 import { BackendService, ITask } from '../backend.service'
 import { backendURL } from '../../configurations/configuration'
-import { IApplication } from '../interfaces'
+import { IApplication, IAuthenticationData } from '../interfaces'
 
 
 @Component({
@@ -12,7 +12,6 @@ import { IApplication } from '../interfaces'
 export class SolveComponent implements OnInit {
 
   @Input() public taskOfInterest: ITask
-  public userIsAuthenticated = (BackendService.authenticationToken === '') ? false : true
   public fundedTasks: ITask[] = []
   public filteredTasks: ITask[] = []
   public searchTerm = ''
@@ -20,11 +19,13 @@ export class SolveComponent implements OnInit {
   public sortingDirectionDown = false
   public userWantsToApply = false
   public applicationCompleted = false
+  public authenticationData: IAuthenticationData
   // public user: IUser = ProfileComponent.currentUser
 
   public constructor(private readonly backendService: BackendService) { }
 
   public ngOnInit(): void {
+    this.authenticationData = this.backendService.authenticationData
     this.backendService.getFundedTasks()
       .subscribe((result: ITask[]) => {
         this.fundedTasks = result

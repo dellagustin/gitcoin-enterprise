@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core'
 import { BackendService } from '../backend.service'
 import { backendURL } from '../../configurations/configuration'
-import { IUser } from '../interfaces'
+import { IUser, IAuthenticationData } from '../interfaces'
 
 @Component({
   selector: 'app-profile',
@@ -10,7 +10,7 @@ import { IUser } from '../interfaces'
 })
 export class ProfileComponent implements OnInit {
 
-  public userIsAuthenticated = (BackendService.authenticationToken === '') ? false : true
+  public authenticationData: IAuthenticationData
   public users: IUser[] = []
   public userIsAuthorized = false
   // public user = ProfileComponent.currentUser
@@ -33,9 +33,15 @@ export class ProfileComponent implements OnInit {
   public constructor(private readonly backendService: BackendService) { }
 
   public ngOnInit(): void {
-  alert('https://avatars1.githubusercontent.com/u/43786652?v=4')
+    this.authenticationData = this.backendService.authenticationData
+    alert('https://avatars1.githubusercontent.com/u/43786652?v=4')
     // this.backendService.getUsers()
     //   .subscribe((result: IUser[]) => this.users = result )
+  }
+
+  public loginViaGitHub() {
+    const authenticationURL = `${backendURL}/login`
+    location.assign(authenticationURL)
   }
 
   public clickBountiesAndFundings() {

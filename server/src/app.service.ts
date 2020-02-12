@@ -29,6 +29,10 @@ export class AppService {
     // tbd
   }
 
+  public getAuthenticationData(michaelsfriendskey: string): IAuthenticationData {
+    return this.authenticationService.getAuthenticationData(michaelsfriendskey)
+  }
+
   public async applyForSolving(userAccessToken: string, application: IApplication): Promise<void> {
     const authenticationData = await this.authenticationService.getAuthenticationData(userAccessToken)
     if (authenticationData === undefined) {

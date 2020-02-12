@@ -23,10 +23,10 @@ Scenario("test inviting a friend", async I => {
 
   I.click(locate("#burgerMenu"));
 
-  I.click(locate("#inviteFriends"));
-  await I.wait(2);
+  // I.click(locate("#inviteFriends"));
+  // await I.wait(2);
 
-  I.see("Invite Friends");
+  // I.see("Invite Friends");
 
   // I.fillField(locate("#userId"), "f-i-r-s-t");
   // await I.wait(2);

@@ -14,7 +14,7 @@ export class AppController {
   private githubOAuth: any
   userService: any
 
-  constructor(private readonly appService: AppService, private readonly gitHubIntegration: GithubIntegrationService, private readonly ld: LoggerService) {
+  constructor(private readonly appService: AppService, private readonly gitHubIntegration: GithubIntegrationService) {
 
     this.githubOAuth = require('./github-oauth/gh-oauth-implement-a-typescript-version-soon')({
       githubClient: config.gitHubOAuthClient,
@@ -37,7 +37,7 @@ export class AppController {
       this.appService.handleNewToken(michaelsfriendskey)
 
       serverResponse.send(fs.read(`${pathToStaticAssets}/i-want-compression-via-route.html`)
-        .replace('authentificationTokenContent', michaelsfriendskey))
+        .replace('authenticationTokenContent', michaelsfriendskey))
     })
   }
 
@@ -52,7 +52,7 @@ export class AppController {
     return this.appService.getLedgerEntries()
   }
 
-  @Get('/getIssueInfo/org/:org/repo/:repo/issueid/:issueId')
+  @Get('/loadIssueInfo/org/:org/repo/:repo/issueid/:issueId')
   getIssue(@Param('org') org: string, @Param('repo') repo: string, @Param('issueId') issueId: number) {
     return this.gitHubIntegration.getIssue(org, repo, issueId)
   }
@@ -60,6 +60,11 @@ export class AppController {
   @Get('/getFundedTasks')
   getFundedTasks(): ITask[] {
     return this.appService.getFundedTasks()
+  }
+
+  @Get('/getAuthenticationData')
+  getAuthenticationData(@Req() req: any): IAuthenticationData {
+    return this.appService.getAuthenticationData(req.headers.michaelsfriendskey)
   }
 
   @Get('/postFunding')

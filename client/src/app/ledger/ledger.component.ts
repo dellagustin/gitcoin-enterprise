@@ -4,6 +4,7 @@ import { BackendService } from '../backend.service'
 import { DemoDataProviderService } from '../demo-data-provider.service'
 import * as moment from 'moment'
 import { backendURL } from '../../configurations/configuration'
+import { IAuthenticationData } from '../interfaces'
 
 @Component({
   selector: 'app-ledger',
@@ -15,13 +16,14 @@ export class LedgerComponent implements OnInit {
 
   @Input() transactionId = ''
 
-  public userIsAuthenticated = (BackendService.authenticationToken === '') ? false : true
   public ledgerEntries: ILedgerEntry[] = []
   public entryIdOfInterest: ILedgerEntry
+  public authenticationData: IAuthenticationData
 
   public constructor(private readonly backendService: BackendService) { }
 
   public ngOnInit(): void {
+    this.authenticationData = this.backendService.authenticationData
     this.backendService.getLedgerEntries()
       .subscribe((result: ILedgerEntry[]) => {
         this.ledgerEntries = result
