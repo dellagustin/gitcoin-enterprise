@@ -39,6 +39,7 @@
   },
   "homepage": "https://github.com/gitcoin-enterprise/gitcoin-enterprise#readme",
   "dependencies": {
+    "@nestjs/passport": "^6.1.1",
     "husky": "^4.2.1",
     "ng-range": "0.0.1"
   }

@@ -49,6 +49,8 @@ I decided now to leave E-Mail based Authentication behind. GitHub based Authenti
 
 **Background Info**
 https://oauth.net/articles/authentication/
+https://www.youtube.com/watch?v=A23O4aUftXk
+
 
 ### In General
 http://www.passportjs.org/docs/
