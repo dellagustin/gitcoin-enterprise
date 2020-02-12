@@ -25,7 +25,8 @@ export class AuthenticationMiddleware implements NestMiddleware {
     if (this.isUserAuthenticated(req.headers.michaelsfriendskey)) {
       next()
     } else {
-      res.redirect(`${config.backendURL}/login`)
+      this.lg.log(ELogLevel.Error, `I received an unauthorized call to: ${requestURL}`)
+      // res.redirect(`${config.backendURL}/login`)
     }
   }
 
