@@ -4,6 +4,8 @@ import { BackendService, ITask } from './backend.service'
 import { ILedgerEntry } from './ledger/ledger.interface'
 import { backendURL } from '../configurations/configuration'
 import { IAuthenticationData } from './interfaces'
+// import { ActivatedRoute } from '@angular/router'
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -22,16 +24,30 @@ export class AppComponent implements OnInit {
   public taskOfInterest: ITask
   private readonly modesRequiringAuthentication: string[] = ['fund', 'solve']
 
+  // public constructor(private readonly backendService: BackendService, private route: ActivatedRoute) { }
   public constructor(private readonly backendService: BackendService) { }
 
   public ngOnInit() {
     this.considerPWAInstallPrompt()
     this.authenticationData = this.backendService.authenticationData
-    this.mode = (this.backendService.actionsForRedirectingConvenientlyAfterLogin === 'actionsForRedirectingConvenientlyAfterLogin') ?
-      '' :
-      this.backendService.actionsForRedirectingConvenientlyAfterLogin
+    this.getQueryParameterBasedData()
     // alert(this.mode)
   }
+
+  private getQueryParameterBasedData() {
+    // currently no need for this
+    // this.route
+    //   .queryParamMap
+    //   .subscribe((result: any) => {
+    //     if (result.params !== undefined) {
+    //       this.queryParameters = result.params
+    //     }
+    //     if (this.queryParameters.action !== undefined) {
+    //       this.mode = this.queryParameters.action
+    //     }
+    //   })
+  }
+
 
   public fundTask() {
     if (this.authenticationData === undefined) {
