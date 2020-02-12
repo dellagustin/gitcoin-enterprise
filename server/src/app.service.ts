@@ -26,12 +26,12 @@ export class AppService {
   }
 
   getActionForAddress(remoteAddress: any): any {
-    const action = this.actionsForRedirectingConvenientlyAfterLogin.filter((entry) => entry.ipAddress === remoteAddress)[0]
-    this.lg.log(ELogLevel.Info, `getting action ${action} for ${remoteAddress}`)
-    if (action === undefined) {
+    const entry = this.actionsForRedirectingConvenientlyAfterLogin.filter((e) => e.ipAddress === remoteAddress)[0]
+    this.lg.log(ELogLevel.Info, `getting action ${entry.action} for ${remoteAddress}`)
+    if (entry === undefined) {
       return ''
     } else {
-      return action
+      return entry.action
     }
   }
 

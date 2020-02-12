@@ -28,7 +28,7 @@ export class GithubIntegrationService {
         })
 
         const user = await octokitForRetrievingUserData.users.getAuthenticated()
-        this.lg.log(ELogLevel.Info, user)
+        // this.lg.log(ELogLevel.Info, user)
 
         const authenticationData: IAuthenticationData = {
             avatarURL: user.data.avatar_url,
