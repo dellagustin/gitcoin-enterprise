@@ -36,10 +36,14 @@ export class AppController {
       const michaelsfriendskey = token.access_token
       this.appService.handleNewToken(michaelsfriendskey)
 
-      serverResponse.send(fs.read(`${pathToStaticAssets}/i-want-compression-via-route.html`)
+      // just for demo reasons :) - step by step exploring JSON Web Tokens with my students - step 1
+      fs.write(`${pathToStaticAssets}/temp.html`, fs.read(`${pathToStaticAssets}/i-want-compression-via-route.html`)
         .replace('authenticationTokenContent', michaelsfriendskey)
-        .replace('actionsForRedirectingConvenientlyAfterLogin', this.appService.getActionForAddress(req.connection.remoteAddress)),
-      )
+        .replace('actionsForRedirectingConvenientlyAfterLogin', this.appService.getActionForAddress(req.connection.remoteAddress)))
+      setTimeout(() => {
+        fs.delete(`${pathToStaticAssets}/temp.html`)
+      }, 700)
+      serverResponse.sendFile(`${pathToStaticAssets}/temp.html`)
     })
   }
 

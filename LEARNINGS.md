@@ -47,6 +47,9 @@ For starters [this video](https://www.youtube.com/watch?v=CsWoMpK3EtE) seems hel
 ### E-Mail based Authentication
 I decided now to leave E-Mail based Authentication behind. GitHub based Authentication seems best in the context of GitCoin Enterprise.
 
+**Background Info**
+https://oauth.net/articles/authentication/
+
 ### In General
 http://www.passportjs.org/docs/
 
