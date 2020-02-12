@@ -1,6 +1,7 @@
 export interface IAuthenticationData {
   login: string
   token: string
+  balance: number
 }
 
 export interface IssueInfo {
@@ -59,10 +60,8 @@ export interface IEmail {
   content: string
 }
 export interface IUser {
-  id: string
-  firstName: string
+  login: string
   balance: number
-  link: string
 }
 
 export interface IFunding {

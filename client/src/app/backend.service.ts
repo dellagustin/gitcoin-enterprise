@@ -41,13 +41,13 @@ export class BackendService {
   public constructor(private readonly http: HttpClient) { }
 
 
-  public get(url: any, key: string): any {
+  public get(url: any, michaelsfriendskey: string): any {
 
 
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        michaelsfriendskey: key
+        michaelsfriendskey
       })
     }
     console.log(`calling to get ${url}`)
@@ -55,7 +55,7 @@ export class BackendService {
   }
 
 
-  public post(url: string, body: any, key: string) {
+  public post(url: string, body: any, michaelsfriendskey: string) {
     // const urlWithClient = `${url}?client=${document.URL}`;
     const urlWithClient = url
     console.log(`calling to post to ${urlWithClient}`)
@@ -63,7 +63,7 @@ export class BackendService {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        michaelsfriendskey: key
+        michaelsfriendskey
       })
     }
 

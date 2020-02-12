@@ -1,13 +1,12 @@
 import { Controller, Get, Param, Res, Post, Req, Query } from '@nestjs/common'
 import { AppService } from './app.service'
 import { pathToStaticAssets } from './gitcoin-enterprise-server'
-import { ITask, IUser } from './interfaces'
+import { ITask, IUser, IAuthenticationData } from './interfaces'
 import { GithubIntegrationService } from './github-integration/github-integration.service'
 import { ILedgerEntry } from './ledger-connector/ledger-connector.interface'
 import { config } from './app.module'
 import * as fs from 'fs-sync'
-import * as uuidv1 from 'uuid/v1'
-import { AuthenticationService } from './authentication/authentication.service'
+import { LoggerService } from './logger/logger.service'
 
 @Controller()
 export class AppController {
@@ -15,7 +14,7 @@ export class AppController {
   private githubOAuth: any
   userService: any
 
-  constructor(private readonly appService: AppService, private readonly gitHubIntegration: GithubIntegrationService, private readonly authenticationService: AuthenticationService) {
+  constructor(private readonly appService: AppService, private readonly gitHubIntegration: GithubIntegrationService, private readonly ld: LoggerService) {
 
     this.githubOAuth = require('./github-oauth/gh-oauth-implement-a-typescript-version-soon')({
       githubClient: config.gitHubOAuthClient,
@@ -34,16 +33,11 @@ export class AppController {
     })
 
     this.githubOAuth.on('token', async (token, serverResponse, tokenResp, req) => {
-
-      AppService.authenticationData = await this.gitHubIntegration.getAuthenticationData(token.access_token)
-
-      // fs.write(`${pathToStaticAssets}/i-want-compression-via-route.html`, fs.read(`${pathToStaticAssets}/i-want-compression-via-route.html`)
-      //   .replace('authentificationTokenContent', AppService.authenticationData.token))
+      const michaelsfriendskey = token.access_token
+      this.appService.handleNewToken(michaelsfriendskey)
 
       serverResponse.send(fs.read(`${pathToStaticAssets}/i-want-compression-via-route.html`)
-        .replace('authentificationTokenContent', AppService.authenticationData.token))
-      // serverResponse.sendFile(`${pathToStaticAssets}/i-want-compression-via-route.html`)
-      // serverResponse.redirect(`${config.backendURL}?token=${AppService.authenticationData.token}`)
+        .replace('authentificationTokenContent', michaelsfriendskey))
     })
   }
 
@@ -56,11 +50,6 @@ export class AppController {
   @Get('/getLedgerEntries')
   getLedgerEntries(): ILedgerEntry[] {
     return this.appService.getLedgerEntries()
-  }
-
-  @Get('/getUser')
-  getUser(@Req() req: any): Promise<IUser> {
-    return this.appService.getUser(req.headers.companyuserid)
   }
 
   @Get('/getIssueInfo/org/:org/repo/:repo/issueid/:issueId')
@@ -79,15 +68,15 @@ export class AppController {
     // return this.appService.saveFunding(req.body, req.headers.companyuserid)
   }
 
-  @Post('/postFunding')
-  saveFunding(@Req() req: any): ILedgerEntry {
-    return this.appService.saveFunding(req.body, req.headers.companyuserid)
-  }
+  // @Post('/postFunding')
+  // saveFunding(@Req() req: any): ILedgerEntry {
+  //   // return this.appService.saveFunding(req.body, req.headers.companyuserid)
+  // }
 
-  @Post('/postApplication')
-  applyForSolving(@Req() req: any): void {
-    return this.appService.applyForSolving(req.headers.companyuserid, req.body)
-  }
+  // @Post('/postApplication')
+  // applyForSolving(@Req() req: any): void {
+  //   // return this.appService.applyForSolving(req.headers.companyuserid, req.body)
+  // }
 
   @Get('/login')
   login(@Req() req: any, @Res() res: any, @Query('sessionWithoutCookies') sessionWithoutCookies: string): void {

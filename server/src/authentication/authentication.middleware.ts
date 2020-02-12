@@ -5,15 +5,17 @@ import { LoggerService } from '../logger/logger.service'
 import { ELogLevel } from '../logger/logger-interface'
 import { SupportNotifierService } from '../support-notifier/support-notifier.service'
 import { AuthenticationService } from './authentication.service'
+import { IAuthenticationData } from '../interfaces'
 const axios = require('axios')
 
 export class AuthenticationMiddleware implements NestMiddleware {
 
   private readonly lg: LoggerService
   private readonly authenticationService: AuthenticationService
+
   public constructor() {
     this.lg = new LoggerService(new SupportNotifierService())
-    // this.authenticationService = new AuthenticationService(this.lg)
+    this.authenticationService = new AuthenticationService(this.lg)
   }
 
   public async use(req: any, res: Response, next: any): Promise<void> {
@@ -26,8 +28,13 @@ export class AuthenticationMiddleware implements NestMiddleware {
     }
   }
 
-  private isUserAuthenticated(userId): boolean {
-    return false
+  private isUserAuthenticated(michaelsfriendskey: string): boolean {
+    const authenticationData: IAuthenticationData = this.authenticationService.getAuthenticationData(michaelsfriendskey)
+
+    if (authenticationData === undefined) { return false }
+    if (authenticationData.login === '') { return false }
+
+    return true
   }
 
 }

@@ -22,7 +22,7 @@ export class GithubIntegrationService {
 
     public constructor(private readonly lg: LoggerService) { }
 
-    public async getAuthenticationData(token: string): Promise<IAuthenticationData> {
+    public async getAuthenticationDataFromGitHub(token: string): Promise<IAuthenticationData> {
         const octokitForRetrievingUserData = new Octokit({
             auth: token,
         })
@@ -33,6 +33,7 @@ export class GithubIntegrationService {
         const authenticationData: IAuthenticationData = {
             login: user.data.login,
             token,
+            balance: 200, // start amount for each user
         }
         return authenticationData
     }

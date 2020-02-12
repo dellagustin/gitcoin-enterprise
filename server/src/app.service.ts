@@ -8,6 +8,7 @@ import { LedgerConnector } from './ledger-connector/ledger-connector-file-system
 import { GithubIntegrationService } from './github-integration/github-integration.service'
 import { ILedgerEntry } from './ledger-connector/ledger-connector.interface'
 import { ELogLevel } from './logger/logger-interface'
+import { AuthenticationService } from './authentication/authentication.service'
 
 // set personal acceess token for posting issue comment
 const config = fs.readJSON(path.join(__dirname, '../.env.json'))
@@ -15,47 +16,23 @@ const config = fs.readJSON(path.join(__dirname, '../.env.json'))
 @Injectable()
 export class AppService {
 
-  public static authenticatedUsers: IAuthenticationData[] = []
-  public static authenticationData = {
-    token: '',
-    login: '',
+  async handleNewToken(michaelsfriendskey: any) {
+    this.authenticationService
+      .addAuthenticationData(await this.gitHubIntegration.getAuthenticationDataFromGitHub(michaelsfriendskey))
   }
 
   public static currentSessionWithoutCookiesLogin = ''
   private fundedTasksFileId = path.join(__dirname, '../operational-data/funded-tasks.json')
-  private usersFileId = path.join(__dirname, '../operational-data/users.json')
 
   // Interface would be cool for LedgerConnector... The reason why I could not use interface polymorphism here is interfaces are design-time only in the current context :)
-  public constructor(private readonly lg: LoggerService, private readonly ledgerConnector: LedgerConnector, private readonly gitHubIntegration: GithubIntegrationService) {
+  public constructor(private readonly lg: LoggerService, private readonly ledgerConnector: LedgerConnector, private readonly gitHubIntegration: GithubIntegrationService, private readonly authenticationService: AuthenticationService) {
     // tbd
   }
 
-  public addUser(id: string) {
-    const users: IUser[] = fs.readJSON(this.usersFileId)
-
-    const newUser: IUser = {
-      id,
-      firstName: '',
-      balance: 0,
-      link: '',
-    }
-
-    if (users.filter((user: IUser) => user.id === newUser.id)[0] === undefined) {
-      users.push(newUser)
-      fs.write(this.usersFileId, JSON.stringify(users))
-    }
-
-  }
-
-  public async getUser(userId: string): Promise<IUser> {
-    await this.lg.log(ELogLevel.Info, `getting user ${userId}`)
-    return fs.readJSON(this.usersFileId).filter((user: IUser) => user.id === userId)[0]
-  }
-
-  public applyForSolving(userId: string, application: IApplication): void {
-    const existingUser = fs.readJSON(this.usersFileId).filter((user: IUser) => user.id === userId)[0]
-    if (existingUser === undefined) {
-      throw new Error('User not found')
+  public async applyForSolving(userAccessToken: string, application: IApplication): Promise<void> {
+    const authenticationData = await this.authenticationService.getAuthenticationData(userAccessToken)
+    if (authenticationData === undefined) {
+      throw new Error('Authentication data not found for this token')
     }
     this.gitHubIntegration.postCommentAboutApplication(application)
   }
@@ -108,19 +85,17 @@ export class AppService {
     return this.ledgerConnector.getLedgerEntries()
   }
 
-  public saveFunding(taskAndFunding: ITaskAndFunding, key: string): ILedgerEntry {
+  public async saveFunding(taskAndFunding: ITaskAndFunding, userAccessToken: string): Promise<ILedgerEntry> {
 
-    const user = fs.readJSON(this.usersFileId)
-      .filter((entry: IUser) => entry.id === key)[0]
-
-    if (user === undefined) {
-      throw new Error('I could not find an authorized user with this id.')
+    const authenticationData = await this.authenticationService.getAuthenticationData(userAccessToken)
+    if (authenticationData === undefined) {
+      throw new Error('I could not find authentication Data for this token.')
     }
 
     const newLedgerEntry: ILedgerEntry = this.createLedgerEntry(taskAndFunding.funding)
 
     const tasks = fs.readJSON(this.fundedTasksFileId)
-    const existingTask = tasks.filter((entry: IUser) => entry.link === taskAndFunding.task.link)[0]
+    const existingTask = tasks.filter((entry: ITask) => entry.link === taskAndFunding.task.link)[0]
 
     let task: ITask
     if (existingTask === undefined) {
