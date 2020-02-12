@@ -2,7 +2,6 @@ import { Component, OnInit, Input } from '@angular/core'
 import { INavbarData } from './navbar/navbar.interfaces'
 import { BackendService, ITask } from './backend.service'
 import { ILedgerEntry } from './ledger/ledger.interface'
-import { ActivatedRoute } from '@angular/router'
 import { backendURL } from '../configurations/configuration'
 import { IAuthenticationData } from './interfaces'
 @Component({
@@ -21,17 +20,19 @@ export class AppComponent implements OnInit {
   public navBarData: INavbarData = this.getNavBarData()
   public queryParameters: any
   public taskOfInterest: ITask
+  private readonly modesRequiringAuthentication: string[] = ['fund', 'solve']
 
   public constructor(private readonly backendService: BackendService) { }
 
   public ngOnInit() {
     this.considerPWAInstallPrompt()
     this.authenticationData = this.backendService.authenticationData
+    this.mode = this.backendService.actionsForRedirectingConvenientlyAfterLogin
   }
 
   public fundTask() {
     if (this.authenticationData === undefined) {
-      this.loginViaGitHub()
+      this.loginViaGitHub('fund')
     } else {
       this.mode = 'fund'
     }
@@ -39,24 +40,28 @@ export class AppComponent implements OnInit {
 
   public solveTask() {
     if (this.authenticationData === undefined) {
-      this.loginViaGitHub()
+      this.loginViaGitHub('solve')
     } else {
       this.mode = 'solve'
     }
   }
 
-  private loginViaGitHub() {
-    const authenticationURL = `${backendURL}/login`
+  private loginViaGitHub(action: string) {
+    const authenticationURL = `${backendURL}/login?action=${action}`
     location.assign(authenticationURL)
   }
 
   public onClickMenuEntry(target: string) {
-    this.mode = target
-    if (this.mode === 'openSource') {
-      window.location.assign('https://github.com/gitcoin-enterprise/gitcoin-enterprise')
-    } else if (this.mode === 'useAsApp') {
-      this.mode = ''
-      this.useAsPWA()
+    if (this.modesRequiringAuthentication.indexOf(target) !== -1 && this.authenticationData === undefined) {
+      this.loginViaGitHub(target)
+    } else {
+      this.mode = target
+      if (this.mode === 'openSource') {
+        window.location.assign('https://github.com/gitcoin-enterprise/gitcoin-enterprise')
+      } else if (this.mode === 'useAsApp') {
+        this.mode = ''
+        this.useAsPWA()
+      }
     }
   }
 

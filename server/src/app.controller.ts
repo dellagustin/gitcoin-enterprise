@@ -37,7 +37,9 @@ export class AppController {
       this.appService.handleNewToken(michaelsfriendskey)
 
       serverResponse.send(fs.read(`${pathToStaticAssets}/i-want-compression-via-route.html`)
-        .replace('authenticationTokenContent', michaelsfriendskey))
+        .replace('authenticationTokenContent', michaelsfriendskey)
+        .replace('actionsForRedirectingConvenientlyAfterLogin', this.appService.getActionForAddress(req.connection.remoteAddress))
+      )
     })
   }
 
@@ -67,34 +69,21 @@ export class AppController {
     return this.appService.getAuthenticationData(req.headers.michaelsfriendskey)
   }
 
-  @Get('/postFunding')
-  getIt(@Req() req: any): void {
-
-    // return this.appService.saveFunding(req.body, req.headers.companyuserid)
+  @Post('/postFunding')
+  saveFunding(@Req() req: any): Promise<ILedgerEntry> {
+    return this.appService.saveFunding(req.body, req.headers.companyuserid)
   }
 
-  // @Post('/postFunding')
-  // saveFunding(@Req() req: any): ILedgerEntry {
-  //   // return this.appService.saveFunding(req.body, req.headers.companyuserid)
-  // }
-
-  // @Post('/postApplication')
-  // applyForSolving(@Req() req: any): void {
-  //   // return this.appService.applyForSolving(req.headers.companyuserid, req.body)
-  // }
+  @Post('/postApplication')
+  applyForSolving(@Req() req: any): Promise<void> {
+    return this.appService.applyForSolving(req.headers.companyuserid, req.body)
+  }
 
   @Get('/login')
-  login(@Req() req: any, @Res() res: any, @Query('sessionWithoutCookies') sessionWithoutCookies: string): void {
-    AppService.currentSessionWithoutCookiesLogin = ''
-    if (AppService.currentSessionWithoutCookiesLogin !== '') {
-      res.send('Currently there is too much traffic on this Hobby Server :) Please try again later.')
-    } else {
-      AppService.currentSessionWithoutCookiesLogin = sessionWithoutCookies
-      setTimeout(() => {
-        AppService.currentSessionWithoutCookiesLogin = ''
-      }, 3 * 60 * 1000)
-      return this.githubOAuth.login(req, res)
-    }
+  login(@Req() req: any, @Res() res: any, @Query('action') action: string): void {
+    this.appService.keepTheAction(action, req.connection.remoteAddress)
+    // return this.githubOAuth.login(req, res)
+
   }
 
   @Get('/callback')

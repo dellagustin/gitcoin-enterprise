@@ -16,17 +16,35 @@ const config = fs.readJSON(path.join(__dirname, '../.env.json'))
 @Injectable()
 export class AppService {
 
+  private fundedTasksFileId = path.join(__dirname, '../operational-data/funded-tasks.json')
+  private actionsForRedirectingConvenientlyAfterLogin = []
+  // Interface would be cool for LedgerConnector... The reason why I could not use interface polymorphism here is interfaces are design-time only in the current context :)
+  public constructor(private readonly lg: LoggerService, private readonly ledgerConnector: LedgerConnector, private readonly gitHubIntegration: GithubIntegrationService, private readonly authenticationService: AuthenticationService) {
+    setInterval(() => {
+      this.actionsForRedirectingConvenientlyAfterLogin = [] // initializing after 24 hours
+    }, 24 * 60 * 60 * 1000)
+  }
+
+  getActionForAddress(remoteAddress: any): any {
+    const action = this.actionsForRedirectingConvenientlyAfterLogin.filter((entry) => entry.ipAddress === remoteAddress)[0]
+    if (action === undefined) {
+      return ''
+    } else {
+      return action
+    }
+  }
+
+  public keepTheAction(action: string, ipAddress: string) {
+    const addressWantsTo = {
+      ipAddress,
+      action,
+    }
+    this.actionsForRedirectingConvenientlyAfterLogin.push(addressWantsTo)
+  }
+
   async handleNewToken(michaelsfriendskey: any) {
     this.authenticationService
       .addAuthenticationData(await this.gitHubIntegration.getAuthenticationDataFromGitHub(michaelsfriendskey))
-  }
-
-  public static currentSessionWithoutCookiesLogin = ''
-  private fundedTasksFileId = path.join(__dirname, '../operational-data/funded-tasks.json')
-
-  // Interface would be cool for LedgerConnector... The reason why I could not use interface polymorphism here is interfaces are design-time only in the current context :)
-  public constructor(private readonly lg: LoggerService, private readonly ledgerConnector: LedgerConnector, private readonly gitHubIntegration: GithubIntegrationService, private readonly authenticationService: AuthenticationService) {
-    // tbd
   }
 
   public getAuthenticationData(michaelsfriendskey: string): IAuthenticationData {

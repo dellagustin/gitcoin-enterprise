@@ -40,7 +40,7 @@ export class ProfileComponent implements OnInit {
   }
 
   public loginViaGitHub() {
-    const authenticationURL = `${backendURL}/login`
+    const authenticationURL = `${backendURL}/login?action=profile`
     location.assign(authenticationURL)
   }
 

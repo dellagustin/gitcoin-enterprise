@@ -35,6 +35,7 @@ export enum ETaskType {
 export class BackendService {
   public authenticationData: IAuthenticationData
 
+  public actionsForRedirectingConvenientlyAfterLogin = document.getElementById('actionsForRedirectingConvenientlyAfterLoginID').innerHTML.trim()
   private authenticationToken = document.getElementById('authenticationToken').innerHTML.trim()
 
   public constructor(private readonly http: HttpClient) {
