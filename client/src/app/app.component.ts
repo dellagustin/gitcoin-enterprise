@@ -27,7 +27,10 @@ export class AppComponent implements OnInit {
   public ngOnInit() {
     this.considerPWAInstallPrompt()
     this.authenticationData = this.backendService.authenticationData
-    this.mode = this.backendService.actionsForRedirectingConvenientlyAfterLogin
+    this.mode = (this.backendService.actionsForRedirectingConvenientlyAfterLogin === 'actionsForRedirectingConvenientlyAfterLogin') ?
+      '' :
+      this.backendService.actionsForRedirectingConvenientlyAfterLogin
+    // alert(this.mode)
   }
 
   public fundTask() {

@@ -17,6 +17,7 @@ Scenario("test minimal viable service", async (I) => {
   I.amOnPage("/");
   await I.wait(2)
 
+  I.see('Fund a Task')
   // let transactionId = await fundATask(I)
 
   // await validateSuccessfulFunding(I, transactionId)

@@ -38,7 +38,7 @@ export class AppController {
 
       serverResponse.send(fs.read(`${pathToStaticAssets}/i-want-compression-via-route.html`)
         .replace('authenticationTokenContent', michaelsfriendskey)
-        .replace('actionsForRedirectingConvenientlyAfterLogin', this.appService.getActionForAddress(req.connection.remoteAddress))
+        .replace('actionsForRedirectingConvenientlyAfterLogin', this.appService.getActionForAddress(req.connection.remoteAddress)),
       )
     })
   }
@@ -82,8 +82,7 @@ export class AppController {
   @Get('/login')
   login(@Req() req: any, @Res() res: any, @Query('action') action: string): void {
     this.appService.keepTheAction(action, req.connection.remoteAddress)
-    // return this.githubOAuth.login(req, res)
-
+    return this.githubOAuth.login(req, res)
   }
 
   @Get('/callback')
