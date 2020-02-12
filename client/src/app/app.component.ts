@@ -3,7 +3,6 @@ import { INavbarData } from './navbar/navbar.interfaces'
 import { BackendService, ITask } from './backend.service'
 import { ILedgerEntry } from './ledger/ledger.interface'
 import { ActivatedRoute } from '@angular/router'
-import { ProfileComponent, IUser } from './profile/profile.component'
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -24,7 +23,7 @@ export class AppComponent implements OnInit {
   public constructor(private readonly backendService: BackendService, private route: ActivatedRoute) { }
 
   public ngOnInit() {
-    this.authenticationToken = document.getElementById('authentificationToken').innerHTML
+    BackendService.authenticationToken = document.getElementById('authentificationToken').innerHTML
     this.considerPWAInstallPrompt()
     if (this.authenticationToken !== '') {
       this.getQueryParameterBasedData()
@@ -51,7 +50,7 @@ export class AppComponent implements OnInit {
             //   })
           }
           if (this.queryParameters.taskId !== undefined) {
-            this.backendService.getFundedTasks(this.sessionWithoutCookies)
+            this.backendService.getFundedTasks()
               .subscribe((fundedTasks: ITask[]) => {
                 this.fundedTasks = fundedTasks
                 this.taskOfInterest = this.fundedTasks.filter((entry: ITask) => entry.id === this.queryParameters.taskId)[0]

@@ -14,14 +14,15 @@ import { backendURL } from '../../configurations/configuration'
 export class LedgerComponent implements OnInit {
 
   @Input() transactionId = ''
-  @Input() public sessionWithoutCookies = ''
+
+  public userIsAuthenticated = (BackendService.authenticationToken === '') ? false : true
   public ledgerEntries: ILedgerEntry[] = []
   public entryIdOfInterest: ILedgerEntry
 
   public constructor(private readonly backendService: BackendService) { }
 
   public ngOnInit(): void {
-    this.backendService.getLedgerEntries(this.sessionWithoutCookies)
+    this.backendService.getLedgerEntries()
       .subscribe((result: ILedgerEntry[]) => {
         this.ledgerEntries = result
         setTimeout(() => {

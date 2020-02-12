@@ -1,13 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core'
 import { BackendService } from '../backend.service'
 import { backendURL } from '../../configurations/configuration'
-
-export interface IUser {
-  id: string
-  firstName: string
-  balance: number
-  link: string
-}
+import { IUser } from '../interfaces'
 
 @Component({
   selector: 'app-profile',
@@ -16,16 +10,14 @@ export interface IUser {
 })
 export class ProfileComponent implements OnInit {
 
-  // public static currentUser: IUser = ProfileComponent.getInitialUser()
-  @Input() public sessionWithoutCookies = ''
+  public userIsAuthenticated = (BackendService.authenticationToken === '') ? false : true
   public users: IUser[] = []
   public userIsAuthorized = false
   // public user = ProfileComponent.currentUser
 
   public static getInitialUser() {
     const user: IUser = {
-      id: '',
-      firstName: '',
+      avatarURL: 'https://avatars1.githubusercontent.com/u/43786652?v=4',
       balance: 0,
       link: '',
     }
@@ -34,13 +26,14 @@ export class ProfileComponent implements OnInit {
   }
 
   public login() {
-    window.location.assign(`${backendURL}/login?sessionWithoutCookies=${this.sessionWithoutCookies}`)
+    window.location.assign(`${backendURL}/login`)
   }
 
 
   public constructor(private readonly backendService: BackendService) { }
 
   public ngOnInit(): void {
+  alert('https://avatars1.githubusercontent.com/u/43786652?v=4')
     // this.backendService.getUsers()
     //   .subscribe((result: IUser[]) => this.users = result )
   }

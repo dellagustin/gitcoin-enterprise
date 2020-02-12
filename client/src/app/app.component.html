@@ -28,26 +28,26 @@
   </div>
 
   <div *ngIf="mode=='fund'">
-    <app-fund [sessionWithoutCookies]="sessionWithoutCookies"></app-fund>
+    <app-fund ></app-fund>
   </div>
 
   <div *ngIf="mode=='profile'">
-    <app-profile [sessionWithoutCookies]="sessionWithoutCookies"></app-profile>
+    <app-profile ></app-profile>
   </div>
 
 
 
   <div *ngIf="mode=='downloadLedger'">
-    <app-ledger [sessionWithoutCookies]="sessionWithoutCookies"></app-ledger>
+    <app-ledger ></app-ledger>
   </div>
 
 
   <div *ngIf="mode=='solve'">
-    <app-solve [sessionWithoutCookies]="sessionWithoutCookies"></app-solve>
+    <app-solve ></app-solve>
   </div>
 
   <div *ngIf="mode==='viewSpecificTask'">
-    <app-solve [taskOfInterest]="taskOfInterest" [sessionWithoutCookies]="sessionWithoutCookies"></app-solve>
+    <app-solve [taskOfInterest]="taskOfInterest" ></app-solve>
   </div>
 
   <div *ngIf="mode=='inviteFriends'">

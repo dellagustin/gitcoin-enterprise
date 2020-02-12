@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core'
 import { BackendService, ITask } from '../backend.service'
-import { ProfileComponent, IUser } from '../profile/profile.component'
 import { backendURL } from '../../configurations/configuration'
 import { IApplication } from '../interfaces'
 
@@ -13,7 +12,7 @@ import { IApplication } from '../interfaces'
 export class SolveComponent implements OnInit {
 
   @Input() public taskOfInterest: ITask
-  @Input() public sessionWithoutCookies = ''
+  public userIsAuthenticated = (BackendService.authenticationToken === '') ? false : true
   public fundedTasks: ITask[] = []
   public filteredTasks: ITask[] = []
   public searchTerm = ''
@@ -26,7 +25,7 @@ export class SolveComponent implements OnInit {
   public constructor(private readonly backendService: BackendService) { }
 
   public ngOnInit(): void {
-    this.backendService.getFundedTasks(this.sessionWithoutCookies)
+    this.backendService.getFundedTasks()
       .subscribe((result: ITask[]) => {
         this.fundedTasks = result
         this.filteredTasks = this.sortDescending(this.fundedTasks)
@@ -51,12 +50,10 @@ export class SolveComponent implements OnInit {
   public apply(): void {
     this.applicationCompleted = true
     const application: IApplication = {
-      applicantUserId: this.sessionWithoutCookies,
-      profileLink: 'attribute to be deleted soon', // probably this attribute can be deleted
       taskLink: this.taskOfInterest.link,
       plan: this.solutionApproach
     }
-    this.backendService.post(`${backendURL}/postApplication`, application, this.sessionWithoutCookies)
+    this.backendService.post(`${backendURL}/postApplication`, application)
       .subscribe()
 
   }

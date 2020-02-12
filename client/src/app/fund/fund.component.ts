@@ -13,7 +13,6 @@ import { ILedgerEntry } from '../ledger/ledger.interface'
 })
 export class FundComponent {
 
-  @Input() public sessionWithoutCookies = ''
   public radioModel: any
   public taskLink = 'https://github.com/gitcoin-enterprise/gitcoin-enterprise/issues/16'
   public task: ITask = TaskHelper.getInitialTask()
@@ -23,7 +22,7 @@ export class FundComponent {
   public minimumRange = 10
   public maximumRange = 2000
   public viewTransactionInLedger = false
-  public userIsAuthenticated = BackendService.userIsAuthenticated
+  public userIsAuthenticated = (BackendService.authenticationToken === '') ? false : true
   public newLedgerEntry: ILedgerEntry
 
 
@@ -34,7 +33,7 @@ export class FundComponent {
     const org = sourceString.split('/')[0]
     const repo = sourceString.split('/')[1].split('/')[0]
     const issueId = sourceString.split('/')[3]
-    this.backendService.get(`${backendURL}/getIssueInfo/org/${org}/repo/${repo}/issueId/${issueId}`, this.sessionWithoutCookies)
+    this.backendService.get(`${backendURL}/getIssueInfo/org/${org}/repo/${repo}/issueId/${issueId}`)
       .subscribe((response: any) => {
         this.task = this.getTaskFromResponse(response)
         this.task.link = this.taskLink
@@ -69,14 +68,13 @@ export class FundComponent {
     const funding: IFunding = {
       id: '',
       taskId: this.task.id,
-      funderId: this.sessionWithoutCookies,
       amount: this.currentRange,
     }
     const taskAndFunding: ITaskAndFunding = {
       task: this.task,
       funding
     }
-    this.backendService.post(saveFundingURL, taskAndFunding, this.sessionWithoutCookies)
+    this.backendService.post(saveFundingURL, taskAndFunding)
       .subscribe((newLedgerEntry: ILedgerEntry) => {
         this.newLedgerEntry = newLedgerEntry
       })

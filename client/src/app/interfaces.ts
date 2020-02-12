@@ -4,9 +4,7 @@ export interface IssueInfo {
 }
 
 export interface IApplication {
-  applicantUserId: string
   plan: string
-  profileLink: string
   taskLink: string
 }
 
@@ -45,22 +43,18 @@ export interface ILedgerEntry {
 }
 
 export interface IEmail {
-  senderUserId: string
-  sender: string,
   recipient: string,
   subject: string
   content: string
 }
 export interface IUser {
-  id: string
-  firstName: string
+  avatarURL: string
   balance: number
   link: string
 }
 
 export interface IFunding {
   id: string
-  funderId: string
   taskId: string
   amount: number
 }

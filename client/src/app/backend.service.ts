@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core'
 import { HttpClient, HttpHeaders } from '@angular/common/http'
-import { IUser } from './profile/profile.component'
 import { backendURL } from '../configurations/configuration'
 import { IEmail } from './interfaces'
-import { AppComponent } from './app.component'
 
 export interface ITask {
   id: string
@@ -36,18 +34,18 @@ export enum ETaskType {
 })
 export class BackendService {
 
-  public static userIsAuthenticated = false
+  public static authenticationToken = ''
 
   public constructor(private readonly http: HttpClient) { }
 
 
-  public get(url: any, michaelsfriendskey: string): any {
+  public get(url: any): any {
 
 
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        michaelsfriendskey
+        michaelsfriendskey: BackendService.authenticationToken
       })
     }
     console.log(`calling to get ${url}`)
@@ -55,7 +53,7 @@ export class BackendService {
   }
 
 
-  public post(url: string, body: any, michaelsfriendskey: string) {
+  public post(url: string, body: any) {
     // const urlWithClient = `${url}?client=${document.URL}`;
     const urlWithClient = url
     console.log(`calling to post to ${urlWithClient}`)
@@ -63,7 +61,7 @@ export class BackendService {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        michaelsfriendskey
+        michaelsfriendskey: BackendService.authenticationToken
       })
     }
 
@@ -72,21 +70,21 @@ export class BackendService {
   }
 
 
-  public getLedgerEntries(key: string) {
-    return this.get(`${backendURL}/getLedgerEntries`, key)
+  public getLedgerEntries() {
+    return this.get(`${backendURL}/getLedgerEntries`)
   }
 
-  public sendEMail(eMail: IEmail, key: string): any {
-    return this.post(`${backendURL}/sendEMail`, eMail, key)
+  public sendEMail(eMail: IEmail): any {
+    return this.post(`${backendURL}/sendEMail`, eMail)
   }
 
 
-  public getUser(id: string) {
-    return this.get(`${backendURL}/getUser`, id)
+  public getUser() {
+    return this.get(`${backendURL}/getUser`)
   }
 
-  public getFundedTasks(key: string) {
-    return this.get(`${backendURL}/getFundedTasks`, key)
+  public getFundedTasks() {
+    return this.get(`${backendURL}/getFundedTasks`)
   }
 
 
