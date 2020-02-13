@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core'
 import { BackendService } from '../backend.service'
 import { backendURL } from '../../configurations/configuration'
 import { IUser, IAuthenticationData, IFunding } from '../interfaces'
+import { ILedgerEntry } from '../ledger/ledger.interface'
 
 @Component({
   selector: 'app-profile',
@@ -15,8 +16,8 @@ export class ProfileComponent implements OnInit {
   public viewBountiesAndFundings = false
   public fundingIdOfInterest
   public usersFundings: IFunding[] = []
-
-  // public usersBounties: IFunding[] = []
+  public usersBounties: IFunding[] = []
+  public ledgerEntries: ILedgerEntry[] = []
 
   public constructor(private readonly backendService: BackendService) { }
 
@@ -30,6 +31,16 @@ export class ProfileComponent implements OnInit {
     return user
   }
 
+  public ngOnInit(): void {
+    setTimeout(() => this.justKidding = false, 5000)
+    this.backendService.getLedgerEntries(this.authenticationData.token)
+      .subscribe((result: ILedgerEntry[]) => {
+        this.ledgerEntries = result
+        alert(this.ledgerEntries.length)
+      })
+    // alert(JSON.stringify(this.authenticationData))
+  }
+
   public getLink() {
     return `https://github.com/${this.authenticationData.login}`
   }
@@ -39,11 +50,6 @@ export class ProfileComponent implements OnInit {
   }
 
 
-
-  public ngOnInit(): void {
-    setTimeout(() => this.justKidding = false, 2000)
-    // alert(JSON.stringify(this.authenticationData))
-  }
 
   public loginViaGitHub() {
     const authenticationURL = `${backendURL}/login?action=profile`

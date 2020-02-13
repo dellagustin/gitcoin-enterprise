@@ -26,36 +26,74 @@
   </a>
 </div>
 
-<div *ngIf="viewBountiesAndFundings">
+<div *ngIf="viewBountiesAndFundings" class="adPad">
 
-<h3 class="ourRedColor">
-Your Bounties
-</h3>
+  <h3 class="ourRedColor">
+    Your Fundings
+  </h3>
 
 
   <table class="table table-striped">
-      <thead class="thead-dark">
-        <tr>
-          <th>Task ID</th>
-          <th>Amount</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let funding of usersFundings" (click)="onEntryClicked(funding)">
+    <thead class="thead-dark">
+      <tr>
+        <th>Task ID</th>
+        <th>Amount</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let funding of usersFundings" (click)="onEntryClicked(funding)">
 
-          <!-- <td id="taskId-{{ledgerEntry.id}}" *ngIf="ledgerEntry.id===transactionId" class="highlighted">
+        <!-- <td id="taskId-{{ledgerEntry.id}}" *ngIf="ledgerEntry.id===transactionId" class="highlighted">
             ...{{ledgerEntry.id.substr(ledgerEntry.id.length - 4, 4)}}</td>
           <td *ngIf="ledgerEntry.id===transactionId" class="highlighted">{{ledgerEntry.date.substr(0, ledgerEntry.date.length -5)}}</td>
 
           <td id="taskId-{{ledgerEntry.id}}"  *ngIf="ledgerEntry.id!==transactionId">...{{ledgerEntry.id.substr(ledgerEntry.id.length - 4, 4)}}</td>
           <td *ngIf="ledgerEntry.id!==transactionId">{{ledgerEntry.date.substr(0, ledgerEntry.date.length -5)}}</td> -->
-        </tr>
+      </tr>
 
-      </tbody>
-    </table>
+    </tbody>
+  </table>
 
-    <!-- <div class="adPad">
+  <!-- <div class="adPad">
+      Transaction Volume <p></p>
+      <h2 class="ourBlueColor">
+        {{getSum()}} EIC
+      </h2>
+    </div> -->
+
+</div>
+
+<div *ngIf="viewBountiesAndFundings" class="adPad">
+
+  <h3 class="ourRedColor">
+    Your Bounties
+  </h3>
+
+
+  <table class="table table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th>Task ID</th>
+        <th>Amount</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let funding of usersBounties" (click)="onEntryClicked(funding)">
+
+        <!-- <td id="taskId-{{ledgerEntry.id}}" *ngIf="ledgerEntry.id===transactionId" class="highlighted">
+            ...{{ledgerEntry.id.substr(ledgerEntry.id.length - 4, 4)}}</td>
+          <td *ngIf="ledgerEntry.id===transactionId" class="highlighted">{{ledgerEntry.date.substr(0, ledgerEntry.date.length -5)}}</td>
+
+          <td id="taskId-{{ledgerEntry.id}}"  *ngIf="ledgerEntry.id!==transactionId">...{{ledgerEntry.id.substr(ledgerEntry.id.length - 4, 4)}}</td>
+          <td *ngIf="ledgerEntry.id!==transactionId">{{ledgerEntry.date.substr(0, ledgerEntry.date.length -5)}}</td> -->
+      </tr>
+
+    </tbody>
+  </table>
+
+  <!-- <div class="adPad">
       Transaction Volume <p></p>
       <h2 class="ourBlueColor">
         {{getSum()}} EIC
