@@ -70,3 +70,8 @@ export interface ITaskAndFunding {
   task: ITask
   funding: IFunding
 }
+
+export interface IMessage {
+  text: string
+  fromChatBot: boolean
+}

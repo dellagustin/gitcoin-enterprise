@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core'
 import { BackendService } from '../backend.service'
 import { backendURL } from '../../configurations/configuration'
 import { IApplication, IAuthenticationData, ITask } from '../interfaces'
+import { IMessage } from '../typing-area/typing-area.component'
 
 
 @Component({
@@ -15,6 +16,7 @@ export class SolveComponent implements OnInit {
   @Input() public authenticationData: IAuthenticationData
   public fundedTasks: ITask[] = []
   public filteredTasks: ITask[] = []
+  public messages: IMessage[] = [{ fromChatBot: true, text: 'This starts to sound like a plan :)' }]
   public searchTerm = ''
   public solutionApproach = ''
   public sortingDirectionDown = false
@@ -75,6 +77,10 @@ export class SolveComponent implements OnInit {
 
   public backToOverview(): void {
     delete this.taskOfInterest
+  }
+
+  public onTyping(event: any) {
+    // no need to consider this here :)
   }
 
   public sort(): ITask[] {

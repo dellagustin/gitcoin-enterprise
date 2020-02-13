@@ -42,40 +42,24 @@
         <i class="fa fa-wpexplorer" aria-hidden="true" style="padding-left: 1vw;"></i>
       </button>
 
-      <app-task-card [task]="taskOfInterest"></app-task-card>
 
       <div class="adPad">
         <textarea [(ngModel)]="solutionApproach" style="width: 100%;" rows="4"
-          placeholder="Describe a rough plan. How are you going to solve this task? I will post this content as a comment on the issue automatically."></textarea>
+          placeholder="Describe a rough plan. How are you going to solve this task? I will post this content as a comment on the issue automatically."
+          style="text-align: center; min-width: 100%;"></textarea>
       </div>
-
+      <p></p>
+      <div *ngIf="solutionApproach.length>20">
+        <app-typing-area [messages]=messages (typing)=onTyping($event)></app-typing-area>
+      </div>
       <span *ngIf="taskOfInterest.status===1 && !userWantsToApply && solutionApproach!==''">
-        <button (click)="applyForSolving()" type="button" class="btn ourRedColor">
-          <i class="fa fa-wrench" aria-hidden="true" style="padding-right: 1vw;"></i>
-          Apply For Solving This
-          <i class="fa fa-wrench" aria-hidden="true" style="padding-left: 1vw;"></i>
-        </button>
-      </span>
-
-
-      <!-- <input type="text" class="form-control" placeholder="enter your id or click your invitation link"
-        [(ngModel)]="user.id" autofocus> -->
-
-      <!-- <span *ngIf="user.id.length>0"> -->
-
-      <span *ngIf="!(solutionApproach==='')">
-        <button (click)="applyForSolvingAfterUserIdAdded()" type="button" class="btn ourRedColor">
+        <button (click)="applyForSolving()" type="button" class="btn ourBlueColor">
           <i class="fa fa-wrench" aria-hidden="true" style="padding-right: 1vw;"></i>
           Apply Now
           <i class="fa fa-wrench" aria-hidden="true" style="padding-left: 1vw;"></i>
         </button>
       </span>
-      <!-- </span> -->
-
-
-      <span *ngIf="!userWantsToApply">
-        <app-check-it-on-github [taskOfInterest]="taskOfInterest"></app-check-it-on-github>
-      </span>
+      <app-task-card [task]="taskOfInterest"></app-task-card>
 
     </span>
 

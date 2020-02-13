@@ -19,6 +19,7 @@ import { NavbarComponent } from './navbar/navbar.component'
 import { EmailComponent } from './email/email.component'
 import { RouterModule } from '@angular/router'
 import { CheckItOnGithubComponent } from './check-it-on-github/check-it-on-github.component'
+import { TypingAreaComponent } from './typing-area/typing-area.component'
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { CheckItOnGithubComponent } from './check-it-on-github/check-it-on-githu
     TaskCardComponent,
     NavbarComponent,
     EmailComponent,
-    CheckItOnGithubComponent
+    CheckItOnGithubComponent,
+    TypingAreaComponent
 
   ],
   imports: [
