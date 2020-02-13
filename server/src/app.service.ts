@@ -17,43 +17,29 @@ const config = fs.readJSON(path.join(__dirname, '../.env.json'))
 export class AppService {
 
   private fundedTasksFileId = path.join(__dirname, '../operational-data/funded-tasks.json')
-  private actionsForRedirectingConvenientlyAfterLogin = []
+
   // Interface would be cool for LedgerConnector... The reason why I could not use interface polymorphism here is interfaces are design-time only in the current context :)
   public constructor(private readonly lg: LoggerService, private readonly ledgerConnector: LedgerConnector, private readonly gitHubIntegration: GithubIntegrationService, private readonly authenticationService: AuthenticationService) {
-    setInterval(() => {
-      this.actionsForRedirectingConvenientlyAfterLogin = [] // initializing after 24 hours
-    }, 24 * 60 * 60 * 1000)
   }
 
-  getActionForAddress(remoteAddress: any): any {
-    const entry = this.actionsForRedirectingConvenientlyAfterLogin.filter((e) => e.ipAddress === remoteAddress)[0]
-    this.lg.log(ELogLevel.Info, `getting action ${entry.action} for ${remoteAddress}`)
-    if (entry === undefined) {
-      return ''
-    } else {
-      return entry.action
-    }
-  }
-
-  public keepTheAction(action: string, ipAddress: string) {
-    const addressWantsTo = {
-      ipAddress,
-      action,
-    }
-    this.actionsForRedirectingConvenientlyAfterLogin.push(addressWantsTo)
-  }
-
-  async handleNewToken(michaelsfriendskey: any) {
-    this.authenticationService
-      .addAuthenticationData(await this.gitHubIntegration.getAuthenticationDataFromGitHub(michaelsfriendskey))
-  }
+  // async handleNewToken(michaelsfriendskey: any) {
+  //   let authenticationData: IAuthenticationData
+  //   this.lg.log(ELogLevel.Info, 'handling new token')
+  //   this.lg.log(ELogLevel.Info, config.testMode)
+  //   if (config.testMode) {
+  //     authenticationData = this.getTestAuthenticationData(michaelsfriendskey)
+  //   } else {
+  //     authenticationData = await this.gitHubIntegration.getAuthenticationDataFromGitHub(michaelsfriendskey)
+  //   }
+  //   this.authenticationService.addAuthenticationData(authenticationData)
+  // }
 
   public getAuthenticationData(michaelsfriendskey: string): IAuthenticationData {
-    return this.authenticationService.getAuthenticationData(michaelsfriendskey)
+    return this.authenticationService.getAuthenticationDataFromMainMemory(michaelsfriendskey)
   }
 
-  public async applyForSolving(userAccessToken: string, application: IApplication): Promise<void> {
-    const authenticationData = await this.authenticationService.getAuthenticationData(userAccessToken)
+  public async applyForSolving(application: IApplication, userAccessToken: string): Promise<void> {
+    const authenticationData = await this.authenticationService.getAuthenticationDataFromMainMemory(userAccessToken)
     if (authenticationData === undefined) {
       throw new Error('Authentication data not found for this token')
     }
@@ -73,15 +59,15 @@ export class AppService {
     this.lg.log(ELogLevel.Info, `User: ${userId} authorized installation.`)
   }
 
-  public handleOAuthCallbackRequest(): void {
-    const calbackRequestData = 'calbackRequestData'
-    this.lg.log(ELogLevel.Info, `OAuthCallBackRequest Received: ${calbackRequestData}`)
-  }
+  // public handleOAuthCallbackRequest(): void {
+  //   const calbackRequestData = 'calbackRequestData'
+  //   this.lg.log(ELogLevel.Info, `OAuthCallBackRequest Received: ${calbackRequestData}`)
+  // }
 
-  public async ghAppWebHookURL(): Promise<void> {
-    const trigger = 'tbd'
-    await this.lg.log(ELogLevel.Info, `Webhook URL: ${trigger}`)
-  }
+  // public async ghAppWebHookURL(): Promise<void> {
+  //   const trigger = 'tbd'
+  //   await this.lg.log(ELogLevel.Info, `Webhook URL: ${trigger}`)
+  // }
 
   public getFundedTasks(): ITask[] {
     return fs.readJSON(this.fundedTasksFileId)
@@ -89,7 +75,7 @@ export class AppService {
 
   public getDefaultTaskForDemo(): ITask {
     return {
-      id: '1',
+
       taskType: ETaskType.GitHubIssue,
       name: 'Just a Demo Task',
       description: 'Just a Demo Description',
@@ -110,9 +96,9 @@ export class AppService {
 
   public async saveFunding(taskAndFunding: ITaskAndFunding, userAccessToken: string): Promise<ILedgerEntry> {
 
-    const authenticationData = await this.authenticationService.getAuthenticationData(userAccessToken)
+    const authenticationData = await this.authenticationService.getAuthenticationDataFromMainMemory(userAccessToken)
     if (authenticationData === undefined) {
-      throw new Error('I could not find authentication Data for this token.')
+      throw new Error(`I could not find authentication Data for this token: ${userAccessToken}`)
     }
 
     const newLedgerEntry: ILedgerEntry = this.createLedgerEntry(taskAndFunding.funding)
@@ -123,7 +109,6 @@ export class AppService {
     let task: ITask
     if (existingTask === undefined) {
       task = taskAndFunding.task
-      task.id = Date.now().toString()
     } else {
       task = existingTask
       task.funding = task.funding + taskAndFunding.funding.amount
@@ -147,7 +132,7 @@ export class AppService {
       date: new Date().toISOString(),
       amount: funding.amount,
       sender: funding.funderId,
-      receiver: funding.taskId,
+      receiver: funding.taskLink,
     }
 
     entries.push(entry)

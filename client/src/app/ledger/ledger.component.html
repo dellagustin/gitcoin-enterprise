@@ -63,7 +63,7 @@
       </thead>
       <tbody>
         <tr>
-          <td>Transaction ID</td>
+          <td>Transaction</td>
           <td>{{entryIdOfInterest.id}}</td>
         </tr>
         <tr>
@@ -71,12 +71,12 @@
           <td>{{entryIdOfInterest.date}}</td>
         </tr>
         <tr>
-          <td>From {{getSource()}}</td>
-          <td>{{entryIdOfInterest.sender}}</td>
+          <td>From {{getSourceType()}}</td>
+          <a href="{{entryIdOfInterest.sender}}"><td>{{getSource()}}</td></a>
         </tr>
         <tr>
-          <td>To {{getTarget()}}</td>
-          <td>{{entryIdOfInterest.receiver}}</td>
+          <td>To {{getTargetType()}}</td>
+          <a href="{{entryIdOfInterest.receiver}}"><td>{{getTarget()}}</td></a>
         </tr>
         <tr>
           <td>Amount</td>

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core'
-import { ITask } from '../backend.service'
+import { ITask } from '../interfaces'
 
 @Component({
   selector: 'app-check-it-on-github',

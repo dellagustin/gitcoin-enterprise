@@ -9,10 +9,13 @@ import { GithubIntegrationService } from './github-integration/github-integratio
 import { SupportNotifierService } from './support-notifier/support-notifier.service'
 import { AuthenticationMiddleware } from './authentication/authentication.middleware'
 import { AuthenticationService } from './authentication/authentication.service'
+import { BalanceService } from './balance/balance.service'
+import { AuthenticationController } from './authentication/authentication.controller'
 import * as path from 'path'
 import * as fs from 'fs-sync'
+import { IConfig } from './interfaces'
 
-export const config = fs.readJSON(path.join(__dirname, '../.env.json'))
+export const config: IConfig = fs.readJSON(path.join(__dirname, '../.env.json'))
 
 function getLedgerConnector() {
   switch (config.ledgerConnector) {
@@ -29,8 +32,8 @@ const ledgerConnectorProvider = {
 
 @Module({
   imports: [],
-  controllers: [AppController],
-  providers: [AppService, LoggerService, EmailService, ledgerConnectorProvider, GithubIntegrationService, SupportNotifierService, AuthenticationService],
+  controllers: [AppController, AuthenticationController],
+  providers: [AppService, LoggerService, EmailService, ledgerConnectorProvider, GithubIntegrationService, SupportNotifierService, AuthenticationService, BalanceService],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {

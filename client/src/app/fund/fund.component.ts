@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core'
-import { BackendService, ITask, ETaskType, ETaskStatus } from '../backend.service'
+import { Component, OnInit, Input } from '@angular/core'
+import { BackendService, ETaskStatus } from '../backend.service'
 import { backendURL } from '../../configurations/configuration'
 import { DemoDataProviderService } from '../demo-data-provider.service'
 import { TaskHelper } from '../task-card/task-helper'
-import { IFunding, ITaskAndFunding, IAuthenticationData } from '../interfaces'
+import { IFunding, ITaskAndFunding, IAuthenticationData, ETaskType, ITask } from '../interfaces'
 import { ILedgerEntry } from '../ledger/ledger.interface'
 
 @Component({
@@ -13,23 +13,23 @@ import { ILedgerEntry } from '../ledger/ledger.interface'
 })
 export class FundComponent implements OnInit {
 
+  @Input() public authenticationData: IAuthenticationData
   public radioModel: any
   public taskLink = 'https://github.com/gitcoin-enterprise/gitcoin-enterprise/issues/16'
   public task: ITask = TaskHelper.getInitialTask()
-  public currentRange = 200
   public fundingCompleted = false
-  public initialRange = 70
-  public minimumRange = 10
-  public maximumRange = 2000
+  public minimumRange = 2
+  public currentRange = 20
+  public maximumRange = 200
   public viewTransactionInLedger = false
   public newLedgerEntry: ILedgerEntry
-  public authenticationData: IAuthenticationData
 
 
   public constructor(private readonly backendService: BackendService, private readonly demoDataProvider: DemoDataProviderService) { }
 
   public ngOnInit() {
-    this.authenticationData = this.backendService.authenticationData
+    // alert(this.authenticationData.token)
+    this.maximumRange = this.authenticationData.balance
   }
 
   public getInfoFromTaskLink() {
@@ -37,7 +37,8 @@ export class FundComponent implements OnInit {
     const org = sourceString.split('/')[0]
     const repo = sourceString.split('/')[1].split('/')[0]
     const issueId = sourceString.split('/')[3]
-    this.backendService.get(`${backendURL}/loadIssueInfo/org/${org}/repo/${repo}/issueId/${issueId}`)
+
+    this.backendService.getIssueInfo(org, repo, issueId, this.authenticationData.token)
       .subscribe((response: any) => {
         this.task = this.getTaskFromResponse(response)
         this.task.link = this.taskLink
@@ -58,40 +59,27 @@ export class FundComponent implements OnInit {
 
   public saveFunding() {
     this.fundingCompleted = true
-    const saveFundingURL = `${backendURL}/postFunding`
 
     const funding: IFunding = {
-      id: '',
-      taskId: this.task.id,
+      id: '', // will be provided by backend
+      funderId: this.authenticationData.login,
+      taskLink: this.task.link,
       amount: this.currentRange,
     }
     const taskAndFunding: ITaskAndFunding = {
       task: this.task,
       funding
     }
-    this.backendService.post(saveFundingURL, taskAndFunding)
+
+    this.backendService.saveFunding(taskAndFunding, this.authenticationData.token)
       .subscribe((newLedgerEntry: ILedgerEntry) => {
         this.newLedgerEntry = newLedgerEntry
       })
   }
 
-  // public onUserIdEntered() {
-
-  //   this.backendService.getUser(this.user.id)
-  //     .subscribe((user: IUser) => {
-  //       if (user === undefined) {
-  //         alert('Please enter a valid user ID')
-  //       } else {
-  //         this.user = user
-  //         ProfileComponent.currentUser = this.user
-  //       }
-  //     }, error => alert(error.message))
-
-  // }
-
   private getTaskFromResponse(response: any): ITask {
     return {
-      id: '1',
+      link: '',
       taskType: ETaskType.GitHubIssue,
       name: response.title,
       description: response.description,
@@ -100,7 +88,6 @@ export class FundComponent implements OnInit {
       status: ETaskStatus.created,
       funderRatedWith: 5,
       solutionProviderRatedWith: 5,
-      link: '',
       dueDate: ''
     }
   }

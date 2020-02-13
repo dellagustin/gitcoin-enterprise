@@ -18,31 +18,31 @@ export class EmailService {
 
     public constructor(private readonly lg: LoggerService) { }
 
-    public async sendEMail(eMail: IEmail): Promise<any> {
-        const invitationLists: IInvitationListFromUser[] = fs.readJSON(this.fileIdInvitationLists)
-        this.lg.log(ELogLevel.Info, `I received an eMail request ${JSON.stringify(eMail)}`)
+    // public async sendEMail(eMail: IEmail): Promise<any> {
+    //     const invitationLists: IInvitationListFromUser[] = fs.readJSON(this.fileIdInvitationLists)
+    //     this.lg.log(ELogLevel.Info, `I received an eMail request ${JSON.stringify(eMail)}`)
 
-        if (Helper.hasUserAlreadyInvitedThisFriend(eMail.sender, eMail.recipient, invitationLists)) {
-            return {
-                success: false,
-            }
-        }
+    //     if (Helper.hasUserAlreadyInvitedThisFriend(eMail.sender, eMail.recipient, invitationLists)) {
+    //         return {
+    //             success: false,
+    //         }
+    //     }
 
-        if (Helper.isInvitationAllowed(eMail.senderUserId, invitationLists)) {
-            if (config.port === '443') {
-                await this.sendEMailViaNodeMailer(eMail)
-            }
-            this.addInvitationToFile(eMail, invitationLists)
+    //     if (Helper.isInvitationAllowed(eMail.senderUserId, invitationLists)) {
+    //         if (config.port === '443') {
+    //             await this.sendEMailViaNodeMailer(eMail)
+    //         }
+    //         this.addInvitationToFile(eMail, invitationLists)
 
-            return {
-                success: true,
-            }
-        } else {
-            return {
-                success: false,
-            }
-        }
-    }
+    //         return {
+    //             success: true,
+    //         }
+    //     } else {
+    //         return {
+    //             success: false,
+    //         }
+    //     }
+    // }
 
     public initializeData() {
         fs.write(this.fileIdInvitationLists, '[]')

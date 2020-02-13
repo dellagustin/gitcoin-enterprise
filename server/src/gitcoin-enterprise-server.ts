@@ -12,19 +12,19 @@ const compression = require('compression')
 export const pathToStaticAssets = path.join(__dirname, '../docs')
 
 async function bootstrap() {
-  const logger = new LoggerService(new SupportNotifierService())
+  const lg = new LoggerService(new SupportNotifierService())
 
   let app
 
-  if (config.port !== undefined && config.port.indexOf('443') !== -1) {
+  if (config.port !== undefined && config.port === 443) {
     const keyFile = config.certificatePrivateKeyFile
     const certFile = config.certificateFile
     const privateKey = fs.read(keyFile)
     const certificate = fs.read(certFile)
     const credentials = { key: privateKey, cert: certificate }
     app = await NestFactory.create(AppModule, { httpsOptions: credentials })
-    await logger.log(ELogLevel.Info, 'starting https server')
-    await  logger.log(ELogLevel.Info, typeof (app))
+    await lg.log(ELogLevel.Info, 'starting https server')
+    await  lg.log(ELogLevel.Info, typeof (app))
   } else {
     app = await NestFactory.create(AppModule)
   }
@@ -33,11 +33,12 @@ async function bootstrap() {
   app.use(cors('*'))
   app.use(compression())
 
+  lg.log(ELogLevel.Info, 'listening soon :)')
   await app.listen(config.port)
 
-  logger.log(ELogLevel.Info, `app is listening on port: ${config.port}`)
+  lg.log(ELogLevel.Info, `app is listening on port: ${config.port}`)
 
-  if (config.port === '443') {
+  if (config.port === 443) {
     ensureRedirectingFromUnsafeHostToSaveHost()
   }
 

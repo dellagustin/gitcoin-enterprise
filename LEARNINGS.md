@@ -48,6 +48,7 @@ For starters [this video](https://www.youtube.com/watch?v=CsWoMpK3EtE) seems hel
 I decided now to leave E-Mail based Authentication behind. GitHub based Authentication seems best in the context of GitCoin Enterprise.
 
 **Background Info**
+https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/
 https://oauth.net/articles/authentication/
 https://www.youtube.com/watch?v=A23O4aUftXk
 

@@ -16,7 +16,7 @@ export interface IApplication {
 }
 
 export interface ITask {
-  id: string,
+  link: string
   taskType: ETaskType
   name: string
   description: string
@@ -25,7 +25,6 @@ export interface ITask {
   status: ETaskStatus
   funderRatedWith: number
   solutionProviderRatedWith: number
-  link: string
   dueDate: string
 }
 
@@ -62,7 +61,8 @@ export interface IUser {
 
 export interface IFunding {
   id: string
-  taskId: string
+  funderId: string
+  taskLink: string
   amount: number
 }
 

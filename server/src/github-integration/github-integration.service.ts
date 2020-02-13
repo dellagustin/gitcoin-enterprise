@@ -7,20 +7,26 @@ import * as path from 'path'
 import * as moment from 'moment'
 import { Helper } from '../helpers/helper'
 import { ELogLevel } from '../logger/logger-interface'
-import { threadId } from 'worker_threads'
+import { LedgerConnector } from '../ledger-connector/ledger-connector-file-system.service'
 
 const { Octokit } = require('@octokit/rest')
 
 @Injectable()
 export class GithubIntegrationService {
-    private octokit = new Octokit({
-        auth: config.token,
-    })
+    private octokit
 
     private lastGetIssueRequest = moment()
     private lastPostCommentRequest = moment()
 
-    public constructor(private readonly lg: LoggerService) { }
+    public constructor(private readonly lg: LoggerService, private readonly ledgerConnector: LedgerConnector) {
+        // this.lg.log(ELogLevel.Info, config.testMode.toString())
+        if (!config.testMode) {
+            this.octokit = new Octokit({
+                auth: config.token,
+                baseUrl: (config.gitHubAPIBaseURL === undefined) ? 'https://api.github.com' : config.gitHubAPIBaseURL,
+            })
+        }
+    }
 
     public async getAuthenticationDataFromGitHub(token: string): Promise<IAuthenticationData> {
         const octokitForRetrievingUserData = new Octokit({
@@ -28,14 +34,21 @@ export class GithubIntegrationService {
         })
 
         const user = await octokitForRetrievingUserData.users.getAuthenticated()
-        // this.lg.log(ELogLevel.Info, user)
+
+        let balance = 0
+        try {
+            balance = this.ledgerConnector.getBalanceOf(user.data.login)
+        } catch (error) {
+            balance = 200 // start amount for each user
+        }
 
         const authenticationData: IAuthenticationData = {
             avatarURL: user.data.avatar_url,
             login: user.data.login,
             token,
-            balance: 200, // start amount for each user
+            balance,
         }
+
         return authenticationData
     }
 

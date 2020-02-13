@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core'
-import { BackendService, ITask } from '../backend.service'
+import { BackendService } from '../backend.service'
 import { backendURL } from '../../configurations/configuration'
-import { IApplication, IAuthenticationData } from '../interfaces'
+import { IApplication, IAuthenticationData, ITask } from '../interfaces'
 
 
 @Component({
@@ -12,6 +12,7 @@ import { IApplication, IAuthenticationData } from '../interfaces'
 export class SolveComponent implements OnInit {
 
   @Input() public taskOfInterest: ITask
+  @Input() public authenticationData: IAuthenticationData
   public fundedTasks: ITask[] = []
   public filteredTasks: ITask[] = []
   public searchTerm = ''
@@ -19,14 +20,12 @@ export class SolveComponent implements OnInit {
   public sortingDirectionDown = false
   public userWantsToApply = false
   public applicationCompleted = false
-  public authenticationData: IAuthenticationData
   // public user: IUser = ProfileComponent.currentUser
 
   public constructor(private readonly backendService: BackendService) { }
 
   public ngOnInit(): void {
-    this.authenticationData = this.backendService.authenticationData
-    this.backendService.getFundedTasks()
+    this.backendService.getFundedTasks(this.authenticationData.token)
       .subscribe((result: ITask[]) => {
         this.fundedTasks = result
         this.filteredTasks = this.sortDescending(this.fundedTasks)
@@ -54,7 +53,8 @@ export class SolveComponent implements OnInit {
       taskLink: this.taskOfInterest.link,
       plan: this.solutionApproach
     }
-    this.backendService.post(`${backendURL}/postApplication`, application)
+
+    this.backendService.postApplication(application, this.authenticationData.token)
       .subscribe()
 
   }

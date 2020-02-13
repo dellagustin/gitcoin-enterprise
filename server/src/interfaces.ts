@@ -5,13 +5,18 @@ export interface IAuthenticationData {
   balance: number
 }
 
+export interface IBalance {
+  userName: string
+  balance: number
+}
+
 export interface IssueInfo {
   title: string
   description: string
 }
 
 export interface ITask {
-  id: string,
+  link: string
   taskType: ETaskType
   name: string
   description: string
@@ -20,7 +25,6 @@ export interface ITask {
   status: ETaskStatus
   funderRatedWith: number
   solutionProviderRatedWith: number
-  link: string
   dueDate: string
 }
 
@@ -68,11 +72,34 @@ export interface IUser {
 export interface IFunding {
   id: string
   funderId: string
-  taskId: string
+  taskLink: string
   amount: number
 }
 
 export interface ITaskAndFunding {
   task: ITask
   funding: IFunding
+}
+
+export interface IConfig {
+  port: number
+  backendURL: string
+  logLevel: number
+  certificateFile: string
+  certificatePrivateKeyFile: string
+  ledgerConnector: any
+  enterpriseInternalCollaborationCurrency: string
+  enterpriseInternalCollaborationCurrencySymbol: string
+  token: string
+  eMail: string
+  pw: string
+  invitationsPerUserPerDay: number
+  smtpHost: string
+  notifierToken: string
+  notifierSupportChannel: string
+  gitHubOAuthClient: string
+  gitHubOAuthSecret: string
+  testMode: boolean
+  gitHubAPIBaseURL: string
+  gitHubURL: string
 }

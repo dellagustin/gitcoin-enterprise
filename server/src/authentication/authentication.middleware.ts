@@ -25,13 +25,14 @@ export class AuthenticationMiddleware implements NestMiddleware {
     if (this.isUserAuthenticated(req.headers.michaelsfriendskey)) {
       next()
     } else {
-      this.lg.log(ELogLevel.Error, `I received an unauthorized call to: ${requestURL}`)
-      // res.redirect(`${config.backendURL}/login`)
+      const message = `I received an unauthorized call to: ${requestURL} with key ${JSON.stringify(req.headers)}`
+      this.lg.log(ELogLevel.Error, message)
+      throw new Error(message)
     }
   }
 
   private isUserAuthenticated(michaelsfriendskey: string): boolean {
-    const authenticationData: IAuthenticationData = this.authenticationService.getAuthenticationData(michaelsfriendskey)
+    const authenticationData: IAuthenticationData = this.authenticationService.getAuthenticationDataFromMainMemory(michaelsfriendskey)
 
     if (authenticationData === undefined) { return false }
     if (authenticationData.login === '') { return false }

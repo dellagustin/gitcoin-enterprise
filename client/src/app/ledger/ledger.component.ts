@@ -5,6 +5,7 @@ import { DemoDataProviderService } from '../demo-data-provider.service'
 import * as moment from 'moment'
 import { backendURL } from '../../configurations/configuration'
 import { IAuthenticationData } from '../interfaces'
+import { Helper } from '../helper'
 
 @Component({
   selector: 'app-ledger',
@@ -15,16 +16,14 @@ import { IAuthenticationData } from '../interfaces'
 export class LedgerComponent implements OnInit {
 
   @Input() transactionId = ''
-
+  @Input() public authenticationData: IAuthenticationData
   public ledgerEntries: ILedgerEntry[] = []
   public entryIdOfInterest: ILedgerEntry
-  public authenticationData: IAuthenticationData
 
   public constructor(private readonly backendService: BackendService) { }
 
   public ngOnInit(): void {
-    this.authenticationData = this.backendService.authenticationData
-    this.backendService.getLedgerEntries()
+    this.backendService.getLedgerEntries(this.authenticationData.token)
       .subscribe((result: ILedgerEntry[]) => {
         this.ledgerEntries = result
         setTimeout(() => {
@@ -32,16 +31,6 @@ export class LedgerComponent implements OnInit {
         }, 700)
       })
   }
-
-  public getSum(): number {
-    let sum = 0
-    for (const e of this.ledgerEntries) {
-      sum = sum + e.amount
-    }
-
-    return sum
-  }
-
 
   public downloadAsCSV(): void {
     const replacer = (key, value) => value === null ? '' : value // specify how you want to handle null values here
@@ -76,6 +65,15 @@ export class LedgerComponent implements OnInit {
     downloadAnchorNode.remove()
   }
 
+  public getSum(): number {
+    let sum = 0
+    for (const e of this.ledgerEntries) {
+      sum = sum + e.amount
+    }
+
+    return sum
+  }
+
   public onEntryClicked(ledgerEntry: ILedgerEntry) {
     this.entryIdOfInterest = ledgerEntry
     window.scrollTo(0, 0)
@@ -85,14 +83,23 @@ export class LedgerComponent implements OnInit {
     delete this.entryIdOfInterest
   }
 
+  public getSourceType(): string {
+    // tbd
+    return (this.entryIdOfInterest.receiver.split('/').length > 5) ? 'User' : 'Task'
+  }
+
+  public getTargetType(): string {
+    return (this.entryIdOfInterest.receiver.split('/').length > 5) ? 'Task' : 'User'
+  }
+
   public getSource(): string {
     // tbd
-    return 'User'
+    return this.entryIdOfInterest.sender
   }
 
   public getTarget(): string {
     // tbd
-    return 'Task'
+    return Helper.getId(this.entryIdOfInterest.receiver)
   }
 
 }

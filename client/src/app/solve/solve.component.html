@@ -27,7 +27,7 @@
           <tbody>
             <tr *ngFor="let fundedTask of filteredTasks" (click)="onTaskClicked(fundedTask)">
               <td id="taskId-{{fundedTask.id}}">{{fundedTask.name}}</td>
-              <td>{{fundedTask.funding}}</td> EIC
+              <td>{{fundedTask.funding}} EIC</td>
             </tr>
           </tbody>
         </table>
@@ -36,7 +36,7 @@
 
     </span>
     <span *ngIf="taskOfInterest!==undefined">
-      <button (click)="backToOverview()" type="button" class="btn ourBlueColor">
+      <button (click)="backToOverview()" type="button" class="btn ourRedColor">
         <i class="fa fa-wpexplorer" aria-hidden="true" style="padding-right: 1vw;"></i>
         Task Explorer
         <i class="fa fa-wpexplorer" aria-hidden="true" style="padding-left: 1vw;"></i>
@@ -44,7 +44,12 @@
 
       <app-task-card [task]="taskOfInterest"></app-task-card>
 
-      <span *ngIf="taskOfInterest.status===1 && !userWantsToApply">
+      <div class="adPad">
+        <textarea [(ngModel)]="solutionApproach" style="width: 100%;" rows="4"
+          placeholder="Describe a rough plan. How are you going to solve this task? I will post this content as a comment on the issue automatically."></textarea>
+      </div>
+
+      <span *ngIf="taskOfInterest.status===1 && !userWantsToApply && solutionApproach!==''">
         <button (click)="applyForSolving()" type="button" class="btn ourRedColor">
           <i class="fa fa-wrench" aria-hidden="true" style="padding-right: 1vw;"></i>
           Apply For Solving This
@@ -58,10 +63,6 @@
 
       <!-- <span *ngIf="user.id.length>0"> -->
 
-      <span>
-        <textarea [(ngModel)]="solutionApproach" style="width: 100%;" rows="4"
-          placeholder="Describe a rough plan. How are you going to solve this task? I will post this content as a comment on the issue automatically."></textarea>
-      </span>
       <span *ngIf="!(solutionApproach==='')">
         <button (click)="applyForSolvingAfterUserIdAdded()" type="button" class="btn ourRedColor">
           <i class="fa fa-wrench" aria-hidden="true" style="padding-right: 1vw;"></i>
@@ -73,8 +74,6 @@
 
 
       <span *ngIf="!userWantsToApply">
-
-
         <app-check-it-on-github [taskOfInterest]="taskOfInterest"></app-check-it-on-github>
       </span>
 

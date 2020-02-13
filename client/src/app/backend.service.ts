@@ -1,21 +1,7 @@
 import { Injectable, OnInit } from '@angular/core'
 import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { backendURL } from '../configurations/configuration'
-import { IEmail, IAuthenticationData } from './interfaces'
-
-export interface ITask {
-  id: string
-  taskType: ETaskType
-  name: string
-  description: string
-  funding: number
-  currency: string
-  status: ETaskStatus
-  funderRatedWith: number
-  solutionProviderRatedWith: number
-  link: string
-  dueDate: string
-}
+import { IEmail, IApplication, ITaskAndFunding } from './interfaces'
 
 export enum ETaskStatus {
   'created' = 1,
@@ -24,72 +10,78 @@ export enum ETaskStatus {
   'paid' = 4
 }
 
-export enum ETaskType {
-  'GitHubIssue' = 1,
-  'tbd...' = 2,
-}
-
 @Injectable({
   providedIn: 'root'
 })
 export class BackendService {
-  public authenticationData: IAuthenticationData
 
-  private token = ''
   public constructor(private readonly http: HttpClient) {
   }
 
-  public get(url: any): any {
-    this.token = (this.authenticationData === undefined) ? '' : this.authenticationData.token
+  public getLedgerEntries(token: string) {
+    return this.get(`${backendURL}/getLedgerEntries`, token)
+  }
+
+  public sendEMail(eMail: IEmail, token: string): any {
+    return this.post(`${backendURL}/sendEMail`, eMail, token)
+  }
+
+  public postApplication(application: IApplication, token: string): any {
+    return this.post(`${backendURL}/postApplication`, application, token)
+  }
+
+  public saveFunding(taskAndFunding: ITaskAndFunding, token: string) {
+    return this.post(`${backendURL}/postFunding`, taskAndFunding, token)
+  }
+
+  public getUser(token: string) {
+    return this.get(`${backendURL}/getUser`, token)
+  }
+
+  public getFundedTasks(token: string) {
+    return this.get(`${backendURL}/getFundedTasks`, token)
+  }
+
+  public getAuthenticationData(token: string) {
+    return this.get(`${backendURL}/getAuthenticationData`, token)
+  }
+
+  public getIssueInfo(org: string, repo: string, issueId: string, token: string) {
+    return this.get(`${backendURL}/getIssueInfo/org/${org}/repo/${repo}/issueId/${issueId}`, token)
+  }
+
+  private get(url: any, token: string): any {
+    this.validateToken(token)
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        michaelsfriendskey: this.token
+        michaelsfriendskey: token
       })
     }
     console.log(`calling to get ${url}`)
     return this.http.get<any>(url, options)
   }
+  private validateToken(token: string) {
+    if (token === null || token === undefined) {
+      alert('Invalid Token.')
+    }
+  }
 
-  public post(url: string, body: any) {
+  private post(url: string, body: any, token: string) {
     // const urlWithClient = `${url}?client=${document.URL}`;
+    this.validateToken(token)
     const urlWithClient = url
     console.log(`calling to post to ${urlWithClient}`)
 
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        michaelsfriendskey: this.token
+        michaelsfriendskey: token
       })
     }
 
     console.log(JSON.stringify(body))
     return this.http.post<any>(urlWithClient, JSON.stringify(body), httpOptions)
   }
-
-
-  public getLedgerEntries() {
-    return this.get(`${backendURL}/getLedgerEntries`)
-  }
-
-  public sendEMail(eMail: IEmail): any {
-    return this.post(`${backendURL}/sendEMail`, eMail)
-  }
-
-
-  public getUser() {
-    return this.get(`${backendURL}/getUser`)
-  }
-
-  public getFundedTasks() {
-    return this.get(`${backendURL}/getFundedTasks`)
-  }
-
-  public getAuthenticationData() {
-    return this.get(`${backendURL}/getAuthenticationData`)
-  }
-
-
-
 
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core'
 import { BackendService } from '../backend.service'
 import { backendURL } from '../../configurations/configuration'
-import { IUser, IAuthenticationData } from '../interfaces'
+import { IUser, IAuthenticationData, IFunding } from '../interfaces'
 
 @Component({
   selector: 'app-profile',
@@ -10,10 +10,15 @@ import { IUser, IAuthenticationData } from '../interfaces'
 })
 export class ProfileComponent implements OnInit {
 
-  public authenticationData: IAuthenticationData
-  public users: IUser[] = []
-  public userIsAuthorized = false
-  // public user = ProfileComponent.currentUser
+  @Input() public authenticationData: IAuthenticationData
+  public justKidding = true
+  public viewBountiesAndFundings = false
+  public fundingIdOfInterest
+  public usersFundings: IFunding[] = []
+
+  // public usersBounties: IFunding[] = []
+
+  public constructor(private readonly backendService: BackendService) { }
 
   public static getInitialUser() {
     const user: IUser = {
@@ -25,18 +30,19 @@ export class ProfileComponent implements OnInit {
     return user
   }
 
+  public getLink() {
+    return `https://github.com/${this.authenticationData.login}`
+  }
+
   public login() {
     window.location.assign(`${backendURL}/login`)
   }
 
 
-  public constructor(private readonly backendService: BackendService) { }
 
   public ngOnInit(): void {
-    this.authenticationData = this.backendService.authenticationData
-    alert('https://avatars1.githubusercontent.com/u/43786652?v=4')
-    // this.backendService.getUsers()
-    //   .subscribe((result: IUser[]) => this.users = result )
+    setTimeout(() => this.justKidding = false, 2000)
+    // alert(JSON.stringify(this.authenticationData))
   }
 
   public loginViaGitHub() {
@@ -45,7 +51,21 @@ export class ProfileComponent implements OnInit {
   }
 
   public clickBountiesAndFundings() {
-    alert('to be developed')
+    this.viewBountiesAndFundings = true
+  }
+
+  public getSum(): number {
+    let sum = 0
+    for (const e of this.usersFundings) {
+      sum = sum + e.amount
+    }
+
+    return sum
+  }
+
+  public onEntryClicked(funding: IFunding) {
+    this.fundingIdOfInterest = funding
+    window.scrollTo(0, 0)
   }
 
   // public onUserIdEntered() {

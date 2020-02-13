@@ -16,4 +16,30 @@ export class LedgerConnector implements ILedgerConnector {
         return fs.readJSON(this.ledgerEntriesFileId)
     }
 
+    public getBalanceOf(address: string): number {
+        const entriesWithAddress = this.getLedgerEntriesWithAddress(address)
+        if (entriesWithAddress.length === 0) {
+            throw new Error('No transactions with this address in Ledger')
+        }
+        let balance = 0
+        for (const entry of entriesWithAddress) {
+            if (entry.sender === address) {
+                balance = balance - entry.amount
+            } else if (entry.receiver === address) {
+                balance = balance + entry.amount
+            }
+        }
+        return balance
+    }
+
+    public getLedgerEntriesWithAddress(address: string): ILedgerEntry[] {
+
+        return fs.readJSON(this.ledgerEntriesFileId).filter((ledgerEntry: ILedgerEntry) => {
+            if (ledgerEntry.sender === address || ledgerEntry.receiver === address) {
+                return true
+            } else {
+                return false
+            }
+        })
+    }
 }

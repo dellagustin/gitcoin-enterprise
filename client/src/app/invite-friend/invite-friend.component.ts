@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, Input } from '@angular/core'
 import { BackendService } from '../backend.service'
 import { ProfileComponent } from '../profile/profile.component'
 import { backendURL } from '../../configurations/configuration'
@@ -11,7 +11,7 @@ import { IUser, IEmail, IAuthenticationData } from '../interfaces'
 })
 export class InviteFriendComponent implements OnInit {
 
-
+  @Input() public authenticationData: IAuthenticationData
   public url = backendURL
   // public eMailAddress = 'akshay.iyyaudarai.balasundaram@sap.com'
   public eMailAddress = 'michael@peer2peer-enterprise.org'
@@ -19,12 +19,11 @@ export class InviteFriendComponent implements OnInit {
   public sent = false
   public permissionGranted = false
   public eMail: IEmail
-  authenticationData: IAuthenticationData
 
   public constructor(private readonly backendService: BackendService) { }
 
   public ngOnInit(): void {
-    this.authenticationData = this.backendService.authenticationData
+    // tbd
   }
 
   // public send() {

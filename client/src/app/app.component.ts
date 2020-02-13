@@ -1,9 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { INavbarData } from './navbar/navbar.interfaces'
-import { BackendService, ITask } from './backend.service'
+import { BackendService } from './backend.service'
 import { ILedgerEntry } from './ledger/ledger.interface'
 import { backendURL } from '../configurations/configuration'
-import { IAuthenticationData } from './interfaces'
+import { IAuthenticationData, ITask } from './interfaces'
 // import { ActivatedRoute } from '@angular/router'
 
 @Component({
@@ -35,36 +35,21 @@ export class AppComponent implements OnInit {
       this.authenticationToken = document.getElementById('authenticationToken').innerHTML.trim()
       this.action = document.getElementById('actionID').innerHTML.trim()
     } catch (error) {
-      console.log(`Hier liegt der Hase im Pfeffer ${error.message}`)
+      console.log(`accessing data from document failed ${error.message}`)
     }
   }
 
   public ngOnInit() {
     this.considerPWAInstallPrompt()
-    this.authenticationData = this.backendService.authenticationData
-    this.getQueryParameterBasedData()
     if (this.authenticationToken !== 'authenticationTokenContent') {
-      this.backendService.getAuthenticationData() // this will only work if header can be set to the replacement of authenticationTokenContent
-        .subscribe((authenticationData) => this.authenticationData = authenticationData)
+      this.backendService.getAuthenticationData(this.authenticationToken) // this will only work if header can be set to the replacement of authenticationTokenContent
+        .subscribe((authenticationData) => {
+          this.authenticationData = authenticationData
+        })
     }
 
     this.mode = (this.action === 'actionsForRedirectingConvenientlyAfterLogin') ? '' : this.action
   }
-
-  private getQueryParameterBasedData() {
-    // currently no need for this
-    // this.route
-    //   .queryParamMap
-    //   .subscribe((result: any) => {
-    //     if (result.params !== undefined) {
-    //       this.queryParameters = result.params
-    //     }
-    //     if (this.queryParameters.action !== undefined) {
-    //       this.mode = this.queryParameters.action
-    //     }
-    //   })
-  }
-
 
   public fundTask() {
     if (this.authenticationData === undefined) {

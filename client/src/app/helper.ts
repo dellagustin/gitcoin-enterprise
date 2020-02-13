@@ -10,4 +10,10 @@ export class Helper {
     }
     return 'entry not found in your ENUM'
   }
+
+  public static getId(link: string): string {
+    const myArray = link.split('/')
+    return `${myArray[myArray.length - 3]}/${myArray[myArray.length - 1]}`
+  }
+
 }

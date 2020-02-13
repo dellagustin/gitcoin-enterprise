@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core'
-import { ITask, ETaskStatus, } from '../backend.service'
+import { ETaskStatus, } from '../backend.service'
 import { Helper } from '../helper'
+import { ITask } from '../interfaces'
 
 @Component({
   selector: 'app-task-card',
@@ -13,5 +14,9 @@ export class TaskCardComponent {
 
   public getStatusText(value: any): string {
     return Helper.getENUMValueAsString(ETaskStatus, value)
+  }
+
+  public getId() {
+     return Helper.getId(this.task.link)
   }
 }

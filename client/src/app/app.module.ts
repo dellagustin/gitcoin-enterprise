@@ -15,7 +15,6 @@ import { HttpClientModule } from '@angular/common/http'
 import { ProfileComponent } from './profile/profile.component'
 import { InviteFriendComponent } from './invite-friend/invite-friend.component'
 import { TaskCardComponent } from './task-card/task-card.component'
-import { UserCardComponent } from './user-card/user-card.component'
 import { NavbarComponent } from './navbar/navbar.component'
 import { EmailComponent } from './email/email.component'
 import { RouterModule } from '@angular/router'
@@ -32,7 +31,6 @@ import { CheckItOnGithubComponent } from './check-it-on-github/check-it-on-githu
     LedgerComponent,
     InviteFriendComponent,
     TaskCardComponent,
-    UserCardComponent,
     NavbarComponent,
     EmailComponent,
     CheckItOnGithubComponent

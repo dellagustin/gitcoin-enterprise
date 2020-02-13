@@ -8,5 +8,7 @@ export interface ILedgerEntry {
 
 export interface ILedgerConnector {
     getLedgerEntries(): ILedgerEntry[]
+    getLedgerEntriesWithAddress(address: string): ILedgerEntry[]
+    getBalanceOf(address: string): number
     saveLedgerEntries(ledgerEntries: ILedgerEntry[]): void
 }

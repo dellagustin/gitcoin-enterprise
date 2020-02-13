@@ -1,9 +1,10 @@
-import { ETaskType, ITask, ETaskStatus } from '../backend.service'
+import {  ETaskStatus } from '../backend.service'
+import { ETaskType, ITask } from '../interfaces'
 
 export class TaskHelper {
   public static getInitialTask(): ITask {
     return {
-      id: '',
+      link: 'https://github.com/gitcoin-enterprise/gitcoin-enterprise/issues/16',
       taskType: ETaskType.GitHubIssue,
       name: '',
       description: '',
@@ -12,7 +13,6 @@ export class TaskHelper {
       status: ETaskStatus.created,
       funderRatedWith: 5,
       solutionProviderRatedWith: 5,
-      link: 'https://github.com/gitcoin-enterprise/gitcoin-enterprise/issues/16',
       dueDate: ''
     }
   }

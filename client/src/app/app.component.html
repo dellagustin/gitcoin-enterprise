@@ -28,27 +28,27 @@
   </div>
 
   <div *ngIf="mode=='fund'">
-    <app-fund ></app-fund>
+    <app-fund [authenticationData]="authenticationData"></app-fund>
   </div>
 
   <div *ngIf="mode=='profile'">
-    <app-profile ></app-profile>
+    <app-profile [authenticationData]="authenticationData"></app-profile>
   </div>
 
   <div *ngIf="mode=='downloadLedger'">
-    <app-ledger ></app-ledger>
+    <app-ledger [authenticationData]="authenticationData"></app-ledger>
   </div>
 
   <div *ngIf="mode=='solve'">
-    <app-solve ></app-solve>
+    <app-solve [authenticationData]="authenticationData"></app-solve>
   </div>
 
   <div *ngIf="mode==='viewSpecificTask'">
-    <app-solve [taskOfInterest]="taskOfInterest" ></app-solve>
+    <app-solve [taskOfInterest]="taskOfInterest" [authenticationData]="authenticationData"></app-solve>
   </div>
 
   <div *ngIf="mode=='inviteFriends'">
-    <app-invite-friend></app-invite-friend>
+    <app-invite-friend [authenticationData]="authenticationData"></app-invite-friend>
   </div>
 
   <div *ngIf="mode==='about'">
