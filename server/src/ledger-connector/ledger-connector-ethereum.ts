@@ -13,4 +13,12 @@ export class EthereumLedgerConnector implements ILedgerConnector {
         return []
     }
 
+    public getBalanceOf(address: string): number {
+        return 0 // tbd
+    }
+
+    public getLedgerEntriesWithAddress(address: string): ILedgerEntry[] {
+        return [] // tbd
+    }
+
 }

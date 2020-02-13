@@ -33,7 +33,7 @@
       <input type="range" min="{{minimumRange}}" max="{{ maximumRange }}" class="slider" [(ngModel)]="currentRange"
         (change)="handleRangeSetting()" />
       <p></p>
-      Your balance after this transaction will be <br>
+      Your balance after this transaction will be <p></p>
       <h4 class="ourRedColor">
         {{authenticationData.balance - this.currentRange}} EIC
       </h4>

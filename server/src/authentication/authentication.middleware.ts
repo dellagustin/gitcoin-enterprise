@@ -6,6 +6,8 @@ import { ELogLevel } from '../logger/logger-interface'
 import { SupportNotifierService } from '../support-notifier/support-notifier.service'
 import { AuthenticationService } from './authentication.service'
 import { IAuthenticationData } from '../interfaces'
+import { GithubIntegrationService } from '../github-integration/github-integration.service'
+import { LedgerConnector } from '../ledger-connector/ledger-connector-file-system.service'
 const axios = require('axios')
 
 export class AuthenticationMiddleware implements NestMiddleware {
@@ -15,7 +17,7 @@ export class AuthenticationMiddleware implements NestMiddleware {
 
   public constructor() {
     this.lg = new LoggerService(new SupportNotifierService())
-    this.authenticationService = new AuthenticationService(this.lg)
+    this.authenticationService = new AuthenticationService(this.lg, new GithubIntegrationService(this.lg, new LedgerConnector()))
   }
 
   public async use(req: any, res: Response, next: any): Promise<void> {
