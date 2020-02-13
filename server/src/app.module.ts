@@ -36,14 +36,14 @@ const ledgerConnectorProvider = {
   providers: [AppService, LoggerService, EmailService, ledgerConnectorProvider, GithubIntegrationService, SupportNotifierService, AuthenticationService, BalanceService],
 })
 export class AppModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(AuthenticationMiddleware)
-      .exclude('')
-      // .forRoutes({ path: '*', method: RequestMethod.ALL })
-      // .forRoutes({ path: lettersRegexp, method: RequestMethod.ALL })
-      .forRoutes({ path: 'post*', method: RequestMethod.ALL }, { path: 'get*', method: RequestMethod.ALL })
-  }
+  // configure(consumer: MiddlewareConsumer) {
+  //   consumer
+  //     .apply(AuthenticationMiddleware)
+  //     .exclude('')
+  //     // .forRoutes({ path: '*', method: RequestMethod.ALL })
+  //     // .forRoutes({ path: lettersRegexp, method: RequestMethod.ALL })
+  //     .forRoutes({ path: 'post*', method: RequestMethod.ALL }, { path: 'get*', method: RequestMethod.ALL })
+  // }
 }
 
     // const lettersRegexp = /^[A-Za-z]+$/
