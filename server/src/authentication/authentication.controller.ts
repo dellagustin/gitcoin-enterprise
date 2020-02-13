@@ -1,8 +1,8 @@
 import { Controller, Get, Req, Res, Query } from '@nestjs/common'
 import { AuthenticationService } from './authentication.service'
-import { pathToStaticAssets } from '../../dist/main'
 import * as fs from 'fs-sync'
 import * as path from 'path'
+import { pathToStaticAssets } from '../gitcoin-enterprise-server'
 
 @Controller('authentication')
 export class AuthenticationController {
