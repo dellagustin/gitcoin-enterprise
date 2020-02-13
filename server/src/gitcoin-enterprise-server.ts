@@ -24,7 +24,7 @@ async function bootstrap() {
     const credentials = { key: privateKey, cert: certificate }
     app = await NestFactory.create(AppModule, { httpsOptions: credentials })
     await lg.log(ELogLevel.Info, 'starting https server')
-    await  lg.log(ELogLevel.Info, typeof (app))
+    await lg.log(ELogLevel.Info, typeof (app))
   } else {
     app = await NestFactory.create(AppModule)
   }
@@ -39,13 +39,15 @@ async function bootstrap() {
   lg.log(ELogLevel.Info, `app is listening on port: ${config.port}`)
 
   if (config.port === 443) {
-    ensureRedirectingFromUnsafeHostToSaveHost()
+    const unsafePort = 80
+    ensureRedirectingFromUnsafeHostToSaveHost(unsafePort)
+    lg.log(ELogLevel.Info, `app is listening on port: ${unsafePort}`)
   }
 
 }
 bootstrap()
 
-function ensureRedirectingFromUnsafeHostToSaveHost() {
+function ensureRedirectingFromUnsafeHostToSaveHost(unsafePort) {
   const httpForwarderAPPListeningOnUnsafePort = express()
 
   httpForwarderAPPListeningOnUnsafePort.get('*', (req, res) => {
@@ -61,5 +63,5 @@ function ensureRedirectingFromUnsafeHostToSaveHost() {
     res.send(`This page is only available via secure <a href="https:${saveHost}">https:${saveHost}</a>`)
   })
 
-  httpForwarderAPPListeningOnUnsafePort.listen(80)
+  httpForwarderAPPListeningOnUnsafePort.listen(unsafePort)
 }
