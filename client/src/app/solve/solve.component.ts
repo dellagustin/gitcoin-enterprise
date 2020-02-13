@@ -16,7 +16,7 @@ export class SolveComponent implements OnInit {
   @Input() public authenticationData: IAuthenticationData
   public fundedTasks: ITask[] = []
   public filteredTasks: ITask[] = []
-  public messages: IMessage[] = [{ fromChatBot: true, text: 'This starts to sound like a plan :)' }]
+  public messages: IMessage[] = [{ fromChatBot: true, text: 'This starts to sound like a plan :)' }, { fromChatBot: true, text: 'You could add until when you plan to complete this task.' }]
   public searchTerm = ''
   public solutionApproach = ''
   public sortingDirectionDown = false

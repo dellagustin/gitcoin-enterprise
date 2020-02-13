@@ -20,7 +20,8 @@ import { EmailComponent } from './email/email.component'
 import { RouterModule } from '@angular/router'
 import { CheckItOnGithubComponent } from './check-it-on-github/check-it-on-github.component'
 import { TypingAreaComponent } from './typing-area/typing-area.component'
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { AccordionModule } from 'ngx-bootstrap/accordion'
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,6 +40,8 @@ import { TypingAreaComponent } from './typing-area/typing-area.component'
 
   ],
   imports: [
+    BrowserAnimationsModule,
+    AccordionModule.forRoot(),
     RouterModule.forRoot([]),
     HttpClientModule,
     FormsModule,

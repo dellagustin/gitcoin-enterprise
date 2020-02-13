@@ -11,6 +11,7 @@ import { ITask } from '../interfaces'
 export class TaskCardComponent {
 
   @Input() task: ITask
+  @Input() accordion = false
 
   public getStatusText(value: any): string {
     return Helper.getENUMValueAsString(ETaskStatus, value)

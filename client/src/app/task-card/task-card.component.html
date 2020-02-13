@@ -1,9 +1,29 @@
-<div class="card" style="width:100%; margin-top: 4vh;">
-  <div class="card-body">
-    <h4 class="card-title">{{task.name}}</h4>
-    <p class="card-text">{{task.description}}</p>
-    <!-- <p class="card-text">Bounty: {{task.funding}} Enterprise Internal Coins</p> -->
-    <p class="card-text">ID: {{getId()}}</p>
-    <p class="card-text">Status: {{getStatusText(task.status)}}</p>
+<div style="margin-top: 4vh;">
+  <div *ngIf="!accordion" class="card">
+    <div class="card-body">
+      <h4 class="card-title">{{task.name}}</h4>
+      <p class="card-text">{{task.description}}</p>
+      <!-- <p class="card-text">Bounty: {{task.funding}} Enterprise Internal Coins</p> -->
+      <p class="card-text">ID: {{getId()}}</p>
+      <p class="card-text">Status: {{getStatusText(task.status)}}</p>
+    </div>
+  </div>
+
+  <div *ngIf="accordion">
+    <accordion [isAnimated]="true">
+
+      <accordion-group heading="{{task.name}}">
+        <div style="border: solid black; padding-top: 7vh;">
+          {{task.description}}
+          <p><br></p>
+          <accordion-group heading="Comments">
+            <div style="border: solid black; padding-top: 7vh;">
+              <p>Comment 1</p>
+            </div>
+          </accordion-group>
+
+        </div>
+      </accordion-group>
+    </accordion>
   </div>
 </div>

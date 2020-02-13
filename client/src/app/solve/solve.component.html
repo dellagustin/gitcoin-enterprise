@@ -45,21 +45,23 @@
 
       <div class="adPad">
         <textarea [(ngModel)]="solutionApproach" style="width: 100%;" rows="4"
-          placeholder="Describe a rough plan. How are you going to solve this task? I will post this content as a comment on the issue automatically."
+          placeholder="Click here and describe a rough plan. How are you going to solve this task? I will post this content as a comment on the issue automatically."
           style="text-align: center; min-width: 100%;"></textarea>
       </div>
       <p></p>
-      <div *ngIf="solutionApproach.length>20">
+      <div *ngIf="solutionApproach.length>20" style="max-width: 70%; margin-left: auto; margin-right: auto;">
         <app-typing-area [messages]=messages (typing)=onTyping($event)></app-typing-area>
       </div>
-      <span *ngIf="taskOfInterest.status===1 && !userWantsToApply && solutionApproach!==''">
+      <div *ngIf="taskOfInterest.status===1 && !userWantsToApply && solutionApproach!==''">
         <button (click)="applyForSolving()" type="button" class="btn ourBlueColor">
           <i class="fa fa-wrench" aria-hidden="true" style="padding-right: 1vw;"></i>
           Apply Now
           <i class="fa fa-wrench" aria-hidden="true" style="padding-left: 1vw;"></i>
         </button>
-      </span>
-      <app-task-card [task]="taskOfInterest"></app-task-card>
+      </div>
+      <div class="adPad">
+        <app-task-card [task]="taskOfInterest" [accordion]='true'></app-task-card>
+      </div>
 
     </span>
 

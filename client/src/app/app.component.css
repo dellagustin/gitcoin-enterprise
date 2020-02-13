@@ -9,6 +9,11 @@ input {
   margin-top: 3vh;
 }
 
+textarea {
+  border: solid black;
+  padding-top: 7vh;
+}
+
 button {
   font-weight: 520;
   font-size: 21px;
