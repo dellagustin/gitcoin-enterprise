@@ -32,8 +32,7 @@ const ledgerConnectorProvider = {
 
 @Module({
   imports: [],
-  // controllers: [AppController, AuthenticationController],
-  controllers: [AppController],
+  controllers: [AppController, AuthenticationController],
   providers: [AppService, LoggerService, EmailService, ledgerConnectorProvider, GithubIntegrationService, SupportNotifierService, AuthenticationService, BalanceService],
 })
 export class AppModule {

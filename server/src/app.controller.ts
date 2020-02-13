@@ -4,16 +4,26 @@ import { pathToStaticAssets } from './gitcoin-enterprise-server'
 import { ITask, IAuthenticationData } from './interfaces'
 import { GithubIntegrationService } from './github-integration/github-integration.service'
 import { ILedgerEntry } from './ledger-connector/ledger-connector.interface'
+import { LoggerService } from './logger/logger.service'
+import { ELogLevel } from './logger/logger-interface'
 
 @Controller()
 export class AppController {
 
-  constructor(private readonly appService: AppService, private readonly gitHubIntegration: GithubIntegrationService) {}
+  constructor(private readonly appService: AppService, private readonly gitHubIntegration: GithubIntegrationService, private readonly lg: LoggerService) { }
 
   @Get('/')
-  getHello(@Res() res: any): void {
+  getHello(@Req() req: any, @Res() res: any): void {
+    this.lg.log(ELogLevel.Info, `request received from ${req.connection.remoteAddress}`)
     // const sessionWithoutCookies = uuidv1().replace(/-/g, '').substr(0, 10)
     res.sendFile(`${pathToStaticAssets}/i-want-compression-via-route.html`)
+  }
+
+  @Get('/test')
+  test(@Req() req: any, @Res() res: any): void {
+    this.lg.log(ELogLevel.Info, `request received from ${req.connection.remoteAddress}`)
+    // const sessionWithoutCookies = uuidv1().replace(/-/g, '').substr(0, 10)
+    res.send('supergeil')
   }
 
   @Get('/getLedgerEntries')
