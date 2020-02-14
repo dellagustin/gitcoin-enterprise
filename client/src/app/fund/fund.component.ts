@@ -5,6 +5,7 @@ import { DemoDataProviderService } from '../demo-data-provider.service'
 import { TaskHelper } from '../task-card/task-helper'
 import { IFunding, ITaskAndFunding, IAuthenticationData, ETaskType, ITask } from '../interfaces'
 import { ILedgerEntry } from '../ledger/ledger.interface'
+import { Helper } from '../helper'
 
 @Component({
   selector: 'app-fund',
@@ -20,16 +21,22 @@ export class FundComponent implements OnInit {
   public fundingCompleted = false
   public minimumRange = 2
   public currentRange = 20
-  public maximumRange = 200
+  public balance = 200
   public viewTransactionInLedger = false
   public newLedgerEntry: ILedgerEntry
+  public ledgerEntries: ILedgerEntry[] = []
 
 
   public constructor(private readonly backendService: BackendService, private readonly demoDataProvider: DemoDataProviderService) { }
 
   public ngOnInit() {
+    this.backendService.getLedgerEntries(this.authenticationData.token)
+      .subscribe((result: ILedgerEntry[]) => {
+        this.ledgerEntries = result
+        this.balance = Helper.getBalanceFromLedgerEntries(this.authenticationData.login, this.ledgerEntries)
+      })
+
     // alert(this.authenticationData.token)
-    this.maximumRange = this.authenticationData.balance
   }
 
   public getInfoFromTaskLink() {
@@ -81,10 +88,9 @@ export class FundComponent implements OnInit {
     return {
       link: '',
       taskType: ETaskType.GitHubIssue,
-      name: response.title,
+      title: response.title,
       description: response.description,
       funding: 0,
-      currency: 'EIC',
       status: ETaskStatus.created,
       funderRatedWith: 5,
       solutionProviderRatedWith: 5,

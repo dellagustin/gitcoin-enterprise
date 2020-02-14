@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core'
 import { BackendService } from '../backend.service'
 import { backendURL } from '../../configurations/configuration'
-import { IApplication, IAuthenticationData, ITask } from '../interfaces'
+import { IApplication, IAuthenticationData, ITask, ETaskType, ETaskStatus } from '../interfaces'
 import { IMessage } from '../typing-area/typing-area.component'
 
 
@@ -16,8 +16,10 @@ export class SolveComponent implements OnInit {
   @Input() public authenticationData: IAuthenticationData
   public fundedTasks: ITask[] = []
   public filteredTasks: ITask[] = []
-  public messages: IMessage[] = [{ fromChatBot: true, text: 'This starts to sound like a plan :)' }, { fromChatBot: true, text: 'You could add until when you plan to complete this task.' }]
+  public messagesToMotivateANicePlan: IMessage[] = this.getMessagesToMotivateANicePlan()
+  public messagesToStartSolving: IMessage[] = this.getMessagesToStartSolving()
   public searchTerm = ''
+  public countDown = 8
   public solutionApproach = ''
   public sortingDirectionDown = false
   public userWantsToApply = false
@@ -58,12 +60,15 @@ export class SolveComponent implements OnInit {
 
     this.backendService.postApplication(application, this.authenticationData.token)
       .subscribe()
-
   }
+
+  // public getBalance(): number {
+  //   return Helper.getBalanceFromLedgerEntries(this.authenticationData.login, this.ledgerEntries)
+  // }
 
   public searchTask(): void {
     this.filteredTasks = this.fundedTasks.filter((entry: ITask) => {
-      if (entry.name.toLowerCase().indexOf(this.searchTerm.toLowerCase()) !== -1) {
+      if (entry.title.toLowerCase().indexOf(this.searchTerm.toLowerCase()) !== -1) {
         return true
       } else {
         return false
@@ -80,7 +85,19 @@ export class SolveComponent implements OnInit {
   }
 
   public onTyping(event: any) {
-    // no need to consider this here :)
+    if ((!event) && this.userWantsToApply) {
+
+      const intervalId = setInterval(() => {
+        this.countDown--
+        if (this.countDown === 1) {
+          window.location.assign(this.taskOfInterest.link) // starting here for a flow experience :)
+        }
+        if (this.countDown === -1) {
+          clearInterval(intervalId)
+        }
+      }, 1000)
+
+    }
   }
 
   public sort(): ITask[] {
@@ -119,4 +136,20 @@ export class SolveComponent implements OnInit {
     })
   }
 
+  private getMessagesToMotivateANicePlan(): IMessage[] {
+    return [{ fromChatBot: true, text: 'This starts to sound like a plan :)' },
+    { fromChatBot: true, text: 'You could add the info until when you plan to complete this task.' }]
+  }
+
+  private getMessagesToStartSolving(): IMessage[] {
+    return [
+      { fromChatBot: true, text: 'Congratulations. You are a' },
+      { fromChatBot: true, text: 'https://brave.com' },
+      { fromChatBot: true, text: ' ' },
+      { fromChatBot: true, text: ' \n' },
+      { fromChatBot: true, text: 'person to take this challenge :)' },
+      // { fromChatBot: true, text: 'I commented the issue and included with your plan.' },
+      { fromChatBot: true, text: 'As soon as you solved this task visit your profile and claim your bounty :)' },
+      { fromChatBot: true, text: 'I wish you good luck and will forward you to the issue in about 7 seconds.' }]
+  }
 }

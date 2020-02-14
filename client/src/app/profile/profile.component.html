@@ -9,7 +9,7 @@
 
 <div *ngIf="!viewBountiesAndFundings" class="adPad2">
   <h4 class="card-title"> {{authenticationData.login}}</h4>
-  Balance: {{authenticationData.balance}} EIC
+  Balance: {{balance}} EIC
 
   <button type="button" class="btn ourRedColor" (click)="clickBountiesAndFundings()">
     <i class="fa fa-gift" aria-hidden="true" style="padding-right: 1vw;"></i>
@@ -34,22 +34,18 @@
 
 
   <table class="table table-striped">
-    <thead class="thead-dark">
+    <thead class="ourRedColor" style="background-color: black">
       <tr>
         <th>Task ID</th>
         <th>Amount</th>
-        <th>Action</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let funding of usersFundings" (click)="onEntryClicked(funding)">
 
-        <!-- <td id="taskId-{{ledgerEntry.id}}" *ngIf="ledgerEntry.id===transactionId" class="highlighted">
-            ...{{ledgerEntry.id.substr(ledgerEntry.id.length - 4, 4)}}</td>
-          <td *ngIf="ledgerEntry.id===transactionId" class="highlighted">{{ledgerEntry.date.substr(0, ledgerEntry.date.length -5)}}</td>
+        <td>{{getId(funding.taskLink)}}</td>
+        <td>{{funding.amount}} EIC</td>
 
-          <td id="taskId-{{ledgerEntry.id}}"  *ngIf="ledgerEntry.id!==transactionId">...{{ledgerEntry.id.substr(ledgerEntry.id.length - 4, 4)}}</td>
-          <td *ngIf="ledgerEntry.id!==transactionId">{{ledgerEntry.date.substr(0, ledgerEntry.date.length -5)}}</td> -->
       </tr>
 
     </tbody>
@@ -72,7 +68,7 @@
 
 
   <table class="table table-striped">
-    <thead class="thead-dark">
+    <thead class="ourRedColor" style="background-color: black">
       <tr>
         <th>Task ID</th>
         <th>Amount</th>

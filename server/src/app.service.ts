@@ -15,6 +15,9 @@ const config = fs.readJSON(path.join(__dirname, '../.env.json'))
 
 @Injectable()
 export class AppService {
+  getLoginFromToken(token: string) {
+    return this.getAuthenticationData(token).login
+  }
 
   private fundedTasksFileId = path.join(__dirname, '../operational-data/funded-tasks.json')
 
@@ -89,9 +92,9 @@ export class AppService {
     }
   }
 
-  public getLedgerEntries(): ILedgerEntry[] {
+  public getLedgerEntries(login: string): ILedgerEntry[] {
 
-    return this.ledgerConnector.getLedgerEntries()
+    return this.ledgerConnector.getLedgerEntries(login)
   }
 
   public async saveFunding(taskAndFunding: ITaskAndFunding, userAccessToken: string): Promise<ILedgerEntry> {
@@ -126,7 +129,7 @@ export class AppService {
   }
 
   private createLedgerEntry(funding: IFunding): ILedgerEntry {
-    const entries: ILedgerEntry[] = this.ledgerConnector.getLedgerEntries()
+    const entries: ILedgerEntry[] = this.ledgerConnector.getLedgerEntries(funding.funderId)
     const entry: ILedgerEntry = {
       id: `tr-${Date.now().toString()}`,
       date: new Date().toISOString(),

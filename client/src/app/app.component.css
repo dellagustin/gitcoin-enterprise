@@ -62,6 +62,25 @@ button {
   margin-top: 2vh;
 }
 
+thead {
+  background-color: black;
+  color: rgb(213, 54, 84);
+}
+
+tr {
+  border: solid thin black;
+}
+
+td {
+  border-bottom: solid thin black;
+  color: rgb(93, 188, 210);
+}
+
+.highlightedTableEntry {
+  background-color: black;
+  color: rgb(93, 188, 210);
+}
+
 .adPad2 {
   padding-top: 2vh;
 }

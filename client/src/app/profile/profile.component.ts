@@ -3,6 +3,7 @@ import { BackendService } from '../backend.service'
 import { backendURL } from '../../configurations/configuration'
 import { IUser, IAuthenticationData, IFunding } from '../interfaces'
 import { ILedgerEntry } from '../ledger/ledger.interface'
+import { Helper } from '../helper'
 
 @Component({
   selector: 'app-profile',
@@ -15,6 +16,7 @@ export class ProfileComponent implements OnInit {
   public justKidding = true
   public viewBountiesAndFundings = false
   public fundingIdOfInterest
+  public balance = 0
   public usersFundings: IFunding[] = []
   public usersBounties: IFunding[] = []
   public ledgerEntries: ILedgerEntry[] = []
@@ -36,7 +38,9 @@ export class ProfileComponent implements OnInit {
     this.backendService.getLedgerEntries(this.authenticationData.token)
       .subscribe((result: ILedgerEntry[]) => {
         this.ledgerEntries = result
-        alert(this.ledgerEntries.length)
+        this.balance = Helper.getBalanceFromLedgerEntries(this.authenticationData.login, this.ledgerEntries)
+        this.usersFundings = Helper.getFundingsFromLedgerEntries(this.authenticationData.login, this.ledgerEntries)
+        alert(this.usersFundings.length)
       })
     // alert(JSON.stringify(this.authenticationData))
   }
@@ -45,10 +49,14 @@ export class ProfileComponent implements OnInit {
     return `https://github.com/${this.authenticationData.login}`
   }
 
+
+  public getId(link: string): string {
+    return Helper.getId(link)
+  }
+
   public login() {
     window.location.assign(`${backendURL}/login`)
   }
-
 
 
   public loginViaGitHub() {

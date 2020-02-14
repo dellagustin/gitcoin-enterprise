@@ -27,8 +27,9 @@ export class AppController {
   }
 
   @Get('/getLedgerEntries')
-  getLedgerEntries(): ILedgerEntry[] {
-    return this.appService.getLedgerEntries()
+  getLedgerEntries(@Req() req: any): ILedgerEntry[] {
+    const login = this.appService.getLoginFromToken(req.headers.michaelsfriendskey)
+    return this.appService.getLedgerEntries(login)
   }
 
   @Get('/getIssueInfo/org/:org/repo/:repo/issueid/:issueId')

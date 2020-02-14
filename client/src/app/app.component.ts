@@ -52,6 +52,7 @@ export class AppComponent implements OnInit {
   }
 
   public fundTask() {
+    // alert(this.authenticationData.login)
     if (this.authenticationData === undefined) {
       this.loginViaGitHub('fund')
     } else {
@@ -60,6 +61,7 @@ export class AppComponent implements OnInit {
   }
 
   public solveTask() {
+    // alert(this.authenticationData.login)
     if (this.authenticationData === undefined) {
       this.loginViaGitHub('solve')
     } else {

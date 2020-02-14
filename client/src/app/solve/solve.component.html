@@ -16,8 +16,8 @@
       </div>
 
       <div class="gce-table">
-        <table class="table table-striped">
-          <thead class="thead-dark">
+        <table class="table ">
+          <thead>
             <tr>
               <th style="width:60%">Title</th>
               <th>Funding <i class="fa fa-sort" style="padding-left: 1vh;" (click)="sort()"></i>
@@ -26,13 +26,12 @@
           </thead>
           <tbody>
             <tr *ngFor="let fundedTask of filteredTasks" (click)="onTaskClicked(fundedTask)">
-              <td id="taskId-{{fundedTask.id}}">{{fundedTask.name}}</td>
+              <td id="taskId-{{fundedTask.id}}">{{fundedTask.title}}</td>
               <td>{{fundedTask.funding}} EIC</td>
             </tr>
           </tbody>
         </table>
       </div>
-
 
     </span>
     <span *ngIf="taskOfInterest!==undefined">
@@ -42,26 +41,27 @@
         <i class="fa fa-wpexplorer" aria-hidden="true" style="padding-left: 1vw;"></i>
       </button>
 
-
       <div class="adPad">
-        <textarea [(ngModel)]="solutionApproach" style="width: 100%;" rows="4"
+        <p class="ourRedColor" style="font-size: 21px;">
+          What's your Plan?
+        </p>
+        <textarea [(ngModel)]="solutionApproach" style="width: 100%;" rows="6"
           placeholder="Click here and describe a rough plan. How are you going to solve this task? I will post this content as a comment on the issue automatically."
-          style="text-align: center; min-width: 100%;"></textarea>
+          style="text-align: center; min-width: 98%;"></textarea>
       </div>
       <p></p>
-      <div *ngIf="solutionApproach.length>20" style="max-width: 70%; margin-left: auto; margin-right: auto;">
-        <app-typing-area [messages]=messages (typing)=onTyping($event)></app-typing-area>
+      <div *ngIf="solutionApproach.length>20" style="max-width: 87%; margin-left: auto; margin-right: auto;">
+        <app-typing-area [messages]=messagesToMotivateANicePlan (typing)=onTyping($event)></app-typing-area>
       </div>
       <div *ngIf="taskOfInterest.status===1 && !userWantsToApply && solutionApproach!==''">
         <button (click)="applyForSolving()" type="button" class="btn ourBlueColor">
           <i class="fa fa-wrench" aria-hidden="true" style="padding-right: 1vw;"></i>
-          Apply Now
+          Start Solving This
           <i class="fa fa-wrench" aria-hidden="true" style="padding-left: 1vw;"></i>
         </button>
       </div>
-      <div class="adPad">
-        <app-task-card [task]="taskOfInterest" [accordion]='true'></app-task-card>
-      </div>
+
+      <app-task-card [task]="taskOfInterest" [accordion]='true'></app-task-card>
 
     </span>
 
@@ -69,13 +69,19 @@
   <div *ngIf="applicationCompleted">
 
     <img src="../../assets/avatar-1.png" alt="" width="70%">
-    <h4 class="titleBeneathImage">
-      Applied Successfully
-    </h4>
+    <!-- <h4 class="titleBeneathImage">
+      Completed Successfully
+    </h4> -->
 
-    <app-task-card [task]="taskOfInterest"></app-task-card>
+    <div style="max-width: 87%; margin-left: auto; margin-right: auto;">
+      <app-typing-area [messages]=messagesToStartSolving (typing)=onTyping($event)></app-typing-area>
+      <h3 *ngIf="countDown<8 && countDown>-1" class="ourRedColor">
+        {{countDown}}
+      </h3>
+    </div>
+    <!-- <app-task-card [task]="taskOfInterest"></app-task-card> -->
 
-    <app-check-it-on-github [taskOfInterest]="taskOfInterest"></app-check-it-on-github>
+    <!-- <app-check-it-on-github [taskOfInterest]="taskOfInterest"></app-check-it-on-github> -->
 
   </div>
 </div>

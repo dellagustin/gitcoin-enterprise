@@ -18,7 +18,7 @@ export class TypingAreaComponent implements OnInit, OnChanges {
 
   public messagesAfterTyping: IMessage[] = []
   private activeMessage: IMessage
-  private readonly milliSecondsPerLetter: number = 140
+  private readonly milliSecondsPerLetter: number = 42
   private readonly pausePerMessage: number = 400
 
   constructor() { }

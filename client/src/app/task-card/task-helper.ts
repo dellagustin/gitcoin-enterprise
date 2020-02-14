@@ -6,10 +6,9 @@ export class TaskHelper {
     return {
       link: 'https://github.com/gitcoin-enterprise/gitcoin-enterprise/issues/16',
       taskType: ETaskType.GitHubIssue,
-      name: '',
-      description: '',
       funding: 0,
-      currency: 'EIC',
+      title: '',
+      description: '',
       status: ETaskStatus.created,
       funderRatedWith: 5,
       solutionProviderRatedWith: 5,

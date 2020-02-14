@@ -35,18 +35,12 @@ export class GithubIntegrationService {
 
         const user = await octokitForRetrievingUserData.users.getAuthenticated()
 
-        let balance = 0
-        try {
-            balance = this.ledgerConnector.getBalanceOf(user.data.login)
-        } catch (error) {
-            balance = 200 // start amount for each user
-        }
+        // const balance = this.ledgerConnector.getBalanceOf(user.data.login)
 
         const authenticationData: IAuthenticationData = {
             avatarURL: user.data.avatar_url,
             login: user.data.login,
             token,
-            balance,
         }
 
         return authenticationData

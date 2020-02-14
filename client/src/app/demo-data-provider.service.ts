@@ -15,12 +15,12 @@ export class DemoDataProviderService {
     fundedTasks.push(task1)
 
     const task2 = this.getDefaultTaskForDemo()
-    task2.name = 'Another fancy task'
+    task2.title = 'Another fancy task'
     task2.funding = 2000
     fundedTasks.push(task2)
 
     const task3 = this.getDefaultTaskForDemo()
-    task3.name = 'A very difficult task'
+    task3.title = 'A very difficult task'
     task3.funding = 10000
     fundedTasks.push(task3)
 
@@ -31,10 +31,9 @@ export class DemoDataProviderService {
     return {
       link: 'https://github.com/gitcoin-enterprise/gitcoin-enterprise/issues/16',
       taskType: ETaskType.GitHubIssue,
-      name: 'Just a Demo Task',
+      title: 'Just a Demo Task',
       description: 'Just a Demo Description',
       funding: 0,
-      currency: 'EIC',
       status: ETaskStatus.created,
       funderRatedWith: 5,
       solutionProviderRatedWith: 5,

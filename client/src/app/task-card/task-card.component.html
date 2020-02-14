@@ -1,7 +1,7 @@
 <div style="margin-top: 4vh;">
   <div *ngIf="!accordion" class="card">
     <div class="card-body">
-      <h4 class="card-title">{{task.name}}</h4>
+      <h4 class="card-title">{{task.title}}</h4>
       <p class="card-text">{{task.description}}</p>
       <!-- <p class="card-text">Bounty: {{task.funding}} Enterprise Internal Coins</p> -->
       <p class="card-text">ID: {{getId()}}</p>
@@ -9,10 +9,10 @@
     </div>
   </div>
 
-  <div *ngIf="accordion">
-    <accordion [isAnimated]="true">
+  <div *ngIf="accordion" class="ourBlueColor" style="color: red important!">
+    <accordion [isAnimated]="true" style="color: red important!">
 
-      <accordion-group heading="{{task.name}}">
+      <accordion-group heading="{{task.title}}" style="color: red important!">
         <div style="border: solid black; padding-top: 7vh;">
           {{task.description}}
           <p><br></p>

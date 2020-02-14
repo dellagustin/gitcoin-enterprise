@@ -84,12 +84,13 @@ export class LedgerComponent implements OnInit {
   }
 
   public getSourceType(): string {
-    // tbd
-    return (this.entryIdOfInterest.receiver.split('/').length > 5) ? 'User' : 'Task'
+    const myArray = this.entryIdOfInterest.receiver.split('/')
+    return (myArray.length > 5) ? 'User' : (myArray.length > 0) ? 'Task' : ''
   }
 
   public getTargetType(): string {
-    return (this.entryIdOfInterest.receiver.split('/').length > 5) ? 'Task' : 'User'
+    const myArray = this.entryIdOfInterest.receiver.split('/')
+    return (myArray.length > 5) ? 'Task' : 'User'
   }
 
   public getSource(): string {

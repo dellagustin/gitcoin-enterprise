@@ -6,9 +6,9 @@
       Fund a Task
     </h4> -->
 
-    <span *ngIf="task.name===''">
+    <span *ngIf="task.title===''">
       Please enter the link to the issue on GitHub.
-      Your balance is: {{authenticationData.balance}}
+      Your balance is: {{balance}}
       <p></p>
       <input type="text" class="form-control" id="taskLink"
         placeholder="https://github.com/gitcoin-enterprise/gitcoin-enterprise/issues/16" [(ngModel)]="taskLink">
@@ -24,18 +24,18 @@
       </div>
     </span>
 
-    <div *ngIf="task.name!==''" class="taskDescription">
+    <div *ngIf="task.title!==''" class="taskDescription">
 
       <h4 class="titleBeneathImage">
         Choose Amount
       </h4>
 
-      <input type="range" min="{{minimumRange}}" max="{{ maximumRange }}" class="slider" [(ngModel)]="currentRange"
+      <input type="range" min="{{minimumRange}}" max="{{ balance }}" class="slider" [(ngModel)]="currentRange"
         (change)="handleRangeSetting()" />
       <p></p>
       Your balance after this transaction will be <p></p>
       <h4 class="ourRedColor">
-        {{authenticationData.balance - this.currentRange}} EIC
+        {{balance - this.currentRange}} EIC
       </h4>
 
       <button id="saveFunding" type="button" class="btn ourBlueColor" (click)="saveFunding()">

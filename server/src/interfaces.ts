@@ -2,12 +2,6 @@ export interface IAuthenticationData {
   avatarURL: string
   login: string
   token: string
-  balance: number
-}
-
-export interface IBalance {
-  userName: string
-  balance: number
 }
 
 export interface IssueInfo {
@@ -18,10 +12,8 @@ export interface IssueInfo {
 export interface ITask {
   link: string
   taskType: ETaskType
-  name: string
   description: string
   funding: number
-  currency: string
   status: ETaskStatus
   funderRatedWith: number
   solutionProviderRatedWith: number
