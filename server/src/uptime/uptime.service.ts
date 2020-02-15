@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { config } from '../app.module'
-import { ELogLevel } from '../../dist/logger/logger-interface'
 import { LoggerService } from '../logger/logger.service'
+import { ELogLevel } from '../logger/logger-interface'
 const axios = require('axios')
 
 @Injectable()
