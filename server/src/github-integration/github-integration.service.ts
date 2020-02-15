@@ -86,7 +86,7 @@ export class GithubIntegrationService {
             throw new Error(errorMessage)
         }
 
-        const templateFileId = path.join(__dirname, './comment-on-funding.md')
+        const templateFileId = path.join(__dirname, '../../src/github-integration/comment-on-funding.md')
         const body = fs.read(templateFileId).toString().replace('{{{amount}}}', funding.amount)
 
         const owner = linkToIssue.split('/')[3]
@@ -120,7 +120,7 @@ export class GithubIntegrationService {
             throw new Error(errorMessage)
         }
 
-        const templateFileId = path.join(__dirname, './comment-on-application.md')
+        const templateFileId = path.join(__dirname, '../../src/github-integration/comment-on-application.md')
         const body = fs.read(templateFileId).toString().replace('{{{applicant}}}', application.profileLink).replace('{{{plan}}}', application.plan)
 
         const owner = application.taskLink.split('/')[3]
