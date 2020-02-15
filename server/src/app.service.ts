@@ -80,10 +80,9 @@ export class AppService {
     return {
 
       taskType: ETaskType.GitHubIssue,
-      name: 'Just a Demo Task',
+      title: 'Just a Demo Task',
       description: 'Just a Demo Description',
       funding: 0,
-      currency: 'EIC',
       status: ETaskStatus.created,
       funderRatedWith: 5,
       solutionProviderRatedWith: 5,

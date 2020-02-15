@@ -41,6 +41,7 @@
   "dependencies": {
     "@nestjs/passport": "^6.1.1",
     "husky": "^4.2.1",
-    "ng-range": "0.0.1"
+    "ng-range": "0.0.1",
+    "uuidv1": "^1.6.14"
   }
 }

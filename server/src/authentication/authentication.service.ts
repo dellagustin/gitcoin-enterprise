@@ -106,7 +106,6 @@ export class AuthenticationService {
             avatarURL: 'https://avatars1.githubusercontent.com/u/43786652?v=4',
             login: 'michael-spengler',
             token: michaelsfriendskey,
-            balance: 300,
         }
 
     }

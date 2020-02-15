@@ -11,9 +11,10 @@ import { AuthenticationMiddleware } from './authentication/authentication.middle
 import { AuthenticationService } from './authentication/authentication.service'
 import { BalanceService } from './balance/balance.service'
 import { AuthenticationController } from './authentication/authentication.controller'
+import { IConfig } from './interfaces'
+import { UptimeService } from './uptime/uptime.service'
 import * as path from 'path'
 import * as fs from 'fs-sync'
-import { IConfig } from './interfaces'
 
 export const config: IConfig = fs.readJSON(path.join(__dirname, '../.env.json'))
 
@@ -33,7 +34,7 @@ const ledgerConnectorProvider = {
 @Module({
   imports: [],
   controllers: [AppController, AuthenticationController],
-  providers: [AppService, LoggerService, EmailService, ledgerConnectorProvider, GithubIntegrationService, SupportNotifierService, AuthenticationService, BalanceService],
+  providers: [AppService, LoggerService, EmailService, ledgerConnectorProvider, GithubIntegrationService, SupportNotifierService, AuthenticationService, BalanceService, UptimeService],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {

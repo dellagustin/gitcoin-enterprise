@@ -12,6 +12,7 @@ export interface IssueInfo {
 export interface ITask {
   link: string
   taskType: ETaskType
+  title: string
   description: string
   funding: number
   status: ETaskStatus
@@ -94,4 +95,5 @@ export interface IConfig {
   testMode: boolean
   gitHubAPIBaseURL: string
   gitHubURL: string
+  dependentOnService: string
 }

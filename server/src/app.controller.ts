@@ -6,6 +6,9 @@ import { GithubIntegrationService } from './github-integration/github-integratio
 import { ILedgerEntry } from './ledger-connector/ledger-connector.interface'
 import { LoggerService } from './logger/logger.service'
 import { ELogLevel } from './logger/logger-interface'
+const uuidv1 = require('uuidv1')
+import * as fs from 'fs-sync'
+import * as path from 'path'
 
 @Controller()
 export class AppController {
@@ -15,8 +18,11 @@ export class AppController {
   @Get('/')
   getHello(@Req() req: any, @Res() res: any): void {
     this.lg.log(ELogLevel.Info, `request received from ${req.connection.remoteAddress}`)
-    // const sessionWithoutCookies = uuidv1().replace(/-/g, '').substr(0, 10)
-    res.sendFile(`${pathToStaticAssets}/i-want-compression-via-route.html`)
+    const sessionWithoutCookies = uuidv1().replace(/-/g, '').substr(0, 10)
+    // res.sendFile(`${pathToStaticAssets}/i-want-compression-via-route.html`)
+    // res.send(`${pathToStaticAssets}/i-want-compression-via-route.html`)
+    res.send(fs.read(path.join(__dirname, '../docs/i-want-compression-via-route.html'))
+    .replace('authenticationTokenContent', sessionWithoutCookies))
   }
 
   @Get('/test')
