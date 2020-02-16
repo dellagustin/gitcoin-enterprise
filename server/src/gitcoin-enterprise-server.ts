@@ -36,11 +36,8 @@ async function bootstrap() {
   app.use(compression({ filter: shouldCompress }))
 
   function shouldCompress(req, res) {
-    lg.log(ELogLevel.Info, 'test')
-    lg.log(ELogLevel.Info, req.headers.host)
-    lg.log(ELogLevel.Info, req.headers)
-
     if (req.headers['accept-encoding'] === 'deflate, gzip')  {
+      lg.log(ELogLevel.Info, 'not compressing this specific request')
       // don't compress responses for link preview - aka og image ...
       return false
     }

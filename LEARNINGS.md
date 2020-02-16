@@ -15,6 +15,7 @@ And then https://github.com/karma-runner/karma-chrome-launcher/issues/158#issuec
 
 ## Link Previews
 I plan to show the task title in the link preview
+https://ogp.me/
 https://meetedgar.com/blog/facebooks-new-link-previews-need-know-2018/
 https://developers.facebook.com/tools/debug/
 https://developers.facebook.com/tools/debug/og/object/
