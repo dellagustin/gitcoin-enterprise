@@ -40,7 +40,7 @@ async function bootstrap() {
     lg.log(ELogLevel.Info, req.headers.host)
     lg.log(ELogLevel.Info, req.headers)
 
-    if (JSON.stringify(req.headers).indexOf('og-image.jpg') !== -1)  {
+    if (req.headers['accept-encoding'] === 'deflate, gzip')  {
       // don't compress responses for link preview - aka og image ...
       return false
     }
