@@ -33,6 +33,21 @@ async function bootstrap() {
   app.use(cors('*'))
   // app.use(compression()) // og:image related stuff causes trouble ...
 
+  app.use(compression({ filter: shouldCompress }))
+
+  function shouldCompress(req, res) {
+    lg.log(ELogLevel.Info, 'test')
+    lg.log(ELogLevel.Info, req.headers)
+
+    if (req.headers.toString().indexOf('og-image') !== -1)  {
+      // don't compress responses for link preview - aka og image ...
+      return false
+    }
+
+    // fallback to standard filter function
+    return compression.filter(req, res)
+  }
+
   lg.log(ELogLevel.Info, 'listening soon :)')
   await app.listen(config.port)
 
