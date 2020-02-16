@@ -143,11 +143,11 @@ export class SolveComponent implements OnInit {
 
   private getMessagesToStartSolving(): IMessage[] {
     return [
-      { fromChatBot: true, text: 'Congratulations. You are a' },
-      { fromChatBot: true, text: 'https://brave.com' },
-      { fromChatBot: true, text: ' ' },
-      { fromChatBot: true, text: ' \n' },
-      { fromChatBot: true, text: 'person to take this challenge :)' },
+      { fromChatBot: true, text: 'Congratulations. You are a brave person to take this challenge :)' },
+      // { fromChatBot: true, text: 'https://brave.com' },
+      // { fromChatBot: true, text: ' ' },
+      // { fromChatBot: true, text: ' \n' },
+      // { fromChatBot: true, text: '' },
       // { fromChatBot: true, text: 'I commented the issue and included with your plan.' },
       { fromChatBot: true, text: 'As soon as you solved this task visit your profile and claim your bounty :)' },
       { fromChatBot: true, text: 'I wish you good luck and will forward you to the issue in about 7 seconds.' }]

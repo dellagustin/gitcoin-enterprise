@@ -103,4 +103,14 @@ export class LedgerComponent implements OnInit {
     return Helper.getId(this.entryIdOfInterest.receiver)
   }
 
+  public getSourceLink(): string {
+    // tbd
+    return (this.getSourceType() === 'Task') ? this.entryIdOfInterest.sender : `https://github.com/${this.entryIdOfInterest.sender}`
+  }
+
+  public getTargetLink(): string {
+    // tbd
+    return (this.getTargetType() === 'Task') ? this.entryIdOfInterest.receiver : `https://github.com/${this.entryIdOfInterest.receiver}`
+  }
+
 }
