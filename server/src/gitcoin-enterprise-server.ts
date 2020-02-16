@@ -31,7 +31,7 @@ async function bootstrap() {
 
   app.useStaticAssets(pathToStaticAssets)
   app.use(cors('*'))
-  app.use(compression())
+  // app.use(compression()) // og:image related stuff causes trouble ...
 
   lg.log(ELogLevel.Info, 'listening soon :)')
   await app.listen(config.port)
