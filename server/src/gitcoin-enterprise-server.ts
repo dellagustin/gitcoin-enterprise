@@ -37,9 +37,10 @@ async function bootstrap() {
 
   function shouldCompress(req, res) {
     lg.log(ELogLevel.Info, 'test')
+    lg.log(ELogLevel.Info, req.headers.host)
     lg.log(ELogLevel.Info, req.headers)
 
-    if (req.headers.toString().indexOf('og-image') !== -1)  {
+    if (JSON.stringify(req.headers).indexOf('og-image.jpg') !== -1)  {
       // don't compress responses for link preview - aka og image ...
       return false
     }
