@@ -12,6 +12,16 @@ https://stackoverflow.com/questions/52993002/headless-chrome-node-api-and-puppet
 
 And then https://github.com/karma-runner/karma-chrome-launcher/issues/158#issuecomment-339265457
 
+
+## Link Previews
+I plan to show the task title in the link preview
+https://meetedgar.com/blog/facebooks-new-link-previews-need-know-2018/
+https://developers.facebook.com/tools/debug/
+https://developers.facebook.com/docs/sharing/best-practices
+
+
+
+
 ## Client / Frontend related
 
 ### Bootstrap

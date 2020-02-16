@@ -40,7 +40,7 @@ export class ProfileComponent implements OnInit {
         this.ledgerEntries = result
         this.balance = Helper.getBalanceFromLedgerEntries(this.authenticationData.login, this.ledgerEntries)
         this.usersFundings = Helper.getFundingsFromLedgerEntries(this.authenticationData.login, this.ledgerEntries)
-        alert(this.usersFundings.length)
+        // alert(this.usersFundings.length)
       })
     // alert(JSON.stringify(this.authenticationData))
   }
