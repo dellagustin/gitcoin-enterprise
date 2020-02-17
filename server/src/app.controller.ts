@@ -1,6 +1,5 @@
 import { Controller, Get, Param, Res, Post, Req } from '@nestjs/common'
 import { AppService } from './app.service'
-import { pathToStaticAssets } from './gitcoin-enterprise-server'
 import { ITask, IAuthenticationData } from './interfaces'
 import { GithubIntegrationService } from './github-integration/github-integration.service'
 import { ILedgerEntry } from './ledger-connector/ledger-connector.interface'

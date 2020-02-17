@@ -70,7 +70,7 @@ export class AppComponent implements OnInit {
   }
 
   private loginViaGitHub(action: string) {
-    const authenticationURL = `${backendURL}/login?action=${action}`
+    const authenticationURL = `${backendURL}/authentication/login?action=${action}`
     location.assign(authenticationURL)
   }
 
