@@ -16,6 +16,8 @@ import { Helper } from '../helper'
 export class LedgerComponent implements OnInit {
 
   @Input() transactionId = ''
+  @Input() public showUsersFundings = false
+  @Input() public showUsersBounties = false
   @Input() public authenticationData: IAuthenticationData
   public ledgerEntries: ILedgerEntry[] = []
   public entryIdOfInterest: ILedgerEntry
@@ -26,9 +28,18 @@ export class LedgerComponent implements OnInit {
     this.backendService.getLedgerEntries(this.authenticationData.token)
       .subscribe((result: ILedgerEntry[]) => {
         this.ledgerEntries = result
-        setTimeout(() => {
-          window.scrollTo(0, document.body.scrollHeight)
-        }, 700)
+        if (this.showUsersFundings) {
+          this.ledgerEntries = this.ledgerEntries.filter((entry: ILedgerEntry) => entry.sender === this.authenticationData.login)
+        }
+
+        if (this.showUsersBounties) {
+          this.ledgerEntries = this.ledgerEntries.filter((entry: ILedgerEntry) => entry.receiver === this.authenticationData.login)
+        }
+        if (this.transactionId !== '') {
+          setTimeout(() => {
+            window.scrollTo(0, document.body.scrollHeight)
+          }, 700)
+        }
       })
   }
 

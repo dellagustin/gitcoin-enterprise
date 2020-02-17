@@ -3,27 +3,29 @@
     <img src="../../assets/avatar-2.png" alt="" width="72%">
   </span>
   <span *ngIf="!justKidding">
-    <img class="card-img-top" src="{{authenticationData.avatarURL}}" alt="Card image" style="width:72%">
+    <img class="card-img-top" src="{{authenticationData.avatarURL}}" alt="" style="width:72%">
   </span>
 </div>
 
-<div *ngIf="!viewBountiesAndFundings" class="adPad2">
+<div class="adPad2">
   <h4 class="card-title"> {{authenticationData.login}}</h4>
   Balance: {{balance}} EIC
 
-  <button type="button" class="btn ourRedColor" (click)="clickBountiesAndFundings()">
-    <i class="fa fa-gift" aria-hidden="true" style="padding-right: 1vw;"></i>
-    Bounties & Fundings
-    <i class="fa fa-gift" aria-hidden="true" style="padding-left: 1vw;"></i>
-  </button>
-
-  <a href="{{getLink()}}" target="__blank">
-    <button type="button" class="btn ourBlueColor">
-      <i class="fa fa-github" aria-hidden="true" style="padding-right: 1vw;"></i>
-      Visit on GitHub
-      <i class="fa fa-github" aria-hidden="true" style="padding-left: 1vw;"></i>
+  <span *ngIf="!viewBountiesAndFundings">
+    <button type="button" class="btn ourRedColor" (click)="clickBountiesAndFundings()">
+      <i class="fa fa-gift" aria-hidden="true" style="padding-right: 1vw;"></i>
+      Bounties & Fundings
+      <i class="fa fa-gift" aria-hidden="true" style="padding-left: 1vw;"></i>
     </button>
-  </a>
+
+    <a href="{{getLink()}}" target="__blank">
+      <button type="button" class="btn ourBlueColor">
+        <i class="fa fa-github" aria-hidden="true" style="padding-right: 1vw;"></i>
+        Visit on GitHub
+        <i class="fa fa-github" aria-hidden="true" style="padding-left: 1vw;"></i>
+      </button>
+    </a>
+  </span>
 </div>
 
 <div *ngIf="viewBountiesAndFundings" class="adPad">
@@ -32,68 +34,19 @@
     Your Fundings
   </h3>
 
-
-  <table class="table table-striped">
-    <thead class="ourRedColor" style="background-color: black">
-      <tr>
-        <th>Task ID</th>
-        <th>Amount</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let funding of usersFundings" (click)="onEntryClicked(funding)">
-
-        <td>{{getId(funding.taskLink)}}</td>
-        <td>{{funding.amount}} EIC</td>
-
-      </tr>
-
-    </tbody>
-  </table>
-
-  <!-- <div class="adPad">
-      Transaction Volume <p></p>
-      <h2 class="ourBlueColor">
-        {{getSum()}} EIC
-      </h2>
-    </div> -->
-
-</div>
-
-<div *ngIf="viewBountiesAndFundings" class="adPad">
-
-  <h3 class="ourRedColor">
-    Your Bounties
-  </h3>
+  <span>
+    <app-ledger [showUsersFundings]="true" [authenticationData]="authenticationData"></app-ledger>
+  </span>
 
 
-  <table class="table table-striped">
-    <thead class="ourRedColor" style="background-color: black">
-      <tr>
-        <th>Task ID</th>
-        <th>Amount</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let funding of usersBounties" (click)="onEntryClicked(funding)">
+  <div class="adPad">
 
-        <!-- <td id="taskId-{{ledgerEntry.id}}" *ngIf="ledgerEntry.id===transactionId" class="highlighted">
-            ...{{ledgerEntry.id.substr(ledgerEntry.id.length - 4, 4)}}</td>
-          <td *ngIf="ledgerEntry.id===transactionId" class="highlighted">{{ledgerEntry.date.substr(0, ledgerEntry.date.length -5)}}</td>
+    <h3 class="ourRedColor">
+      Your Bounties
+    </h3>
 
-          <td id="taskId-{{ledgerEntry.id}}"  *ngIf="ledgerEntry.id!==transactionId">...{{ledgerEntry.id.substr(ledgerEntry.id.length - 4, 4)}}</td>
-          <td *ngIf="ledgerEntry.id!==transactionId">{{ledgerEntry.date.substr(0, ledgerEntry.date.length -5)}}</td> -->
-      </tr>
+    <span>
+      <app-ledger [showUsersBounties]="true" [authenticationData]="authenticationData"></app-ledger>
+    </span>
 
-    </tbody>
-  </table>
-
-  <!-- <div class="adPad">
-      Transaction Volume <p></p>
-      <h2 class="ourBlueColor">
-        {{getSum()}} EIC
-      </h2>
-    </div> -->
-
-</div>
+  </div>

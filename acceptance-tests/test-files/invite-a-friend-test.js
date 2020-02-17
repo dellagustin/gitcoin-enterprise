@@ -50,12 +50,12 @@ Scenario("test inviting a friend", async I => {
 
 // michael.spengler@sap.com
 
-function validateContentInInvitationLists() {
-  const invitationListsAfterTest = fs.readJSON(fileIdInvitationLists)
-  if (invitationListsAfterTest.length === 0) {
-    // throw new Error('writing invitationlists did not work')
-  }
-}
+// function validateContentInInvitationLists() {
+//   const invitationListsAfterTest = fs.readJSON(fileIdInvitationLists)
+//   if (invitationListsAfterTest.length === 0) {
+//     // throw new Error('writing invitationlists did not work')
+//   }
+// }
 
 
 

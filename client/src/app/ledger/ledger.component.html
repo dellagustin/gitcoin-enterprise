@@ -1,17 +1,18 @@
 <span *ngIf="entryIdOfInterest===undefined">
+  <div *ngIf="!showUsersFundings && !showUsersBounties">
 
-  <button (click)="downloadAsJSON()" type="button" class="btn ourBlueColor">
-    <i class="fa fa-wrench" aria-hidden="true" style="padding-right: 1vw;"></i>
-    Download as JSON
-    <i class="fa fa-wrench" aria-hidden="true" style="padding-left: 1vw;"></i>
-  </button>
+    <button (click)="downloadAsJSON()" type="button" class="btn ourBlueColor">
+      <i class="fa fa-wrench" aria-hidden="true" style="padding-right: 1vw;"></i>
+      Download as JSON
+      <i class="fa fa-wrench" aria-hidden="true" style="padding-left: 1vw;"></i>
+    </button>
 
-  <button (click)="downloadAsCSV()" type="button" class="btn ourRedColor">
-    <i class="fa fa-file-excel-o" aria-hidden="true" style="padding-right: 1vw;"></i>
-    Download as CSV
-    <i class="fa fa-file-excel-o" aria-hidden="true" style="padding-left: 1vw;"></i>
-  </button>
-
+    <button (click)="downloadAsCSV()" type="button" class="btn ourRedColor">
+      <i class="fa fa-file-excel-o" aria-hidden="true" style="padding-right: 1vw;"></i>
+      Download as CSV
+      <i class="fa fa-file-excel-o" aria-hidden="true" style="padding-left: 1vw;"></i>
+    </button>
+  </div>
   <table class="table table-striped">
     <thead class="ourRedColor" style="background-color: black">
       <tr>

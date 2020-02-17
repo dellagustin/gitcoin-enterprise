@@ -20,6 +20,7 @@ export class ProfileComponent implements OnInit {
   public usersFundings: IFunding[] = []
   public usersBounties: IFunding[] = []
   public ledgerEntries: ILedgerEntry[] = []
+  public entryIdOfInterest: ILedgerEntry
 
   public constructor(private readonly backendService: BackendService) { }
 

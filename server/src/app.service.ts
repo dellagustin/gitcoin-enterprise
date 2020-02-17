@@ -9,9 +9,8 @@ import { GithubIntegrationService } from './github-integration/github-integratio
 import { ILedgerEntry } from './ledger-connector/ledger-connector.interface'
 import { ELogLevel } from './logger/logger-interface'
 import { AuthenticationService } from './authentication/authentication.service'
-
-// set personal acceess token for posting issue comment
-const config = fs.readJSON(path.join(__dirname, '../.env.json'))
+import { config } from './app.module'
+import { PersistencyService } from './persistency/persistency.service'
 
 @Injectable()
 export class AppService {
@@ -19,10 +18,8 @@ export class AppService {
     return this.getAuthenticationData(token).login
   }
 
-  private fundedTasksFileId = path.join(__dirname, '../operational-data/funded-tasks.json')
-
   // Interface would be cool for LedgerConnector... The reason why I could not use interface polymorphism here is interfaces are design-time only in the current context :)
-  public constructor(private readonly lg: LoggerService, private readonly ledgerConnector: LedgerConnector, private readonly gitHubIntegration: GithubIntegrationService, private readonly authenticationService: AuthenticationService) {
+  public constructor(private readonly lg: LoggerService, private readonly ledgerConnector: LedgerConnector, private readonly gitHubIntegration: GithubIntegrationService, private readonly authenticationService: AuthenticationService, private readonly persistencyService: PersistencyService) {
   }
 
   // async handleNewToken(michaelsfriendskey: any) {
@@ -50,11 +47,11 @@ export class AppService {
   }
 
   public getGitHubToken(): string {
-    return fs.readJSON(path.join(__dirname, '../.env.json')).gitHubToken
+    return config.token
   }
 
   public saveFundedTasks(fundedTasks: ITask[]): void {
-    return fs.write(this.fundedTasksFileId, JSON.stringify(fundedTasks))
+    this.persistencyService.saveFundedTasks(fundedTasks)
   }
 
   public authorizeInstallation(): void {
@@ -73,7 +70,8 @@ export class AppService {
   // }
 
   public getFundedTasks(): ITask[] {
-    return fs.readJSON(this.fundedTasksFileId)
+    return this.persistencyService.getFundedTasks()
+
   }
 
   public getDefaultTaskForDemo(): ITask {
@@ -105,7 +103,7 @@ export class AppService {
 
     const newLedgerEntry: ILedgerEntry = this.createLedgerEntry(taskAndFunding.funding)
 
-    const tasks = fs.readJSON(this.fundedTasksFileId)
+    const tasks = this.persistencyService.getFundedTasks()
     const existingTask = tasks.filter((entry: ITask) => entry.link === taskAndFunding.task.link)[0]
 
     let task: ITask
@@ -120,7 +118,7 @@ export class AppService {
 
     tasks.push(task)
 
-    fs.write(this.fundedTasksFileId, JSON.stringify(tasks))
+    this.persistencyService.saveFundedTasks(tasks)
 
     this.gitHubIntegration.postCommentAboutSuccessfullFunding(taskAndFunding.task.link, taskAndFunding.funding)
     return newLedgerEntry

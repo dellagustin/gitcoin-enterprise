@@ -1,0 +1,17 @@
+name: Publish Docker Image
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+    - name: build and publish docker image
+      run: |
+        docker image build ./ -t gitcoin-enterprise
+        docker login docker.pkg.github.com --username michael-spengler -p ${{secrets.dockerPublishToken}}
+        docker tag {{DockerImageId}} docker.pkg.github.com/gitcoinenterprise/gitcoinenterprise/gitcoin-entereprise:latest
+        docker push docker.pkg.github.com/gitcoinenterprise/gitcoinenterprise/gitcoin-entereprise:latest

@@ -4,16 +4,15 @@ import * as path from 'path'
 import { config } from '../app.module'
 import { SupportNotifierService } from '../support-notifier/support-notifier.service'
 import { ELogLevel, ILogger } from './logger-interface'
+import { PersistencyService } from '../persistency/persistency.service'
 
 @Injectable()
 export class LoggerService implements ILogger {
 
-    private static readonly currentPath = path.resolve(path.dirname(''))
-    private static readonly errorsFileID = path.join(LoggerService.currentPath, 'errors', 'errors.json')
-
     public logLevel = config.logLevel
 
-    public constructor(public readonly notifierService: SupportNotifierService) { }
+    public constructor(public readonly notifierService: SupportNotifierService, private readonly persistencyService: PersistencyService) { }
+
     public async log(messageType: ELogLevel, message: string): Promise<void> {
         if (this.logLevel >= messageType) {
             // tslint:disable-next-line: no-console
@@ -22,13 +21,14 @@ export class LoggerService implements ILogger {
 
         if (messageType === ELogLevel.Error) {
 
-            const errorFileContent = fs.readJSON(LoggerService.errorsFileID)
-            errorFileContent.push({ message })
-            fs.write(LoggerService.errorsFileID, JSON.stringify(errorFileContent))
+            // const errorFileContent = this.persistencyService.getErrors()
+            // errorFileContent.push({ message })
+            // this.persistencyService.saveErrors(errorFileContent)
 
             if (this.notifierService !== undefined) {
                 await this.notifierService.sendMessageToSupportChannel(message)
             }
+
         }
     }
 

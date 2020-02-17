@@ -13,6 +13,7 @@ import { BalanceService } from './balance/balance.service'
 import { AuthenticationController } from './authentication/authentication.controller'
 import { IConfig } from './interfaces'
 import { UptimeService } from './uptime/uptime.service'
+import { PersistencyService } from './persistency/persistency.service'
 import * as path from 'path'
 import * as fs from 'fs-sync'
 
@@ -34,7 +35,7 @@ const ledgerConnectorProvider = {
 @Module({
   imports: [],
   controllers: [AppController, AuthenticationController],
-  providers: [AppService, LoggerService, EmailService, ledgerConnectorProvider, GithubIntegrationService, SupportNotifierService, AuthenticationService, BalanceService, UptimeService],
+  providers: [AppService, LoggerService, EmailService, ledgerConnectorProvider, GithubIntegrationService, SupportNotifierService, AuthenticationService, BalanceService, UptimeService, PersistencyService],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {

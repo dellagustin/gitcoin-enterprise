@@ -57,6 +57,17 @@ As Interfaces are currently design time only, I needed to play a trick for mimic
 ## Docker Related
 For starters [this video](https://www.youtube.com/watch?v=CsWoMpK3EtE) seems helpful.
 
+### Publishing the docker image via GitHub Packages
+```docker login docker.pkg.github.com --username {{GitHubUserName}} -p {{GitHubToken}}```
+
+```docker tag {{DockerImageId}} docker.pkg.github.com/{{GitHubUserName}}/{{RepositoryId}}/{{DockerName}}:latest```
+
+```docker push docker.pkg.github.com/{{GitHubUserName}}/{{RepositoryId}}/{{DockerName}}:latest```
+
+### Pulling docker image from GitHub Packages
+```docker pull docker.pkg.github.com/gitcoinenterprise/testing-gh-docker-registry/express-app:latest```
+
+
 ## Authentication Related
 ### E-Mail based Authentication
 I decided now to leave E-Mail based Authentication behind. GitHub based Authentication seems best in the context of GitCoin Enterprise.

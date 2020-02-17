@@ -12,7 +12,9 @@
     "ut": "cd server && npm run test",
     "at": "cd acceptance-tests && npm run acceptance-tests",
     "lint": "cd server && npm run lint && cd ../client && npm run lint",
-    "docker-build": "docker build -t gitcoin-enterprise-docker-image",
+    "docker:build": "docker image build ./ -t gitcoin-enterprise",
+    "docker:run": "docker container run --publish 3000:3000 --detach --name gitcoin-enterprise gitcoin-enterprise",
+    "docker:publish": "./docker-publish.sh",
     "start-via-docker-test": "docker run -it -p 3000:3000 my-docker-image",
     "start-via-docker": "docker run -it -p 3000:3000 gitcoin-enterprise-docker-image"
   },
