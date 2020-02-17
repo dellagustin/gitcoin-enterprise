@@ -15,7 +15,7 @@ export class AuthenticationService {
 
     private static authenticationData: IAuthenticationData[] = []
     private actionsForRedirectingConvenientlyAfterLogin = []
-    private validStates: string[]
+    private validStates: string[] = []
 
     public constructor(private readonly lg: LoggerService, private readonly gitHubIntegration: GithubIntegrationService, private readonly persistencyService: PersistencyService) {
         setInterval(() => {
