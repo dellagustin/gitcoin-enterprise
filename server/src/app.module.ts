@@ -41,7 +41,7 @@ export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AuthenticationMiddleware)
-      .exclude('', 'getAuthenticationData', '/getAuthenticationData')
+      .exclude('')
       // .forRoutes({ path: '*', method: RequestMethod.ALL })
       // .forRoutes({ path: lettersRegexp, method: RequestMethod.ALL })
       .forRoutes({ path: 'post*', method: RequestMethod.ALL }, { path: 'get*', method: RequestMethod.ALL })
