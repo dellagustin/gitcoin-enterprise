@@ -8,6 +8,7 @@ import { AuthenticationService } from './authentication.service'
 import { IAuthenticationData } from '../interfaces'
 import { GithubIntegrationService } from '../github-integration/github-integration.service'
 import { LedgerConnector } from '../ledger-connector/ledger-connector-file-system.service'
+import { PersistencyService } from '../persistency/persistency.service'
 const axios = require('axios')
 
 export class AuthenticationMiddleware implements NestMiddleware {
@@ -16,8 +17,8 @@ export class AuthenticationMiddleware implements NestMiddleware {
   private readonly authenticationService: AuthenticationService
 
   public constructor() {
-    this.lg = new LoggerService(new SupportNotifierService())
-    this.authenticationService = new AuthenticationService(this.lg, new GithubIntegrationService(this.lg, new LedgerConnector(this.lg)))
+    this.lg = new LoggerService(new SupportNotifierService(), new PersistencyService())
+    this.authenticationService = new AuthenticationService(this.lg, new GithubIntegrationService(this.lg, new LedgerConnector(this.lg, new PersistencyService())))
   }
 
   public async use(req: any, res: Response, next: any): Promise<void> {

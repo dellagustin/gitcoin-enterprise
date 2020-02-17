@@ -21,6 +21,7 @@ export class AppController {
     const sessionWithoutCookies = uuidv1().replace(/-/g, '').substr(0, 10)
     // res.sendFile(`${pathToStaticAssets}/i-want-compression-via-route.html`)
     // res.send(`${pathToStaticAssets}/i-want-compression-via-route.html`)
+
     res.send(fs.read(path.join(__dirname, '../docs/i-want-compression-via-route.html'))
     .replace('authenticationTokenContent', sessionWithoutCookies))
   }

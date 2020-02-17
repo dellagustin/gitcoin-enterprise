@@ -27,6 +27,7 @@ export class AuthenticationService {
     }
 
     public getAuthenticationDataFromMainMemory(userAccessToken: string): IAuthenticationData {
+        this.lg.log(ELogLevel.Info, `checking for token: ${userAccessToken} within ${JSON.stringify(AuthenticationService.authenticationData)}`)
         return AuthenticationService.authenticationData.filter((aD: IAuthenticationData) => aD.token === userAccessToken)[0]
     }
 

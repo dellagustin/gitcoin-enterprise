@@ -7,12 +7,13 @@ import * as express from 'express'
 import { LoggerService } from './logger/logger.service'
 import { SupportNotifierService } from './support-notifier/support-notifier.service'
 import { ELogLevel } from './logger/logger-interface'
+import { PersistencyService } from './persistency/persistency.service'
 const compression = require('compression')
 
 export const pathToStaticAssets = path.join(__dirname, '../docs')
 
 async function bootstrap() {
-  const lg = new LoggerService(new SupportNotifierService())
+  const lg = new LoggerService(new SupportNotifierService(), new PersistencyService())
 
   let app
 
