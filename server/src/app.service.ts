@@ -22,18 +22,6 @@ export class AppService {
   public constructor(private readonly lg: LoggerService, private readonly ledgerConnector: LedgerConnector, private readonly gitHubIntegration: GithubIntegrationService, private readonly authenticationService: AuthenticationService, private readonly persistencyService: PersistencyService) {
   }
 
-  // async handleNewToken(michaelsfriendskey: any) {
-  //   let authenticationData: IAuthenticationData
-  //   this.lg.log(ELogLevel.Info, 'handling new token')
-  //   this.lg.log(ELogLevel.Info, config.testMode)
-  //   if (config.testMode) {
-  //     authenticationData = this.getTestAuthenticationData(michaelsfriendskey)
-  //   } else {
-  //     authenticationData = await this.gitHubIntegration.getAuthenticationDataFromGitHub(michaelsfriendskey)
-  //   }
-  //   this.authenticationService.addAuthenticationData(authenticationData)
-  // }
-
   public getAuthenticationData(michaelsfriendskey: string): IAuthenticationData {
     return this.authenticationService.getAuthenticationDataFromMainMemory(michaelsfriendskey)
   }

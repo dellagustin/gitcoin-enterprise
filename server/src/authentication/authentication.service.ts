@@ -74,7 +74,6 @@ export class AuthenticationService {
     async handleNewToken(michaelsfriendskey: any) {
         let authenticationData: IAuthenticationData
         this.lg.log(ELogLevel.Info, 'handling new token')
-        this.lg.log(ELogLevel.Info, config.testMode.toString())
         if (config.testMode) {
             authenticationData = this.getTestAuthenticationData(michaelsfriendskey)
         } else {

@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core'
 import { BackendService, ETaskStatus } from '../backend.service'
-import { backendURL } from '../../configurations/configuration'
-import { DemoDataProviderService } from '../demo-data-provider.service'
+
 import { TaskHelper } from '../task-card/task-helper'
 import { IFunding, ITaskAndFunding, IAuthenticationData, ETaskType, ITask } from '../interfaces'
 import { ILedgerEntry } from '../ledger/ledger.interface'
@@ -27,7 +26,7 @@ export class FundComponent implements OnInit {
   public ledgerEntries: ILedgerEntry[] = []
 
 
-  public constructor(private readonly backendService: BackendService, private readonly demoDataProvider: DemoDataProviderService) { }
+  public constructor(private readonly backendService: BackendService) { }
 
   public ngOnInit() {
     this.backendService.getLedgerEntries(this.authenticationData.token)
@@ -52,8 +51,7 @@ export class FundComponent implements OnInit {
         this.task.link = this.taskLink
         this.task.funding = this.currentRange
       }, error => {
-        console.log(error.message)
-        this.task = this.demoDataProvider.getDefaultTaskForDemo()
+        alert(error.message)
       })
   }
 

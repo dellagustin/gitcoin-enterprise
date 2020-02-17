@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core'
 import { ILedgerEntry } from './ledger.interface'
 import { BackendService } from '../backend.service'
-import { DemoDataProviderService } from '../demo-data-provider.service'
 import * as moment from 'moment'
 import { backendURL } from '../../configurations/configuration'
 import { IAuthenticationData } from '../interfaces'
