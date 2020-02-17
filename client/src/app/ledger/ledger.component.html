@@ -14,7 +14,7 @@
     </button>
   </div>
   <table class="table table-striped">
-    <thead class="ourRedColor" style="background-color: black">
+    <thead class="ourRedColor">
       <tr>
         <th>ID</th>
         <th>Date</th>
@@ -73,15 +73,19 @@
       </tr>
       <tr>
         <td>From {{getSourceType()}}</td>
-        <a href="{{entryIdOfInterest.sender}}">
-          <td>{{getSource()}}</td>
-        </a>
+        <td>
+          <a class="nostyle" target="_blank" href="{{getSourceLink()}}">
+            {{getSource()}}
+          </a>
+        </td>
       </tr>
       <tr>
         <td>To {{getTargetType()}}</td>
-        <a href="{{entryIdOfInterest.receiver}}">
-          <td>{{getTarget()}}</td>
-        </a>
+        <td>
+          <a class="nostyle" target="_blank" href="{{getTargetLink()}}">
+            {{getTarget()}}
+          </a>
+        </td>
       </tr>
       <tr>
         <td>Amount</td>

@@ -19,9 +19,9 @@ export class FundComponent implements OnInit {
   public taskLink = 'https://github.com/gitcoin-enterprise/gitcoin-enterprise/issues/16'
   public task: ITask = TaskHelper.getInitialTask()
   public fundingCompleted = false
-  public minimumRange = 2
-  public currentRange = 20
+  public minimumRange = 1
   public balance = 200
+  public currentRange = 20
   public viewTransactionInLedger = false
   public newLedgerEntry: ILedgerEntry
   public ledgerEntries: ILedgerEntry[] = []
@@ -34,6 +34,7 @@ export class FundComponent implements OnInit {
       .subscribe((result: ILedgerEntry[]) => {
         this.ledgerEntries = result
         this.balance = Helper.getBalanceFromLedgerEntries(this.authenticationData.login, this.ledgerEntries)
+        this.currentRange = Math.round(this.balance / 10)
       })
 
     // alert(this.authenticationData.token)
