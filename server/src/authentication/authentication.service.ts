@@ -8,6 +8,7 @@ import * as uuidv1 from 'uuid/v1'
 import { config } from '../app.module'
 import * as httpRequest from 'request'
 import { GithubIntegrationService } from '../github-integration/github-integration.service'
+import { PersistencyService } from '../persistency/persistency.service'
 
 @Injectable()
 export class AuthenticationService {
@@ -16,7 +17,7 @@ export class AuthenticationService {
     private actionsForRedirectingConvenientlyAfterLogin = []
     private validStates: string[]
 
-    public constructor(private readonly lg: LoggerService, private readonly gitHubIntegration: GithubIntegrationService) {
+    public constructor(private readonly lg: LoggerService, private readonly gitHubIntegration: GithubIntegrationService, private readonly persistencyService: PersistencyService) {
         setInterval(() => {
             this.actionsForRedirectingConvenientlyAfterLogin = [] // initializing after 11 days
             this.validStates = []
@@ -33,9 +34,12 @@ export class AuthenticationService {
 
     public addAuthenticationData(aD: IAuthenticationData): void {
         if (AuthenticationService.authenticationData.filter((entry: IAuthenticationData) => entry.token === aD.token)[0] !== undefined) {
-            this.lg.log(ELogLevel.Error, 'Token is already in file')
+            this.lg.log(ELogLevel.Warning, 'Token is already in RAM')
         } else {
             AuthenticationService.authenticationData.push(aD)
+            const authenticationData = this.persistencyService.getAuthenticationData()
+            authenticationData.push(aD)
+            this.persistencyService.saveAuthenticationData(authenticationData)
         }
     }
 
