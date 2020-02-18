@@ -65,7 +65,7 @@ export class AuthenticationService {
         return accessToken
     }
 
-    async handleNewToken(michaelsfriendskey: any) {
+    async handleNewToken(michaelsfriendskey: any): Promise<IAuthenticationData> {
         let authenticationData: IAuthenticationData
         this.lg.log(ELogLevel.Info, 'handling new token')
         if (config.testMode) {
@@ -74,6 +74,8 @@ export class AuthenticationService {
             authenticationData = await this.gitHubIntegration.getAuthenticationDataFromGitHub(michaelsfriendskey)
         }
         this.addAuthenticationData(authenticationData)
+
+        return authenticationData
     }
 
     public getActionForAddress(remoteAddress: any): any {

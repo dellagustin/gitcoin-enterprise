@@ -21,11 +21,11 @@ export class AuthenticationController {
     @Get('/github/callback')
     public async handleCallback(@Req() req: any, @Res() res: any): Promise<any> {
         const newToken = await this.authenticationService.handleGitHubCallback(req.query.code, req.query.state)
-        await this.authenticationService.handleNewToken(newToken)
+        const authenticationData = await this.authenticationService.handleNewToken(newToken)
 
         // just for demo reasons :) - motivating JSON Web Tokens with my students
         res.send(fs.read(`${pathToStaticAssets}/i-want-compression-via-route.html`)
-            .replace('authenticationTokenContent', newToken)
+            .replace('authenticationTokenContent', authenticationData.token)
             .replace('actionsForRedirectingConvenientlyAfterLogin', this.authenticationService.getActionForAddress(req.connection.remoteAddress)))
 
     }

@@ -8,6 +8,7 @@ import * as moment from 'moment'
 import { Helper } from '../helpers/helper'
 import { ELogLevel } from '../logger/logger-interface'
 import { LedgerConnector } from '../ledger-connector/ledger-connector-file-system.service'
+const uuidv1 = require('uuidv1')
 
 const { Octokit } = require('@octokit/rest')
 
@@ -40,7 +41,7 @@ export class GithubIntegrationService {
         const authenticationData: IAuthenticationData = {
             avatarURL: user.data.avatar_url,
             login: user.data.login,
-            token,
+            token: uuidv1().replace(/-/g, '').substr(0, 10),
         }
 
         return authenticationData

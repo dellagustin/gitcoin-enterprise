@@ -17,8 +17,9 @@ export class AuthenticationMiddleware implements NestMiddleware {
   private readonly authenticationService: AuthenticationService
 
   public constructor() {
-    this.lg = new LoggerService(new SupportNotifierService(), new PersistencyService())
-    this.authenticationService = new AuthenticationService(this.lg, new GithubIntegrationService(this.lg, new LedgerConnector(this.lg, new PersistencyService())))
+    const persistencyService = new PersistencyService()
+    this.lg = new LoggerService(new SupportNotifierService(), persistencyService)
+    this.authenticationService = new AuthenticationService(this.lg, new GithubIntegrationService(this.lg, new LedgerConnector(this.lg, persistencyService)), persistencyService)
   }
 
   public async use(req: any, res: Response, next: any): Promise<void> {
