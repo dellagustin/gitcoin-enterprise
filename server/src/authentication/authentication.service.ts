@@ -61,22 +61,8 @@ export class AuthenticationService {
 
         const result = (await axios.get(oauthConfirmationURL)).data
         const accessToken = result.split('access_token=')[1].split('&')[0]
-        this.lg.log(ELogLevel.Info, accessToken)
 
-        return result.access_token
-        // httpRequest({
-        //     json: true,
-        //     method: 'POST',
-        //     url: oauthConfirmationURL,
-        // }, (confirmationErr, confirmationRes, confirmationBody) => {
-        //     this.lg.log(ELogLevel.Info, `received a new token: ${confirmationBody.access_token}`)
-        //     // httpRequest({
-        //     //     json: true,
-        //     //     method: 'GET',
-        //     //     url: `${config.gitHubURL}/api/v3/user?access_token=${confirmationBody.access_token}`,
-        //     // }, async (userErr, userRes, userBody) => {
-        //     // })
-        // })
+        return accessToken
     }
 
     async handleNewToken(michaelsfriendskey: any) {
