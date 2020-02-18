@@ -60,8 +60,8 @@ export class AuthenticationService {
             `${config.gitHubURL}/login/oauth/access_token?client_id=${config.gitHubOAuthClient}&client_secret=${config.gitHubOAuthSecret}&code=${code}&state=${state}`
 
         const result = (await axios.get(oauthConfirmationURL)).data
-
-        this.lg.log(ELogLevel.Info, JSON.stringify(result))
+        const accessToken = result.split('access_token=')[1].split('&')[0]
+        this.lg.log(ELogLevel.Info, accessToken)
 
         return result.access_token
         // httpRequest({
