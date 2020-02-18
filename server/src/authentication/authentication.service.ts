@@ -1,7 +1,5 @@
 import { Injectable } from '@nestjs/common'
 import { LoggerService } from '../logger/logger.service'
-import * as fs from 'fs-sync'
-import * as path from 'path'
 import { IAuthenticationData } from '../interfaces'
 import { ELogLevel } from '../logger/logger-interface'
 import * as uuidv1 from 'uuid/v1'
@@ -9,6 +7,7 @@ import { config } from '../app.module'
 import * as httpRequest from 'request'
 import { GithubIntegrationService } from '../github-integration/github-integration.service'
 import { PersistencyService } from '../persistency/persistency.service'
+const axios = require('axios')
 
 @Injectable()
 export class AuthenticationService {
@@ -60,20 +59,24 @@ export class AuthenticationService {
         const oauthConfirmationURL =
             `${config.gitHubURL}/login/oauth/access_token?client_id=${config.gitHubOAuthClient}&client_secret=${config.gitHubOAuthSecret}&code=${code}&state=${state}`
 
-        httpRequest({
-            json: true,
-            method: 'POST',
-            url: oauthConfirmationURL,
-        }, (confirmationErr, confirmationRes, confirmationBody) => {
-            this.lg.log(ELogLevel.Info, `received a new token: ${confirmationBody.access_token}`)
-            return confirmationBody.access_token
-            // httpRequest({
-            //     json: true,
-            //     method: 'GET',
-            //     url: `${config.gitHubURL}/api/v3/user?access_token=${confirmationBody.access_token}`,
-            // }, async (userErr, userRes, userBody) => {
-            // })
-        })
+        const result = (await axios.get(oauthConfirmationURL)).data
+
+        this.lg.log(ELogLevel.Info, JSON.stringify(result))
+
+        return result.access_token
+        // httpRequest({
+        //     json: true,
+        //     method: 'POST',
+        //     url: oauthConfirmationURL,
+        // }, (confirmationErr, confirmationRes, confirmationBody) => {
+        //     this.lg.log(ELogLevel.Info, `received a new token: ${confirmationBody.access_token}`)
+        //     // httpRequest({
+        //     //     json: true,
+        //     //     method: 'GET',
+        //     //     url: `${config.gitHubURL}/api/v3/user?access_token=${confirmationBody.access_token}`,
+        //     // }, async (userErr, userRes, userBody) => {
+        //     // })
+        // })
     }
 
     async handleNewToken(michaelsfriendskey: any) {
