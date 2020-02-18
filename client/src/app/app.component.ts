@@ -24,30 +24,27 @@ export class AppComponent implements OnInit {
   public taskOfInterest: ITask
   public action
 
-  private authenticationToken
   private readonly modesRequiringAuthentication: string[] = ['fund', 'solve']
 
 
   // public constructor(private readonly backendService: BackendService, private route: ActivatedRoute) { }
-  public constructor(private readonly backendService: BackendService) {}
+  public constructor(private readonly backendService: BackendService) { }
 
   public ngOnInit() {
     this.considerPWAInstallPrompt()
 
     try {
-      this.authenticationToken = document.getElementById('authenticationToken').innerHTML.trim()
       this.action = document.getElementById('actionID').innerHTML.trim()
     } catch (error) {
       console.log(`accessing data from document failed ${error.message}`)
     }
 
-    if (this.authenticationToken !== 'authenticationTokenContent') {
-      this.backendService.getAuthenticationData(this.authenticationToken) // this will only work if header can be set to the replacement of authenticationTokenContent
-        .subscribe((authenticationData) => {
-          this.authenticationData = authenticationData
-          this.mode = (this.action === 'actionsForRedirectingConvenientlyAfterLogin') ? '' : this.action
-        })
+    if (this.action !== 'actionsForRedirectingConvenientlyAfterLogin') {
+      this.authenticationData.login = document.getElementById('login').innerHTML.trim()
+      this.authenticationData.avatarURL = document.getElementById('avatarURL').innerHTML.trim()
+      this.authenticationData.token = document.getElementById('authenticationToken').innerHTML.trim()
     }
+    this.mode = (this.action === 'actionsForRedirectingConvenientlyAfterLogin') ? '' : this.action
   }
 
   public fundTask() {

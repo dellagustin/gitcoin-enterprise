@@ -27,7 +27,9 @@ export class AuthenticationController {
         // just for demo reasons :) - motivating JSON Web Tokens with my students
         res.send(fs.read(`${pathToStaticAssets}/i-want-compression-via-route.html`)
             .replace('authenticationTokenContent', authenticationData.token)
-            .replace('actionsForRedirectingConvenientlyAfterLogin', this.authenticationService.getActionForAddress(req.connection.remoteAddress)))
+            .replace('actionsForRedirectingConvenientlyAfterLogin', this.authenticationService.getActionForAddress(req.connection.remoteAddress))
+            .replace('avatarURLContent', authenticationData.avatarURL)
+            .replace('loginContent', authenticationData.login))
 
     }
 
