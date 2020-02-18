@@ -36,9 +36,9 @@ export class AuthenticationService {
             this.lg.log(ELogLevel.Warning, 'Token is already in RAM')
         } else {
             AuthenticationService.authenticationData.push(aD)
-            const authenticationData = this.persistencyService.getAuthenticationData()
-            authenticationData.push(aD)
-            this.persistencyService.saveAuthenticationData(authenticationData)
+            // const authenticationData = this.persistencyService.getAuthenticationData()
+            // authenticationData.push(aD)
+            // this.persistencyService.saveAuthenticationData(authenticationData)
         }
     }
 
