@@ -1,13 +1,14 @@
 import { Controller, Get, Req, Res, Query } from '@nestjs/common'
 import { AuthenticationService } from './authentication.service'
 import * as fs from 'fs-sync'
-import * as path from 'path'
 import { pathToStaticAssets } from '../gitcoin-enterprise-server'
+import { LoggerService } from '../logger/logger.service'
+import { ELogLevel } from '../logger/logger-interface'
 
 @Controller('authentication')
 export class AuthenticationController {
 
-    public constructor(private readonly authenticationService: AuthenticationService) { }
+    public constructor(private readonly authenticationService: AuthenticationService, private readonly lg: LoggerService) { }
 
     @Get('/login')
     login(@Req() req: any, @Res() res: any, @Query('action') action: string): void {
@@ -22,7 +23,7 @@ export class AuthenticationController {
     public async handleCallback(@Req() req: any, @Res() res: any): Promise<any> {
         const newToken = await this.authenticationService.handleGitHubCallback(req.query.code, req.query.state)
         const authenticationData = await this.authenticationService.handleNewToken(newToken)
-
+        this.lg.log(ELogLevel.Info, `I have created the following Authentication Data: ${JSON.stringify(authenticationData)}`)
         // just for demo reasons :) - motivating JSON Web Tokens with my students
         res.send(fs.read(`${pathToStaticAssets}/i-want-compression-via-route.html`)
             .replace('authenticationTokenContent', authenticationData.token)

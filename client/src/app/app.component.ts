@@ -29,7 +29,10 @@ export class AppComponent implements OnInit {
 
 
   // public constructor(private readonly backendService: BackendService, private route: ActivatedRoute) { }
-  public constructor(private readonly backendService: BackendService) {
+  public constructor(private readonly backendService: BackendService) {}
+
+  public ngOnInit() {
+    this.considerPWAInstallPrompt()
 
     try {
       this.authenticationToken = document.getElementById('authenticationToken').innerHTML.trim()
@@ -37,18 +40,14 @@ export class AppComponent implements OnInit {
     } catch (error) {
       console.log(`accessing data from document failed ${error.message}`)
     }
-  }
 
-  public ngOnInit() {
-    this.considerPWAInstallPrompt()
     if (this.authenticationToken !== 'authenticationTokenContent') {
       this.backendService.getAuthenticationData(this.authenticationToken) // this will only work if header can be set to the replacement of authenticationTokenContent
         .subscribe((authenticationData) => {
           this.authenticationData = authenticationData
+          this.mode = (this.action === 'actionsForRedirectingConvenientlyAfterLogin') ? '' : this.action
         })
     }
-
-    this.mode = (this.action === 'actionsForRedirectingConvenientlyAfterLogin') ? '' : this.action
   }
 
   public fundTask() {
