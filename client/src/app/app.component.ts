@@ -40,9 +40,11 @@ export class AppComponent implements OnInit {
     }
 
     if (this.action !== 'actionsForRedirectingConvenientlyAfterLogin') {
-      this.authenticationData.login = document.getElementById('login').innerHTML.trim()
-      this.authenticationData.avatarURL = document.getElementById('avatarURL').innerHTML.trim()
-      this.authenticationData.token = document.getElementById('authenticationToken').innerHTML.trim()
+      this.authenticationData = {
+        login: document.getElementById('login').innerHTML.trim(),
+        avatarURL: document.getElementById('avatarURL').innerHTML.trim(),
+        token: document.getElementById('authenticationToken').innerHTML.trim()
+      }
     }
     this.mode = (this.action === 'actionsForRedirectingConvenientlyAfterLogin') ? '' : this.action
   }
