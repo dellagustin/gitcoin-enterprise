@@ -46,7 +46,7 @@ export class AuthenticationService {
         const state = uuidv1().replace(/-/g, '')
         this.validStates.push(state)
         // return `${config.gitHubURL}/login/oauth/authorize?client_id=${config.gitHubOAuthClient}&scope=read:user&state=${state}`
-        return `${config.gitHubURL}/login/oauth/authorize?client_id=${config.gitHubOAuthClient}&scope=read:user&redirect_uri=${config.backendURL}/authentication/github/callback/experiment&state=${state}`
+        return `${config.gitHubURL}/login/oauth/authorize?client_id=${config.gitHubOAuthClient}&scope=read:user&state=${state}`
     }
 
     public async handleGitHubCallback(code: string, state: string) {

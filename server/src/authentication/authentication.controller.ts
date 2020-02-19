@@ -34,9 +34,4 @@ export class AuthenticationController {
 
     }
 
-    @Get('/github/callback/experiment')
-    public handleExperiment(): any {
-        this.lg.log(ELogLevel.Info, 'just relaxing :) ')
-    }
-
 }
