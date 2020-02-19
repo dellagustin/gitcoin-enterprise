@@ -9,7 +9,7 @@ import { PersistencyService } from '../persistency/persistency.service'
 const axios = require('axios')
 
 @Injectable()
-export class AuthenticationService {
+export class AuthenticationServiceDouble {
     private actionsForRedirectingConvenientlyAfterLogin = []
     private validStates: string[] = []
 
@@ -80,20 +80,7 @@ export class AuthenticationService {
     }
 
     private async getTokenFromCode(code: string, state: string) {
-        if (this.validStates.indexOf(state) === -1) {
-            const message = `I guess the state: ${state} is not valid`
-            this.lg.log(ELogLevel.Error, message)
-            throw new Error(message)
-        }
-        this.lg.log(ELogLevel.Info, 'Validated state successfully')
-
-        const oauthConfirmationURL =
-            `${config.gitHubURL}/login/oauth/access_token?client_id=${config.gitHubOAuthClient}&client_secret=${config.gitHubOAuthSecret}&code=${code}&state=${state}`
-
-        const result = (await axios.get(oauthConfirmationURL)).data
-        const accessToken = result.split('access_token=')[1].split('&')[0]
-
-        return accessToken
+        return 'justSomeDoubleToken123'
     }
 
     private async handleNewToken(michaelsfriendskey: any): Promise<IAuthenticationData> {
@@ -115,11 +102,9 @@ export class AuthenticationService {
         if (allAuthenticationData.filter((entry: IAuthenticationData) => entry.token === aD.token)[0] !== undefined) {
             this.lg.log(ELogLevel.Warning, 'Authentication Data is already in Store')
         } else {
-            this.lg.log(ELogLevel.Info, 'Authentication Data added to Store')
-
             allAuthenticationData.push(aD)
             this.persistencyService.saveAuthenticationData(allAuthenticationData)
+            this.lg.log(ELogLevel.Info, `Authentication Data added to Store: ${JSON.stringify(allAuthenticationData)}`)
         }
     }
-
 }

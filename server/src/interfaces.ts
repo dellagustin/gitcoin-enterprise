@@ -95,5 +95,7 @@ export interface IConfig {
   testMode: boolean
   gitHubAPIBaseURL: string
   gitHubURL: string
+  oAuthProviderURL: string
   dependentOnService: string
+  authenticationService: string
 }

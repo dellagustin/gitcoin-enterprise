@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core'
 import { BackendService } from '../backend.service'
-import { backendURL } from '../../configurations/configuration'
-import { IApplication, IAuthenticationData, ITask, ETaskType, ETaskStatus } from '../interfaces'
+import { IApplication, IAuthenticationData, ITask } from '../interfaces'
 import { IMessage } from '../typing-area/typing-area.component'
 
 
@@ -89,7 +88,7 @@ export class SolveComponent implements OnInit {
 
       const intervalId = setInterval(() => {
         this.countDown--
-        if (this.countDown === 1) {
+        if (this.countDown === 3) {
           window.location.assign(this.taskOfInterest.link) // starting here for a flow experience :)
         }
         if (this.countDown === -1) {

@@ -16,6 +16,7 @@ import { UptimeService } from './uptime/uptime.service'
 import { PersistencyService } from './persistency/persistency.service'
 import * as path from 'path'
 import * as fs from 'fs-sync'
+import { AuthenticationServiceDouble } from './authentication/authentication.service.double'
 
 export const config: IConfig = fs.readJSON(path.join(__dirname, '../.env.json'))
 
@@ -27,15 +28,37 @@ function getLedgerConnector() {
   }
 }
 
+function getAuthenticationService() {
+  switch (config.authenticationService) {
+    case 'AuthenticationService': return AuthenticationService
+    case 'AuthenticationServiceDouble': return AuthenticationServiceDouble
+    default: return AuthenticationService
+  }
+}
+
 const ledgerConnectorProvider = {
   provide: 'LedgerConnector',
   useClass: getLedgerConnector(),
 }
 
+const authenticationServiceProvider = {
+  provide: 'AuthenticationService',
+  useClass: getAuthenticationService(),
+}
 @Module({
   imports: [],
   controllers: [AppController, AuthenticationController],
-  providers: [AppService, LoggerService, EmailService, ledgerConnectorProvider, GithubIntegrationService, SupportNotifierService, AuthenticationService, BalanceService, UptimeService, PersistencyService],
+  providers: [
+    AppService,
+    LoggerService,
+    EmailService,
+    ledgerConnectorProvider,
+    authenticationServiceProvider,
+    GithubIntegrationService,
+    SupportNotifierService,
+    BalanceService,
+    UptimeService,
+    PersistencyService],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {

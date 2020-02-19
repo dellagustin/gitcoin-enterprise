@@ -1,15 +1,12 @@
-import { NestMiddleware, Injectable } from '@nestjs/common'
+import { NestMiddleware } from '@nestjs/common'
 import { Response } from 'express'
-import { config } from '../app.module'
 import { LoggerService } from '../logger/logger.service'
 import { ELogLevel } from '../logger/logger-interface'
 import { SupportNotifierService } from '../support-notifier/support-notifier.service'
 import { AuthenticationService } from './authentication.service'
-import { IAuthenticationData } from '../interfaces'
 import { GithubIntegrationService } from '../github-integration/github-integration.service'
 import { LedgerConnector } from '../ledger-connector/ledger-connector-file-system.service'
 import { PersistencyService } from '../persistency/persistency.service'
-const axios = require('axios')
 
 export class AuthenticationMiddleware implements NestMiddleware {
 
@@ -26,21 +23,11 @@ export class AuthenticationMiddleware implements NestMiddleware {
     // tslint:disable-next-line: no-console
     const requestURL = req.protocol + '://' + req.get('host') + req.originalUrl
     this.lg.log(ELogLevel.Info, `middleware executed for ${requestURL}`)
-    if (this.isUserAuthenticated(req.headers.michaelsfriendskey)) {
+    if (this.authenticationService.isUserAuthenticated(req.headers.michaelsfriendskey)) {
       next()
     } else {
       const message = `I received an unauthorized call to: ${requestURL} with key ${JSON.stringify(req.headers)}`
       this.lg.log(ELogLevel.Warning, message)
     }
   }
-
-  private isUserAuthenticated(michaelsfriendskey: string): boolean {
-    const authenticationData: IAuthenticationData = this.authenticationService.getAuthenticationDataFromMainMemory(michaelsfriendskey)
-
-    if (authenticationData === undefined) { return false }
-    if (authenticationData.login === '') { return false }
-
-    return true
-  }
-
 }

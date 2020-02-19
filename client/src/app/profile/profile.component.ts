@@ -35,7 +35,7 @@ export class ProfileComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    setTimeout(() => this.justKidding = false, 5000)
+    setTimeout(() => this.justKidding = false, 3000)
     this.backendService.getLedgerEntries(this.authenticationData.token)
       .subscribe((result: ILedgerEntry[]) => {
         this.ledgerEntries = result
