@@ -17,17 +17,8 @@ export class AppController {
   @Get('/')
   getHello(@Req() req: any, @Res() res: any): void {
     this.lg.log(ELogLevel.Info, `request received from ${req.connection.remoteAddress}`)
-    const sessionWithoutCookies = uuidv1().replace(/-/g, '').substr(0, 10)
 
-    res.send(fs.read(path.join(__dirname, '../docs/i-want-compression-via-route.html'))
-    .replace('authenticationTokenContent', sessionWithoutCookies))
-  }
-
-  @Get('/test')
-  test(@Req() req: any, @Res() res: any): void {
-    this.lg.log(ELogLevel.Info, `request received from ${req.connection.remoteAddress}`)
-    // const sessionWithoutCookies = uuidv1().replace(/-/g, '').substr(0, 10)
-    res.send('supergeil')
+    res.sendFile(path.join(__dirname, '../docs/i-want-compression-via-route.html'))
   }
 
   @Get('/getLedgerEntries')

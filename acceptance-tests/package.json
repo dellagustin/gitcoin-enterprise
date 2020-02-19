@@ -4,11 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "copy-configuration-demo": "cp codecept.conf-demo.js codecept.conf.js && npx codeceptjs run --steps",
     "copy-configuration-dev": "cp codecept.conf-dev.js codecept.conf.js && npx codeceptjs run --steps",
-    "acceptance-tests": "npm run copy-configuration-dev && npx codeceptjs run --steps",
-    "acceptance-tests-demo": "npm run copy-configuration-demo && npx codeceptjs run --steps"
+    "test": "npm run copy-configuration-dev && npx codeceptjs run --steps",
+    "test:demo": "npm run copy-configuration-demo && npx codeceptjs run --steps"
   },
   "keywords": [],
   "author": "Michael Spengler",

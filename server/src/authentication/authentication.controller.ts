@@ -24,13 +24,19 @@ export class AuthenticationController {
         const newToken = await this.authenticationService.handleGitHubCallback(req.query.code, req.query.state)
         const authenticationData = await this.authenticationService.handleNewToken(newToken)
         this.lg.log(ELogLevel.Info, `I have created the following Authentication Data: ${JSON.stringify(authenticationData)}`)
-        // just for demo reasons :) - motivating JSON Web Tokens with my students
+        // just for demo reasons :) - motivating a.o. JSON Web Tokens with my students
+        // figuring out ups and downs of query parameters - e.g. I do not want to reveal potentially private data in the URL...
         res.send(fs.read(`${pathToStaticAssets}/i-want-compression-via-route.html`)
             .replace('authenticationTokenContent', authenticationData.token)
             .replace('actionsForRedirectingConvenientlyAfterLogin', this.authenticationService.getActionForAddress(req.connection.remoteAddress))
             .replace('avatarURLContent', authenticationData.avatarURL)
             .replace('loginContent', authenticationData.login))
 
+    }
+
+    @Get('/github/callback/experiment')
+    public handleExperiment(): any {
+        this.lg.log(ELogLevel.Info, 'just relaxing :) ')
     }
 
 }

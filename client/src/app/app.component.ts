@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core'
 import { INavbarData } from './navbar/navbar.interfaces'
-import { BackendService } from './backend.service'
 import { ILedgerEntry } from './ledger/ledger.interface'
-import { backendURL } from '../configurations/configuration'
 import { IAuthenticationData, ITask } from './interfaces'
+import { AuthenticationService } from './authentication-service/authentication.service'
 // import { ActivatedRoute } from '@angular/router'
 
 @Component({
@@ -28,7 +27,7 @@ export class AppComponent implements OnInit {
 
 
   // public constructor(private readonly backendService: BackendService, private route: ActivatedRoute) { }
-  public constructor(private readonly backendService: BackendService) { }
+  public constructor(private readonly authenticationService: AuthenticationService) { }
 
   public ngOnInit() {
     this.considerPWAInstallPrompt()
@@ -52,7 +51,7 @@ export class AppComponent implements OnInit {
   public fundTask() {
     // alert(this.authenticationData.login)
     if (this.authenticationData === undefined) {
-      this.loginViaGitHub('fund')
+      this.authenticationService.login('fund')
     } else {
       this.mode = 'fund'
     }
@@ -61,20 +60,15 @@ export class AppComponent implements OnInit {
   public solveTask() {
     // alert(this.authenticationData.login)
     if (this.authenticationData === undefined) {
-      this.loginViaGitHub('solve')
+      this.authenticationService.login('solve')
     } else {
       this.mode = 'solve'
     }
   }
 
-  private loginViaGitHub(action: string) {
-    const authenticationURL = `${backendURL}/authentication/login?action=${action}`
-    location.assign(authenticationURL)
-  }
-
   public onClickMenuEntry(target: string) {
     if (this.modesRequiringAuthentication.indexOf(target) !== -1 && this.authenticationData === undefined) {
-      this.loginViaGitHub(target)
+      this.authenticationService.login(target)
     } else {
       this.mode = target
       if (this.mode === 'openSource') {

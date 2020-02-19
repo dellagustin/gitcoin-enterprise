@@ -18,7 +18,7 @@ Scenario("test minimal viable service", async (I) => {
   await I.wait(2)
 
   I.see('Fund a Task')
-  // let transactionId = await fundATask(I)
+  let transactionId = await fundATask(I)
 
   // await validateSuccessfulFunding(I, transactionId)
 
@@ -30,28 +30,28 @@ Scenario("test minimal viable service", async (I) => {
 async function fundATask(I) {
   I.click(locate('#fundATask'));
   await I.wait(2)
-  I.see("Please enter the link to the issue on GitHub.");
-  I.fillField(
-    locate("#taskLink"),
-    "https://github.com/gitcoin-enterprise/gitcoin-enterprise/issues/16"
-  );
-  await I.wait(2)
-  I.click(locate("#next"));
-  await I.wait(2)
+  // I.see("Please enter the link to the issue on GitHub.");
+  // I.fillField(
+  //   locate("#taskLink"),
+  //   "https://github.com/gitcoin-enterprise/gitcoin-enterprise/issues/16"
+  // );
+  // await I.wait(2)
+  // I.click(locate("#next"));
+  // await I.wait(2)
 
-  I.fillField(locate('#userId'), testUserId)
-  await I.wait(2)
+  // I.fillField(locate('#userId'), testUserId)
+  // await I.wait(2)
 
-  I.click(locate("#next"));
-  await I.wait(2)
+  // I.click(locate("#next"));
+  // await I.wait(2)
 
-  I.click(locate('#saveFunding'))
-  await I.wait(2)
+  // I.click(locate('#saveFunding'))
+  // await I.wait(2)
 
-  const transactionId = await I.grabTextFrom('#transactionId');
-  I.say(`transaction ID: ${transactionId}`)
+  // const transactionId = await I.grabTextFrom('#transactionId');
+  // I.say(`transaction ID: ${transactionId}`)
 
-  return transactionId
+  // return transactionId
 }
 
 

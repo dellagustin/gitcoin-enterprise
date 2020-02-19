@@ -23,6 +23,10 @@ https://developers.facebook.com/docs/sharing/best-practices
 
 
 
+## Git
+Applying .gitignore to committed files
+git rm --cached /path/to/file
+https://stackoverflow.com/questions/7527982/applying-gitignore-to-committed-files
 
 
 ## Client / Frontend related

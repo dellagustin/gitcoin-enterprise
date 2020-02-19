@@ -28,7 +28,7 @@ export class SupportNotifierService implements ISupportNotifier {
     }
 
     public async sendMessageToSupportChannel(message: string): Promise<any> {
-        if (config.notifierToken !== '') {
+        if (config.notifierToken !== '' && config.notifierSupportChannel !== '') {
             return SupportNotifierService.bot.sendMessage(config.notifierSupportChannel, message)
         }
     }

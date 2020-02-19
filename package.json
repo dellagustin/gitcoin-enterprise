@@ -10,7 +10,7 @@
     "tslint": "tslint -p client/ -c tslint.json && tslint -p server/ -c tslint.json",
     "test": "cd server && npm run setup && cd ../ && npm run lint && npm run ut && npm run at",
     "ut": "cd server && npm run test",
-    "at": "cd acceptance-tests && npm run acceptance-tests",
+    "at": "cd acceptance-tests && npm run test",
     "lint": "cd server && npm run lint && cd ../client && npm run lint",
     "docker:build": "docker image build ./ -t gitcoin-enterprise",
     "docker:run": "docker container run --publish 3000:3000 --detach --name gitcoin-enterprise gitcoin-enterprise",
