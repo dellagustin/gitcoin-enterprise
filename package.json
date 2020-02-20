@@ -18,15 +18,15 @@
     "docker:run": "docker container run --publish 3001:3001 --detach --name gitcoin-enterprise gitcoin-enterprise",
     "dockers:delete": "docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)",
     "docker:publish": "./docker-publish.sh",
-    "start-via-docker-test": "docker run -it -p 3000:3000 my-docker-image",
-    "start-via-docker": "docker run -it -p 3000:3000 gitcoin-enterprise-docker-image",
+    "start-via-docker-test": "docker run -it -p 3001:3001 my-docker-image",
+    "start-via-docker": "docker run -it -p 3001:3001 gitcoin-enterprise-docker-image",
     "start": "npm run build-prod && npm run dockers:delete && npm run docker:build && npm run docker:run",
     "docker:restart": "docker container run --publish 3001:3001 --detach --name gitcoin-enterprise gitcoin-enterprise",
     "check-updates": "ncu -u --configFilePath ./ && cd server && ncu -u --configFilePath ./server && cd ../client && ncu -u --configFilePath ./client"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run test"
+      "pre-commit": "echo anschalten"
     }
   },
   "repository": {

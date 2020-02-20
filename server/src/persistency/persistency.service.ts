@@ -3,6 +3,7 @@ import * as fs from 'fs-sync'
 import * as path from 'path'
 import { ILedgerEntry } from '../ledger-connector/ledger-connector.interface'
 import { ITask, IAuthenticationData } from '../interfaces'
+import { ELogLevel } from '../logger/logger-interface'
 
 @Injectable()
 export class PersistencyService {
@@ -32,9 +33,8 @@ export class PersistencyService {
         try {
             return fs.readJSON(this.authenticationDataFileId)
         } catch (error) {
-            fs.copy(this.templateOperationalDataPath, this.operationalDataPath)
-
-            return fs.readJSON(this.authenticationDataFileId)
+            fs.write(this.authenticationDataFileId, '[]')
+            return []
         }
     }
 
