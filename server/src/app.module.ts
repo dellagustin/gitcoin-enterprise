@@ -9,7 +9,6 @@ import { GithubIntegrationService } from './github-integration/github-integratio
 import { SupportNotifierService } from './support-notifier/support-notifier.service'
 import { AuthenticationMiddleware } from './authentication/authentication.middleware'
 import { AuthenticationService } from './authentication/authentication.service'
-import { BalanceService } from './balance/balance.service'
 import { AuthenticationController } from './authentication/authentication.controller'
 import { IConfig } from './interfaces'
 import { UptimeService } from './uptime/uptime.service'
@@ -56,7 +55,6 @@ const authenticationServiceProvider = {
     authenticationServiceProvider,
     GithubIntegrationService,
     SupportNotifierService,
-    BalanceService,
     UptimeService,
     PersistencyService],
 })

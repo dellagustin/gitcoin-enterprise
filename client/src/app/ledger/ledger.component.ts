@@ -17,6 +17,7 @@ export class LedgerComponent implements OnInit {
   @Input() transactionId = ''
   @Input() public showUsersFundings = false
   @Input() public showUsersBounties = false
+  @Input() public showTransactionVolume = false
   @Input() public authenticationData: IAuthenticationData
   public ledgerEntries: ILedgerEntry[] = []
   public entryIdOfInterest: ILedgerEntry

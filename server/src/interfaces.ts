@@ -57,10 +57,6 @@ export interface IEmail {
   subject: string
   content: string
 }
-export interface IUser {
-  login: string
-  balance: number
-}
 
 export interface IFunding {
   id: string
@@ -84,18 +80,14 @@ export interface IConfig {
   enterpriseInternalCollaborationCurrency: string
   enterpriseInternalCollaborationCurrencySymbol: string
   token: string
-  eMail: string
-  pw: string
-  invitationsPerUserPerDay: number
-  smtpHost: string
   notifierToken: string
   notifierSupportChannel: string
   gitHubOAuthClient: string
   gitHubOAuthSecret: string
-  testMode: boolean
   gitHubAPIBaseURL: string
   gitHubURL: string
   oAuthProviderURL: string
   dependentOnService: string
-  authenticationService: string
+  authenticationService: string,
+  frontendURL: string
 }

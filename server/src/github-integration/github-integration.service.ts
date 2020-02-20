@@ -7,7 +7,6 @@ import * as path from 'path'
 import * as moment from 'moment'
 import { Helper } from '../helpers/helper'
 import { ELogLevel } from '../logger/logger-interface'
-import { LedgerConnector } from '../ledger-connector/ledger-connector-file-system.service'
 const uuidv1 = require('uuidv1')
 
 const { Octokit } = require('@octokit/rest')
@@ -19,14 +18,12 @@ export class GithubIntegrationService {
     private lastGetIssueRequest = moment()
     private lastPostCommentRequest = moment()
 
-    public constructor(private readonly lg: LoggerService, private readonly ledgerConnector: LedgerConnector) {
+    public constructor(private readonly lg: LoggerService) {
         // this.lg.log(ELogLevel.Info, config.testMode.toString())
-        if (!config.testMode) {
-            this.octokit = new Octokit({
-                auth: config.token,
-                baseUrl: (config.gitHubAPIBaseURL === undefined) ? 'https://api.github.com' : config.gitHubAPIBaseURL,
-            })
-        }
+        this.octokit = new Octokit({
+            auth: config.token,
+            baseUrl: (config.gitHubAPIBaseURL === undefined) ? 'https://api.github.com' : config.gitHubAPIBaseURL,
+        })
     }
 
     public async getAuthenticationDataFromGitHub(token: string): Promise<IAuthenticationData> {

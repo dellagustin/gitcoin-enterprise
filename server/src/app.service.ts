@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common'
 
-import * as fs from 'fs-sync'
-import * as path from 'path'
-import { ITask, ETaskStatus, ETaskType, IUser, IFunding, ITaskAndFunding, IApplication, IAuthenticationData } from './interfaces'
+import { ITask, ETaskStatus, ETaskType, IFunding, ITaskAndFunding, IApplication, IAuthenticationData } from './interfaces'
 import { LoggerService } from './logger/logger.service'
 import { LedgerConnector } from './ledger-connector/ledger-connector-file-system.service'
 import { GithubIntegrationService } from './github-integration/github-integration.service'

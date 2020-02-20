@@ -26,7 +26,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let fundedTask of filteredTasks" (click)="onTaskClicked(fundedTask)">
-              <td id="taskId-{{fundedTask.title}}">{{fundedTask.title}}</td>
+              <td id="taskId-{{fundedTask.id}}">{{fundedTask.title}}</td>
               <td>{{fundedTask.funding}} EIC</td>
             </tr>
           </tbody>
@@ -45,7 +45,7 @@
         <p class="ourRedColor" style="font-size: 21px;">
           What's your Plan?
         </p>
-        <textarea [(ngModel)]="solutionApproach" style="width: 100%;" rows="6"
+        <textarea id="theplan" [(ngModel)]="solutionApproach" style="width: 100%;" rows="6"
           placeholder="Click here and describe a rough plan. How are you going to solve this task? I will post this content as a comment on the issue automatically."
           style="text-align: center; min-width: 98%;"></textarea>
       </div>
@@ -54,7 +54,7 @@
         <app-typing-area [messages]=messagesToMotivateANicePlan (typing)=onTyping($event)></app-typing-area>
       </div>
       <div *ngIf="taskOfInterest.status===1 && !userWantsToApply && solutionApproach!==''">
-        <button (click)="applyForSolving()" type="button" class="btn ourBlueColor">
+        <button id="startsolvingthis" (click)="applyForSolving()" type="button" class="btn ourBlueColor">
           <i class="fa fa-wrench" aria-hidden="true" style="padding-right: 1vw;"></i>
           Start Solving This
           <i class="fa fa-wrench" aria-hidden="true" style="padding-left: 1vw;"></i>

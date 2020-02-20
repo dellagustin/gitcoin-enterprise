@@ -77,40 +77,40 @@ export class EmailService {
 
     }
 
-    private async sendEMailViaNodeMailer(eMail: IEmail): Promise<void> {
-        const nodemailer = require('nodemailer')
+    // private async sendEMailViaNodeMailer(eMail: IEmail): Promise<void> {
+    //     const nodemailer = require('nodemailer')
 
-        const transporter = nodemailer.createTransport({
-            host: config.smtpHost,
-            port: 587,
-            secure: false, // true for 465, false for other ports like 587
-            auth: {
-                user: config.eMail,
-                pass: config.pw,
-            },
-        })
+    //     const transporter = nodemailer.createTransport({
+    //         host: config.smtpHost,
+    //         port: 587,
+    //         secure: false, // true for 465, false for other ports like 587
+    //         auth: {
+    //             user: config.eMail,
+    //             pass: config.pw,
+    //         },
+    //     })
 
-        const personalAccessToken = uuidv1().substr(11, 5)
+    //     const personalAccessToken = uuidv1().substr(11, 5)
 
-        const mailOptions = {
-            from: config.eMail,
-            to: eMail.recipient,
-            subject: 'Invitation for Peer2Peer Enterprise',
-            text: eMail.content.replace('accessToken', personalAccessToken),
-            html: this.getHTMLEMail(eMail.sender, personalAccessToken),
-        }
+    //     const mailOptions = {
+    //         from: config.eMail,
+    //         to: eMail.recipient,
+    //         subject: 'Invitation for Peer2Peer Enterprise',
+    //         text: eMail.content.replace('accessToken', personalAccessToken),
+    //         html: this.getHTMLEMail(eMail.sender, personalAccessToken),
+    //     }
 
-        transporter.sendMail(mailOptions, async (error: any, info: any) => {
-            if (error) {
-                throw new Error(error)
-            }
-            await this.lg.log(ELogLevel.Warning, `Message sent: ${info.response}`)
+    //     transporter.sendMail(mailOptions, async (error: any, info: any) => {
+    //         if (error) {
+    //             throw new Error(error)
+    //         }
+    //         await this.lg.log(ELogLevel.Warning, `Message sent: ${info.response}`)
 
-            return {
-                success: true,
-            }
-        })
-    }
+    //         return {
+    //             success: true,
+    //         }
+    //     })
+    // }
 
     private async getHTMLEMail(sender: string, personalAccessToken: string): Promise<string> {
         const templateHTMLFileId: string = path.join(__dirname, './email-template.html')

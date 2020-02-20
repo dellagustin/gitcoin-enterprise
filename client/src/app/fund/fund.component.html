@@ -61,7 +61,10 @@
     </h4>
     I added {{newLedgerEntry.amount}} EIC to the Bounty for this task <p></p>
 
-
+    <div id="transactionId" style="display: none;">
+      <!-- used e.g. for acceptance tests -->
+      {{newLedgerEntry.id}}
+    </div>
     <button id="viewTransactionInLedger" type="button" class="btn ourRedColor" (click)="clickViewTransactionInLedger()">
       <i class="fa fa-step-forward" aria-hidden="true" style="padding-right: 3vw;"></i>
       View Transaction in Ledger
@@ -75,7 +78,7 @@
 
 
   <span *ngIf="viewTransactionInLedger">
-    <app-ledger [transactionId]="newLedgerEntry.id" [authenticationData]="authenticationData"></app-ledger>
+    <app-ledger [transactionId]="newLedgerEntry.id" [authenticationData]="authenticationData" [showTransactionVolume]='true'></app-ledger>
   </span>
 
 </div>

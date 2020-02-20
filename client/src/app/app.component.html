@@ -36,7 +36,7 @@
   </div>
 
   <div *ngIf="mode=='downloadLedger'">
-    <app-ledger [authenticationData]="authenticationData"></app-ledger>
+    <app-ledger [authenticationData]="authenticationData" [showTransactionVolume]='true'></app-ledger>
   </div>
 
   <div *ngIf="mode=='solve'">

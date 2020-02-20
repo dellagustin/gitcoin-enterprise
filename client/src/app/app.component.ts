@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
   public taskOfInterest: ITask
   public action
 
-  private readonly modesRequiringAuthentication: string[] = ['fund', 'solve']
+  private readonly modesRequiringAuthentication: string[] = ['fund', 'solve', 'profile']
 
 
   // public constructor(private readonly backendService: BackendService, private route: ActivatedRoute) { }

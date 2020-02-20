@@ -1,8 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core'
 import { BackendService } from '../backend.service'
-import { ProfileComponent } from '../profile/profile.component'
 import { backendURL } from '../../configurations/configuration'
-import { IUser, IEmail, IAuthenticationData } from '../interfaces'
+import { IEmail, IAuthenticationData } from '../interfaces'
 
 @Component({
   selector: 'app-invite-friend',

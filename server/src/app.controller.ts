@@ -5,8 +5,6 @@ import { GithubIntegrationService } from './github-integration/github-integratio
 import { ILedgerEntry } from './ledger-connector/ledger-connector.interface'
 import { LoggerService } from './logger/logger.service'
 import { ELogLevel } from './logger/logger-interface'
-const uuidv1 = require('uuidv1')
-import * as fs from 'fs-sync'
 import * as path from 'path'
 
 @Controller()

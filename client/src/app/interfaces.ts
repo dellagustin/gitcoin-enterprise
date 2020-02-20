@@ -51,11 +51,6 @@ export interface IEmail {
   subject: string
   content: string
 }
-export interface IUser {
-  avatarURL: string
-  balance: number
-  link: string
-}
 
 export interface IFunding {
   id: string

@@ -6,7 +6,6 @@ import * as uuidv1 from 'uuid/v1'
 import { config } from '../app.module'
 import { GithubIntegrationService } from '../github-integration/github-integration.service'
 import { PersistencyService } from '../persistency/persistency.service'
-const axios = require('axios')
 
 @Injectable()
 export class AuthenticationServiceDouble {
@@ -86,11 +85,7 @@ export class AuthenticationServiceDouble {
     private async handleNewToken(michaelsfriendskey: any): Promise<IAuthenticationData> {
         let authenticationData: IAuthenticationData
         this.lg.log(ELogLevel.Info, 'handling new token')
-        if (config.testMode) {
-            authenticationData = this.getTestAuthenticationData(michaelsfriendskey)
-        } else {
-            authenticationData = await this.gitHubIntegration.getAuthenticationDataFromGitHub(michaelsfriendskey)
-        }
+        authenticationData = this.getTestAuthenticationData(michaelsfriendskey)
         this.addAuthenticationData(authenticationData)
         this.lg.log(ELogLevel.Info, `I have created the following Authentication Data: ${JSON.stringify(authenticationData)}`)
 

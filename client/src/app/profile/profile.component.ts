@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core'
 import { BackendService } from '../backend.service'
 import { backendURL } from '../../configurations/configuration'
-import { IUser, IAuthenticationData, IFunding } from '../interfaces'
+import { IAuthenticationData, IFunding } from '../interfaces'
 import { ILedgerEntry } from '../ledger/ledger.interface'
 import { Helper } from '../helper'
 
@@ -23,16 +23,6 @@ export class ProfileComponent implements OnInit {
   public entryIdOfInterest: ILedgerEntry
 
   public constructor(private readonly backendService: BackendService) { }
-
-  public static getInitialUser() {
-    const user: IUser = {
-      avatarURL: 'https://avatars1.githubusercontent.com/u/43786652?v=4',
-      balance: 0,
-      link: '',
-    }
-
-    return user
-  }
 
   public ngOnInit(): void {
     setTimeout(() => this.justKidding = false, 3000)

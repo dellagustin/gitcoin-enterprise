@@ -59,6 +59,8 @@ export class AuthenticationService {
         if (entry === undefined) {
             return ''
         } else {
+            const index = this.actionsForRedirectingConvenientlyAfterLogin.indexOf(entry)
+            this.actionsForRedirectingConvenientlyAfterLogin.splice(index, 1) // no need to store this any longer
             return entry.action
         }
     }
@@ -99,11 +101,7 @@ export class AuthenticationService {
     private async handleNewToken(michaelsfriendskey: any): Promise<IAuthenticationData> {
         let authenticationData: IAuthenticationData
         this.lg.log(ELogLevel.Info, 'handling new token')
-        if (config.testMode) {
-            authenticationData = this.getTestAuthenticationData(michaelsfriendskey)
-        } else {
-            authenticationData = await this.gitHubIntegration.getAuthenticationDataFromGitHub(michaelsfriendskey)
-        }
+        authenticationData = await this.gitHubIntegration.getAuthenticationDataFromGitHub(michaelsfriendskey)
         this.addAuthenticationData(authenticationData)
         this.lg.log(ELogLevel.Info, `I have created the following Authentication Data: ${JSON.stringify(authenticationData)}`)
 
