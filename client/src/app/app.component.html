@@ -16,17 +16,18 @@
 
   <div *ngIf="mode===''">
 
-    <button id="fundATask" (click)="fundTask()" type="button" class="btn ourRedColor">
+    <button id="solveATask" (click)="solveTask()" type="button" class="btn ourRedColor">
+      <i class="fa fa-wrench" aria-hidden="true" style="padding-right: 1vw;"></i>
+      Solve a Task
+      <i class="fa fa-wrench" aria-hidden="true" style="padding-left: 1vw;"></i>
+    </button>
+
+    <button id="fundATask" (click)="fundTask()" type="button" class="btn ourBlueColor">
       <i class="fa fa-usd" aria-hidden="true" style="padding-right: 1vw;"></i>
       Fund a Task
       <i class="fa fa-usd" aria-hidden="true" style="padding-left: 1vw;"></i>
     </button>
 
-    <button id="solveATask" (click)="solveTask()" type="button" class="btn ourBlueColor">
-      <i class="fa fa-wrench" aria-hidden="true" style="padding-right: 1vw;"></i>
-      Solve a Task
-      <i class="fa fa-wrench" aria-hidden="true" style="padding-left: 1vw;"></i>
-    </button>
 
   </div>
 
