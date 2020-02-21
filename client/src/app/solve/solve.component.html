@@ -26,13 +26,12 @@
           </thead>
           <tbody>
             <tr *ngFor="let fundedTask of filteredTasks" (click)="onTaskClicked(fundedTask)">
-              <td id="taskId-{{fundedTask.id}}">{{fundedTask.title}}</td>
+              <td>{{fundedTask.title}}</td>
               <td>{{fundedTask.funding}} EIC</td>
             </tr>
           </tbody>
         </table>
       </div>
-
     </span>
     <span *ngIf="taskOfInterest!==undefined">
       <button (click)="backToOverview()" type="button" class="btn ourRedColor">

@@ -52,6 +52,17 @@ export interface IEmail {
   content: string
 }
 
+export interface IBountiesAndFundings {
+fundings: IFunding[]
+bounties: IBounty[]
+}
+
+export interface IBounty {
+  bountyHunterId: string
+  taskLink: string
+  amount: number
+}
+
 export interface IFunding {
   id: string
   funderId: string

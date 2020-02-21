@@ -21,7 +21,9 @@ import { RouterModule } from '@angular/router'
 import { CheckItOnGithubComponent } from './check-it-on-github/check-it-on-github.component'
 import { TypingAreaComponent } from './typing-area/typing-area.component'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
-import { AccordionModule } from 'ngx-bootstrap/accordion'
+import { AccordionModule } from 'ngx-bootstrap/accordion';
+import { LedgerBountiesComponent } from './ledger-bounties/ledger-bounties.component';
+import { LedgerFundingsComponent } from './ledger-fundings/ledger-fundings.component'
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,7 +38,9 @@ import { AccordionModule } from 'ngx-bootstrap/accordion'
     NavbarComponent,
     EmailComponent,
     CheckItOnGithubComponent,
-    TypingAreaComponent
+    TypingAreaComponent,
+    LedgerBountiesComponent,
+    LedgerFundingsComponent
 
   ],
   imports: [

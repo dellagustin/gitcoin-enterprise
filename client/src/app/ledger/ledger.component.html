@@ -1,5 +1,4 @@
 <span *ngIf="entryIdOfInterest===undefined">
-  <div *ngIf="!showUsersFundings && !showUsersBounties">
 
     <button (click)="downloadAsJSON()" type="button" class="btn ourBlueColor">
       <i class="fa fa-wrench" aria-hidden="true" style="padding-right: 1vw;"></i>
@@ -12,40 +11,44 @@
       Download as CSV
       <i class="fa fa-file-excel-o" aria-hidden="true" style="padding-left: 1vw;"></i>
     </button>
-  </div>
-  <table class="table table-striped">
-    <thead class="ourRedColor">
-      <tr>
-        <th>ID</th>
-        <th>Date</th>
-        <th>Amount</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let ledgerEntry of ledgerEntries" (click)="onEntryClicked(ledgerEntry)">
 
-        <td id="taskId-{{ledgerEntry.id}}" *ngIf="ledgerEntry.id===transactionId" class="highlightedTableEntry">
-          ...{{ledgerEntry.id.substr(ledgerEntry.id.length - 4, 4)}}</td>
-        <td id="taskId-{{ledgerEntry.id}}" *ngIf="ledgerEntry.id===transactionId" class="highlightedTableEntry">
-          {{ledgerEntry.date.substr(0, ledgerEntry.date.length -5)}}</td>
-        <td id="taskId-{{ledgerEntry.id}}" *ngIf="ledgerEntry.id===transactionId" class="highlightedTableEntry">{{ledgerEntry.amount}}</td>
+    <table class="table table-striped">
+      <thead class="ourRedColor">
+        <tr>
+          <th>ID</th>
+          <th>Date</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ledgerEntry of ledgerEntries" (click)="onEntryClicked(ledgerEntry)">
+
+          <td id="taskId-{{ledgerEntry.id}}" *ngIf="ledgerEntry.id===transactionId" class="highlightedTableEntry">
+            ...{{ledgerEntry.id.substr(ledgerEntry.id.length - 4, 4)}}</td>
+          <td id="taskId-{{ledgerEntry.id}}" *ngIf="ledgerEntry.id===transactionId" class="highlightedTableEntry">
+            {{ledgerEntry.date.substr(0, ledgerEntry.date.length -5)}}</td>
+          <td id="taskId-{{ledgerEntry.id}}" *ngIf="ledgerEntry.id===transactionId" class="highlightedTableEntry">
+            {{ledgerEntry.amount}}</td>
 
 
-        <td id="taskId-{{ledgerEntry.id}}" *ngIf="ledgerEntry.id!==transactionId">
-          ...{{ledgerEntry.id.substr(ledgerEntry.id.length - 4, 4)}}</td>
-        <td id="taskId-{{ledgerEntry.id}}" *ngIf="ledgerEntry.id!==transactionId">{{ledgerEntry.date.substr(0, ledgerEntry.date.length -5)}}</td>
-        <td id="taskId-{{ledgerEntry.id}}" *ngIf="ledgerEntry.id!==transactionId">{{ledgerEntry.amount}}</td>
-      </tr>
+          <td id="taskId-{{ledgerEntry.id}}" *ngIf="ledgerEntry.id!==transactionId">
+            ...{{ledgerEntry.id.substr(ledgerEntry.id.length - 4, 4)}}</td>
+          <td id="taskId-{{ledgerEntry.id}}" *ngIf="ledgerEntry.id!==transactionId">
+            {{ledgerEntry.date.substr(0, ledgerEntry.date.length -5)}}</td>
+          <td id="taskId-{{ledgerEntry.id}}" *ngIf="ledgerEntry.id!==transactionId">{{ledgerEntry.amount}}</td>
+        </tr>
 
-    </tbody>
-  </table>
+      </tbody>
+    </table>
 
-  <div *ngIf="showTransactionVolume" class="adPad">
-    Transaction Volume <p></p>
-    <h2 class="ourBlueColor">
-      {{getSum()}} EIC
-    </h2>
-  </div>
+    <div class="adPad">
+      Transaction Volume <p></p>
+      <h2 class="ourBlueColor">
+        {{getSum()}} EIC
+      </h2>
+    </div>
+
+
 
 </span>
 

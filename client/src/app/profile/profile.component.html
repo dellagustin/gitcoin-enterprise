@@ -35,7 +35,7 @@
   </h3>
 
   <span>
-    <app-ledger [showUsersFundings]="true" [authenticationData]="authenticationData" [showTransactionVolume]='false'></app-ledger>
+    <app-ledger-fundings [usersFundings]="usersFundings"></app-ledger-fundings>
   </span>
 
 
@@ -46,7 +46,7 @@
     </h3>
 
     <span>
-      <app-ledger [showUsersBounties]="true" [authenticationData]="authenticationData" [showTransactionVolume]='false'></app-ledger>
+      <!-- <app-ledger-bounties [usersFundings]="usersFundings"></app-ledger-bounties> -->
     </span>
 
   </div>

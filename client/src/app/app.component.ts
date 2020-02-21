@@ -3,7 +3,7 @@ import { INavbarData } from './navbar/navbar.interfaces'
 import { ILedgerEntry } from './ledger/ledger.interface'
 import { IAuthenticationData, ITask } from './interfaces'
 import { AuthenticationService } from './authentication-service/authentication.service'
-// import { ActivatedRoute } from '@angular/router'
+import { ActivatedRoute } from '@angular/router'
 
 @Component({
   selector: 'app-root',
@@ -11,41 +11,36 @@ import { AuthenticationService } from './authentication-service/authentication.s
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  public static deferredPrompt
+  public static deferredPrompt: any
 
   public authenticationData: IAuthenticationData
   public sessionWithoutCookies = ''
-  public mode = ''
+  public mode = 'landing'
   public fundedTasks: ITask[] = []
   public ledgerEntries: ILedgerEntry[] = []
   public navBarData: INavbarData = this.getNavBarData()
   public queryParameters: any
   public taskOfInterest: ITask
-  public action
 
   private readonly modesRequiringAuthentication: string[] = ['fund', 'solve', 'profile']
 
-
-  // public constructor(private readonly backendService: BackendService, private route: ActivatedRoute) { }
-  public constructor(private readonly authenticationService: AuthenticationService) { }
+  public constructor(private readonly authenticationService: AuthenticationService, private readonly aR: ActivatedRoute) { }
 
   public ngOnInit() {
     this.considerPWAInstallPrompt()
 
-    try {
-      this.action = document.getElementById('actionID').innerHTML.trim()
-    } catch (error) {
-      console.log(`accessing data from document failed ${error.message}`)
-    }
-
-    if (this.action !== 'actionsForRedirectingConvenientlyAfterLogin') {
-      this.authenticationData = {
-        login: document.getElementById('login').innerHTML.trim(),
-        avatarURL: document.getElementById('avatarURL').innerHTML.trim(),
-        token: document.getElementById('authenticationToken').innerHTML.trim()
-      }
-    }
-    this.mode = (this.action === 'actionsForRedirectingConvenientlyAfterLogin') ? '' : this.action
+    this.aR
+      .queryParamMap
+      .subscribe((result: any) => {
+        if (result.params !== undefined && result.params.actionID !== undefined) {
+          this.mode = result.params.actionID
+          this.authenticationData = {
+            login: result.params.login,
+            avatarURL: result.params.avatarURL,
+            token: result.params.authenticationToken
+          }
+        }
+      })
   }
 
   public fundTask() {
@@ -114,7 +109,7 @@ export class AppComponent implements OnInit {
         {
           isActive: true,
           text: 'Home',
-          href: '',
+          href: 'landing',
         },
         {
           isActive: false,

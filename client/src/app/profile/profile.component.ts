@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core'
 import { BackendService } from '../backend.service'
 import { backendURL } from '../../configurations/configuration'
-import { IAuthenticationData, IFunding } from '../interfaces'
+import { IAuthenticationData, IFunding, IBountiesAndFundings, IBounty } from '../interfaces'
 import { ILedgerEntry } from '../ledger/ledger.interface'
 import { Helper } from '../helper'
 
@@ -18,7 +18,7 @@ export class ProfileComponent implements OnInit {
   public fundingIdOfInterest
   public balance = 0
   public usersFundings: IFunding[] = []
-  public usersBounties: IFunding[] = []
+  public usersBounties: IBounty[] = []
   public ledgerEntries: ILedgerEntry[] = []
   public entryIdOfInterest: ILedgerEntry
 
@@ -30,10 +30,10 @@ export class ProfileComponent implements OnInit {
       .subscribe((result: ILedgerEntry[]) => {
         this.ledgerEntries = result
         this.balance = Helper.getBalanceFromLedgerEntries(this.authenticationData.login, this.ledgerEntries)
-        this.usersFundings = Helper.getFundingsFromLedgerEntries(this.authenticationData.login, this.ledgerEntries)
-        // alert(this.usersFundings.length)
+        const bountiesAndFundings: IBountiesAndFundings = Helper.getFundingsAndBountiesFromLedgerEntries(this.authenticationData.login, this.ledgerEntries)
+        this.usersFundings = bountiesAndFundings.fundings
+        this.usersBounties = bountiesAndFundings.bounties
       })
-    // alert(JSON.stringify(this.authenticationData))
   }
 
   public getLink() {

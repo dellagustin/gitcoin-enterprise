@@ -1,14 +1,15 @@
 import { ILedgerEntry } from './ledger/ledger.interface'
-import { IFunding } from './interfaces'
+import { IFunding, IBountiesAndFundings, IBounty } from './interfaces'
 
 export class Helper {
-  static getFundingsFromLedgerEntries(login: string, ledgerEntries: ILedgerEntry[]): IFunding[] {
+  static getFundingsAndBountiesFromLedgerEntries(login: string, ledgerEntries: ILedgerEntry[]): IBountiesAndFundings {
     const entriesWithAddress = Helper.getLedgerEntriesByAddress(login, ledgerEntries)
     if (entriesWithAddress.length === 0) {
       throw new Error('check getFundingsFromLedgerEntries')
     }
 
     const fundings: IFunding[] = []
+    const bounties: IBounty[] = []
     for (const entry of entriesWithAddress) {
       if (entry.sender === login) {
 
@@ -22,7 +23,7 @@ export class Helper {
       }
     }
 
-    return fundings
+    return {fundings, bounties}
   }
 
   public static getENUMValueAsString(yourENUM: any, value: any): string {

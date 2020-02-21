@@ -58,6 +58,23 @@ button {
   margin-bottom: 4vh;
 }
 
+.table {
+  margin-top: 7vh;
+}
+
+
+a.nostyle:link {
+  text-decoration: inherit;
+  color: inherit;
+  cursor: auto;
+}
+
+a.nostyle:visited {
+  text-decoration: inherit;
+  color: inherit;
+  cursor: auto;
+}
+
 .gce-table {
   margin-top: 2vh;
 }

@@ -1,8 +1,7 @@
 <app-navbar [navBarData]="navBarData" (clickMenuEntry)="onClickMenuEntry($event)"></app-navbar>
 <div class="contentContainer">
 
-
-  <span *ngIf="mode===''">
+  <div *ngIf="mode==='landing'">
     <img src="../assets/collaboration-1.png" alt="" class="titleImage adPad2" style="width: 74%;">
     <!-- https://icons8.com -->
     <h4 class="titleBeneathImage ourRedColor adPad2" style="margin-top:6vh">
@@ -11,9 +10,6 @@
     <h4 class="titleBeneathImage ourBlueColor">
       Delegate the rest.
     </h4>
-  </span>
-
-  <div *ngIf="mode===''">
 
     <button id="solveATask" (click)="solveTask()" type="button" class="btn ourRedColor">
       <i class="fa fa-wrench" aria-hidden="true" style="padding-right: 1vw;"></i>
@@ -26,8 +22,6 @@
       Fund a Task
       <i class="fa fa-usd" aria-hidden="true" style="padding-left: 1vw;"></i>
     </button>
-
-
   </div>
 
   <div *ngIf="mode=='fund'">
@@ -39,7 +33,7 @@
   </div>
 
   <div *ngIf="mode=='downloadLedger'">
-    <app-ledger [authenticationData]="authenticationData" [showTransactionVolume]='true'></app-ledger>
+    <app-ledger [authenticationData]="authenticationData"></app-ledger>
   </div>
 
   <div *ngIf="mode=='solve'">

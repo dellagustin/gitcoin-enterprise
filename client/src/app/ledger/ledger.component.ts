@@ -15,11 +15,11 @@ import { Helper } from '../helper'
 export class LedgerComponent implements OnInit {
 
   @Input() transactionId = ''
-  @Input() public showUsersFundings = false
-  @Input() public showUsersBounties = false
-  @Input() public showTransactionVolume = false
   @Input() public authenticationData: IAuthenticationData
+
   public ledgerEntries: ILedgerEntry[] = []
+  public bounties: ILedgerEntry[] = []
+  public fundings: ILedgerEntry[] = []
   public entryIdOfInterest: ILedgerEntry
 
   public constructor(private readonly backendService: BackendService) { }
@@ -28,13 +28,8 @@ export class LedgerComponent implements OnInit {
     this.backendService.getLedgerEntries(this.authenticationData.token)
       .subscribe((result: ILedgerEntry[]) => {
         this.ledgerEntries = result
-        if (this.showUsersFundings) {
-          this.ledgerEntries = this.ledgerEntries.filter((entry: ILedgerEntry) => entry.sender === this.authenticationData.login)
-        }
-
-        if (this.showUsersBounties) {
-          this.ledgerEntries = this.ledgerEntries.filter((entry: ILedgerEntry) => entry.receiver === this.authenticationData.login)
-        }
+          this.fundings = this.ledgerEntries.filter((entry: ILedgerEntry) => entry.sender === this.authenticationData.login)
+          this.bounties = this.ledgerEntries.filter((entry: ILedgerEntry) => entry.receiver === this.authenticationData.login)
         if (this.transactionId !== '') {
           setTimeout(() => {
             window.scrollTo(0, document.body.scrollHeight)

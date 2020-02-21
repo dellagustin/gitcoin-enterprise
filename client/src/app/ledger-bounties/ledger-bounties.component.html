@@ -1,0 +1,15 @@
+<table class="table table-striped">
+  <thead class="ourRedColor">
+    <tr>
+      <th>Task</th>
+      <th>Bounty</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let entry of usersBounties" (click)="onEntryClicked(entry)">
+      <td>Task1</td>
+      <td>Bounty1</td>
+    </tr>
+
+  </tbody>
+</table>
