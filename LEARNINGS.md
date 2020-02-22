@@ -73,6 +73,11 @@ For starters [this video](https://www.youtube.com/watch?v=CsWoMpK3EtE) seems hel
 
 
 ## Authentication Related
+### OAuth
+regarding the topic of secrets in queryparameters of redirect URL:
+```history.replaceState(null, null, ' ')```  
+after having the variables transferred from query parameters to locals
+
 ### E-Mail based Authentication
 I decided now to leave E-Mail based Authentication behind. GitHub based Authentication seems best in the context of GitCoin Enterprise.
 

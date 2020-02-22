@@ -51,7 +51,7 @@ export class SolveComponent implements OnInit {
       plan: this.solutionApproach
     }
 
-    this.backendService.postApplication(application, this.authenticationData.token)
+    this.backendService.postSolutionApproach(application, this.authenticationData.token)
       .subscribe()
   }
 

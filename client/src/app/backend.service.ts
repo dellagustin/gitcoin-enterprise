@@ -22,12 +22,12 @@ export class BackendService {
     return this.get(`${backendURL}/getLedgerEntries`, token)
   }
 
-  public sendEMail(eMail: IEmail, token: string): any {
-    return this.post(`${backendURL}/sendEMail`, eMail, token)
-  }
+  // public sendEMail(eMail: IEmail, token: string): any {
+  //   return this.post(`${backendURL}/sendEMail`, eMail, token)
+  // }
 
-  public postApplication(application: IApplication, token: string): any {
-    return this.post(`${backendURL}/postApplication`, application, token)
+  public postSolutionApproach(application: IApplication, token: string): any {
+    return this.post(`${backendURL}/postSolutionApproach`, application, token)
   }
 
   public saveFunding(taskAndFunding: ITaskAndFunding, token: string) {
@@ -61,14 +61,16 @@ export class BackendService {
     console.log(`calling to get ${url}`)
     return this.http.get<any>(url, options)
   }
+
   private validateToken(token: string) {
     if (token === null || token === undefined) {
-      alert('Invalid Token.')
+      alert(`Invalid Token: ${token}`)
     }
   }
 
   private post(url: string, body: any, token: string) {
     // const urlWithClient = `${url}?client=${document.URL}`;
+alert('da')
     this.validateToken(token)
     const urlWithClient = url
     console.log(`calling to post to ${urlWithClient}`)

@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core'
 import { INavbarData } from './navbar/navbar.interfaces'
 import { ILedgerEntry } from './ledger/ledger.interface'
 import { IAuthenticationData, ITask } from './interfaces'
-import { AuthenticationService } from './authentication-service/authentication.service'
 import { ActivatedRoute } from '@angular/router'
+import { frontendURL, backendURL } from '../configurations/configuration'
 
 @Component({
   selector: 'app-root',
@@ -21,10 +21,10 @@ export class AppComponent implements OnInit {
   public navBarData: INavbarData = this.getNavBarData()
   public queryParameters: any
   public taskOfInterest: ITask
-
+  private params: any
   private readonly modesRequiringAuthentication: string[] = ['fund', 'solve', 'profile']
 
-  public constructor(private readonly authenticationService: AuthenticationService, private readonly aR: ActivatedRoute) { }
+  public constructor(private readonly aR: ActivatedRoute) { }
 
   public ngOnInit() {
     this.considerPWAInstallPrompt()
@@ -34,10 +34,12 @@ export class AppComponent implements OnInit {
       .subscribe((result: any) => {
         if (result.params !== undefined && result.params.actionID !== undefined) {
           this.mode = result.params.actionID
+          this.params = { ...result.params } // perhaps not necessary
+          history.replaceState(null, null, ' ')
           this.authenticationData = {
-            login: result.params.login,
-            avatarURL: result.params.avatarURL,
-            token: result.params.authenticationToken
+            login: this.params.login,
+            avatarURL: this.params.avatarURL,
+            token: this.params.authenticationToken
           }
         }
       })
@@ -46,7 +48,7 @@ export class AppComponent implements OnInit {
   public fundTask() {
     // alert(this.authenticationData.login)
     if (this.authenticationData === undefined) {
-      this.authenticationService.login('fund')
+      location.assign(`${backendURL}/authentication/login?action=fund`)
     } else {
       this.mode = 'fund'
     }
@@ -55,7 +57,7 @@ export class AppComponent implements OnInit {
   public solveTask() {
     // alert(this.authenticationData.login)
     if (this.authenticationData === undefined) {
-      this.authenticationService.login('solve')
+      location.assign(`${backendURL}/authentication/login?action=solve`)
     } else {
       this.mode = 'solve'
     }
@@ -63,7 +65,7 @@ export class AppComponent implements OnInit {
 
   public onClickMenuEntry(target: string) {
     if (this.modesRequiringAuthentication.indexOf(target) !== -1 && this.authenticationData === undefined) {
-      this.authenticationService.login(target)
+      location.assign(`${backendURL}/authentication/login?action=${target}`)
     } else {
       this.mode = target
       if (this.mode === 'openSource') {

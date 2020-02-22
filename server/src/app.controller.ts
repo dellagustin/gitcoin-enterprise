@@ -45,9 +45,9 @@ export class AppController {
     return this.appService.saveFunding(req.body, req.headers.michaelsfriendskey)
   }
 
-  @Post('/postApplication')
-  applyForSolving(@Req() req: any): Promise<void> {
-    return this.appService.applyForSolving(req.body, req.headers.michaelsfriendskey)
+  @Post('/postSolutionApproach')
+  postSolutionApproach(@Req() req: any): Promise<void> {
+    return this.appService.postSolutionApproach(req.body, req.headers.michaelsfriendskey)
   }
 
 }

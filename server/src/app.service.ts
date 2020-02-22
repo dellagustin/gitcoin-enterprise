@@ -24,7 +24,7 @@ export class AppService {
     return this.authenticationService.getAuthenticationDataFromMainMemory(michaelsfriendskey)
   }
 
-  public async applyForSolving(application: IApplication, userAccessToken: string): Promise<void> {
+  public async postSolutionApproach(application: IApplication, userAccessToken: string): Promise<void> {
     const authenticationData = await this.authenticationService.getAuthenticationDataFromMainMemory(userAccessToken)
     if (authenticationData === undefined) {
       throw new Error('Authentication data not found for this token')
