@@ -1,6 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { ILedgerEntry } from '../ledger/ledger.interface';
-import { IBounty, IBountiesAndFundings } from '../interfaces';
+import { Component, OnInit, Input } from '@angular/core'
+import { IBounty } from '../interfaces'
 
 @Component({
   selector: 'app-ledger-bounties',

@@ -20,7 +20,7 @@ export class AuthenticationController {
         const authenticationData = await this.authenticationService.createAuthenticationDataFromCode(req.query.code, req.query.state)
         // res.redirect(`${config.frontendURL}?login=${authenticationData.login}&avatarURL=${authenticationData.avatarURL}&authenticationToken=${authenticationData.token}`)
         const redirectURL = `${config.frontendURL}?actionID=${this.authenticationService.getActionForAddress(req.connection.remoteAddress)}&login=${authenticationData.login}&authenticationToken=${authenticationData.token}`
-        res.redirect(redirectURL) // I do not like sending tokes in query parameter - hmm: 
+        res.redirect(redirectURL) // I do not like sending tokes in query parameter - hmm:
         //         res.send(fs.read(`${pathToStaticAssets}/i-want-compression-via-route.html`)
         //             .replace('authenticationTokenContent', authenticationData.token)
         //             .replace('actionsForRedirectingConvenientlyAfterLogin', this.authenticationService.getActionForAddress(req.connection.remoteAddress))
