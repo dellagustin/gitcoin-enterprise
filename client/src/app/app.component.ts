@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
   public queryParameters: any
   public taskOfInterest: ITask
   private params: any
-  private readonly modesRequiringAuthentication: string[] = ['fund', 'solve', 'profile']
+  private readonly modesRequiringAuthentication: string[] = ['fund', 'solve', 'profile', 'downloadLedger']
 
   public constructor(private readonly aR: ActivatedRoute) { }
 
