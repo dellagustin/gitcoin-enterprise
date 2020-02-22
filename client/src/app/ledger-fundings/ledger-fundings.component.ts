@@ -40,7 +40,6 @@ export class LedgerFundingsComponent implements OnInit {
     let loginValid = true
     for (const e of this.receivers) {
       if (e.percentage > 0 && e.login === '') {
-        return false
         loginValid = false
       }
     }

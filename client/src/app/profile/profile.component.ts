@@ -57,6 +57,9 @@ export class ProfileComponent implements OnInit {
 
   public clickBountiesAndFundings() {
     this.viewBountiesAndFundings = true
+    setTimeout(() => {
+      window.scrollTo(0, ((document.body.scrollHeight / 2) - 110))
+    }, 100)
   }
 
   public getSum(): number {
