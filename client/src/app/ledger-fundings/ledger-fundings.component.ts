@@ -36,7 +36,7 @@ export class LedgerFundingsComponent implements OnInit {
     }
   }
 
-  public send() {
+  public transferCoins() {
     let loginValid = true
     for (const e of this.receivers) {
       if (e.percentage > 0 && e.login === '') {
@@ -47,7 +47,7 @@ export class LedgerFundingsComponent implements OnInit {
     if (!loginValid) {
       alert(`Why would you give something to empty space?`)
     } else if (this.getSum() !== 100) {
-      alert('You can send this transaction as soon as you distributed 100%')
+      alert('contactYou can send this transaction as soon as you distributed 100%.')
     } else {
       alert('Transaction sent successfully. You can check the latest ledger entries now.')
     }

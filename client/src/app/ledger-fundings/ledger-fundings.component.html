@@ -24,7 +24,7 @@
 <span *ngIf="entryIdOfInterest!==undefined">
 
   <div class="ourBlueColor adPad">
-    Please enter which GitHub User shall receive how much of the {{entryIdOfInterest.amount}} EIC
+    Please enter which GitHub User shall receive how much of the {{entryIdOfInterest.amount}} EIC.
   </div>
 
   <div style="width: 100%; margin-left: auto; margin-right: auto;">
@@ -38,20 +38,20 @@
       </thead>
       <tbody>
         <tr *ngFor="let receiver of receivers">
-          <td><input type="text" [(ngModel)]="receiver.login" style="width: 90%;"></td>
-          <td><input type="text" [(ngModel)]="receiver.percentage" style="width: 90%;"></td>
+          <td><input id="githubUser" type="text" [(ngModel)]="receiver.login" style="width: 90%;"></td>
+          <td><input id="percentage" type="text" [(ngModel)]="receiver.percentage" style="width: 90%;"></td>
         </tr>
       </tbody>
     </table>
-    <button (click)="addReceiver()" class="ourRedColor">
+    <button id="addReceiver" (click)="addReceiver()" class="ourRedColor">
       <i class="fa fa-plus" aria-hidden="true" style="padding-right: 1vw;"></i>
       Add More Receivers
       <i class="fa fa-plus" aria-hidden="true" style="padding-left: 1vw;"></i>
     </button>
-    <button (click)="send()" class="ourBlueColor">
-<i class="fa fa-usd" aria-hidden="true" style="padding-right: 1vw;"></i>
-Transfer Coins
-<i class="fa fa-usd" aria-hidden="true" style="padding-left: 1vw;"></i>
-</button>
+    <button id="transferCoins" (click)="transferCoins()" class="ourBlueColor">
+      <i class="fa fa-usd" aria-hidden="true" style="padding-right: 1vw;"></i>
+      Transfer Coins
+      <i class="fa fa-usd" aria-hidden="true" style="padding-left: 1vw;"></i>
+    </button>
   </div>
 </span>

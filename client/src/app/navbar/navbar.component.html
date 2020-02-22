@@ -7,7 +7,7 @@
       {{navBarData.appTitle}}</a>
   </span>
   <span *ngFor="let item of navBarData.menuEntries">
-    <a id="{{item.href}}" style="font-size: 21px" class="hide" [ngClass]="{active: item.isActive}"
+    <a id="{{item.href}}" style="font-size: 20.6px" class="hide" [ngClass]="{active: item.isActive}"
       (click)="clickEntry(item.href)">{{item.text}}</a>
   </span>
   <a class="icon" (click)="myFunction()" style="font-size:24px">

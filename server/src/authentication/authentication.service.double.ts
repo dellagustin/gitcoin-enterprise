@@ -55,9 +55,14 @@ export class AuthenticationServiceDouble {
     public getActionForAddress(remoteAddress: any): any {
         const entry = this.actionsForRedirectingConvenientlyAfterLogin.filter((e) => e.ipAddress === remoteAddress)[0]
         this.lg.log(ELogLevel.Info, `getting action ${entry.action} for ${remoteAddress}`)
-        if (entry === undefined) {
+        const index = this.actionsForRedirectingConvenientlyAfterLogin.indexOf(entry)
+        this.lg.log(ELogLevel.Info, `there are: ${this.actionsForRedirectingConvenientlyAfterLogin.length} entries`)
+
+        if (index === -1) {
             return ''
         } else {
+            this.lg.log(ELogLevel.Info, `deleting action of IP at index: ${index}`)
+            this.actionsForRedirectingConvenientlyAfterLogin.splice(index, 1) // no need to store this any longer
             return entry.action
         }
     }

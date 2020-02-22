@@ -9,7 +9,7 @@ exports.config = {
   output: "./output",
   helpers: {
     Puppeteer: {
-      url: "http://localhost:3001",
+      url: "http://localhost:4200",
       show: false
     }
   },

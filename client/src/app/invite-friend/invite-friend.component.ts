@@ -65,6 +65,6 @@ export class InviteFriendComponent implements OnInit {
     document.body.removeChild(selBox)
 
     // alert(NavbarComponent.operatingSystem);
-    alert('Link copied to clipboard')
+    alert('Invitationlink copied to clipboard')
   }
 }
