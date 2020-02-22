@@ -70,7 +70,6 @@ export class BackendService {
 
   private post(url: string, body: any, token: string) {
     // const urlWithClient = `${url}?client=${document.URL}`;
-alert('da')
     this.validateToken(token)
     const urlWithClient = url
     console.log(`calling to post to ${urlWithClient}`)

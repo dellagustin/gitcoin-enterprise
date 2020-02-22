@@ -60,6 +60,7 @@ export class AuthenticationService {
             return ''
         } else {
             const index = this.actionsForRedirectingConvenientlyAfterLogin.indexOf(entry)
+            this.lg.log(ELogLevel.Info, `deleting action of IP at index: ${index}`)
             this.actionsForRedirectingConvenientlyAfterLogin.splice(index, 1) // no need to store this any longer
             return entry.action
         }
