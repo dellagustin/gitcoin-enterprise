@@ -22,4 +22,10 @@ export class LedgerBountiesComponent implements OnInit {
     this.entryIdOfInterest = entry
     window.scrollTo(0, 0)
   }
+
+  public getIt(taskLink: string) {
+    const array = taskLink.split('/')
+    return `${array[4]}/${array[6]}`
+  }
+
 }

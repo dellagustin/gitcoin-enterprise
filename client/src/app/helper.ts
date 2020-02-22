@@ -10,20 +10,85 @@ export class Helper {
 
     const fundings: IFunding[] = []
     const bounties: IBounty[] = []
+    const uniqueTaskLinksOfBounties: string[] = []
+    const uniqueTaskLinksOfFundings: string[] = []
+
+
     for (const entry of entriesWithAddress) {
       if (entry.sender === login) {
-
         const funding: IFunding = {
           id: entry.id,
           funderId: entry.sender,
           taskLink: entry.receiver,
           amount: entry.amount
         }
+        if (uniqueTaskLinksOfFundings.indexOf(funding.taskLink) === -1) {
+          uniqueTaskLinksOfFundings.push(funding.taskLink)
+        }
+
         fundings.push(funding)
+      } else if (entry.receiver === login) {
+        const bounty: IBounty = {
+          bountyHunterId: entry.receiver,
+          taskLink: entry.sender,
+          amount: entry.amount
+        }
+        if (uniqueTaskLinksOfBounties.indexOf(bounty.taskLink) === -1) {
+          uniqueTaskLinksOfBounties.push(bounty.taskLink)
+        }
+        bounties.push(bounty)
+      }
+
+    }
+
+    // alert(fundings.length)
+    // alert(bounties.length)
+    // alert(uniqueTaskLinksOfFundings)
+    // alert(uniqueTaskLinksOfBounties)
+    const consolidatedFundings: IFunding[] = []
+    const consolidatedBounties: IBounty[] = []
+
+    for (const uniqueTaskLink of uniqueTaskLinksOfFundings) {
+
+      const fundingsForCurrentTaskLink: IFunding[] = fundings.filter((e: IFunding) => e.taskLink === uniqueTaskLink)
+      let fundingForUniqueTaskLink
+      if (fundingsForCurrentTaskLink.length > 0) {
+        fundingForUniqueTaskLink = fundingsForCurrentTaskLink.reduce((previousValue: any, currentValue: any) => {
+          const reduced = {
+            id: '',
+            funderId: '',
+            taskLink: currentValue.taskLink,
+            amount: previousValue.amount + currentValue.amount
+          }
+
+          return reduced
+        })
+
+        consolidatedFundings.push(fundingForUniqueTaskLink)
       }
     }
 
-    return {fundings, bounties}
+    for (const uniqueTaskLink of uniqueTaskLinksOfBounties) {
+      const bountiesForCurrentTaskLink: IBounty[] = bounties.filter((e: IBounty) => e.taskLink === uniqueTaskLink)
+      let bountyForUniqueTaskLink
+      if (bountiesForCurrentTaskLink.length > 0) {
+        bountyForUniqueTaskLink = bountiesForCurrentTaskLink.reduce((previousValue: any, currentValue: any) => {
+          const reduced = {
+            bountyHunterId: currentValue.receiver,
+            taskLink: currentValue.taskLink,
+            amount: previousValue.amount + currentValue.amount
+          }
+
+          return reduced
+        })
+
+        consolidatedBounties.push(bountyForUniqueTaskLink)
+      }
+    }
+
+    // alert(consolidatedFundings.length)
+    // alert(consolidatedBounties.length)
+    return { fundings: consolidatedFundings, bounties: consolidatedBounties }
   }
 
   public static getENUMValueAsString(yourENUM: any, value: any): string {

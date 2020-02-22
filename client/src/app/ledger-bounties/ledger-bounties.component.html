@@ -7,8 +7,9 @@
   </thead>
   <tbody>
     <tr *ngFor="let entry of usersBounties" (click)="onEntryClicked(entry)">
-      <td>Task1</td>
-      <td>Bounty1</td>
+      <td>{{entry.taskLink}}</td>
+      <td>{{entry.amount}}</td>
+
     </tr>
 
   </tbody>

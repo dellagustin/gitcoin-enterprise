@@ -53,8 +53,8 @@ export interface IEmail {
 }
 
 export interface IBountiesAndFundings {
-fundings: IFunding[]
-bounties: IBounty[]
+  fundings: IFunding[]
+  bounties: IBounty[]
 }
 
 export interface IBounty {
@@ -63,6 +63,10 @@ export interface IBounty {
   amount: number
 }
 
+export interface IReceiver {
+  login: string
+  percentage: number
+}
 export interface IFunding {
   id: string
   funderId: string

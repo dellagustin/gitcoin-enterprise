@@ -1,15 +1,49 @@
-<table class="table table-striped">
-  <thead class="ourRedColor">
-    <tr>
-      <th>Task</th>
-      <th>Funding</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let entry of usersFundings" (click)="onEntryClicked(entry)">
-      <td>Task1</td>
-      <td>Funding1</td>
-    </tr>
+<span *ngIf="entryIdOfInterest===undefined">
 
-  </tbody>
-</table>
+  <div class="ourBlueColor adPad2">
+    Click an entry to trigger a payout
+  </div>
+
+  <table class="table table-striped">
+    <thead class="ourRedColor">
+      <tr>
+        <th>Task</th>
+        <th>Funding</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let entry of usersFundings" (click)="onEntryClicked(entry)">
+        <td>{{getIt(entry.taskLink)}}</td>
+        <td>{{entry.amount}}</td>
+      </tr>
+    </tbody>
+  </table>
+</span>
+
+
+<span *ngIf="entryIdOfInterest!==undefined">
+
+  <div class="ourBlueColor adPad">
+    Please enter which GitHub User shall receive how much of the {{entryIdOfInterest.amount}} EIC
+  </div>
+
+  <div style="width: 100%; margin-left: auto; margin-right: auto;">
+
+    <table class="table table-striped">
+      <thead class="ourRedColor">
+        <tr>
+          <th>GitHub User</th>
+          <th>Percentage</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let receiver of receivers">
+          <td><input type="text" [(ngModel)]="receiver.login" style="width: 90%;"></td>
+          <td><input type="text" [(ngModel)]="receiver.percentage" style="width: 90%;"></td>
+        </tr>
+      </tbody>
+    </table>
+      <button (click)="addReceiver()" class="ourRedColor">Add More Receivers</button>
+      <button (click)="send()" class="ourBlueColor">Send</button>
+  </div>
+</span>
