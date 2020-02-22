@@ -5,6 +5,7 @@ import { TaskHelper } from '../task-card/task-helper'
 import { IFunding, ITaskAndFunding, IAuthenticationData, ETaskType, ITask } from '../interfaces'
 import { ILedgerEntry } from '../ledger/ledger.interface'
 import { Helper } from '../helper'
+import { gitHubURL } from '../../configurations/configuration'
 
 @Component({
   selector: 'app-fund',
@@ -15,7 +16,7 @@ export class FundComponent implements OnInit {
 
   @Input() public authenticationData: IAuthenticationData
   public radioModel: any
-  public taskLink = 'https://github.com/gitcoin-enterprise/gitcoin-enterprise/issues/16'
+  public taskLink = `${gitHubURL}/gitcoin-enterprise/gitcoin-enterprise/issues/16`
   public task: ITask = TaskHelper.getInitialTask()
   public fundingCompleted = false
   public minimumRange = 1
@@ -40,7 +41,7 @@ export class FundComponent implements OnInit {
   }
 
   public getInfoFromTaskLink() {
-    const sourceString = this.taskLink.split('https://github.com/')[1]
+    const sourceString = this.taskLink.split(`${gitHubURL}/`)[1]
     const org = sourceString.split('/')[0]
     const repo = sourceString.split('/')[1].split('/')[0]
     const issueId = sourceString.split('/')[3]

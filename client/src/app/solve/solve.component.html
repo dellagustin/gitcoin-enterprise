@@ -1,6 +1,6 @@
 <div class="taskExplorer">
 
-  <div *ngIf="!applicationCompleted">
+  <div *ngIf="!userWantsToStartSolving">
 
 
     <span *ngIf="taskOfInterest===undefined">
@@ -52,8 +52,8 @@
       <div *ngIf="solutionApproach.length>20" style="max-width: 87%; margin-left: auto; margin-right: auto;">
         <app-typing-area [messages]=messagesToMotivateANicePlan (typing)=onTyping($event)></app-typing-area>
       </div>
-      <div *ngIf="taskOfInterest.status===1 && !userWantsToApply && solutionApproach!==''">
-        <button id="startsolvingthis" (click)="applyForSolving()" type="button" class="btn ourBlueColor">
+      <div *ngIf="taskOfInterest.status===1 && !userWantsToStartSolving && solutionApproach!==''">
+        <button id="startsolvingthis" (click)="solve()" type="button" class="btn ourBlueColor">
           <i class="fa fa-wrench" aria-hidden="true" style="padding-right: 1vw;"></i>
           Start Solving This
           <i class="fa fa-wrench" aria-hidden="true" style="padding-left: 1vw;"></i>
@@ -65,7 +65,7 @@
     </span>
 
   </div>
-  <div *ngIf="applicationCompleted">
+  <div *ngIf="userWantsToStartSolving">
 
     <img src="../../assets/avatar-1.png" alt="" width="70%">
     <!-- <h4 class="titleBeneathImage">

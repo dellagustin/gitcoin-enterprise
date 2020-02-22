@@ -60,21 +60,6 @@ export class AppService {
 
   }
 
-  public getDefaultTaskForDemo(): ITask {
-    return {
-
-      taskType: ETaskType.GitHubIssue,
-      title: 'Just a Demo Task',
-      description: 'Just a Demo Description',
-      funding: 0,
-      status: ETaskStatus.created,
-      funderRatedWith: 5,
-      solutionProviderRatedWith: 5,
-      link: 'https://github.com/gitcoin-enterprise/gitcoin-enterprise/issues/16',
-      dueDate: '2020-01-08',
-    }
-  }
-
   public getLedgerEntries(login: string): ILedgerEntry[] {
 
     return this.ledgerConnector.getLedgerEntries(login)

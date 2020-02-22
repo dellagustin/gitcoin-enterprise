@@ -4,6 +4,7 @@ import { backendURL } from '../../configurations/configuration'
 import { IAuthenticationData, IFunding, IBountiesAndFundings, IBounty } from '../interfaces'
 import { ILedgerEntry } from '../ledger/ledger.interface'
 import { Helper } from '../helper'
+import { gitHubURL } from '../../configurations/configuration-prod'
 
 @Component({
   selector: 'app-profile',
@@ -13,9 +14,9 @@ import { Helper } from '../helper'
 export class ProfileComponent implements OnInit {
 
   @Input() public authenticationData: IAuthenticationData
-  public justKidding = true
+  // public justKidding = true
   public viewBountiesAndFundings = false
-  public fundingIdOfInterest
+  public fundingIdOfInterest: IFunding
   public balance = 0
   public usersFundings: IFunding[] = []
   public usersBounties: IBounty[] = []
@@ -25,7 +26,7 @@ export class ProfileComponent implements OnInit {
   public constructor(private readonly backendService: BackendService) { }
 
   public ngOnInit(): void {
-    setTimeout(() => this.justKidding = false, 3000)
+    // setTimeout(() => this.justKidding = false, 3000)
     this.backendService.getLedgerEntries(this.authenticationData.token)
       .subscribe((result: ILedgerEntry[]) => {
         this.ledgerEntries = result
@@ -37,7 +38,7 @@ export class ProfileComponent implements OnInit {
   }
 
   public getLink() {
-    return `https://github.com/${this.authenticationData.login}`
+    return `${gitHubURL}/${this.authenticationData.login}`
   }
 
 

@@ -21,9 +21,8 @@ export class SolveComponent implements OnInit {
   public countDown = 8
   public solutionApproach = ''
   public sortingDirectionDown = false
-  public userWantsToApply = false
-  public applicationCompleted = false
-  // public user: IUser = ProfileComponent.currentUser
+  public userWantsToStartSolving = false
+    // public user: IUser = ProfileComponent.currentUser
 
   public constructor(private readonly backendService: BackendService) { }
 
@@ -45,13 +44,8 @@ export class SolveComponent implements OnInit {
     //   })
   }
 
-  public applyForSolving(): void {
-    this.userWantsToApply = true
-    this.apply()
-  }
-
-  public apply(): void {
-    this.applicationCompleted = true
+  public solve(): void {
+    this.userWantsToStartSolving = true
     const application: IApplication = {
       taskLink: this.taskOfInterest.link,
       plan: this.solutionApproach
@@ -84,7 +78,7 @@ export class SolveComponent implements OnInit {
   }
 
   public onTyping(event: any) {
-    if ((!event) && this.userWantsToApply) {
+    if ((!event) && this.userWantsToStartSolving) {
 
       const intervalId = setInterval(() => {
         this.countDown--
@@ -148,7 +142,7 @@ export class SolveComponent implements OnInit {
       // { fromChatBot: true, text: ' \n' },
       // { fromChatBot: true, text: '' },
       // { fromChatBot: true, text: 'I commented the issue and included with your plan.' },
-      { fromChatBot: true, text: 'As soon as you solved this task visit your profile and claim your bounty :)' },
+      { fromChatBot: true, text: 'As soon as you solved this task post a comment on the issue claiming your bounty :)' },
       { fromChatBot: true, text: 'I wish you good luck and will forward you to the issue in about 7 seconds.' }]
   }
 }
