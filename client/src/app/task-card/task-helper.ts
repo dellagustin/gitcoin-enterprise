@@ -4,7 +4,7 @@ import { ETaskType, ITask } from '../interfaces'
 export class TaskHelper {
   public static getInitialTask(): ITask {
     return {
-      link: 'https://github.com/gitcoin-enterprise/gitcoin-enterprise/issues/16',
+      link: 'https://github.com/gitcoin-enterprise/gitcoin-enterprise/issues/24',
       taskType: ETaskType.GitHubIssue,
       funding: 0,
       title: '',

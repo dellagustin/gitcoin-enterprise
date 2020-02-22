@@ -12,7 +12,7 @@ import { PersistencyService } from './persistency/persistency.service'
 
 @Injectable()
 export class AppService {
-  getLoginFromToken(token: string) {
+  public getLoginFromToken(token: string) {
     return this.getAuthenticationData(token).login
   }
 
@@ -45,23 +45,11 @@ export class AppService {
     this.lg.log(ELogLevel.Info, `User: ${userId} authorized installation.`)
   }
 
-  // public handleOAuthCallbackRequest(): void {
-  //   const calbackRequestData = 'calbackRequestData'
-  //   this.lg.log(ELogLevel.Info, `OAuthCallBackRequest Received: ${calbackRequestData}`)
-  // }
-
-  // public async ghAppWebHookURL(): Promise<void> {
-  //   const trigger = 'tbd'
-  //   await this.lg.log(ELogLevel.Info, `Webhook URL: ${trigger}`)
-  // }
-
   public getFundedTasks(): ITask[] {
     return this.persistencyService.getFundedTasks()
-
   }
 
   public getLedgerEntries(login: string): ILedgerEntry[] {
-
     return this.ledgerConnector.getLedgerEntries(login)
   }
 
@@ -92,6 +80,7 @@ export class AppService {
     this.persistencyService.saveFundedTasks(tasks)
 
     this.gitHubIntegration.postCommentAboutSuccessfullFunding(taskAndFunding.task.link, taskAndFunding.funding)
+    this.lg.log(ELogLevel.Notification, `I received a funding of ${taskAndFunding.funding.amount} EIC for the following task: ${task.link}`)
     return newLedgerEntry
 
   }

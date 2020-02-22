@@ -1,6 +1,4 @@
 import { Injectable } from '@nestjs/common'
-import * as fs from 'fs-sync'
-import * as path from 'path'
 import { config } from '../app.module'
 import { SupportNotifierService } from '../support-notifier/support-notifier.service'
 import { ELogLevel, ILogger } from './logger-interface'
@@ -19,11 +17,7 @@ export class LoggerService implements ILogger {
             console.log(message) // the logger is the only one who is allowed to log to the console :)
         }
 
-        if (messageType === ELogLevel.Error) {
-
-            // const errorFileContent = this.persistencyService.getErrors()
-            // errorFileContent.push({ message })
-            // this.persistencyService.saveErrors(errorFileContent)
+        if (messageType === ELogLevel.Error || messageType === ELogLevel.Notification) {
 
             if (this.notifierService !== undefined) {
                 await this.notifierService.sendMessageToSupportChannel(message)

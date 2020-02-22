@@ -1,5 +1,6 @@
 
 export enum ELogLevel {
+    Notification = 0,
     Error = 1,
     Warning = 2,
     Info = 3,

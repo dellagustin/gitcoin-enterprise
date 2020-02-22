@@ -16,7 +16,7 @@ export class FundComponent implements OnInit {
 
   @Input() public authenticationData: IAuthenticationData
   public radioModel: any
-  public taskLink = `${gitHubURL}/gitcoin-enterprise/gitcoin-enterprise/issues/16`
+  public taskLink = `${gitHubURL}/gitcoin-enterprise/gitcoin-enterprise/issues/24`
   public task: ITask = TaskHelper.getInitialTask()
   public fundingCompleted = false
   public minimumRange = 1
