@@ -9,16 +9,16 @@ export class LedgerConnector implements ILedgerConnector {
 
     public constructor(private readonly lg: LoggerService, private readonly persistencyService: PersistencyService) { }
 
-    public getLedgerEntries(login: string): ILedgerEntry[] {
+    public getLedgerEntries(): ILedgerEntry[] {
 
-        const entriesWithAddress = this.getLedgerEntriesWithAddress(login)
-        if (entriesWithAddress.length === 0) { // add start amount of 200 EIC to Ledger
-            const miningEntry: ILedgerEntry = this.getMiningEntryForUser(login)
-            const ledgerEntries: ILedgerEntry[] = this.persistencyService.getLedgerEntries()
-            ledgerEntries.push(miningEntry)
-            this.lg.log(ELogLevel.Info, `saving enhanced ledger entries after mining for ${login}`)
-            this.persistencyService.saveLedgerEntries(ledgerEntries)
-        }
+        // const entriesWithAddress = this.getLedgerEntriesWithAddress(login)
+        // if (entriesWithAddress.length === 0) { // add start amount of 200 EIC to Ledger
+        //     const miningEntry: ILedgerEntry = this.getMiningEntryForUser(login)
+        //     const ledgerEntries: ILedgerEntry[] = this.persistencyService.getLedgerEntries()
+        //     ledgerEntries.push(miningEntry)
+        //     this.lg.log(ELogLevel.Info, `saving enhanced ledger entries after mining for ${login}`)
+        //     this.persistencyService.saveLedgerEntries(ledgerEntries)
+        // }
 
         return this.persistencyService.getLedgerEntries()
     }
@@ -27,7 +27,7 @@ export class LedgerConnector implements ILedgerConnector {
         this.persistencyService.saveLedgerEntries(ledgerEntries)
     }
 
-    private getMiningEntryForUser(login: string): ILedgerEntry {
+    public addMiningEntryForUser(login: string): ILedgerEntry {
         const entry: ILedgerEntry = {
             id: `tr-${Date.now().toString()}`,
             date: new Date().toISOString(),
@@ -35,6 +35,9 @@ export class LedgerConnector implements ILedgerConnector {
             sender: 'The Miner',
             receiver: login,
         }
+        const content = this.persistencyService.getLedgerEntries()
+        content.push(entry)
+        this.persistencyService.saveLedgerEntries(content)
         return entry
     }
 

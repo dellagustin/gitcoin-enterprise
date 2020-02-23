@@ -6,6 +6,7 @@ import * as uuidv1 from 'uuid/v1'
 import { config } from '../app.module'
 import { GithubIntegrationService } from '../github-integration/github-integration.service'
 import { PersistencyService } from '../persistency/persistency.service'
+import { LedgerConnector } from '../ledger-connector/ledger-connector-file-system.service'
 const axios = require('axios')
 
 @Injectable()
@@ -13,7 +14,7 @@ export class AuthenticationService {
     private actionsForRedirectingConvenientlyAfterLogin = []
     private validStates: string[] = []
 
-    public constructor(private readonly lg: LoggerService, private readonly gitHubIntegration: GithubIntegrationService, private readonly persistencyService: PersistencyService) {
+    public constructor(private readonly lg: LoggerService, private readonly gitHubIntegration: GithubIntegrationService, private readonly persistencyService: PersistencyService, private readonly ledgerConnector: LedgerConnector) {
         setInterval(() => {
             this.actionsForRedirectingConvenientlyAfterLogin = [] // initializing after 11 days
             this.validStates = []
@@ -31,7 +32,7 @@ export class AuthenticationService {
 
     public getAuthenticationDataFromMainMemory(userAccessToken: string): IAuthenticationData {
         const allAuthenticationData = this.persistencyService.getAuthenticationData()
-        this.lg.log(ELogLevel.Info, `checking for token: ${userAccessToken} within ${JSON.stringify(allAuthenticationData)}`)
+        this.lg.log(ELogLevel.Debug, `checking for token: ${userAccessToken} within ${JSON.stringify(allAuthenticationData)}`)
         return allAuthenticationData.filter((aD: IAuthenticationData) => aD.token === userAccessToken)[0]
     }
 
@@ -55,13 +56,13 @@ export class AuthenticationService {
 
     public getActionForAddress(remoteAddress: any): any {
         const entry = this.actionsForRedirectingConvenientlyAfterLogin.filter((e) => e.ipAddress === remoteAddress)[0]
-        this.lg.log(ELogLevel.Info, `getting action ${entry.action} for ${remoteAddress}`)
+        this.lg.log(ELogLevel.Debug, `getting action ${entry.action} for ${remoteAddress}`)
         const index = this.actionsForRedirectingConvenientlyAfterLogin.indexOf(entry)
-        this.lg.log(ELogLevel.Info, `there are: ${this.actionsForRedirectingConvenientlyAfterLogin.length} entries`)
+        this.lg.log(ELogLevel.Debug, `there are: ${this.actionsForRedirectingConvenientlyAfterLogin.length} entries`)
         if (index === -1) {
             return ''
         } else {
-            this.lg.log(ELogLevel.Info, `deleting action of IP at index: ${index}`)
+            this.lg.log(ELogLevel.Debug, `deleting action of IP at index: ${index}`)
             this.actionsForRedirectingConvenientlyAfterLogin.splice(index, 1) // no need to store this any longer
             return entry.action
         }
@@ -73,14 +74,6 @@ export class AuthenticationService {
             action,
         }
         this.actionsForRedirectingConvenientlyAfterLogin.push(addressWantsTo)
-    }
-
-    private getTestAuthenticationData(michaelsfriendskey: any): IAuthenticationData {
-        return {
-            avatarURL: 'https://avatars1.githubusercontent.com/u/43786652?v=4',
-            login: 'michael-spengler',
-            token: michaelsfriendskey,
-        }
     }
 
     private async getTokenFromCode(code: string, state: string) {
@@ -102,10 +95,9 @@ export class AuthenticationService {
 
     private async handleNewToken(michaelsfriendskey: any): Promise<IAuthenticationData> {
         let authenticationData: IAuthenticationData
-        this.lg.log(ELogLevel.Info, 'handling new token')
+        this.lg.log(ELogLevel.Debug, 'handling new token')
         authenticationData = await this.gitHubIntegration.getAuthenticationDataFromGitHub(michaelsfriendskey)
         this.addAuthenticationData(authenticationData)
-        this.lg.log(ELogLevel.Info, `I have created the following Authentication Data: ${JSON.stringify(authenticationData)}`)
 
         return authenticationData
     }
@@ -113,12 +105,14 @@ export class AuthenticationService {
     private addAuthenticationData(aD: IAuthenticationData): void {
         const allAuthenticationData = this.persistencyService.getAuthenticationData()
         if (allAuthenticationData.filter((entry: IAuthenticationData) => entry.token === aD.token)[0] !== undefined) {
-            this.lg.log(ELogLevel.Warning, 'Authentication Data is already in Store')
+            this.lg.log(ELogLevel.Debug, 'Authentication Data is already in Store')
         } else {
             this.lg.log(ELogLevel.Info, 'Authentication Data added to Store')
 
             allAuthenticationData.push(aD)
             this.persistencyService.saveAuthenticationData(allAuthenticationData)
+
+            this.ledgerConnector.addMiningEntryForUser(aD.login)
         }
     }
 

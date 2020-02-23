@@ -6,6 +6,7 @@ import { SupportNotifierService } from '../support-notifier/support-notifier.ser
 import { AuthenticationService } from './authentication.service'
 import { GithubIntegrationService } from '../github-integration/github-integration.service'
 import { PersistencyService } from '../persistency/persistency.service'
+import { LedgerConnector } from '../ledger-connector/ledger-connector-file-system.service'
 
 export class AuthenticationMiddleware implements NestMiddleware {
 
@@ -15,13 +16,13 @@ export class AuthenticationMiddleware implements NestMiddleware {
   public constructor() {
     const persistencyService = new PersistencyService()
     this.lg = new LoggerService(new SupportNotifierService(), persistencyService)
-    this.authenticationService = new AuthenticationService(this.lg, new GithubIntegrationService(this.lg), persistencyService)
+    this.authenticationService = new AuthenticationService(this.lg, new GithubIntegrationService(this.lg), persistencyService, new LedgerConnector(this.lg, persistencyService))
   }
 
   public async use(req: any, res: Response, next: any): Promise<void> {
     // tslint:disable-next-line: no-console
     const requestURL = req.protocol + '://' + req.get('host') + req.originalUrl
-    this.lg.log(ELogLevel.Info, `middleware executed for ${requestURL}`)
+    this.lg.log(ELogLevel.Debug, `middleware executed for ${requestURL}`)
     if (this.authenticationService.isUserAuthenticated(req.headers.michaelsfriendskey)) {
       next()
     } else {

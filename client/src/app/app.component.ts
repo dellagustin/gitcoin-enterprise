@@ -106,8 +106,11 @@ export class AppComponent implements OnInit {
 
   private considerPWAInstallPrompt() {
     window.addEventListener('beforeinstallprompt', (event) => {
+      console.log('beforeinstallprompt Event fired')
       event.preventDefault()
       AppComponent.deferredPrompt = event
+
+      return false // don't know if this is needed
     })
   }
 

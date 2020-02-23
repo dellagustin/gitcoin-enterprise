@@ -4,6 +4,7 @@ export enum ELogLevel {
     Error = 1,
     Warning = 2,
     Info = 3,
+    Debug = 4,
 }
 
 export interface ILogger {

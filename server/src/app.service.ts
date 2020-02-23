@@ -49,8 +49,8 @@ export class AppService {
     return this.persistencyService.getFundedTasks()
   }
 
-  public getLedgerEntries(login: string): ILedgerEntry[] {
-    return this.ledgerConnector.getLedgerEntries(login)
+  public getLedgerEntries(): ILedgerEntry[] {
+    return this.ledgerConnector.getLedgerEntries()
   }
 
   public async saveFunding(taskAndFunding: ITaskAndFunding, userAccessToken: string): Promise<ILedgerEntry> {
@@ -93,25 +93,7 @@ export class AppService {
       throw new Error(`I could not find authentication Data for this token: ${userAccessToken}`)
     }
 
-    const newLedgerEntries: ILedgerEntry[] = []
-    // const newLedgerEntries: ILedgerEntry[] = this.createLedgerEntries(undefined, receivers, authenticationData)
-
-    // const tasks = this.persistencyService.getFundedTasks()
-    // const existingTask = tasks.filter((entry: ITask) => entry.link === taskAndFunding.task.link)[0]
-
-    // let task: ITask
-    // if (existingTask === undefined) {
-    //   task = taskAndFunding.task
-    // } else {
-    //   task = existingTask
-    //   task.funding = task.funding + taskAndFunding.funding.amount
-    //   const indexOfExistingTasks = tasks.indexOf(existingTask)
-    //   tasks.splice(indexOfExistingTasks, 1)
-    // }
-
-    // tasks.push(task)
-
-    //    this.persistencyService.saveFundedTasks(tasks)
+    const newLedgerEntries: ILedgerEntry[] = this.createLedgerEntriesFromBountyPayment(receivers)
 
     // this.gitHubIntegration.postCommentAboutSuccessfullTransfer(taskAndFunding.task.link, taskAndFunding.funding)
     // this.lg.log(ELogLevel.Notification, `I received a funding of ${taskAndFunding.funding.amount} EIC for the following task: ${task.link}`)
@@ -120,7 +102,7 @@ export class AppService {
   }
 
   private createLedgerEntryFromFunding(funding: IFunding): ILedgerEntry {
-    const entries: ILedgerEntry[] = this.ledgerConnector.getLedgerEntries(funding.funderId)
+    const entries: ILedgerEntry[] = this.ledgerConnector.getLedgerEntries()
     let entry: ILedgerEntry
     entry = {
       id: `tr-${Date.now().toString()}`,
@@ -135,6 +117,26 @@ export class AppService {
     this.ledgerConnector.saveLedgerEntries(entries)
 
     return entry
+  }
+
+  private createLedgerEntriesFromBountyPayment(receivers: IBountyReceiver[]): ILedgerEntry[] {
+    const entries: ILedgerEntry[] = this.ledgerConnector.getLedgerEntries()
+    let entry: ILedgerEntry
+    for (const receiver of receivers) {
+      entry = {
+        id: `tr-${Date.now().toString()}`,
+        date: new Date().toISOString(),
+        amount: receiver.amount,
+        sender: receiver.bountyForTaskLink,
+        receiver: receiver.login
+      }
+    }
+
+    entries.push(entry)
+
+    this.ledgerConnector.saveLedgerEntries(entries)
+
+    return entries
   }
 
 }

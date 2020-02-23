@@ -7,26 +7,34 @@ import { ELogLevel } from '../logger/logger-interface'
 
 @Injectable()
 export class PersistencyService {
+    private static numberOfLedgerEntries: number
     private operationalDataPath = path.join(__dirname, '../../operational-data')
     private ledgerEntriesFileId = `${this.operationalDataPath}/ledger-entries.json`
     private authenticationDataFileId = `${this.operationalDataPath}/authentication-data.json`
     private fundedTasksFileId = `${this.operationalDataPath}/funded-tasks.json`
     private errorsFileID = path.join(__dirname, '../errors', 'errors.json')
-
     private templateOperationalDataPath = path.join(__dirname, '../../operational-data-template')
 
     public getLedgerEntries(): ILedgerEntry[] {
+        let ledgerEntries: ILedgerEntry[]
         try {
-            return fs.readJSON(this.ledgerEntriesFileId)
+            ledgerEntries = fs.readJSON(this.ledgerEntriesFileId)
         } catch (error) {
             fs.copy(this.templateOperationalDataPath, this.operationalDataPath)
 
-            return fs.readJSON(this.ledgerEntriesFileId)
+            ledgerEntries = fs.readJSON(this.ledgerEntriesFileId)
         }
+
+        PersistencyService.numberOfLedgerEntries = ledgerEntries.length
+        return ledgerEntries
     }
 
     public saveLedgerEntries(ledgerEntries: ILedgerEntry[]): void {
-        return fs.write(this.ledgerEntriesFileId, JSON.stringify(ledgerEntries))
+        if (ledgerEntries.length <= PersistencyService.numberOfLedgerEntries) {
+            throw new Error('Someone tried to make fun of my ledger :)')
+        } else {
+            return fs.write(this.ledgerEntriesFileId, JSON.stringify(ledgerEntries))
+        }
     }
 
     public getAuthenticationData(): IAuthenticationData[] {
