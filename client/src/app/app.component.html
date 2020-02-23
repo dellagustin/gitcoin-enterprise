@@ -33,7 +33,7 @@
   </div>
 
   <div *ngIf="mode=='downloadLedger'">
-    <app-ledger [authenticationData]="authenticationData"></app-ledger>
+    <app-ledger [authenticationData]="authenticationData" [transactionId]="newLedgerEntry.id"></app-ledger>
   </div>
 
   <div *ngIf="mode=='solve'">
@@ -54,10 +54,6 @@
 
   <div *ngIf="mode==='contact'">
     <app-contact></app-contact>
-  </div>
-
-  <div *ngIf="viewTransactionInLedger">
-    <app-ledger [transactionId]="newLedgerEntry.id" [authenticationData]="authenticationData"></app-ledger>
   </div>
 
 </div>

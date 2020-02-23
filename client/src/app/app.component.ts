@@ -70,6 +70,7 @@ export class AppComponent implements OnInit {
     if (this.modesRequiringAuthentication.indexOf(target) !== -1 && this.authenticationData === undefined) {
       location.assign(`${backendURL}/authentication/login?action=${target}`)
     } else {
+      this.viewTransactionInLedger = false
       this.mode = target
       if (this.mode === 'openSource') {
         window.location.assign('https://github.com/gitcoin-enterprise/gitcoin-enterprise')
@@ -83,6 +84,7 @@ export class AppComponent implements OnInit {
   public onViewTransactionInLedger(newLedgerEntry: ILedgerEntry) {
     this.newLedgerEntry = newLedgerEntry
     this.viewTransactionInLedger = true
+    this.mode = 'downloadLedger'
   }
 
   private useAsPWA() {

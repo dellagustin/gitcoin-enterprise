@@ -94,6 +94,7 @@ export class AppService {
     }
 
     const newLedgerEntries: ILedgerEntry[] = this.createLedgerEntriesFromBountyPayment(receivers)
+    this.lg.log(ELogLevel.Info, `I created the following ledger entries: ${JSON.stringify(newLedgerEntries)} `)
 
     // this.gitHubIntegration.postCommentAboutSuccessfullTransfer(taskAndFunding.task.link, taskAndFunding.funding)
     // this.lg.log(ELogLevel.Notification, `I received a funding of ${taskAndFunding.funding.amount} EIC for the following task: ${task.link}`)
@@ -120,8 +121,8 @@ export class AppService {
   }
 
   private createLedgerEntriesFromBountyPayment(receivers: IBountyReceiver[]): ILedgerEntry[] {
-    const entries: ILedgerEntry[] = this.ledgerConnector.getLedgerEntries()
     let entry: ILedgerEntry
+    const newEntries: ILedgerEntry[] = []
     for (const receiver of receivers) {
       entry = {
         id: `tr-${Date.now().toString()}`,
@@ -130,13 +131,14 @@ export class AppService {
         sender: receiver.bountyForTaskLink,
         receiver: receiver.login
       }
+      newEntries.push(entry)
     }
 
+    const entries: ILedgerEntry[] = this.ledgerConnector.getLedgerEntries()
     entries.push(entry)
-
     this.ledgerConnector.saveLedgerEntries(entries)
 
-    return entries
+    return newEntries
   }
 
 }

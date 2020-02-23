@@ -17,12 +17,11 @@ export class LedgerFundingsComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.receivers.push({ login: 'michael-spengler', amount: 0, bountyForTaskLink: '' })
     // this.receivers.push({ login: '', amount: 0, bountyForTaskLink: '' })
   }
 
   public onEntryClicked(entry: IFunding) {
-    this.receivers[0].amount = entry.amount
+    this.receivers.push({ login: entry.funderId, amount: entry.amount, bountyForTaskLink: entry.taskLink })
     this.entryIdOfInterest = entry
   }
 
@@ -35,6 +34,7 @@ export class LedgerFundingsComponent implements OnInit {
     if (this.getSum() >= this.entryIdOfInterest.amount) {
       alert('You are already at 100%. Please reduce percentage before adding another receiver.')
     } else {
+      alert(this.entryIdOfInterest.taskLink)
       this.receivers.push({ login: '', amount: 0, bountyForTaskLink: this.entryIdOfInterest.taskLink })
     }
   }
@@ -49,11 +49,8 @@ export class LedgerFundingsComponent implements OnInit {
 
     if (!loginValid) {
       alert(`Why would you give something to empty space?`)
-    } else if (this.getSum() !== this.entryIdOfInterest.amount) {
-      alert('You can send this transaction as soon as you distributed 100%.')
     } else {
       this.transferTriggered.emit(this.receivers)
-      alert('Transaction sent successfully. You can check the latest ledger entries now.')
     }
   }
 

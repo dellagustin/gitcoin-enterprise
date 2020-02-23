@@ -23,7 +23,7 @@ export class ProfileComponent implements OnInit {
   public usersBounties: IBounty[] = []
   public ledgerEntries: ILedgerEntry[] = []
   public entryIdOfInterest: ILedgerEntry
-  public newLedgerEntry: ILedgerEntry
+  public newLedgerEntries: ILedgerEntry[]
   public transferCompleted = false
 
   public constructor(private readonly backendService: BackendService) { }
@@ -52,9 +52,8 @@ export class ProfileComponent implements OnInit {
   public onTransferTriggered(receivers: IBountyReceiver[]): any {
     this.backendService.postTransfer(receivers, this.authenticationData.token)
       .subscribe((newLedgerEntries: ILedgerEntry[]) => {
-        alert(JSON.stringify(newLedgerEntries))
-        this.newLedgerEntry = newLedgerEntries[0]
-this.transferCompleted = true
+        this.newLedgerEntries = newLedgerEntries
+        this.transferCompleted = true
       })
   }
 
@@ -62,8 +61,8 @@ this.transferCompleted = true
     window.location.assign(`${backendURL}/login`)
   }
 
-  public clickViewTransactionInLedger() {
-    this.viewTransactionInLedgerTriggered.emit(this.newLedgerEntry)
+  public clickViewTransactionInLedger(newLedgerEntry: ILedgerEntry) {
+    this.viewTransactionInLedgerTriggered.emit(newLedgerEntry)
   }
 
   public loginViaGitHub() {
