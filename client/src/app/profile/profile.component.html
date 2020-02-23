@@ -1,52 +1,78 @@
-<div class="adPad">
-  <img src="../../assets/avatar-2.png" alt="" width="72%">
-  <!-- <span *ngIf="justKidding">
+  <div class="adPad">
+    <img src="../../assets/avatar-2.png" alt="" width="72%">
+    <!-- <span *ngIf="justKidding">
     <img src="../../assets/avatar-2.png" alt="" width="72%">
   </span>
   <span *ngIf="!justKidding">
     <img class="card-img-top" src="{{authenticationData.avatarURL}}" alt="" style="width:72%">
   </span> -->
-</div>
+  </div>
 
-<div class="adPad2">
-  <h4 class="card-title"> {{authenticationData.login}}</h4>
-  Balance: {{balance}} EIC
+  <div class="adPad2">
+    <h4 class="card-title"> {{authenticationData.login}}</h4>
+    Balance: {{balance}} EIC
 
-  <span *ngIf="!viewBountiesAndFundings">
-    <button id="bountiesAndFundings" type="button" class="btn ourRedColor" (click)="clickBountiesAndFundings()">
-      <i class="fa fa-gift" aria-hidden="true" style="padding-right: 1vw;"></i>
-      Bounties & Fundings
-      <i class="fa fa-gift" aria-hidden="true" style="padding-left: 1vw;"></i>
-    </button>
-
-    <a href="{{getLink()}}" target="__blank">
-      <button type="button" class="btn ourBlueColor">
-        <i class="fa fa-github" aria-hidden="true" style="padding-right: 1vw;"></i>
-        Visit on GitHub
-        <i class="fa fa-github" aria-hidden="true" style="padding-left: 1vw;"></i>
+    <span *ngIf="!viewBountiesAndFundings">
+      <button id="bountiesAndFundings" type="button" class="btn ourRedColor" (click)="clickBountiesAndFundings()">
+        <i class="fa fa-gift" aria-hidden="true" style="padding-right: 1vw;"></i>
+        Bounties & Fundings
+        <i class="fa fa-gift" aria-hidden="true" style="padding-left: 1vw;"></i>
       </button>
-    </a>
-  </span>
-</div>
 
-<div *ngIf="viewBountiesAndFundings" class="adPad">
+      <a href="{{getLink()}}" target="__blank">
+        <button type="button" class="btn ourBlueColor">
+          <i class="fa fa-github" aria-hidden="true" style="padding-right: 1vw;"></i>
+          Visit on GitHub
+          <i class="fa fa-github" aria-hidden="true" style="padding-left: 1vw;"></i>
+        </button>
+      </a>
+    </span>
+  </div>
 
-  <h3 class="ourRedColor">
-    Your Fundings
-  </h3>
-  <span>
-    <app-ledger-fundings [usersFundings]="usersFundings" (transferTriggered)="onTransferTriggered($event)"></app-ledger-fundings>
-  </span>
-
-
-  <div class="adPad">
+  <div *ngIf="viewBountiesAndFundings && !transferCompleted" class="adPad">
 
     <h3 class="ourRedColor">
-      Your Bounties
+      Your Fundings
     </h3>
-
     <span>
-      <app-ledger-bounties [usersBounties]="usersBounties"></app-ledger-bounties>
+      <app-ledger-fundings [usersFundings]="usersFundings" (transferTriggered)="onTransferTriggered($event)">
+      </app-ledger-fundings>
     </span>
 
-  </div>
+
+    <div class="adPad">
+
+      <h3 class="ourRedColor">
+        Your Bounties
+      </h3>
+
+      <span>
+        <app-ledger-bounties [usersBounties]="usersBounties"></app-ledger-bounties>
+      </span>
+
+    </div>
+
+
+    <div *ngIf="transferCompleted">
+
+      <h4 class="titleBeneathImage">
+        Transfered Successfully
+      </h4>
+      I transferred {{newLedgerEntry.amount}} EIC to the recipients. <p></p>
+
+      <div id="transactionId" style="display: none;">
+        <!-- used e.g. for acceptance tests -->
+        {{newLedgerEntry.id}}
+      </div>
+      <button id="viewTransactionInLedger" type="button" class="btn ourRedColor"
+        (click)="clickViewTransactionInLedger()">
+        <i class="fa fa-step-forward" aria-hidden="true" style="padding-right: 3vw;"></i>
+        View Transaction in Ledger
+        <i class="fa fa-step-forward" aria-hidden="true" style="padding-left: 3vw;"></i>
+      </button>
+
+      <!-- <app-check-it-on-github [taskOfInterest]="task"></app-check-it-on-github>
+
+      <app-task-card [task]="task"></app-task-card> -->
+    </div>
+

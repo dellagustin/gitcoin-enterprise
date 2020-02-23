@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 
-import { ITask, IFunding, ITaskAndFunding, IApplication, IAuthenticationData, IReceiver } from './interfaces'
+import { ITask, IFunding, ITaskAndFunding, IApplication, IAuthenticationData, IBountyReceiver } from './interfaces'
 import { LoggerService } from './logger/logger.service'
 import { LedgerConnector } from './ledger-connector/ledger-connector-file-system.service'
 import { GithubIntegrationService } from './github-integration/github-integration.service'
@@ -86,7 +86,7 @@ export class AppService {
   }
 
 
-  public async postTransfer(receivers: IReceiver[], userAccessToken: string): Promise<ILedgerEntry[]> {
+  public async postTransfer(receivers: IBountyReceiver[], userAccessToken: string): Promise<ILedgerEntry[]> {
 
     const authenticationData = await this.authenticationService.getAuthenticationDataFromMainMemory(userAccessToken)
     if (authenticationData === undefined) {

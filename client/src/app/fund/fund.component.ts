@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core'
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'
 import { BackendService, ETaskStatus } from '../backend.service'
 
 import { TaskHelper } from '../task-card/task-helper'
@@ -15,6 +15,7 @@ import { gitHubURL } from '../../configurations/configuration'
 export class FundComponent implements OnInit {
 
   @Input() public authenticationData: IAuthenticationData
+  @Output() viewTransactionInLedgerTriggered = new EventEmitter<ILedgerEntry>()
   public radioModel: any
   public taskLink = `${gitHubURL}/gitcoin-enterprise/gitcoin-enterprise/issues/24`
   public task: ITask = TaskHelper.getInitialTask()
@@ -22,7 +23,6 @@ export class FundComponent implements OnInit {
   public minimumRange = 1
   public balance = 200
   public currentRange = 20
-  public viewTransactionInLedger = false
   public newLedgerEntry: ILedgerEntry
   public ledgerEntries: ILedgerEntry[] = []
 
@@ -61,7 +61,7 @@ export class FundComponent implements OnInit {
   }
 
   public clickViewTransactionInLedger() {
-    this.viewTransactionInLedger = true
+    this.viewTransactionInLedgerTriggered.emit(this.newLedgerEntry)
   }
 
   public saveFunding() {

@@ -25,11 +25,11 @@
   </div>
 
   <div *ngIf="mode=='fund'">
-    <app-fund [authenticationData]="authenticationData"></app-fund>
+    <app-fund [authenticationData]="authenticationData" (viewTransactionInLedgerTriggered)="onViewTransactionInLedger($event)"></app-fund>
   </div>
 
   <div *ngIf="mode=='profile'">
-    <app-profile [authenticationData]="authenticationData"></app-profile>
+    <app-profile [authenticationData]="authenticationData" (viewTransactionInLedgerTriggered)="onViewTransactionInLedger($event)"></app-profile>
   </div>
 
   <div *ngIf="mode=='downloadLedger'">
@@ -54,6 +54,10 @@
 
   <div *ngIf="mode==='contact'">
     <app-contact></app-contact>
+  </div>
+
+  <div *ngIf="viewTransactionInLedger">
+    <app-ledger [transactionId]="newLedgerEntry.id" [authenticationData]="authenticationData"></app-ledger>
   </div>
 
 </div>

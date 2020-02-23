@@ -1,5 +1,5 @@
 <div class="form-group" class="taskDetails">
-  <span *ngIf="!fundingCompleted && !viewTransactionInLedger">
+  <span *ngIf="!fundingCompleted">
 
     <img src="../../assets/trust-and-collaboration.png" alt="" width="70%"> <br>
     <!-- <h4 class="titleBeneathImage">
@@ -48,12 +48,10 @@
       <app-task-card [task]=task></app-task-card>
       <p><br></p>
 
-
     </div>
   </span>
 
-
-  <span *ngIf="fundingCompleted && !viewTransactionInLedger && newLedgerEntry!==undefined">
+  <span *ngIf="fundingCompleted && newLedgerEntry!==undefined">
 
     <img src="../../assets/avatar-1.png" alt="" width="70%">
     <h4 class="titleBeneathImage">
@@ -74,11 +72,6 @@
     <app-check-it-on-github [taskOfInterest]="task"></app-check-it-on-github>
 
     <app-task-card [task]="task"></app-task-card>
-  </span>
-
-
-  <span *ngIf="viewTransactionInLedger">
-    <app-ledger [transactionId]="newLedgerEntry.id" [authenticationData]="authenticationData"></app-ledger>
   </span>
 
 </div>

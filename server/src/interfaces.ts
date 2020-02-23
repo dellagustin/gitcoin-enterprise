@@ -9,9 +9,10 @@ export interface IssueInfo {
   description: string
 }
 
-export interface IReceiver {
+export interface IBountyReceiver {
   login: string
   amount: number
+  bountyForTaskLink: string
 }
 
 export interface ITask {

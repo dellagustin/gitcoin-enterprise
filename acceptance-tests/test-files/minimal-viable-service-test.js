@@ -179,32 +179,35 @@ Scenario("Pay the Bounty", async (I) => {
   I.see("Click an entry to trigger a payout");
   I.click({ xpath: '//td' })
   await I.wait(2);
-  // const completeAmount = 196
-  // I.see(`Please enter which GitHub User shall receive how much of the ${completeAmount} EIC.`);
-  // I.see("GitHub User");
-  // I.see("Amount");
-  // I.fillField(
-  //   locate("#githubUser"),
-  //   "michael-spengler"
-  // );
+  const completeAmount = await I.grabValueFrom('input[id=amount]');
+  I.say(completeAmount)
+  I.see(`Please enter which GitHub User shall receive how much of the ${completeAmount} EIC.`);
+  I.see("GitHub User");
+  I.see("Amount");
+  I.fillField(
+    locate("#githubUser"),
+    "michael-spengler"
+  );
 
-  // I.fillField(
-  //   locate("#amount"),
-  //   "1"
-  // );
+  I.fillField(
+    locate("#amount"),
+    "1"
+  );
 
-  // I.click(locate('#transferCoins'))
-  // I.wait(1)
-  // I.seeInPopup('You can send this transaction as soon as you distributed 100%.')
-  // I.acceptPopup();
-  // I.wait(1)
-  // I.fillField(
-  //   locate("#amount"),
-  //   completeAmount
-  // );
-  // I.click(locate('#addReceiver'))
-  // I.seeInPopup('You are already at 100%. Please reduce percentage before adding another receiver.')
-  // I.acceptPopup();
+  I.click(locate('#transferCoins'))
+  I.wait(1)
+  I.seeInPopup('You can send this transaction as soon as you distributed 100%.')
+  I.acceptPopup();
+  I.wait(1)
+  I.fillField(
+    locate("#amount"),
+    completeAmount
+  );
+  I.click(locate('#addReceiver'))
+  I.seeInPopup('You are already at 100%. Please reduce percentage before adding another receiver.')
+  I.acceptPopup();
+  I.click(locate('#transferCoins'))
+  I.acceptPopup();
 
 });
 

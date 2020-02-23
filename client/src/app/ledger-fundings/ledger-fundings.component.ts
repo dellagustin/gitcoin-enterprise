@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'
-import { IFunding, IReceiver } from '../interfaces'
+import { IFunding, IBountyReceiver } from '../interfaces'
 
 @Component({
   selector: 'app-ledger-fundings',
@@ -9,15 +9,15 @@ import { IFunding, IReceiver } from '../interfaces'
 export class LedgerFundingsComponent implements OnInit {
 
   @Input() usersFundings: IFunding[]
-  @Output() transferTriggered = new EventEmitter<IReceiver[]>()
+  @Output() transferTriggered = new EventEmitter<IBountyReceiver[]>()
 
   public entryIdOfInterest: IFunding
-  public receivers: IReceiver[] = []
+  public receivers: IBountyReceiver[] = []
 
   constructor() { }
 
   ngOnInit(): void {
-    this.receivers.push({ login: '', amount: 0 })
+    this.receivers.push({ login: '', amount: 0, bountyForTaskLink: '' })
   }
 
   public onEntryClicked(entry: IFunding) {
@@ -31,10 +31,10 @@ export class LedgerFundingsComponent implements OnInit {
   }
 
   public addReceiver() {
-    if (this.getSum() >= 100) {
+    if (this.getSum() >= this.entryIdOfInterest.amount) {
       alert('You are already at 100%. Please reduce percentage before adding another receiver.')
     } else {
-      this.receivers.push({ login: '', amount: 0 })
+      this.receivers.push({ login: '', amount: 0, bountyForTaskLink: this.entryIdOfInterest.taskLink })
     }
   }
 
@@ -48,7 +48,7 @@ export class LedgerFundingsComponent implements OnInit {
 
     if (!loginValid) {
       alert(`Why would you give something to empty space?`)
-    } else if (this.getSum() !== 100) {
+    } else if (this.getSum() !== this.entryIdOfInterest.amount) {
       alert('contactYou can send this transaction as soon as you distributed 100%.')
     } else {
       this.transferTriggered.emit(this.receivers)

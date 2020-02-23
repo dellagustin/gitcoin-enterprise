@@ -3,7 +3,8 @@ import { INavbarData } from './navbar/navbar.interfaces'
 import { ILedgerEntry } from './ledger/ledger.interface'
 import { IAuthenticationData, ITask } from './interfaces'
 import { ActivatedRoute } from '@angular/router'
-import { frontendURL, backendURL } from '../configurations/configuration'
+import { backendURL } from '../configurations/configuration'
+import { NavBarProvider } from './navbar/navbar.provider'
 
 @Component({
   selector: 'app-root',
@@ -14,11 +15,13 @@ export class AppComponent implements OnInit {
   public static deferredPrompt: any
 
   public authenticationData: IAuthenticationData
+  public newLedgerEntry: ILedgerEntry
   public sessionWithoutCookies = ''
   public mode = 'landing'
+  public viewTransactionInLedger = false
   public fundedTasks: ITask[] = []
   public ledgerEntries: ILedgerEntry[] = []
-  public navBarData: INavbarData = this.getNavBarData()
+  public navBarData: INavbarData = NavBarProvider.getNavBarData()
   public queryParameters: any
   public taskOfInterest: ITask
   private params: any
@@ -77,6 +80,11 @@ export class AppComponent implements OnInit {
     }
   }
 
+  public onViewTransactionInLedger(newLedgerEntry: ILedgerEntry) {
+    this.newLedgerEntry = newLedgerEntry
+    this.viewTransactionInLedger = true
+  }
+
   private useAsPWA() {
     setTimeout(() => {
       if (AppComponent.deferredPrompt === undefined) {
@@ -103,62 +111,4 @@ export class AppComponent implements OnInit {
     })
   }
 
-  private getNavBarData(): INavbarData {
-    return {
-      logoURL: '../assets/peer-2-peer.jpg',
-      appTitle: 'GitCoin Enterprise',
-      menuEntries: [
-        {
-          isActive: true,
-          text: 'Home',
-          href: 'landing',
-        },
-        {
-          isActive: false,
-          text: 'Fund a Task',
-          href: 'fund',
-        },
-        {
-          isActive: false,
-          text: 'Solve a Task',
-          href: 'solve',
-        },
-        {
-          isActive: false,
-          text: 'Profile',
-          href: 'profile',
-        },
-        {
-          isActive: false,
-          text: 'Ledger',
-          href: 'downloadLedger',
-        },
-        {
-          isActive: false,
-          text: 'Use as App',
-          href: 'useAsApp',
-        },
-        {
-          isActive: false,
-          text: 'Invite Friends',
-          href: 'inviteFriends',
-        },
-        {
-          isActive: false,
-          text: 'Open Source',
-          href: 'openSource',
-        },
-        {
-          isActive: false,
-          text: 'About',
-          href: 'about',
-        },
-        {
-          isActive: false,
-          text: 'Contact',
-          href: 'contact',
-        }
-      ]
-    }
-  }
 }

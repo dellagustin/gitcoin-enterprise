@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core'
 import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { backendURL } from '../configurations/configuration'
-import { IEmail, IApplication, ITaskAndFunding, IReceiver } from './interfaces'
+import { IEmail, IApplication, ITaskAndFunding, IBountyReceiver } from './interfaces'
 import { ILedgerEntry } from './ledger/ledger.interface'
 
 export enum ETaskStatus {
@@ -22,7 +22,7 @@ export class BackendService {
     return this.get(`${backendURL}/getLedgerEntries`, token)
   }
 
-  public postTransfer(receivers: IReceiver[], token: string) {
+  public postTransfer(receivers: IBountyReceiver[], token: string) {
         return this.post(`${backendURL}/postTransfer`, receivers, token)
   }
 

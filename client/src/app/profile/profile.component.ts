@@ -1,7 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core'
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'
 import { BackendService } from '../backend.service'
 import { backendURL } from '../../configurations/configuration'
-import { IAuthenticationData, IFunding, IBountiesAndFundings, IBounty, IReceiver } from '../interfaces'
+import { IAuthenticationData, IFunding, IBountiesAndFundings, IBounty, IBountyReceiver } from '../interfaces'
 import { ILedgerEntry } from '../ledger/ledger.interface'
 import { Helper } from '../helper'
 import { gitHubURL } from '../../configurations/configuration-prod'
@@ -14,6 +14,7 @@ import { gitHubURL } from '../../configurations/configuration-prod'
 export class ProfileComponent implements OnInit {
 
   @Input() public authenticationData: IAuthenticationData
+  @Output() viewTransactionInLedgerTriggered = new EventEmitter<ILedgerEntry>()
   // public justKidding = true
   public viewBountiesAndFundings = false
   public fundingIdOfInterest: IFunding
@@ -22,6 +23,8 @@ export class ProfileComponent implements OnInit {
   public usersBounties: IBounty[] = []
   public ledgerEntries: ILedgerEntry[] = []
   public entryIdOfInterest: ILedgerEntry
+  public newLedgerEntry: ILedgerEntry
+  public transferCompleted = false
 
   public constructor(private readonly backendService: BackendService) { }
 
@@ -46,10 +49,12 @@ export class ProfileComponent implements OnInit {
     return Helper.getId(link)
   }
 
-  public onTransferTriggered(receivers: IReceiver[]): any {
+  public onTransferTriggered(receivers: IBountyReceiver[]): any {
     this.backendService.postTransfer(receivers, this.authenticationData.token)
       .subscribe((newLedgerEntries: ILedgerEntry[]) => {
         alert(JSON.stringify(newLedgerEntries))
+        this.newLedgerEntry = newLedgerEntries[0]
+this.transferCompleted = true
       })
   }
 
@@ -57,6 +62,9 @@ export class ProfileComponent implements OnInit {
     window.location.assign(`${backendURL}/login`)
   }
 
+  public clickViewTransactionInLedger() {
+    this.viewTransactionInLedgerTriggered.emit(this.newLedgerEntry)
+  }
 
   public loginViaGitHub() {
     const authenticationURL = `${backendURL}/login?action=profile`
