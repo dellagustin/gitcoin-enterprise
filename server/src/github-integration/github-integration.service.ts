@@ -107,6 +107,39 @@ export class GithubIntegrationService {
         await this.lg.log(ELogLevel.Info, linkToIssue)
         await this.lg.log(ELogLevel.Info, JSON.stringify(funding))
     }
+    public async postCommentAboutSuccessfullTransfer(linkToIssue: string, funding: IFunding): Promise<void> {
+
+        const seconds: moment.unitOfTime.DurationConstructor = 'seconds'
+
+        if (!Helper.isItLongerAgoThan(2, seconds, this.lastPostCommentRequest)) {
+            const errorMessage = '2 postComment requests within 2 seconds seems unlikely in demo phase - protecting the backends'
+            await this.lg.log(ELogLevel.Error, errorMessage)
+            throw new Error(errorMessage)
+        }
+
+        const templateFileId = path.join(__dirname, '../../src/github-integration/comment-on-funding.md')
+        const body = fs.read(templateFileId).toString().replace('{{{amount}}}', funding.amount)
+
+        const owner = linkToIssue.split('/')[3]
+        const repoName = linkToIssue.split('/')[4]
+        const issueNo = linkToIssue.split('/')[6]
+        this.lastPostCommentRequest = moment()
+        try {
+            await this.octokit.issues.createComment({
+                body,
+                owner,
+                issue_number: issueNo,
+                repo: repoName,
+            })
+
+        } catch (error) {
+            await this.lg.log(ELogLevel.Error, `the github call to create a comment for  the issue failed ${error}`)
+
+        }
+
+        await this.lg.log(ELogLevel.Info, linkToIssue)
+        await this.lg.log(ELogLevel.Info, JSON.stringify(funding))
+    }
 
     public async postCommentAboutApplication(application: IApplication): Promise<void> {
 

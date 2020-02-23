@@ -35,7 +35,7 @@
     Your Fundings
   </h3>
   <span>
-    <app-ledger-fundings [usersFundings]="usersFundings"></app-ledger-fundings>
+    <app-ledger-fundings [usersFundings]="usersFundings" (transferTriggered)="onTransferTriggered($event)"></app-ledger-fundings>
   </span>
 
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core'
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'
 import { IFunding, IReceiver } from '../interfaces'
 
 @Component({
@@ -9,6 +9,7 @@ import { IFunding, IReceiver } from '../interfaces'
 export class LedgerFundingsComponent implements OnInit {
 
   @Input() usersFundings: IFunding[]
+  @Output() transferTriggered = new EventEmitter<IReceiver[]>()
 
   public entryIdOfInterest: IFunding
   public receivers: IReceiver[] = []
@@ -16,10 +17,11 @@ export class LedgerFundingsComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.receivers.push({ login: '', percentage: 100 })
+    this.receivers.push({ login: '', amount: 0 })
   }
 
   public onEntryClicked(entry: IFunding) {
+    this.receivers[0].amount = entry.amount
     this.entryIdOfInterest = entry
   }
 
@@ -32,14 +34,14 @@ export class LedgerFundingsComponent implements OnInit {
     if (this.getSum() >= 100) {
       alert('You are already at 100%. Please reduce percentage before adding another receiver.')
     } else {
-      this.receivers.push({ login: '', percentage: 10 })
+      this.receivers.push({ login: '', amount: 0 })
     }
   }
 
   public transferCoins() {
     let loginValid = true
     for (const e of this.receivers) {
-      if (e.percentage > 0 && e.login === '') {
+      if (e.amount > 0 && e.login === '') {
         loginValid = false
       }
     }
@@ -49,6 +51,7 @@ export class LedgerFundingsComponent implements OnInit {
     } else if (this.getSum() !== 100) {
       alert('contactYou can send this transaction as soon as you distributed 100%.')
     } else {
+      this.transferTriggered.emit(this.receivers)
       alert('Transaction sent successfully. You can check the latest ledger entries now.')
     }
   }
@@ -57,7 +60,7 @@ export class LedgerFundingsComponent implements OnInit {
   private getSum() {
     let sum = 0
     for (const r of this.receivers) {
-      sum += r.percentage
+      sum += r.amount
     }
     return sum
   }

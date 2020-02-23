@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 
-import { ITask, ETaskStatus, ETaskType, IFunding, ITaskAndFunding, IApplication, IAuthenticationData } from './interfaces'
+import { ITask, IFunding, ITaskAndFunding, IApplication, IAuthenticationData, IReceiver } from './interfaces'
 import { LoggerService } from './logger/logger.service'
 import { LedgerConnector } from './ledger-connector/ledger-connector-file-system.service'
 import { GithubIntegrationService } from './github-integration/github-integration.service'
@@ -60,7 +60,7 @@ export class AppService {
       throw new Error(`I could not find authentication Data for this token: ${userAccessToken}`)
     }
 
-    const newLedgerEntry: ILedgerEntry = this.createLedgerEntry(taskAndFunding.funding)
+    const newLedgerEntry: ILedgerEntry = this.createLedgerEntryFromFunding(taskAndFunding.funding)
 
     const tasks = this.persistencyService.getFundedTasks()
     const existingTask = tasks.filter((entry: ITask) => entry.link === taskAndFunding.task.link)[0]
@@ -85,9 +85,44 @@ export class AppService {
 
   }
 
-  private createLedgerEntry(funding: IFunding): ILedgerEntry {
+
+  public async postTransfer(receivers: IReceiver[], userAccessToken: string): Promise<ILedgerEntry[]> {
+
+    const authenticationData = await this.authenticationService.getAuthenticationDataFromMainMemory(userAccessToken)
+    if (authenticationData === undefined) {
+      throw new Error(`I could not find authentication Data for this token: ${userAccessToken}`)
+    }
+
+    const newLedgerEntries: ILedgerEntry[] = []
+    // const newLedgerEntries: ILedgerEntry[] = this.createLedgerEntries(undefined, receivers, authenticationData)
+
+    // const tasks = this.persistencyService.getFundedTasks()
+    // const existingTask = tasks.filter((entry: ITask) => entry.link === taskAndFunding.task.link)[0]
+
+    // let task: ITask
+    // if (existingTask === undefined) {
+    //   task = taskAndFunding.task
+    // } else {
+    //   task = existingTask
+    //   task.funding = task.funding + taskAndFunding.funding.amount
+    //   const indexOfExistingTasks = tasks.indexOf(existingTask)
+    //   tasks.splice(indexOfExistingTasks, 1)
+    // }
+
+    // tasks.push(task)
+
+    //    this.persistencyService.saveFundedTasks(tasks)
+
+    // this.gitHubIntegration.postCommentAboutSuccessfullTransfer(taskAndFunding.task.link, taskAndFunding.funding)
+    // this.lg.log(ELogLevel.Notification, `I received a funding of ${taskAndFunding.funding.amount} EIC for the following task: ${task.link}`)
+    return newLedgerEntries
+
+  }
+
+  private createLedgerEntryFromFunding(funding: IFunding): ILedgerEntry {
     const entries: ILedgerEntry[] = this.ledgerConnector.getLedgerEntries(funding.funderId)
-    const entry: ILedgerEntry = {
+    let entry: ILedgerEntry
+    entry = {
       id: `tr-${Date.now().toString()}`,
       date: new Date().toISOString(),
       amount: funding.amount,

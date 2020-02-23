@@ -45,6 +45,11 @@ export class AppController {
     return this.appService.saveFunding(req.body, req.headers.michaelsfriendskey)
   }
 
+  @Post('/postTransfer')
+  postTransfer(@Req() req: any): Promise<ILedgerEntry[]> {
+    return this.appService.postTransfer(req.body, req.headers.michaelsfriendskey)
+  }
+
   @Post('/postSolutionApproach')
   postSolutionApproach(@Req() req: any): Promise<void> {
     return this.appService.postSolutionApproach(req.body, req.headers.michaelsfriendskey)

@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core'
 import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { backendURL } from '../configurations/configuration'
-import { IEmail, IApplication, ITaskAndFunding } from './interfaces'
+import { IEmail, IApplication, ITaskAndFunding, IReceiver } from './interfaces'
+import { ILedgerEntry } from './ledger/ledger.interface'
 
 export enum ETaskStatus {
   'created' = 1,
@@ -14,12 +15,15 @@ export enum ETaskStatus {
   providedIn: 'root'
 })
 export class BackendService {
-
   public constructor(private readonly http: HttpClient) {
   }
 
   public getLedgerEntries(token: string) {
     return this.get(`${backendURL}/getLedgerEntries`, token)
+  }
+
+  public postTransfer(receivers: IReceiver[], token: string) {
+        return this.post(`${backendURL}/postTransfer`, receivers, token)
   }
 
   // public sendEMail(eMail: IEmail, token: string): any {

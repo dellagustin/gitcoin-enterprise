@@ -65,8 +65,9 @@ export interface IBounty {
 
 export interface IReceiver {
   login: string
-  percentage: number
+  amount: number
 }
+
 export interface IFunding {
   id: string
   funderId: string

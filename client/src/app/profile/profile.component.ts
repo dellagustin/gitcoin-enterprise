@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core'
 import { BackendService } from '../backend.service'
 import { backendURL } from '../../configurations/configuration'
-import { IAuthenticationData, IFunding, IBountiesAndFundings, IBounty } from '../interfaces'
+import { IAuthenticationData, IFunding, IBountiesAndFundings, IBounty, IReceiver } from '../interfaces'
 import { ILedgerEntry } from '../ledger/ledger.interface'
 import { Helper } from '../helper'
 import { gitHubURL } from '../../configurations/configuration-prod'
@@ -44,6 +44,13 @@ export class ProfileComponent implements OnInit {
 
   public getId(link: string): string {
     return Helper.getId(link)
+  }
+
+  public onTransferTriggered(receivers: IReceiver[]): any {
+    this.backendService.postTransfer(receivers, this.authenticationData.token)
+      .subscribe((newLedgerEntries: ILedgerEntry[]) => {
+        alert(JSON.stringify(newLedgerEntries))
+      })
   }
 
   public login() {

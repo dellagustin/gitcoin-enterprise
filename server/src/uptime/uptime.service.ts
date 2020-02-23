@@ -16,7 +16,7 @@ export class UptimeService {
                     this.lg.log(ELogLevel.Error, `Dependent on Service might be down`)
                 }
 
-            }, 2 * 60 * 60 * 1000)
+            }, 1 * 60 * 60 * 1000)
         }
     }
 }

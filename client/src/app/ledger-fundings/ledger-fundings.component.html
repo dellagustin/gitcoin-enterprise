@@ -33,13 +33,13 @@
       <thead class="ourRedColor">
         <tr>
           <th>GitHub User</th>
-          <th>Percentage</th>
+          <th>Amount</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let receiver of receivers">
           <td><input id="githubUser" type="text" [(ngModel)]="receiver.login" style="width: 90%;"></td>
-          <td><input id="percentage" type="text" [(ngModel)]="receiver.percentage" style="width: 90%;"></td>
+          <td><input id="amount" type="text" [(ngModel)]="receiver.amount" style="width: 90%;"></td>
         </tr>
       </tbody>
     </table>

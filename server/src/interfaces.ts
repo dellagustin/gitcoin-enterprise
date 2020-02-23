@@ -9,6 +9,11 @@ export interface IssueInfo {
   description: string
 }
 
+export interface IReceiver {
+  login: string
+  amount: number
+}
+
 export interface ITask {
   link: string
   taskType: ETaskType
