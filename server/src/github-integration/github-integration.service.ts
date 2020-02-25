@@ -46,7 +46,7 @@ export class GithubIntegrationService {
 
         try {
             const getURLToGetUser = (config.gitHubURL === 'https://github.com') ?
-                `${config.gitHubURL}/user?access_token=${token}` :
+                `https://api.github.com/user?access_token=${token}` :
                 `${config.gitHubURL}/api/v3/user?access_token=${token}`
             this.lg.log(ELogLevel.Info, `calling to: ${getURLToGetUser}`)
             user = (await this.axiosClient.get(getURLToGetUser)).data
@@ -81,7 +81,7 @@ export class GithubIntegrationService {
         const issueInfo = {} as IssueInfo
         try {
             const getURLToGetIssueData = (config.gitHubURL === 'https://github.com') ?
-                `${config.gitHubURL}/repos/${org}/${repo}/issues/${issueId}` :
+                `https://api.github.com/repos/${org}/${repo}/issues/${issueId}` :
                 `${config.gitHubURL}/api/v3/repos/${org}/${repo}/issues/${issueId}`
             const issueData = (await this.axiosClient.get(getURLToGetIssueData)).data
             this.lg.log(ELogLevel.Info, JSON.stringify(issueData))
@@ -115,7 +115,7 @@ export class GithubIntegrationService {
         this.lastPostCommentRequest = moment()
         try {
             const uRLToPostComment = (config.gitHubURL === 'https://github.com') ?
-                `${config.gitHubURL}/repos/${owner}/${repoName}/issues/${issueNo}/comments?access_token=${config.gitHubTokenForPostingCommentsAndForGettingIssueData}` :
+                `https://api.github.com/repos/${owner}/${repoName}/issues/${issueNo}/comments?access_token=${config.gitHubTokenForPostingCommentsAndForGettingIssueData}` :
                 `${config.gitHubURL}/api/v3/repos/${owner}/${repoName}/issues/${issueNo}/comments?access_token=${config.gitHubTokenForPostingCommentsAndForGettingIssueData}`
             const postingResult = (await this.axiosClient.post(uRLToPostComment, body))
 
@@ -148,7 +148,7 @@ export class GithubIntegrationService {
         this.lastPostCommentRequest = moment()
         try {
             const uRLToPostComment = (config.gitHubURL === 'https://github.com') ?
-                `${config.gitHubURL}/repos/${owner}/${repoName}/issues/${issueNo}/comments?access_token=${config.gitHubTokenForPostingCommentsAndForGettingIssueData}` :
+                `https://api.github.com/repos/${owner}/${repoName}/issues/${issueNo}/comments?access_token=${config.gitHubTokenForPostingCommentsAndForGettingIssueData}` :
                 `${config.gitHubURL}/api/v3/repos/${owner}/${repoName}/issues/${issueNo}/comments?access_token=${config.gitHubTokenForPostingCommentsAndForGettingIssueData}`
             const postingResult = (await this.axiosClient.post(uRLToPostComment, body))
 
@@ -181,7 +181,7 @@ export class GithubIntegrationService {
         const issueNo = application.taskLink.split('/')[6]
         try {
             const uRLToPostComment = (config.gitHubURL === 'https://github.com') ?
-                `${config.gitHubURL}/repos/${owner}/${repoName}/issues/${issueNo}/comments?access_token=${config.gitHubTokenForPostingCommentsAndForGettingIssueData}` :
+                `https://api.github.com/repos/${owner}/${repoName}/issues/${issueNo}/comments?access_token=${config.gitHubTokenForPostingCommentsAndForGettingIssueData}` :
                 `${config.gitHubURL}/api/v3/repos/${owner}/${repoName}/issues/${issueNo}/comments?access_token=${config.gitHubTokenForPostingCommentsAndForGettingIssueData}`
             const postingResult = (await this.axiosClient.post(uRLToPostComment, body))
 
