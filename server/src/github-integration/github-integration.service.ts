@@ -8,8 +8,8 @@ import * as moment from 'moment'
 import { Helper } from '../helpers/helper'
 import { ELogLevel } from '../logger/logger-interface'
 const uuidv1 = require('uuidv1')
-
-const { Octokit } = require('@octokit/rest')
+import axios, { AxiosInstance } from 'axios'
+import * as tunnel from 'tunnel'
 
 @Injectable()
 export class GithubIntegrationService {
@@ -17,31 +17,50 @@ export class GithubIntegrationService {
 
     private lastGetIssueRequest = moment()
     private lastPostCommentRequest = moment()
+    private agent
+    private axiosClient: AxiosInstance
 
     public constructor(private readonly lg: LoggerService) {
-        // this.lg.log(ELogLevel.Info, config.testMode.toString())
-        this.octokit = new Octokit({
-            auth: config.token,
-            baseUrl: (config.gitHubAPIBaseURL === undefined) ? 'https://api.github.com' : config.gitHubAPIBaseURL,
-        })
+        if (config.gitHubURL === 'https://github.com') {
+            this.axiosClient = axios.create({
+                baseURL: config.gitHubURL,
+                proxy: false,
+            })
+        } else {
+            this.agent = tunnel.httpsOverHttp({
+                proxy: {
+                    host: config.proxyHostForEnterpriseGitHubInstance,
+                    port: config.proxyHostForEnterpriseGitHubInstancePort,
+                },
+            })
+            this.axiosClient = axios.create({
+                baseURL: config.gitHubURL,
+                httpsAgent: this.agent,
+                proxy: false, // to be save regarding autodetection of environment variables...
+            })
+        }
     }
 
     public async getAuthenticationDataFromGitHub(token: string): Promise<IAuthenticationData> {
-        const octokitForRetrievingUserData = new Octokit({
-            auth: token,
-        })
+        let user
 
-        const user = await octokitForRetrievingUserData.users.getAuthenticated()
+        try {
+            const getURLToGetUser = `${config.gitHubURL}/api/v3/user?access_token=${token}`
+            user = (await this.axiosClient.get(getURLToGetUser)).data
+            this.lg.log(ELogLevel.Info, JSON.stringify(`user: ${user}`))
+            const authenticationData: IAuthenticationData = {
+                avatarURL: user.avatar_url,
+                login: user.login,
+                token: uuidv1().replace(/-/g, '').substr(0, 10),
+            }
 
-        // const balance = this.ledgerConnector.getBalanceOf(user.data.login)
+            return authenticationData
 
-        const authenticationData: IAuthenticationData = {
-            avatarURL: user.data.avatar_url,
-            login: user.data.login,
-            token: uuidv1().replace(/-/g, '').substr(0, 10),
+        } catch (error) {
+            const errorMessage = `The following error occurred while retrieving Login: ${error.message} for ${token}` // shall be deleted as soon as test is successful
+            this.lg.log(ELogLevel.Error, errorMessage)
+            throw new Error(errorMessage)
         }
-
-        return authenticationData
     }
 
     public async getIssue(org: any, repo: any, issueId: any): Promise<IssueInfo> {
@@ -58,13 +77,11 @@ export class GithubIntegrationService {
         await this.lg.log(ELogLevel.Info, `getting Issue data for owner: ${org}, repo: ${repo}, issueId: ${issueId}`)
         const issueInfo = {} as IssueInfo
         try {
-            const response = await this.octokit.issues.get({
-                owner: org,
-                repo,
-                issue_number: issueId,
-            })
-            issueInfo.title = response.data.title
-            issueInfo.description = response.data.body
+            const getURLToGetIssueData = `${config.gitHubURL}/api/v3/repos/${org}/${repo}/issues/${issueId}`
+            const issueData = (await this.axiosClient.get(getURLToGetIssueData)).data
+            this.lg.log(ELogLevel.Info, JSON.stringify(issueData))
+            issueInfo.title = issueData.title
+            issueInfo.description = issueData.body
         } catch (error) {
             await this.lg.log(ELogLevel.Error, `the github call to get the issue failed ${error}`)
             issueInfo.title = 'Just a demo Title'
@@ -92,15 +109,13 @@ export class GithubIntegrationService {
         const issueNo = linkToIssue.split('/')[6]
         this.lastPostCommentRequest = moment()
         try {
-            await this.octokit.issues.createComment({
-                body,
-                owner,
-                issue_number: issueNo,
-                repo: repoName,
-            })
+            const uRLToPostComment = `${config.gitHubURL}/api/v3/repos/${owner}/${repoName}/issues/${issueNo}/comments?access_token=${config.gitHubTokenForPostingCommentsAndForGettingIssueData}`
+            const postingResult = (await this.axiosClient.post(uRLToPostComment, body))
+
+            this.lg.log(ELogLevel.Info, JSON.stringify(`posting an issue and getting: ${postingResult}`))
 
         } catch (error) {
-            await this.lg.log(ELogLevel.Error, `the github call to create a comment for  the issue failed ${error}`)
+            await this.lg.log(ELogLevel.Error, `postCommentAboutSuccessfullFunding the github call to create a comment for  the issue failed ${error}`)
 
         }
 
@@ -125,15 +140,13 @@ export class GithubIntegrationService {
         const issueNo = linkToIssue.split('/')[6]
         this.lastPostCommentRequest = moment()
         try {
-            await this.octokit.issues.createComment({
-                body,
-                owner,
-                issue_number: issueNo,
-                repo: repoName,
-            })
+            const uRLToPostComment = `${config.gitHubURL}/api/v3/repos/${owner}/${repoName}/issues/${issueNo}/comments?access_token=${config.gitHubTokenForPostingCommentsAndForGettingIssueData}`
+            const postingResult = (await this.axiosClient.post(uRLToPostComment, body))
+
+            this.lg.log(ELogLevel.Info, JSON.stringify(`posting an issue and getting: ${postingResult}`))
 
         } catch (error) {
-            await this.lg.log(ELogLevel.Error, `the github call to create a comment for  the issue failed ${error}`)
+            await this.lg.log(ELogLevel.Error, `postCommentAboutSuccessfullTransfer the github call to create a comment for  the issue failed ${error}`)
 
         }
 
@@ -158,15 +171,13 @@ export class GithubIntegrationService {
         const repoName = application.taskLink.split('/')[4]
         const issueNo = application.taskLink.split('/')[6]
         try {
-            await this.octokit.issues.createComment({
-                owner,
-                repo: repoName,
-                issue_number: issueNo,
-                body,
-            })
+            const uRLToPostComment = `${config.gitHubURL}/api/v3/repos/${owner}/${repoName}/issues/${issueNo}/comments?access_token=${config.gitHubTokenForPostingCommentsAndForGettingIssueData}`
+            const postingResult = (await this.axiosClient.post(uRLToPostComment, body))
+
+            this.lg.log(ELogLevel.Info, JSON.stringify(`posting an issue and getting: ${postingResult}`))
 
         } catch (error) {
-            await this.lg.log(ELogLevel.Error, `the github call to create a comment for  the issue failed ${error}`)
+            await this.lg.log(ELogLevel.Error, `postCommentAboutApplication the github call to create a comment for  the issue failed ${error}`)
 
         }
         await this.lg.log(ELogLevel.Info, application.profileLink)

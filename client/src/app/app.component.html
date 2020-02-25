@@ -33,7 +33,7 @@
   </div>
 
   <div *ngIf="mode=='downloadLedger'">
-    <app-ledger [authenticationData]="authenticationData" [transactionId]="newLedgerEntry.id"></app-ledger>
+    <app-ledger [authenticationData]="authenticationData" [transactionId]="(newLedgerEntry===undefined) ? '' : newLedgerEntry.id"></app-ledger>
   </div>
 
   <div *ngIf="mode=='solve'">

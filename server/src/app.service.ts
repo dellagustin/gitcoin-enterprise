@@ -33,7 +33,7 @@ export class AppService {
   }
 
   public getGitHubToken(): string {
-    return config.token
+    return config.gitHubTokenForPostingCommentsAndForGettingIssueData
   }
 
   public saveFundedTasks(fundedTasks: ITask[]): void {

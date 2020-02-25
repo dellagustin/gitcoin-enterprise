@@ -32,7 +32,7 @@ Scenario("Check my Profile", async (I) => {
   I.wait(2);
 
   I.click(locate("#profile"));
-  await I.wait(7);
+  await I.wait(2);
 
   I.see("Bounties & Fundings");
   I.see("Balance");

@@ -10,11 +10,11 @@ export class SupportNotifierService implements ISupportNotifier {
     private static bot
 
     public static initializeOnlyOnce(): void {
-        if (SupportNotifierService.started || config === undefined || config.notifierToken === '') {
+        if (SupportNotifierService.started || config === undefined || config.telegramNotifierToken === '') {
             return
         }
         SupportNotifierService.started = true
-        SupportNotifierService.bot = new teleBot({ token: config.notifierToken })
+        SupportNotifierService.bot = new teleBot({ token: config.telegramNotifierToken })
         SupportNotifierService.bot.on('text', (msg: any) => {
             // console.log(JSON.stringify(msg))
             msg.reply.text(`Selber ${msg.text}`)
@@ -28,8 +28,8 @@ export class SupportNotifierService implements ISupportNotifier {
     }
 
     public async sendMessageToSupportChannel(message: string): Promise<any> {
-        if (config.notifierToken !== '' && config.notifierSupportChannel !== '') {
-            return SupportNotifierService.bot.sendMessage(config.notifierSupportChannel, message)
+        if (config.telegramNotifierToken !== '' && config.telegramNotifierSupportChannel !== '') {
+            return SupportNotifierService.bot.sendMessage(config.telegramNotifierSupportChannel, message)
         }
     }
 }

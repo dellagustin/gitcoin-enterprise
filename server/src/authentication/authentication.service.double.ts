@@ -36,6 +36,7 @@ export class AuthenticationServiceDouble {
     }
 
     async createAuthenticationDataFromCode(code: any, state: any): Promise<IAuthenticationData> {
+        this.lg.log(ELogLevel.Debug, `createAuthenticationDataFromCode: ${code} for state ${state}`)
         const newToken = await this.getTokenFromCode(code, state)
         const authenticationData = await this.handleNewToken(newToken)
 
@@ -43,12 +44,14 @@ export class AuthenticationServiceDouble {
     }
 
     public addState(): string {
+        this.lg.log(ELogLevel.Debug, `adding state`)
         const state = uuidv1().replace(/-/g, '')
         this.validStates.push(state)
         return state
     }
 
     public getOAUTHLoginURL(state: string): string {
+        this.lg.log(ELogLevel.Debug, `getOAUTHLoginURL for state ${state}`)
         // return `${config.gitHubURL}/login/oauth/authorize?client_id=${config.gitHubOAuthClient}&scope=read:user&state=${state}`
         return `${config.oAuthProviderURL}/login/oauth/authorize?client_id=${config.gitHubOAuthClient}&scope=read:user&state=${state}`
     }
@@ -69,6 +72,7 @@ export class AuthenticationServiceDouble {
     }
 
     public keepTheAction(action: string, ipAddress: string) {
+        this.lg.log(ELogLevel.Debug, `keepTheAction: ${action} for ip ${ipAddress}`)
         const addressWantsTo = {
             ipAddress,
             action,
@@ -77,6 +81,7 @@ export class AuthenticationServiceDouble {
     }
 
     private getTestAuthenticationData(michaelsfriendskey: any): IAuthenticationData {
+        this.lg.log(ELogLevel.Debug, `getTestAuthenticationData: for ${michaelsfriendskey}`)
         return {
             avatarURL: 'https://avatars1.githubusercontent.com/u/43786652?v=4',
             login: 'michael-spengler',
@@ -85,10 +90,12 @@ export class AuthenticationServiceDouble {
     }
 
     private async getTokenFromCode(code: string, state: string) {
+        this.lg.log(ELogLevel.Debug, `getTokenFromCode: for code ${code} and state ${state}`)
         return 'justSomeDoubleToken123'
     }
 
     private async handleNewToken(michaelsfriendskey: any): Promise<IAuthenticationData> {
+        this.lg.log(ELogLevel.Debug, `handleNewToken: for ${michaelsfriendskey}`)
         let authenticationData: IAuthenticationData
         this.lg.log(ELogLevel.Debug, 'handling new token')
         authenticationData = this.getTestAuthenticationData(michaelsfriendskey)
@@ -98,6 +105,7 @@ export class AuthenticationServiceDouble {
     }
 
     private addAuthenticationData(aD: IAuthenticationData): void {
+        this.lg.log(ELogLevel.Debug, `addAuthenticationData: ${JSON.stringify(aD)}`)
         const allAuthenticationData = this.persistencyService.getAuthenticationData()
         if (allAuthenticationData.filter((entry: IAuthenticationData) => entry.token === aD.token)[0] !== undefined) {
             this.lg.log(ELogLevel.Debug, 'Authentication Data is already in Store')

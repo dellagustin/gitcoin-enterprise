@@ -7,7 +7,9 @@ import { config } from '../app.module'
 import { GithubIntegrationService } from '../github-integration/github-integration.service'
 import { PersistencyService } from '../persistency/persistency.service'
 import { LedgerConnector } from '../ledger-connector/ledger-connector-file-system.service'
-const axios = require('axios')
+import axios, { AxiosInstance } from 'axios'
+import * as tunnel from 'tunnel'
+
 
 @Injectable()
 export class AuthenticationService {
@@ -87,7 +89,36 @@ export class AuthenticationService {
         const oauthConfirmationURL =
             `${config.gitHubURL}/login/oauth/access_token?client_id=${config.gitHubOAuthClient}&client_secret=${config.gitHubOAuthSecret}&code=${code}&state=${state}`
 
-        const result = (await axios.get(oauthConfirmationURL)).data
+
+        let agent
+        let axiosClient: AxiosInstance
+        if (config.gitHubURL === 'https://github.com') {
+            axiosClient = axios.create({
+                baseURL: config.gitHubURL,
+                proxy: false,
+            })
+        } else {
+            agent = tunnel.httpsOverHttp({
+                proxy: {
+                    host: config.proxyHostForEnterpriseGitHubInstance,
+                    port: config.proxyHostForEnterpriseGitHubInstancePort,
+                },
+            })
+            axiosClient = axios.create({
+                baseURL: config.gitHubURL,
+                httpsAgent: agent,
+                proxy: false, // to be save regarding autodetection of environment variables...
+            })
+        }
+
+        let result: any
+        try {
+            result = (await axiosClient.get(oauthConfirmationURL)).data
+            this.lg.log(ELogLevel.Info, `call was successful: ${JSON.stringify(result)}`)
+        } catch (error) {
+            this.lg.log(ELogLevel.Error, `the following error occurred: ${JSON.stringify(error.message)}`)
+        }
+
         const accessToken = result.split('access_token=')[1].split('&')[0]
 
         return accessToken

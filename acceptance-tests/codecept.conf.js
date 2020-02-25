@@ -9,11 +9,11 @@ exports.config = {
   output: "./output",
   helpers: {
     Puppeteer: {
-      url: "http://localhost:4200",
+      url: "http://localhost:3001",
       show: false
     }
   },
-  bootstrap: null,
+  bootstrap: "./initialize.js",
   mocha: {},
   name: "acceptance-tests",
   plugins: {

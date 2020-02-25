@@ -16,7 +16,7 @@ exports.config = {
       },
     }
   },
-  bootstrap: null,
+  bootstrap: "./initialize.js",
   mocha: {},
   name: "acceptance-tests",
   plugins: {

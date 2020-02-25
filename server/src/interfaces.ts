@@ -79,21 +79,20 @@ export interface ITaskAndFunding {
 export interface IConfig {
   port: number
   backendURL: string
+  frontendURL: string
   logLevel: number
   certificateFile: string
   certificatePrivateKeyFile: string
   ledgerConnector: any
-  enterpriseInternalCollaborationCurrency: string
-  enterpriseInternalCollaborationCurrencySymbol: string
-  token: string
-  notifierToken: string
-  notifierSupportChannel: string
+  authenticationService: string,
+  dependentOnService: string
+  telegramNotifierToken: string
+  telegramNotifierSupportChannel: string
+  oAuthProviderURL: string
   gitHubOAuthClient: string
   gitHubOAuthSecret: string
-  gitHubAPIBaseURL: string
   gitHubURL: string
-  oAuthProviderURL: string
-  dependentOnService: string
-  authenticationService: string,
-  frontendURL: string
+  gitHubTokenForPostingCommentsAndForGettingIssueData: string
+  proxyHostForEnterpriseGitHubInstance: string
+  proxyHostForEnterpriseGitHubInstancePort: string
 }

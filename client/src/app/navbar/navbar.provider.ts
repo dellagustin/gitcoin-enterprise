@@ -24,11 +24,19 @@ export class NavBarProvider {
     menuEntries.push({ isActive: false, text: 'Use as App', href: 'useAsApp' })
     menuEntries.push({ isActive: false, text: 'Invite Friends', href: 'inviteFriends' })
     menuEntries.push({ isActive: false, text: 'Open Source', href: 'openSource' })
-    menuEntries.push({ isActive: false, text: 'About', href: 'about' })
-    if (gitHubURL === 'https://github.com') { // the following one is not needed for enterprise internal instance
+    if (this.isImpressumNecessary()) {
+      menuEntries.push({ isActive: false, text: 'About', href: 'about' })
       menuEntries.push({ isActive: false, text: 'Contact', href: 'contact' })
     }
 
     return menuEntries
   }
+
+  private static isImpressumNecessary(): boolean {
+    if (document.URL === 'https://gitcoin-enterprise.org/' || document.URL.indexOf('http://localhost') !== -1) {
+      return true
+    }
+    return false
+  }
+
 }
