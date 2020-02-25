@@ -45,7 +45,10 @@ export class GithubIntegrationService {
         let user
 
         try {
-            const getURLToGetUser = `${config.gitHubURL}/api/v3/user?access_token=${token}`
+            const getURLToGetUser = (config.gitHubURL === 'https://github.com') ?
+                `${config.gitHubURL}/user?access_token=${token}` :
+                `${config.gitHubURL}/api/v3/user?access_token=${token}`
+            this.lg.log(ELogLevel.Info, `calling to: ${getURLToGetUser}`)
             user = (await this.axiosClient.get(getURLToGetUser)).data
             this.lg.log(ELogLevel.Info, JSON.stringify(`user: ${user}`))
             const authenticationData: IAuthenticationData = {
@@ -77,7 +80,9 @@ export class GithubIntegrationService {
         await this.lg.log(ELogLevel.Info, `getting Issue data for owner: ${org}, repo: ${repo}, issueId: ${issueId}`)
         const issueInfo = {} as IssueInfo
         try {
-            const getURLToGetIssueData = `${config.gitHubURL}/api/v3/repos/${org}/${repo}/issues/${issueId}`
+            const getURLToGetIssueData = (config.gitHubURL === 'https://github.com') ?
+                `${config.gitHubURL}/repos/${org}/${repo}/issues/${issueId}` :
+                `${config.gitHubURL}/api/v3/repos/${org}/${repo}/issues/${issueId}`
             const issueData = (await this.axiosClient.get(getURLToGetIssueData)).data
             this.lg.log(ELogLevel.Info, JSON.stringify(issueData))
             issueInfo.title = issueData.title
@@ -109,7 +114,9 @@ export class GithubIntegrationService {
         const issueNo = linkToIssue.split('/')[6]
         this.lastPostCommentRequest = moment()
         try {
-            const uRLToPostComment = `${config.gitHubURL}/api/v3/repos/${owner}/${repoName}/issues/${issueNo}/comments?access_token=${config.gitHubTokenForPostingCommentsAndForGettingIssueData}`
+            const uRLToPostComment = (config.gitHubURL === 'https://github.com') ?
+                `${config.gitHubURL}/repos/${owner}/${repoName}/issues/${issueNo}/comments?access_token=${config.gitHubTokenForPostingCommentsAndForGettingIssueData}` :
+                `${config.gitHubURL}/api/v3/repos/${owner}/${repoName}/issues/${issueNo}/comments?access_token=${config.gitHubTokenForPostingCommentsAndForGettingIssueData}`
             const postingResult = (await this.axiosClient.post(uRLToPostComment, body))
 
             this.lg.log(ELogLevel.Info, JSON.stringify(`posting an issue and getting: ${postingResult}`))
@@ -140,7 +147,9 @@ export class GithubIntegrationService {
         const issueNo = linkToIssue.split('/')[6]
         this.lastPostCommentRequest = moment()
         try {
-            const uRLToPostComment = `${config.gitHubURL}/api/v3/repos/${owner}/${repoName}/issues/${issueNo}/comments?access_token=${config.gitHubTokenForPostingCommentsAndForGettingIssueData}`
+            const uRLToPostComment = (config.gitHubURL === 'https://github.com') ?
+                `${config.gitHubURL}/repos/${owner}/${repoName}/issues/${issueNo}/comments?access_token=${config.gitHubTokenForPostingCommentsAndForGettingIssueData}` :
+                `${config.gitHubURL}/api/v3/repos/${owner}/${repoName}/issues/${issueNo}/comments?access_token=${config.gitHubTokenForPostingCommentsAndForGettingIssueData}`
             const postingResult = (await this.axiosClient.post(uRLToPostComment, body))
 
             this.lg.log(ELogLevel.Info, JSON.stringify(`posting an issue and getting: ${postingResult}`))
@@ -171,7 +180,9 @@ export class GithubIntegrationService {
         const repoName = application.taskLink.split('/')[4]
         const issueNo = application.taskLink.split('/')[6]
         try {
-            const uRLToPostComment = `${config.gitHubURL}/api/v3/repos/${owner}/${repoName}/issues/${issueNo}/comments?access_token=${config.gitHubTokenForPostingCommentsAndForGettingIssueData}`
+            const uRLToPostComment = (config.gitHubURL === 'https://github.com') ?
+                `${config.gitHubURL}/repos/${owner}/${repoName}/issues/${issueNo}/comments?access_token=${config.gitHubTokenForPostingCommentsAndForGettingIssueData}` :
+                `${config.gitHubURL}/api/v3/repos/${owner}/${repoName}/issues/${issueNo}/comments?access_token=${config.gitHubTokenForPostingCommentsAndForGettingIssueData}`
             const postingResult = (await this.axiosClient.post(uRLToPostComment, body))
 
             this.lg.log(ELogLevel.Info, JSON.stringify(`posting an issue and getting: ${postingResult}`))
