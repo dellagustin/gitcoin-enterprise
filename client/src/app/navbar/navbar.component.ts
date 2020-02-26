@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'
 import { INavbarData } from './navbar.interfaces'
-import { backendURL } from '../../configurations/configuration'
+import { BackendService } from '../backend.service'
 
 @Component({
   selector: 'app-navbar',
@@ -38,6 +38,6 @@ export class NavbarComponent implements OnInit {
   }
 
   public clickTitle() {
-    window.location.assign(backendURL)
+    window.location.assign(BackendService.backendURL)
   }
 }

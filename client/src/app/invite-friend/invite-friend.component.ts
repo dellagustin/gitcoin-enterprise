@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core'
 import { BackendService } from '../backend.service'
-import { backendURL } from '../../configurations/configuration'
 import { IEmail, IAuthenticationData } from '../interfaces'
 
 @Component({
@@ -11,7 +10,7 @@ import { IEmail, IAuthenticationData } from '../interfaces'
 export class InviteFriendComponent implements OnInit {
 
   @Input() public authenticationData: IAuthenticationData
-  public url = backendURL
+  public url = BackendService.backendURL
   // public eMailAddress = 'akshay.iyyaudarai.balasundaram@sap.com'
   public eMailAddress = 'michael@peer2peer-enterprise.org'
   public invitingUsersAddress = 'michael.spengler@sap.com'

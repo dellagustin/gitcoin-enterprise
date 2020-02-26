@@ -18,6 +18,8 @@ export class AppController {
   public constructor(private readonly appService: AppService, private readonly gitHubIntegration: GithubIntegrationService, private readonly lg: LoggerService) {
     // providing the github URL --> flexibility for GHE
     this.indexFileContent = this.indexFileContent.replace('gitHubURLIdContent', config.gitHubURL)
+    this.indexFileContent = this.indexFileContent.replace('frontendURLContent', config.frontendURL)
+    this.indexFileContent = this.indexFileContent.replace('backendURLContent', config.backendURL)
   }
 
   @Get('/')
@@ -34,12 +36,8 @@ export class AppController {
     return this.appService.getLedgerEntries()
   }
 
-  @Get('/getIssueInfo/link/:link')
-  public async getIssue(@Param('link') link: string): Promise<any> {
-    const sourceString = link.split(`${config.gitHubURL}/`)[1]
-    const org = sourceString.split('/')[0]
-    const repo = sourceString.split('/')[1].split('/')[0]
-    const issueId = sourceString.split('/')[3]
+  @Get('/getIssueInfo/org/:org/repo/:repo/issueId/:issueId')
+  public async getIssue(@Param('org') org: string, @Param('repo') repo: string, @Param('issueId') issueId: string): Promise<any> {
 
     return this.gitHubIntegration.getIssue(org, repo, issueId)
   }

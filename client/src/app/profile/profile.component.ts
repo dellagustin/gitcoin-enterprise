@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'
 import { BackendService } from '../backend.service'
-import { backendURL } from '../../configurations/configuration'
 import { IAuthenticationData, IFunding, IBountiesAndFundings, IBounty, IBountyReceiver } from '../interfaces'
 import { ILedgerEntry } from '../ledger/ledger.interface'
 import { Helper } from '../helper'
@@ -57,7 +56,7 @@ export class ProfileComponent implements OnInit {
   }
 
   public login() {
-    window.location.assign(`${backendURL}/login`)
+    window.location.assign(`${BackendService.backendURL}/login`)
   }
 
   public clickViewTransactionInLedger(newLedgerEntry: ILedgerEntry) {
@@ -65,7 +64,7 @@ export class ProfileComponent implements OnInit {
   }
 
   public loginViaGitHub() {
-    const authenticationURL = `${backendURL}/login?action=profile`
+    const authenticationURL = `${BackendService.backendURL}/login?action=profile`
     location.assign(authenticationURL)
   }
 

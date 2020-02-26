@@ -103,6 +103,7 @@ export class Helper {
   }
 
   public static getId(link: string): string {
+    alert(link)
     const myArray = link.split('/')
 
     return `${myArray[myArray.length - 3]}/${myArray[myArray.length - 1]}`

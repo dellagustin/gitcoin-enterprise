@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core'
 import { HttpClient, HttpHeaders } from '@angular/common/http'
-import { backendURL } from '../configurations/configuration'
 import { IEmail, IApplication, ITaskAndFunding, IBountyReceiver } from './interfaces'
 import { ILedgerEntry } from './ledger/ledger.interface'
 
@@ -16,48 +15,54 @@ export enum ETaskStatus {
 })
 export class BackendService {
   public static gitHubURL
+  public static backendURL
 
   public constructor(private readonly http: HttpClient) {
   }
 
   public getLedgerEntries(token: string) {
-    return this.get(`${backendURL}/getLedgerEntries`, token)
+    return this.get(`${BackendService.backendURL}/getLedgerEntries`, token)
   }
 
   public postTransfer(receivers: IBountyReceiver[], token: string) {
-    return this.post(`${backendURL}/postTransfer`, receivers, token)
+    return this.post(`${BackendService.backendURL}/postTransfer`, receivers, token)
   }
 
   // public sendEMail(eMail: IEmail, token: string): any {
-  //   return this.post(`${backendURL}/sendEMail`, eMail, token)
+  //   return this.post(`${BackendService.backendURL}/sendEMail`, eMail, token)
   // }
 
   public postSolutionApproach(application: IApplication, token: string): any {
-    return this.post(`${backendURL}/postSolutionApproach`, application, token)
+    return this.post(`${BackendService.backendURL}/postSolutionApproach`, application, token)
   }
 
   public triggerBackup(token: string) {
-    return this.post(`${backendURL}/triggerBackup`, {}, token)
+    return this.post(`${BackendService.backendURL}/triggerBackup`, {}, token)
   }
 
   public saveFunding(taskAndFunding: ITaskAndFunding, token: string) {
-    return this.post(`${backendURL}/postFunding`, taskAndFunding, token)
+    return this.post(`${BackendService.backendURL}/postFunding`, taskAndFunding, token)
   }
 
   public getUser(token: string) {
-    return this.get(`${backendURL}/getUser`, token)
+    return this.get(`${BackendService.backendURL}/getUser`, token)
   }
 
   public getFundedTasks(token: string) {
-    return this.get(`${backendURL}/getFundedTasks`, token)
+    return this.get(`${BackendService.backendURL}/getFundedTasks`, token)
   }
 
   public getAuthenticationData(token: string) {
-    return this.get(`${backendURL}/getAuthenticationData`, token)
+    return this.get(`${BackendService.backendURL}/getAuthenticationData`, token)
   }
 
   public getIssueInfo(link: string, token: string) {
-    return this.get(`${backendURL}/getIssueInfo/link/${link}`, token)
+    const sourceString = link.split(`${BackendService.gitHubURL}/`)[1]
+    const org = sourceString.split('/')[0]
+    const repo = sourceString.split('/')[1].split('/')[0]
+    const issueId = sourceString.split('/')[3]
+
+    return this.get(`${BackendService.backendURL}/getIssueInfo/org/${org}/repo/${repo}/issueId/${issueId}`, token)
   }
 
   private get(url: any, token: string): any {

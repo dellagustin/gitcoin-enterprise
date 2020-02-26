@@ -3,7 +3,6 @@ import { INavbarData } from './navbar/navbar.interfaces'
 import { ILedgerEntry } from './ledger/ledger.interface'
 import { IAuthenticationData, ITask } from './interfaces'
 import { ActivatedRoute } from '@angular/router'
-import { backendURL } from '../configurations/configuration'
 import { NavBarProvider } from './navbar/navbar.provider'
 import { BackendService } from './backend.service'
 
@@ -33,8 +32,7 @@ export class AppComponent implements OnInit {
   public ngOnInit() {
     this.considerPWAInstallPrompt()
 
-    // The following move is for flexibilizing for GHE
-    BackendService.gitHubURL = document.getElementById('gitHubURLId').innerText.trim()
+    this.considerConfigFromBackend()
 
     this.aR
       .queryParamMap
@@ -51,11 +49,21 @@ export class AppComponent implements OnInit {
         }
       })
   }
+  public considerConfigFromBackend() {
+    // The following move is for flexibilizing for GHE
+    BackendService.gitHubURL = document.getElementById('gitHubURLId').innerText.trim()
+    if (BackendService.gitHubURL === 'gitHubURLIdContent') { // e.g. when localhost:4200
+      BackendService.gitHubURL = 'https://github.com'
+      BackendService.backendURL = 'http://localhost:3001'
+    } else {
+      BackendService.backendURL = document.getElementById('backendURLId').innerText.trim()
+    }
+  }
 
   public fundTask() {
     // alert(this.authenticationData.login)
     if (this.authenticationData === undefined) {
-      location.assign(`${backendURL}/authentication/login?action=fund`)
+      location.assign(`${BackendService.backendURL}/authentication/login?action=fund`)
     } else {
       this.mode = 'fund'
     }
@@ -64,7 +72,7 @@ export class AppComponent implements OnInit {
   public solveTask() {
     // alert(this.authenticationData.login)
     if (this.authenticationData === undefined) {
-      location.assign(`${backendURL}/authentication/login?action=solve`)
+      location.assign(`${BackendService.backendURL}/authentication/login?action=solve`)
     } else {
       this.mode = 'solve'
     }
@@ -72,7 +80,7 @@ export class AppComponent implements OnInit {
 
   public onClickMenuEntry(target: string) {
     if (this.modesRequiringAuthentication.indexOf(target) !== -1 && this.authenticationData === undefined) {
-      location.assign(`${backendURL}/authentication/login?action=${target}`)
+      location.assign(`${BackendService.backendURL}/authentication/login?action=${target}`)
     } else {
       this.viewTransactionInLedger = false
       this.mode = target
@@ -106,7 +114,7 @@ export class AppComponent implements OnInit {
           AppComponent.deferredPrompt = null
         })
       }
-    }, 1 * 1000)
+    },         1 * 1000)
 
   }
 

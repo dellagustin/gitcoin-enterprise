@@ -2,7 +2,6 @@ import { Component, OnInit, Input } from '@angular/core'
 import { ILedgerEntry } from './ledger.interface'
 import { BackendService } from '../backend.service'
 import * as moment from 'moment'
-import { backendURL } from '../../configurations/configuration'
 import { IAuthenticationData } from '../interfaces'
 import { Helper } from '../helper'
 
@@ -61,7 +60,7 @@ export class LedgerComponent implements OnInit {
     const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(line)
     const downloadAnchorNode = document.createElement('a')
     downloadAnchorNode.setAttribute('href', dataStr)
-    downloadAnchorNode.setAttribute('download', `${moment().format('YYYY-MM-DD')} ${backendURL.split('https://')[1]}` + '.csv')
+    downloadAnchorNode.setAttribute('download', `${moment().format('YYYY-MM-DD')} ${BackendService.backendURL.split('https://')[1]}` + '.csv')
     document.body.appendChild(downloadAnchorNode) // required for firefox
     downloadAnchorNode.click()
     downloadAnchorNode.remove()
@@ -72,7 +71,7 @@ export class LedgerComponent implements OnInit {
     const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(this.ledgerEntries))
     const downloadAnchorNode = document.createElement('a')
     downloadAnchorNode.setAttribute('href', dataStr)
-    downloadAnchorNode.setAttribute('download', `${moment().format('YYYY-MM-DD')} ${backendURL.split('https://')[1]}` + '.json')
+    downloadAnchorNode.setAttribute('download', `${moment().format('YYYY-MM-DD')} ${BackendService.backendURL.split('https://')[1]}` + '.json')
     document.body.appendChild(downloadAnchorNode) // required for firefox
     downloadAnchorNode.click()
     downloadAnchorNode.remove()

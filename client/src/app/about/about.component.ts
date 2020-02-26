@@ -1,5 +1,5 @@
 import { Component } from '@angular/core'
-import { backendURL } from '../../configurations/configuration'
+import { BackendService } from '../backend.service'
 
 @Component({
   selector: 'app-about',
@@ -8,6 +8,6 @@ import { backendURL } from '../../configurations/configuration'
 })
 export class AboutComponent {
 
-  public backendURL = backendURL
+  public backendURL = BackendService.backendURL
 
 }
