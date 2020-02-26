@@ -28,14 +28,19 @@ export class LedgerComponent implements OnInit {
     this.backendService.getLedgerEntries(this.authenticationData.token)
       .subscribe((result: ILedgerEntry[]) => {
         this.ledgerEntries = result
-          this.fundings = this.ledgerEntries.filter((entry: ILedgerEntry) => entry.sender === this.authenticationData.login)
-          this.bounties = this.ledgerEntries.filter((entry: ILedgerEntry) => entry.receiver === this.authenticationData.login)
+        this.fundings = this.ledgerEntries.filter((entry: ILedgerEntry) => entry.sender === this.authenticationData.login)
+        this.bounties = this.ledgerEntries.filter((entry: ILedgerEntry) => entry.receiver === this.authenticationData.login)
         if (this.transactionId !== '') {
           setTimeout(() => {
             window.scrollTo(0, document.body.scrollHeight)
           }, 700)
         }
       })
+  }
+
+  public triggerBackup() {
+    this.backendService.triggerBackup(this.authenticationData.token)
+      .subscribe()
   }
 
   public downloadAsCSV(): void {

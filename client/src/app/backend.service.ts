@@ -23,7 +23,7 @@ export class BackendService {
   }
 
   public postTransfer(receivers: IBountyReceiver[], token: string) {
-        return this.post(`${backendURL}/postTransfer`, receivers, token)
+    return this.post(`${backendURL}/postTransfer`, receivers, token)
   }
 
   // public sendEMail(eMail: IEmail, token: string): any {
@@ -32,6 +32,10 @@ export class BackendService {
 
   public postSolutionApproach(application: IApplication, token: string): any {
     return this.post(`${backendURL}/postSolutionApproach`, application, token)
+  }
+
+  public triggerBackup(token: string) {
+    return this.post(`${backendURL}/triggerBackup`, {}, token)
   }
 
   public saveFunding(taskAndFunding: ITaskAndFunding, token: string) {

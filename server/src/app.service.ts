@@ -12,6 +12,9 @@ import { PersistencyService } from './persistency/persistency.service'
 
 @Injectable()
 export class AppService {
+  public triggerBackup(): Promise<ILedgerEntry> {
+    throw new Error('Method not implemented.')
+  }
   public getLoginFromToken(token: string) {
     return this.getAuthenticationData(token).login
   }

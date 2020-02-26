@@ -8,7 +8,7 @@
   },
   "scripts": {
     "tslint": "tslint -p client/ -c tslint.json && tslint -p server/ -c tslint.json",
-    "test": "npm run build && npm run lint && npm run ut && npm run at",
+    "test": "npm run build && npm run lint && npm run ut",
     "ut": "cd server && npm run test",
     "at": "cd acceptance-tests && npm run test",
     "lint": "cd server && npm run lint && cd ../client && npm run lint",
