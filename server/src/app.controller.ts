@@ -6,57 +6,71 @@ import { ILedgerEntry } from './ledger-connector/ledger-connector.interface'
 import { LoggerService } from './logger/logger.service'
 import { ELogLevel } from './logger/logger-interface'
 import * as path from 'path'
+import * as fs from 'fs-sync'
+import { config } from './app.module'
 
 @Controller()
 export class AppController {
 
-  constructor(private readonly appService: AppService, private readonly gitHubIntegration: GithubIntegrationService, private readonly lg: LoggerService) { }
+  // for quicker access & delivery
+  private readonly indexFileContent = fs.read(path.join(__dirname, '../docs/i-want-compression-via-route.html'))
+
+  public constructor(private readonly appService: AppService, private readonly gitHubIntegration: GithubIntegrationService, private readonly lg: LoggerService) {
+    // providing the github URL --> flexibility for GHE
+    this.indexFileContent = this.indexFileContent.replace('gitHubURLIdContent', config.gitHubURL)
+  }
 
   @Get('/')
-  getHello(@Req() req: any, @Res() res: any): void {
-    this.lg.log(ELogLevel.Info, `request received from ${req.connection.remoteAddress}`)
+  public getHello(@Req() req: any, @Res() res: any): void {
+    void this.lg.log(ELogLevel.Info, `request received from ${req.connection.remoteAddress}`)
 
-    res.sendFile(path.join(__dirname, '../docs/i-want-compression-via-route.html'))
+    // res.sendFile(path.join(__dirname, '../docs/i-want-compression-via-route.html'))
+    res.send(this.indexFileContent)
   }
 
   @Get('/getLedgerEntries')
-  getLedgerEntries(@Req() req: any): ILedgerEntry[] {
+  public getLedgerEntries(@Req() req: any): ILedgerEntry[] {
     // const login = this.appService.getLoginFromToken(req.headers.michaelsfriendskey)
     return this.appService.getLedgerEntries()
   }
 
-  @Get('/getIssueInfo/org/:org/repo/:repo/issueid/:issueId')
-  getIssue(@Param('org') org: string, @Param('repo') repo: string, @Param('issueId') issueId: number) {
+  @Get('/getIssueInfo/link/:link')
+  public async getIssue(@Param('link') link: string): Promise<any> {
+    const sourceString = link.split(`${config.gitHubURL}/`)[1]
+    const org = sourceString.split('/')[0]
+    const repo = sourceString.split('/')[1].split('/')[0]
+    const issueId = sourceString.split('/')[3]
+
     return this.gitHubIntegration.getIssue(org, repo, issueId)
   }
 
   @Get('/getFundedTasks')
-  getFundedTasks(): ITask[] {
+  public getFundedTasks(): ITask[] {
     return this.appService.getFundedTasks()
   }
 
   @Get('/getAuthenticationData')
-  getAuthenticationData(@Req() req: any): IAuthenticationData {
+  public getAuthenticationData(@Req() req: any): IAuthenticationData {
     return this.appService.getAuthenticationData(req.headers.michaelsfriendskey)
   }
 
   @Post('/postFunding')
-  saveFunding(@Req() req: any): Promise<ILedgerEntry> {
+  public async saveFunding(@Req() req: any): Promise<ILedgerEntry> {
     return this.appService.saveFunding(req.body, req.headers.michaelsfriendskey)
   }
 
   @Post('/triggerBackup')
-  triggerBackup(@Req() req: any): Promise<ILedgerEntry> {
-    return this.appService.triggerBackup()
+  public triggerBackup(@Req() req: any): void {
+    this.appService.triggerBackup()
   }
 
   @Post('/postTransfer')
-  postTransfer(@Req() req: any): Promise<ILedgerEntry[]> {
+  public async postTransfer(@Req() req: any): Promise<ILedgerEntry[]> {
     return this.appService.postTransfer(req.body, req.headers.michaelsfriendskey)
   }
 
   @Post('/postSolutionApproach')
-  postSolutionApproach(@Req() req: any): Promise<void> {
+  public async postSolutionApproach(@Req() req: any): Promise<void> {
     return this.appService.postSolutionApproach(req.body, req.headers.michaelsfriendskey)
   }
 

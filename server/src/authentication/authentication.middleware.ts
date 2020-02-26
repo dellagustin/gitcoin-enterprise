@@ -19,15 +19,15 @@ export class AuthenticationMiddleware implements NestMiddleware {
     this.authenticationService = new AuthenticationService(this.lg, new GithubIntegrationService(this.lg), persistencyService, new LedgerConnector(this.lg, persistencyService))
   }
 
-  public async use(req: any, res: Response, next: any): Promise<void> {
-    // tslint:disable-next-line: no-console
-    const requestURL = req.protocol + '://' + req.get('host') + req.originalUrl
-    this.lg.log(ELogLevel.Debug, `middleware executed for ${requestURL}`)
+  public use(req: any, res: Response, next: any): void {
+        // tslint:disable-next-line: prefer-template
+    const requestURL = `${req.protocol}://${req.get('host')}${req.originalUrl}`
+    void this.lg.log(ELogLevel.Debug, `middleware executed for ${requestURL}`)
     if (this.authenticationService.isUserAuthenticated(req.headers.michaelsfriendskey)) {
       next()
     } else {
       const message = `I received an unauthorized call to: ${requestURL} with key ${JSON.stringify(req.headers)}`
-      this.lg.log(ELogLevel.Warning, message)
+      void this.lg.log(ELogLevel.Warning, message)
     }
   }
 }

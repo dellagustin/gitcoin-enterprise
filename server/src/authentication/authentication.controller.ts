@@ -8,7 +8,7 @@ export class AuthenticationController {
     public constructor(private readonly authenticationService: AuthenticationService) { }
 
     @Get('/authentication/login')
-    login(@Req() req: any, @Res() res: any, @Query('action') action: string): void {
+    public login(@Req() req: any, @Res() res: any, @Query('action') action: string): void {
         this.authenticationService.keepTheAction(action, req.connection.remoteAddress)
         res.redirect(this.authenticationService.getOAUTHLoginURL(this.authenticationService.addState()))
     }
@@ -21,7 +21,7 @@ export class AuthenticationController {
     }
 
     @Get('/login/oauth/authorize') // this route is only needed for test purposes - test doubling an oauth provider - if you have an idea how to do this better create a PR
-    authorize(@Req() req: any, @Res() res: any, @Query('state') state: string): void {
+    public authorize(@Req() req: any, @Res() res: any, @Query('state') state: string): void {
         res.redirect(`${config.backendURL}/authentication/github/callback?state=${state}`)
     }
 

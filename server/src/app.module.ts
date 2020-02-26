@@ -60,7 +60,7 @@ const authenticationServiceProvider = {
     ImagesService],
 })
 export class AppModule {
-  configure(consumer: MiddlewareConsumer) {
+  public configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AuthenticationMiddleware)
       .exclude('')

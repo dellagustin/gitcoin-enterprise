@@ -1,17 +1,17 @@
 import { Component, Input } from '@angular/core'
-import { ETaskStatus, } from '../backend.service'
+import { ETaskStatus } from '../backend.service'
 import { Helper } from '../helper'
 import { ITask } from '../interfaces'
 
 @Component({
   selector: 'app-task-card',
   templateUrl: './task-card.component.html',
-  styleUrls: ['./task-card.component.css', '../app.component.css']
+  styleUrls: ['./task-card.component.css', '../app.component.css'],
 })
 export class TaskCardComponent {
 
-  @Input() task: ITask
-  @Input() accordion = false
+  @Input() public task: ITask
+  @Input() public accordion = false
 
   public getStatusText(value: any): string {
     return Helper.getENUMValueAsString(ETaskStatus, value)

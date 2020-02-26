@@ -23,6 +23,7 @@ export class Helper {
         if (moment().subtract(value, unit).isAfter(previousMoment)) {
             return true
         }
+
         return false
     }
 

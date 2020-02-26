@@ -9,4 +9,3 @@ export interface IMenuEntry {
   href: string
   isActive: boolean
 }
-

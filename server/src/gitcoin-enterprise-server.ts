@@ -37,8 +37,9 @@ async function bootstrap() {
   app.use(compression({ filter: shouldCompress }))
 
   function shouldCompress(req, res) {
-    if (req.headers['accept-encoding'] === 'deflate, gzip')  {
-      lg.log(ELogLevel.Info, 'not compressing this specific request')
+    if (req.headers['accept-encoding'] === 'deflate, gzip') {
+      void lg.log(ELogLevel.Info, 'not compressing this specific request')
+
       // don't compress responses for link preview - aka og image ...
       return false
     }
@@ -47,19 +48,19 @@ async function bootstrap() {
     return compression.filter(req, res)
   }
 
-  lg.log(ELogLevel.Info, 'listening soon :)')
+  void lg.log(ELogLevel.Info, 'listening soon :)')
   await app.listen(config.port)
 
-  lg.log(ELogLevel.Info, `app is listening on port: ${config.port}`)
+  void lg.log(ELogLevel.Info, `app is listening on port: ${config.port}`)
 
   if (config.port === 443) {
     const unsafePort = 80
     ensureRedirectingFromUnsafeHostToSaveHost(unsafePort)
-    lg.log(ELogLevel.Info, `app is listening on port: ${unsafePort}`)
+    void lg.log(ELogLevel.Info, `app is listening on port: ${unsafePort}`)
   }
 
 }
-bootstrap()
+void bootstrap()
 
 function ensureRedirectingFromUnsafeHostToSaveHost(unsafePort) {
   const httpForwarderAPPListeningOnUnsafePort = express()

@@ -2,7 +2,7 @@ import { ILedgerEntry } from './ledger/ledger.interface'
 import { IFunding, IBountiesAndFundings, IBounty } from './interfaces'
 
 export class Helper {
-  static getFundingsAndBountiesFromLedgerEntries(login: string, ledgerEntries: ILedgerEntry[]): IBountiesAndFundings {
+  public static getFundingsAndBountiesFromLedgerEntries(login: string, ledgerEntries: ILedgerEntry[]): IBountiesAndFundings {
     const entriesWithAddress = Helper.getLedgerEntriesByAddress(login, ledgerEntries)
     if (entriesWithAddress.length === 0) {
       throw new Error('check getFundingsFromLedgerEntries')
@@ -13,14 +13,13 @@ export class Helper {
     const uniqueTaskLinksOfBounties: string[] = []
     const uniqueTaskLinksOfFundings: string[] = []
 
-
     for (const entry of entriesWithAddress) {
       if (entry.sender === login) {
         const funding: IFunding = {
           id: entry.id,
           funderId: entry.sender,
           taskLink: entry.receiver,
-          amount: entry.amount
+          amount: entry.amount,
         }
         if (uniqueTaskLinksOfFundings.indexOf(funding.taskLink) === -1) {
           uniqueTaskLinksOfFundings.push(funding.taskLink)
@@ -31,7 +30,7 @@ export class Helper {
         const bounty: IBounty = {
           bountyHunterId: entry.receiver,
           taskLink: entry.sender,
-          amount: entry.amount
+          amount: entry.amount,
         }
         if (uniqueTaskLinksOfBounties.indexOf(bounty.taskLink) === -1) {
           uniqueTaskLinksOfBounties.push(bounty.taskLink)
@@ -53,12 +52,12 @@ export class Helper {
       const fundingsForCurrentTaskLink: IFunding[] = fundings.filter((e: IFunding) => e.taskLink === uniqueTaskLink)
       let fundingForUniqueTaskLink
       if (fundingsForCurrentTaskLink.length > 0) {
-        fundingForUniqueTaskLink = fundingsForCurrentTaskLink.reduce((previousValue: any, currentValue: any) => {
+        fundingForUniqueTaskLink = fundingsForCurrentTaskLink.reduce((previousValue: IFunding, currentValue: IFunding) => {
           const reduced = {
             id: '',
             funderId: '',
             taskLink: currentValue.taskLink,
-            amount: previousValue.amount + currentValue.amount
+            amount: previousValue.amount + currentValue.amount,
           }
 
           return reduced
@@ -72,11 +71,11 @@ export class Helper {
       const bountiesForCurrentTaskLink: IBounty[] = bounties.filter((e: IBounty) => e.taskLink === uniqueTaskLink)
       let bountyForUniqueTaskLink
       if (bountiesForCurrentTaskLink.length > 0) {
-        bountyForUniqueTaskLink = bountiesForCurrentTaskLink.reduce((previousValue: any, currentValue: any) => {
+        bountyForUniqueTaskLink = bountiesForCurrentTaskLink.reduce((previousValue: IBounty, currentValue: IBounty) => {
           const reduced = {
-            bountyHunterId: currentValue.receiver,
+            bountyHunterId: currentValue.bountyHunterId,
             taskLink: currentValue.taskLink,
-            amount: previousValue.amount + currentValue.amount
+            amount: previousValue.amount + currentValue.amount,
           }
 
           return reduced
@@ -99,11 +98,13 @@ export class Helper {
         }
       }
     }
+
     return 'entry not found in your ENUM'
   }
 
   public static getId(link: string): string {
     const myArray = link.split('/')
+
     return `${myArray[myArray.length - 3]}/${myArray[myArray.length - 1]}`
   }
 
@@ -122,19 +123,20 @@ export class Helper {
         balance = balance + entry.amount
       }
     }
+
     return balance
 
   }
-
 
   public static getLedgerEntriesByAddress(address: string, allLedgerEntries: ILedgerEntry[]): ILedgerEntry[] {
 
     return allLedgerEntries.filter((ledgerEntry: ILedgerEntry) => {
       if (ledgerEntry.sender === address || ledgerEntry.receiver === address) {
         return true
-      } else {
-        return false
       }
+
+      return false
+
     })
   }
 

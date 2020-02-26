@@ -9,18 +9,20 @@ import { ELogLevel } from './logger/logger-interface'
 import { AuthenticationService } from './authentication/authentication.service'
 import { config } from './app.module'
 import { PersistencyService } from './persistency/persistency.service'
+const shelljs = require('shelljs')
 
 @Injectable()
 export class AppService {
-  public triggerBackup(): Promise<ILedgerEntry> {
-    throw new Error('Method not implemented.')
-  }
-  public getLoginFromToken(token: string) {
-    return this.getAuthenticationData(token).login
-  }
 
   // Interface would be cool for LedgerConnector... The reason why I could not use interface polymorphism here is interfaces are design-time only in the current context :)
   public constructor(private readonly lg: LoggerService, private readonly ledgerConnector: LedgerConnector, private readonly gitHubIntegration: GithubIntegrationService, private readonly authenticationService: AuthenticationService, private readonly persistencyService: PersistencyService) {
+  }
+
+  public triggerBackup(): void {
+    shelljs.exec(`${__dirname}/../trigger-operational-data-backup.sh`)
+  }
+  public getLoginFromToken(token: string) {
+    return this.getAuthenticationData(token).login
   }
 
   public getAuthenticationData(michaelsfriendskey: string): IAuthenticationData {
@@ -28,11 +30,11 @@ export class AppService {
   }
 
   public async postSolutionApproach(application: IApplication, userAccessToken: string): Promise<void> {
-    const authenticationData = await this.authenticationService.getAuthenticationDataFromMainMemory(userAccessToken)
+    const authenticationData = this.authenticationService.getAuthenticationDataFromMainMemory(userAccessToken)
     if (authenticationData === undefined) {
       throw new Error('Authentication data not found for this token')
     }
-    this.gitHubIntegration.postCommentAboutApplication(application)
+    await this.gitHubIntegration.postCommentAboutApplication(application)
   }
 
   public getGitHubToken(): string {
@@ -45,7 +47,7 @@ export class AppService {
 
   public authorizeInstallation(): void {
     const userId = '123'
-    this.lg.log(ELogLevel.Info, `User: ${userId} authorized installation.`)
+    void this.lg.log(ELogLevel.Info, `User: ${userId} authorized installation.`)
   }
 
   public getFundedTasks(): ITask[] {
@@ -58,7 +60,7 @@ export class AppService {
 
   public async saveFunding(taskAndFunding: ITaskAndFunding, userAccessToken: string): Promise<ILedgerEntry> {
 
-    const authenticationData = await this.authenticationService.getAuthenticationDataFromMainMemory(userAccessToken)
+    const authenticationData = this.authenticationService.getAuthenticationDataFromMainMemory(userAccessToken)
     if (authenticationData === undefined) {
       throw new Error(`I could not find authentication Data for this token: ${userAccessToken}`)
     }
@@ -82,22 +84,22 @@ export class AppService {
 
     this.persistencyService.saveFundedTasks(tasks)
 
-    this.gitHubIntegration.postCommentAboutSuccessfullFunding(taskAndFunding.task.link, taskAndFunding.funding)
-    this.lg.log(ELogLevel.Notification, `I received a funding of ${taskAndFunding.funding.amount} EIC for the following task: ${task.link}`)
+    await this.gitHubIntegration.postCommentAboutSuccessfullFunding(taskAndFunding.task.link, taskAndFunding.funding)
+    void this.lg.log(ELogLevel.Notification, `I received a funding of ${taskAndFunding.funding.amount} EIC for the following task: ${task.link}`)
+
     return newLedgerEntry
 
   }
 
+  public postTransfer(receivers: IBountyReceiver[], userAccessToken: string): ILedgerEntry[] {
 
-  public async postTransfer(receivers: IBountyReceiver[], userAccessToken: string): Promise<ILedgerEntry[]> {
-
-    const authenticationData = await this.authenticationService.getAuthenticationDataFromMainMemory(userAccessToken)
+    const authenticationData = this.authenticationService.getAuthenticationDataFromMainMemory(userAccessToken)
     if (authenticationData === undefined) {
       throw new Error(`I could not find authentication Data for this token: ${userAccessToken}`)
     }
 
     const newLedgerEntries: ILedgerEntry[] = this.createLedgerEntriesFromBountyPayment(receivers)
-    this.lg.log(ELogLevel.Info, `I created the following ledger entries: ${JSON.stringify(newLedgerEntries)} `)
+    void this.lg.log(ELogLevel.Info, `I created the following ledger entries: ${JSON.stringify(newLedgerEntries)} `)
 
     // this.gitHubIntegration.postCommentAboutSuccessfullTransfer(taskAndFunding.task.link, taskAndFunding.funding)
     // this.lg.log(ELogLevel.Notification, `I received a funding of ${taskAndFunding.funding.amount} EIC for the following task: ${task.link}`)
@@ -132,7 +134,7 @@ export class AppService {
         date: new Date().toISOString(),
         amount: receiver.amount,
         sender: receiver.bountyForTaskLink,
-        receiver: receiver.login
+        receiver: receiver.login,
       }
       newEntries.push(entry)
     }

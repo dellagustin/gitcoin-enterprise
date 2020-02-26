@@ -1,10 +1,11 @@
-import {  ETaskStatus } from '../backend.service'
+import { ETaskStatus, BackendService } from '../backend.service'
 import { ETaskType, ITask } from '../interfaces'
 
 export class TaskHelper {
+
   public static getInitialTask(): ITask {
     return {
-      link: 'https://github.com/gitcoin-enterprise/gitcoin-enterprise/issues/24',
+      link: `${BackendService.gitHubURL}/gitcoin-enterprise/gitcoin-enterprise/issues/24`,
       taskType: ETaskType.GitHubIssue,
       funding: 0,
       title: '',
@@ -12,8 +13,14 @@ export class TaskHelper {
       status: ETaskStatus.created,
       funderRatedWith: 5,
       solutionProviderRatedWith: 5,
-      dueDate: ''
+      dueDate: '',
     }
+  }
+
+  public static getDemoTaskLink(): string {
+    if (document.URL === 'https://gitcoin-enterprise.org') { return `${BackendService.gitHubURL}/gitcoin-enterprise/gitcoin-enterprise/issues/24` }
+
+    return `${BackendService.gitHubURL}/org/repo/issues/1`
   }
 
 }

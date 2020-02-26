@@ -4,18 +4,12 @@ import { IBounty } from '../interfaces'
 @Component({
   selector: 'app-ledger-bounties',
   templateUrl: './ledger-bounties.component.html',
-  styleUrls: ['./ledger-bounties.component.css', '../app.component.css']
+  styleUrls: ['./ledger-bounties.component.css', '../app.component.css'],
 })
-export class LedgerBountiesComponent implements OnInit {
+export class LedgerBountiesComponent {
 
-  @Input() usersBounties: IBounty[]
+  @Input() public usersBounties: IBounty[]
   public entryIdOfInterest: IBounty
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
 
   public onEntryClicked(entry: IBounty) {
     this.entryIdOfInterest = entry
@@ -24,6 +18,7 @@ export class LedgerBountiesComponent implements OnInit {
 
   public getIt(taskLink: string) {
     const array = taskLink.split('/')
+
     return `${array[4]}/${array[6]}`
   }
 

@@ -40,7 +40,7 @@ import { LedgerFundingsComponent } from './ledger-fundings/ledger-fundings.compo
     CheckItOnGithubComponent,
     TypingAreaComponent,
     LedgerBountiesComponent,
-    LedgerFundingsComponent
+    LedgerFundingsComponent,
 
   ],
   imports: [
@@ -51,9 +51,9 @@ import { LedgerFundingsComponent } from './ledger-fundings/ledger-fundings.compo
     FormsModule,
     ButtonsModule.forRoot(),
     BrowserModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

@@ -3,11 +3,10 @@ import { BackendService } from '../backend.service'
 import { IApplication, IAuthenticationData, ITask } from '../interfaces'
 import { IMessage } from '../typing-area/typing-area.component'
 
-
 @Component({
   selector: 'app-solve',
   templateUrl: './solve.component.html',
-  styleUrls: ['./solve.component.css', '../app.component.css']
+  styleUrls: ['./solve.component.css', '../app.component.css'],
 })
 export class SolveComponent implements OnInit {
 
@@ -22,7 +21,7 @@ export class SolveComponent implements OnInit {
   public solutionApproach = ''
   public sortingDirectionDown = false
   public userWantsToStartSolving = false
-    // public user: IUser = ProfileComponent.currentUser
+  // public user: IUser = ProfileComponent.currentUser
 
   public constructor(private readonly backendService: BackendService) { }
 
@@ -48,7 +47,7 @@ export class SolveComponent implements OnInit {
     this.userWantsToStartSolving = true
     const application: IApplication = {
       taskLink: this.taskOfInterest.link,
-      plan: this.solutionApproach
+      plan: this.solutionApproach,
     }
 
     this.backendService.postSolutionApproach(application, this.authenticationData.token)
@@ -63,9 +62,10 @@ export class SolveComponent implements OnInit {
     this.filteredTasks = this.fundedTasks.filter((entry: ITask) => {
       if (entry.title.toLowerCase().indexOf(this.searchTerm.toLowerCase()) !== -1) {
         return true
-      } else {
-        return false
       }
+
+      return false
+
     })
   }
 
@@ -81,14 +81,14 @@ export class SolveComponent implements OnInit {
     if ((!event) && this.userWantsToStartSolving) {
 
       const intervalId = setInterval(() => {
-        this.countDown--
+        this.countDown -= 1
         if (this.countDown === 3) {
           window.location.assign(this.taskOfInterest.link) // starting here for a flow experience :)
         }
         if (this.countDown === -1) {
           clearInterval(intervalId)
         }
-      }, 1000)
+      },                             1000)
 
     }
   }
@@ -130,8 +130,9 @@ export class SolveComponent implements OnInit {
   }
 
   private getMessagesToMotivateANicePlan(): IMessage[] {
-    return [{ fromChatBot: true, text: 'This starts to sound like a plan :)' },
-    { fromChatBot: true, text: 'You could add the info until when you plan to complete this task.' }]
+    return [
+      { fromChatBot: true, text: 'This starts to sound like a plan :)' },
+      { fromChatBot: true, text: 'You could add the info until when you plan to complete this task.' }]
   }
 
   private getMessagesToStartSolving(): IMessage[] {

@@ -8,13 +8,15 @@ export enum ETaskStatus {
   'created' = 1,
   'inProgress' = 2,
   'completed' = 3,
-  'paid' = 4
+  'paid' = 4,
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BackendService {
+  public static gitHubURL
+
   public constructor(private readonly http: HttpClient) {
   }
 
@@ -54,8 +56,8 @@ export class BackendService {
     return this.get(`${backendURL}/getAuthenticationData`, token)
   }
 
-  public getIssueInfo(org: string, repo: string, issueId: string, token: string) {
-    return this.get(`${backendURL}/getIssueInfo/org/${org}/repo/${repo}/issueId/${issueId}`, token)
+  public getIssueInfo(link: string, token: string) {
+    return this.get(`${backendURL}/getIssueInfo/link/${link}`, token)
   }
 
   private get(url: any, token: string): any {
@@ -63,10 +65,11 @@ export class BackendService {
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        michaelsfriendskey: token
-      })
+        'michaelsfriendskey': token,
+      }),
     }
-    console.log(`calling to get ${url}`)
+    // console.log(`calling to get ${url}`)
+
     return this.http.get<any>(url, options)
   }
 
@@ -80,16 +83,17 @@ export class BackendService {
     // const urlWithClient = `${url}?client=${document.URL}`;
     this.validateToken(token)
     const urlWithClient = url
-    console.log(`calling to post to ${urlWithClient}`)
+    // console.log(`calling to post to ${urlWithClient}`)
 
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        michaelsfriendskey: token
-      })
+        'michaelsfriendskey': token,
+      }),
     }
 
-    console.log(JSON.stringify(body))
+    // console.log(JSON.stringify(body))
+
     return this.http.post<any>(urlWithClient, JSON.stringify(body), httpOptions)
   }
 

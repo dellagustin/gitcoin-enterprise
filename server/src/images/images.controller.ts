@@ -7,7 +7,7 @@ export class ImagesController {
     public constructor(private readonly imagesService: ImagesService) { }
 
     @Get('/')
-    login(@Query('name') name: string, @Res() res: any): void {
+    public login(@Query('name') name: string, @Res() res: any): void {
         res.send(this.imagesService.getCompletePath(name))
     }
 

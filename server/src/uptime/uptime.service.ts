@@ -13,10 +13,10 @@ export class UptimeService {
 
                 const response = (await axios.get(config.dependentOnService)).data
                 if (response.indexOf('authenticationToken') === -1) {
-                    this.lg.log(ELogLevel.Error, `Dependent on Service might be down`)
+                    void this.lg.log(ELogLevel.Error, `Dependent on Service might be down`)
                 }
 
-            }, 1 * 60 * 60 * 1000)
+            },          1 * 60 * 60 * 1000)
         }
     }
 }

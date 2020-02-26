@@ -8,12 +8,12 @@ import { ELogLevel } from '../logger/logger-interface'
 @Injectable()
 export class PersistencyService {
     private static numberOfLedgerEntries: number
-    private operationalDataPath = path.join(__dirname, '../../operational-data')
-    private ledgerEntriesFileId = `${this.operationalDataPath}/ledger-entries.json`
-    private authenticationDataFileId = `${this.operationalDataPath}/authentication-data.json`
-    private fundedTasksFileId = `${this.operationalDataPath}/funded-tasks.json`
-    private errorsFileID = path.join(__dirname, '../errors', 'errors.json')
-    private templateOperationalDataPath = path.join(__dirname, '../../operational-data-template')
+    private readonly operationalDataPath = path.join(__dirname, '../../operational-data')
+    private readonly ledgerEntriesFileId = `${this.operationalDataPath}/ledger-entries.json`
+    private readonly authenticationDataFileId = `${this.operationalDataPath}/authentication-data.json`
+    private readonly fundedTasksFileId = `${this.operationalDataPath}/funded-tasks.json`
+    private readonly errorsFileID = path.join(__dirname, '../errors', 'errors.json')
+    private readonly templateOperationalDataPath = path.join(__dirname, '../../operational-data-template')
 
     public getLedgerEntries(): ILedgerEntry[] {
         let ledgerEntries: ILedgerEntry[]
@@ -26,15 +26,17 @@ export class PersistencyService {
         }
 
         PersistencyService.numberOfLedgerEntries = ledgerEntries.length
+
         return ledgerEntries
     }
 
     public saveLedgerEntries(ledgerEntries: ILedgerEntry[]): void {
         if (ledgerEntries.length <= PersistencyService.numberOfLedgerEntries) {
             throw new Error('Someone tried to make fun of my ledger :)')
-        } else {
-            return fs.write(this.ledgerEntriesFileId, JSON.stringify(ledgerEntries))
         }
+
+        return fs.write(this.ledgerEntriesFileId, JSON.stringify(ledgerEntries))
+
     }
 
     public getAuthenticationData(): IAuthenticationData[] {
@@ -42,6 +44,7 @@ export class PersistencyService {
             return fs.readJSON(this.authenticationDataFileId)
         } catch (error) {
             fs.write(this.authenticationDataFileId, '[]')
+
             return []
         }
     }

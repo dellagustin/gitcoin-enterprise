@@ -4,21 +4,15 @@ import { IFunding, IBountyReceiver } from '../interfaces'
 @Component({
   selector: 'app-ledger-fundings',
   templateUrl: './ledger-fundings.component.html',
-  styleUrls: ['./ledger-fundings.component.css', '../app.component.css']
+  styleUrls: ['./ledger-fundings.component.css', '../app.component.css'],
 })
-export class LedgerFundingsComponent implements OnInit {
+export class LedgerFundingsComponent {
 
-  @Input() usersFundings: IFunding[]
-  @Output() transferTriggered = new EventEmitter<IBountyReceiver[]>()
+  @Input() public usersFundings: IFunding[]
+  @Output() public transferTriggered = new EventEmitter<IBountyReceiver[]>()
 
   public entryIdOfInterest: IFunding
   public receivers: IBountyReceiver[] = []
-
-  constructor() { }
-
-  ngOnInit(): void {
-    // this.receivers.push({ login: '', amount: 0, bountyForTaskLink: '' })
-  }
 
   public onEntryClicked(entry: IFunding) {
     this.receivers.push({ login: entry.funderId, amount: entry.amount, bountyForTaskLink: entry.taskLink })
@@ -27,6 +21,7 @@ export class LedgerFundingsComponent implements OnInit {
 
   public getIt(taskLink: string) {
     const array = taskLink.split('/')
+
     return `${array[4]}/${array[6]}`
   }
 
@@ -54,12 +49,12 @@ export class LedgerFundingsComponent implements OnInit {
     }
   }
 
-
   private getSum() {
     let sum = 0
     for (const r of this.receivers) {
       sum += r.amount
     }
+
     return sum
   }
 

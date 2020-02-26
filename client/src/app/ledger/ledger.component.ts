@@ -9,12 +9,12 @@ import { Helper } from '../helper'
 @Component({
   selector: 'app-ledger',
   templateUrl: './ledger.component.html',
-  styleUrls: ['./ledger.component.css', '../app.component.css']
+  styleUrls: ['./ledger.component.css', '../app.component.css'],
 })
 
 export class LedgerComponent implements OnInit {
 
-  @Input() transactionId = ''
+  @Input() public transactionId = ''
   @Input() public authenticationData: IAuthenticationData
 
   public ledgerEntries: ILedgerEntry[] = []
@@ -33,7 +33,7 @@ export class LedgerComponent implements OnInit {
         if (this.transactionId !== '') {
           setTimeout(() => {
             window.scrollTo(0, document.body.scrollHeight)
-          }, 700)
+          },         700)
         }
       })
   }
@@ -46,10 +46,10 @@ export class LedgerComponent implements OnInit {
   public downloadAsCSV(): void {
     const replacer = (key, value) => value === null ? '' : value // specify how you want to handle null values here
     const header = Object.keys(this.ledgerEntries[0])
-    let line = `${header}\n`
+    let line = `${String(header)}\n`
     let index = 0
-    this.ledgerEntries.map((row) => header.map(fieldName => {
-      index++
+    this.ledgerEntries.map((row) => header.map((fieldName) => {
+      index += 1
       if (index < header.length) {
         line = `${line}${JSON.stringify(row[fieldName], replacer)},`
       } else {
@@ -57,6 +57,7 @@ export class LedgerComponent implements OnInit {
         index = 0
       }
     }))
+    // tslint:disable-next-line: prefer-template
     const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(line)
     const downloadAnchorNode = document.createElement('a')
     downloadAnchorNode.setAttribute('href', dataStr)
@@ -67,6 +68,7 @@ export class LedgerComponent implements OnInit {
   }
 
   public downloadAsJSON(): void {
+    // tslint:disable-next-line: prefer-template
     const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(this.ledgerEntries))
     const downloadAnchorNode = document.createElement('a')
     downloadAnchorNode.setAttribute('href', dataStr)
@@ -96,11 +98,13 @@ export class LedgerComponent implements OnInit {
 
   public getSourceType(): string {
     const myArray = this.entryIdOfInterest.receiver.split('/')
+
     return (myArray.length > 5) ? 'User' : (myArray.length > 0) ? 'Task' : ''
   }
 
   public getTargetType(): string {
     const myArray = this.entryIdOfInterest.receiver.split('/')
+
     return (myArray.length > 5) ? 'Task' : 'User'
   }
 
@@ -116,12 +120,12 @@ export class LedgerComponent implements OnInit {
 
   public getSourceLink(): string {
     // tbd
-    return (this.getSourceType() === 'Task') ? this.entryIdOfInterest.sender : `https://github.com/${this.entryIdOfInterest.sender}`
+    return (this.getSourceType() === 'Task') ? this.entryIdOfInterest.sender : `${BackendService.gitHubURL}/${this.entryIdOfInterest.sender}`
   }
 
   public getTargetLink(): string {
     // tbd
-    return (this.getTargetType() === 'Task') ? this.entryIdOfInterest.receiver : `https://github.com/${this.entryIdOfInterest.receiver}`
+    return (this.getTargetType() === 'Task') ? this.entryIdOfInterest.receiver : `${BackendService.gitHubURL}/${this.entryIdOfInterest.receiver}`
   }
 
 }

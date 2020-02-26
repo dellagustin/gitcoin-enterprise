@@ -44,6 +44,16 @@
             true,
             "kebab-case"
         ],
-        "completed-docs": false
+        "completed-docs": false,
+        "newline-per-chained-call": false,
+        "typedef": false,
+        "no-submodule-imports": false,
+        "ordered-imports": false,
+        "no-void-expression": false,
+        "no-import-side-effect": false,
+        "strict-comparisons": false,
+        "no-unnecessary-class": false,
+        "no-null-keyword": false,
+        "only-arrow-functions": false
     }
 }

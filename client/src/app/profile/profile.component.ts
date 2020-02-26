@@ -4,17 +4,17 @@ import { backendURL } from '../../configurations/configuration'
 import { IAuthenticationData, IFunding, IBountiesAndFundings, IBounty, IBountyReceiver } from '../interfaces'
 import { ILedgerEntry } from '../ledger/ledger.interface'
 import { Helper } from '../helper'
-import { gitHubURL } from '../../configurations/configuration-prod'
+import { AppComponent } from '../app.component'
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css', '../app.component.css']
+  styleUrls: ['./profile.component.css', '../app.component.css'],
 })
 export class ProfileComponent implements OnInit {
 
   @Input() public authenticationData: IAuthenticationData
-  @Output() viewTransactionInLedgerTriggered = new EventEmitter<ILedgerEntry>()
+  @Output() public viewTransactionInLedgerTriggered = new EventEmitter<ILedgerEntry>()
   // public justKidding = true
   public viewBountiesAndFundings = false
   public fundingIdOfInterest: IFunding
@@ -41,9 +41,8 @@ export class ProfileComponent implements OnInit {
   }
 
   public getLink() {
-    return `${gitHubURL}/${this.authenticationData.login}`
+    return `${BackendService.gitHubURL}/${this.authenticationData.login}`
   }
-
 
   public getId(link: string): string {
     return Helper.getId(link)
@@ -74,7 +73,7 @@ export class ProfileComponent implements OnInit {
     this.viewBountiesAndFundings = true
     setTimeout(() => {
       window.scrollTo(0, ((document.body.scrollHeight / 2) - 110))
-    }, 100)
+    },         100)
   }
 
   public getSum(): number {
@@ -104,6 +103,5 @@ export class ProfileComponent implements OnInit {
   //     },
   //     (error) => alert(error.message))
   // }
-
 
 }

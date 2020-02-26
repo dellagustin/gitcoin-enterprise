@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common'
-import { IFunding, IssueInfo, IApplication, IAuthenticationData } from '../interfaces'
+import { IFunding, IApplication, IAuthenticationData, IIssueInfo } from '../interfaces'
 import { LoggerService } from '../logger/logger.service'
 import { config } from '../app.module'
 import * as fs from 'fs-sync'
@@ -8,17 +8,18 @@ import * as moment from 'moment'
 import { Helper } from '../helpers/helper'
 import { ELogLevel } from '../logger/logger-interface'
 const uuidv1 = require('uuidv1')
+// tslint:disable-next-line: match-default-export-name
 import axios, { AxiosInstance } from 'axios'
 import * as tunnel from 'tunnel'
 
 @Injectable()
 export class GithubIntegrationService {
-    private octokit
+    private readonly octokit
 
     private lastGetIssueRequest = moment()
     private lastPostCommentRequest = moment()
-    private agent
-    private axiosClient: AxiosInstance
+    private readonly agent
+    private readonly axiosClient: AxiosInstance
 
     public constructor(private readonly lg: LoggerService) {
         if (config.gitHubURL === 'https://github.com') {
@@ -48,9 +49,9 @@ export class GithubIntegrationService {
             const getURLToGetUser = (config.gitHubURL === 'https://github.com') ?
                 `https://api.github.com/user?access_token=${token}` :
                 `${config.gitHubURL}/api/v3/user?access_token=${token}`
-            this.lg.log(ELogLevel.Info, `calling to: ${getURLToGetUser}`)
+            await this.lg.log(ELogLevel.Info, `calling to: ${getURLToGetUser}`)
             user = (await this.axiosClient.get(getURLToGetUser)).data
-            this.lg.log(ELogLevel.Info, JSON.stringify(`user: ${user}`))
+            await this.lg.log(ELogLevel.Info, JSON.stringify(`user: ${user}`))
             const authenticationData: IAuthenticationData = {
                 avatarURL: user.avatar_url,
                 login: user.login,
@@ -61,12 +62,12 @@ export class GithubIntegrationService {
 
         } catch (error) {
             const errorMessage = `The following error occurred while retrieving Login: ${error.message} for ${token}` // shall be deleted as soon as test is successful
-            this.lg.log(ELogLevel.Error, errorMessage)
+            void this.lg.log(ELogLevel.Error, errorMessage)
             throw new Error(errorMessage)
         }
     }
 
-    public async getIssue(org: any, repo: any, issueId: any): Promise<IssueInfo> {
+    public async getIssue(org: any, repo: any, issueId: any): Promise<IIssueInfo> {
 
         const seconds: moment.unitOfTime.DurationConstructor = 'seconds'
 
@@ -78,13 +79,14 @@ export class GithubIntegrationService {
 
         this.lastGetIssueRequest = moment()
         await this.lg.log(ELogLevel.Info, `getting Issue data for owner: ${org}, repo: ${repo}, issueId: ${issueId}`)
-        const issueInfo = {} as IssueInfo
+        // tslint:disable-next-line: no-object-literal-type-assertion
+        const issueInfo = {} as IIssueInfo
         try {
             const getURLToGetIssueData = (config.gitHubURL === 'https://github.com') ?
                 `https://api.github.com/repos/${org}/${repo}/issues/${issueId}` :
                 `${config.gitHubURL}/api/v3/repos/${org}/${repo}/issues/${issueId}`
             const issueData = (await this.axiosClient.get(getURLToGetIssueData)).data
-            this.lg.log(ELogLevel.Info, JSON.stringify(issueData))
+            void this.lg.log(ELogLevel.Info, JSON.stringify(issueData))
             issueInfo.title = issueData.title
             issueInfo.description = issueData.body
         } catch (error) {
@@ -119,7 +121,7 @@ export class GithubIntegrationService {
                 `${config.gitHubURL}/api/v3/repos/${owner}/${repoName}/issues/${issueNo}/comments?access_token=${config.gitHubTokenForPostingCommentsAndForGettingIssueData}`
             const postingResult = (await this.axiosClient.post(uRLToPostComment, body))
 
-            this.lg.log(ELogLevel.Info, JSON.stringify(`posting an issue and getting: ${postingResult}`))
+            void this.lg.log(ELogLevel.Info, JSON.stringify(`posting an issue and getting: ${String(postingResult)}`))
 
         } catch (error) {
             await this.lg.log(ELogLevel.Error, `postCommentAboutSuccessfullFunding the github call to create a comment for  the issue failed ${error}`)
@@ -152,7 +154,7 @@ export class GithubIntegrationService {
                 `${config.gitHubURL}/api/v3/repos/${owner}/${repoName}/issues/${issueNo}/comments?access_token=${config.gitHubTokenForPostingCommentsAndForGettingIssueData}`
             const postingResult = (await this.axiosClient.post(uRLToPostComment, body))
 
-            this.lg.log(ELogLevel.Info, JSON.stringify(`posting an issue and getting: ${postingResult}`))
+            void this.lg.log(ELogLevel.Info, JSON.stringify(`posting an issue and getting: ${String(postingResult)}`))
 
         } catch (error) {
             await this.lg.log(ELogLevel.Error, `postCommentAboutSuccessfullTransfer the github call to create a comment for  the issue failed ${error}`)
@@ -185,7 +187,7 @@ export class GithubIntegrationService {
                 `${config.gitHubURL}/api/v3/repos/${owner}/${repoName}/issues/${issueNo}/comments?access_token=${config.gitHubTokenForPostingCommentsAndForGettingIssueData}`
             const postingResult = (await this.axiosClient.post(uRLToPostComment, body))
 
-            this.lg.log(ELogLevel.Info, JSON.stringify(`posting an issue and getting: ${postingResult}`))
+            void this.lg.log(ELogLevel.Info, JSON.stringify(`posting an issue and getting: ${String(postingResult)}`))
 
         } catch (error) {
             await this.lg.log(ELogLevel.Error, `postCommentAboutApplication the github call to create a comment for  the issue failed ${error}`)

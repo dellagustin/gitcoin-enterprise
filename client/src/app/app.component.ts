@@ -5,11 +5,12 @@ import { IAuthenticationData, ITask } from './interfaces'
 import { ActivatedRoute } from '@angular/router'
 import { backendURL } from '../configurations/configuration'
 import { NavBarProvider } from './navbar/navbar.provider'
+import { BackendService } from './backend.service'
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
   public static deferredPrompt: any
@@ -32,6 +33,9 @@ export class AppComponent implements OnInit {
   public ngOnInit() {
     this.considerPWAInstallPrompt()
 
+    // The following move is for flexibilizing for GHE
+    BackendService.gitHubURL = document.getElementById('gitHubURLId').innerText.trim()
+
     this.aR
       .queryParamMap
       .subscribe((result: any) => {
@@ -42,7 +46,7 @@ export class AppComponent implements OnInit {
           this.authenticationData = {
             login: this.params.login,
             avatarURL: this.params.avatarURL,
-            token: this.params.authenticationToken
+            token: this.params.authenticationToken,
           }
         }
       })
@@ -93,11 +97,11 @@ export class AppComponent implements OnInit {
         alert('To use the App Version please click the Share Button at the bottom of your browser and click "Add to Homescreen".')
       } else {
         AppComponent.deferredPrompt.prompt()
-        AppComponent.deferredPrompt.userChoice.then(choiceResult => {
+        AppComponent.deferredPrompt.userChoice.then((choiceResult) => {
           if (choiceResult.outcome === 'accepted') {
-            console.log('User accepted the A2HS prompt')
+            // console.log('User accepted the A2HS prompt')
           } else {
-            console.log('User dismissed the A2HS prompt')
+            // console.log('User dismissed the A2HS prompt')
           }
           AppComponent.deferredPrompt = null
         })
@@ -108,7 +112,7 @@ export class AppComponent implements OnInit {
 
   private considerPWAInstallPrompt() {
     window.addEventListener('beforeinstallprompt', (event) => {
-      console.log('beforeinstallprompt Event fired')
+      // console.log('beforeinstallprompt Event fired')
       event.preventDefault()
       AppComponent.deferredPrompt = event
 

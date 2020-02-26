@@ -38,6 +38,7 @@ export class LedgerConnector implements ILedgerConnector {
         const content = this.persistencyService.getLedgerEntries()
         content.push(entry)
         this.persistencyService.saveLedgerEntries(content)
+
         return entry
     }
 
@@ -46,9 +47,10 @@ export class LedgerConnector implements ILedgerConnector {
         return this.persistencyService.getLedgerEntries().filter((ledgerEntry: ILedgerEntry) => {
             if (ledgerEntry.sender === address || ledgerEntry.receiver === address) {
                 return true
-            } else {
-                return false
             }
+
+            return false
+
         })
     }
 }

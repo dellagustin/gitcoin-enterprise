@@ -5,13 +5,12 @@ export interface IMessage {
   fromChatBot: boolean
 }
 
-
 @Component({
   selector: 'app-typing-area',
   templateUrl: './typing-area.component.html',
-  styleUrls: ['./typing-area.component.css']
+  styleUrls: ['./typing-area.component.css'],
 })
-export class TypingAreaComponent implements OnInit, OnChanges {
+export class TypingAreaComponent implements OnChanges {
 
   @Input() public messages: IMessage[] = []
   @Output() public typing: any = new EventEmitter<boolean>()
@@ -21,15 +20,9 @@ export class TypingAreaComponent implements OnInit, OnChanges {
   private readonly milliSecondsPerLetter: number = 42
   private readonly pausePerMessage: number = 400
 
-  constructor() { }
-
-  public ngOnInit() {
-    // this.prepareAndTypeMessages();
-  }
-
   public ngOnChanges() {
-      this.messagesAfterTyping = []
-      this.prepareAndTypeMessages()
+    this.messagesAfterTyping = []
+    this.prepareAndTypeMessages()
   }
 
   private prepareAndTypeMessages() {
@@ -65,14 +58,14 @@ export class TypingAreaComponent implements OnInit, OnChanges {
           text: message,
         }
         duration = this.typeMessage(completeMessage, true)
-      }, duration)
+      },         duration)
       duration += messages[index].length * 42 + this.pausePerMessage
-      index++
+      index += 1
     }
 
     setTimeout(() => {
       this.typing.emit(false)
-    }, this.getTimeToWriteMessages(messages))
+    },         this.getTimeToWriteMessages(messages))
 
     return duration
   }
@@ -85,7 +78,7 @@ export class TypingAreaComponent implements OnInit, OnChanges {
     let i = 0
 
     document.getElementById('typeWriter').innerHTML += message.text.charAt(i)
-    i++
+    i += 1
     const rest: string = message.text.substring(i, message.text.length)
     setTimeout(() => {
       if (message.text.length > 0 && rest.length > 0) {
@@ -94,14 +87,14 @@ export class TypingAreaComponent implements OnInit, OnChanges {
         document.getElementById('typeWriter').innerHTML = ''
         this.messagesAfterTyping.push(this.activeMessage)
       }
-    }, 42)
+    },         42)
     if (start) {
       this.activeMessage = message
 
       return message.text.length * this.milliSecondsPerLetter + 42
-    } else {
-      return undefined
     }
+
+    return undefined
   }
 
   private getTimeToWriteMessages(messages: string[]): number {

@@ -6,7 +6,7 @@ import { IEmail, IAuthenticationData } from '../interfaces'
 @Component({
   selector: 'app-invite-friend',
   templateUrl: './invite-friend.component.html',
-  styleUrls: ['./invite-friend.component.css', '../app.component.css']
+  styleUrls: ['./invite-friend.component.css', '../app.component.css'],
 })
 export class InviteFriendComponent implements OnInit {
 

@@ -4,7 +4,7 @@ export interface IAuthenticationData {
   token: string
 }
 
-export interface IssueInfo {
+export interface IIssueInfo {
   title: string
   description: string
 }

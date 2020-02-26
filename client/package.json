@@ -4,8 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "cp ./src/configurations/configuration-dev.ts ./src/configurations/configuration.ts && ng build --prod --output-path='docs'",
-    "build-prod": "cp ./src/configurations/configuration-prod.ts ./src/configurations/configuration.ts && ng build --prod --output-path='docs'",
+    "build": "cp ./src/configurations/configuration-dev.ts ./src/configurations/configuration.ts && ng build --prod --output-path='docs' && mv ./docs/index.html ./docs/i-want-compression-via-route.html",
+    "build-prod": "cp ./src/configurations/configuration-prod.ts ./src/configurations/configuration.ts && ng build --prod --output-path='docs' && mv ./docs/index.html ./docs/i-want-compression-via-route.html",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
