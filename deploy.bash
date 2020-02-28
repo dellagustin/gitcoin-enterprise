@@ -7,7 +7,7 @@ rm -rf dist
 npm run build
 cd ../client
 npm i
-npm run build-prod
+npm run build
 rm -rf ../server/docs
 cp -r ./docs ../server/ 
 mv ../server/docs/index.html ../server/docs/i-want-compression-via-route.html
