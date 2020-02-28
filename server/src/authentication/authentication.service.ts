@@ -24,8 +24,9 @@ export class AuthenticationService {
         },          11 * 24 * 60 * 60 * 1000)
     }
 
-    public getRedirectURL(remoteAddress: string, login: string, token: string) {
-        const redirectURL = `${config.frontendURL}?actionID=${this.getActionForAddress(remoteAddress)}&login=${login}&authenticationToken=${token}`
+    public getRedirectURL(remoteAddress: string, aD: IAuthenticationData) {
+        const redirectURL =
+            `${config.frontendURL}?actionID=${this.getActionForAddress(remoteAddress)}&login=${aD.login}&id=${aD.id}&authenticationToken=${aD.token}`
         void this.lg.log(ELogLevel.Info, `redirecting to: ${redirectURL}`)
 
         return redirectURL
@@ -93,7 +94,7 @@ export class AuthenticationService {
         let authenticationData: IAuthenticationData
         authenticationData = await this.getAuthenticationDataFromGitHub(michaelsfriendskey)
         const allAuthenticationData = this.persistencyService.getAuthenticationData()
-        if (allAuthenticationData.filter((entry: IAuthenticationData) => entry.login === authenticationData.login)[0] === undefined) {
+        if (allAuthenticationData.filter((entry: IAuthenticationData) => entry.token === authenticationData.token)[0] === undefined) {
 
             allAuthenticationData.push(authenticationData)
             this.persistencyService.saveAuthenticationData(allAuthenticationData)
@@ -117,7 +118,8 @@ export class AuthenticationService {
             const authenticationData: IAuthenticationData = {
                 avatarURL: user.avatar_url,
                 login: user.login,
-                token: uuidv1().replace(/-/g, '').substr(0, 10),
+                id: user.id,
+                token,
             }
 
             return authenticationData

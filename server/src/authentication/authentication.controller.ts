@@ -16,7 +16,7 @@ export class AuthenticationController {
     @Get('/authentication/github/callback')
     public async handleCallback(@Req() req: any, @Res() res: any): Promise<any> {
         const authenticationData = await this.authenticationService.handleAuthenticationFromCode(req.query.code, req.query.state)
-        res.redirect(this.authenticationService.getRedirectURL(req.connection.remoteAddress, authenticationData.login, authenticationData.token))
+        res.redirect(this.authenticationService.getRedirectURL(req.connection.remoteAddress, authenticationData))
     }
 
     @Get('/login/oauth/authorize') // this route is only needed for test purposes - test doubling an oauth provider - if you have an idea how to do this better create a PR

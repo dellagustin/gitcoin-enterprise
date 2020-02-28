@@ -20,6 +20,7 @@ export class AuthenticationServiceDouble extends AuthenticationService {
         return {
             avatarURL: 'https://avatars1.githubusercontent.com/u/43786652?v=4',
             login: 'michael-spengler',
+            id: '4711',
             token,
         }
 

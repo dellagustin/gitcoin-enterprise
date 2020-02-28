@@ -1,6 +1,7 @@
 export interface IAuthenticationData {
   avatarURL: string
   login: string
+  id: string
   token: string
 }
 

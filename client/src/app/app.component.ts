@@ -43,6 +43,7 @@ export class AppComponent implements OnInit {
           history.replaceState(null, null, ' ')
           this.authenticationData = {
             login: this.params.login,
+            id: this.params.id,
             avatarURL: this.params.avatarURL,
             token: this.params.authenticationToken,
           }
