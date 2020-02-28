@@ -24,6 +24,13 @@ export class AuthenticationService {
         },          11 * 24 * 60 * 60 * 1000)
     }
 
+    public getRedirectURL(remoteAddress: string, login: string, token: string) {
+        const redirectURL = `${config.frontendURL}?actionID=${this.getActionForAddress(remoteAddress)}&login=${login}&authenticationToken=${token}`
+        void this.lg.log(ELogLevel.Info, `redirecting to: ${redirectURL}`)
+
+        return redirectURL
+    }
+
     public isUserAuthenticated(michaelsfriendskey: string): boolean {
         const authenticationData: IAuthenticationData = this.getAuthenticationDataFromMemory(michaelsfriendskey)
 
@@ -106,7 +113,7 @@ export class AuthenticationService {
                 `${config.gitHubURL}/api/v3/user?access_token=${token}`
             await this.lg.log(ELogLevel.Info, `calling to: ${getURLToGetUser}`)
             user = (await GithubIntegrationService.axiosClient.get(getURLToGetUser)).data
-            await this.lg.log(ELogLevel.Info, JSON.stringify(`user: ${user}`))
+            await this.lg.log(ELogLevel.Info, `user: ${JSON.stringify(user)}`)
             const authenticationData: IAuthenticationData = {
                 avatarURL: user.avatar_url,
                 login: user.login,

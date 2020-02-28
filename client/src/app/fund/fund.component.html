@@ -36,13 +36,13 @@
       <input type="range" min="{{minimumRange}}" max="{{ balance }}" class="slider" [(ngModel)]="currentRange"
         (change)="handleRangeSetting()" />
       <p></p>
-      <p class="ourBlueColor">
+      <!-- <p class="ourBlueColor">
         Your balance after this transaction will be
       </p>
       <p></p>
       <h4 class="ourRedColor">
         {{balance - this.currentRange}} EIC
-      </h4>
+      </h4> -->
 
       <button id="saveFunding" type="button" class="btn ourBlueColor" (click)="saveFunding()">
         <!-- Fund Task with {{this.currentRange}} EIC -->
@@ -63,9 +63,9 @@
     <h4 class="titleBeneathImage ourRedColor">
       Funded Successfully
     </h4>
-    <p class=" titleBeneathImage ourBlueColor">
+    <h4 class="titleBeneathImage ourBlueColor">
       Added {{newLedgerEntry.amount}} EIC to the Bounty
-    </p>
+    </h4>
 
     <p></p>
     <div id="transactionId" style="display: none;">
