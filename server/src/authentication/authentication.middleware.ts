@@ -16,11 +16,12 @@ export class AuthenticationMiddleware implements NestMiddleware {
   public constructor() {
     const persistencyService = new PersistencyService()
     this.lg = new LoggerService(new SupportNotifierService(), persistencyService)
-    this.authenticationService = new AuthenticationService(this.lg, new GithubIntegrationService(this.lg), persistencyService, new LedgerConnector(this.lg, persistencyService))
+    this.authenticationService =
+      new AuthenticationService(this.lg, new GithubIntegrationService(this.lg, persistencyService), persistencyService, new LedgerConnector(this.lg, persistencyService))
   }
 
   public use(req: any, res: Response, next: any): void {
-        // tslint:disable-next-line: prefer-template
+    // tslint:disable-next-line: prefer-template
     const requestURL = `${req.protocol}://${req.get('host')}${req.originalUrl}`
     void this.lg.log(ELogLevel.Debug, `middleware executed for ${requestURL}`)
     if (this.authenticationService.isUserAuthenticated(req.headers.michaelsfriendskey)) {

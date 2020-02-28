@@ -1,9 +1,7 @@
 import { Injectable } from '@nestjs/common'
-import { IFunding, IApplication, IAuthenticationData, IIssueInfo } from '../interfaces'
+import { IFunding, IApplication, IAuthenticationData, IIssueInfo, ITask } from '../interfaces'
 import { LoggerService } from '../logger/logger.service'
 import { config } from '../app.module'
-import * as fs from 'fs-sync'
-import * as path from 'path'
 import * as moment from 'moment'
 import { Helper } from '../helpers/helper'
 import { ELogLevel } from '../logger/logger-interface'
@@ -11,17 +9,17 @@ const uuidv1 = require('uuidv1')
 // tslint:disable-next-line: match-default-export-name
 import axios, { AxiosInstance } from 'axios'
 import * as tunnel from 'tunnel'
+import { PersistencyService } from '../persistency/persistency.service'
+import { CommentProvider } from './comment-provider'
 
 @Injectable()
 export class GithubIntegrationService {
-    private readonly octokit
-
     private lastGetIssueRequest = moment()
     private lastPostCommentRequest = moment()
     private readonly agent
     private readonly axiosClient: AxiosInstance
 
-    public constructor(private readonly lg: LoggerService) {
+    public constructor(private readonly lg: LoggerService, private readonly persistencyService: PersistencyService) {
         if (config.gitHubURL === 'https://github.com') {
             this.axiosClient = axios.create({
                 baseURL: config.gitHubURL,
@@ -107,9 +105,10 @@ export class GithubIntegrationService {
             await this.lg.log(ELogLevel.Error, errorMessage)
             throw new Error(errorMessage)
         }
+        const totalAmount =
+            this.persistencyService.getFundedTasks().filter((fundedTask: ITask) => fundedTask.link === funding.taskLink)[0].funding
 
-        const templateFileId = path.join(__dirname, '../../src/github-integration/comment-on-funding.md')
-        const body = fs.read(templateFileId).toString().replace('{{{amount}}}', funding.amount)
+        const body = CommentProvider.getCommentAboutSuccessfullFunding(totalAmount, funding)
 
         const owner = linkToIssue.split('/')[3]
         const repoName = linkToIssue.split('/')[4]
@@ -121,7 +120,7 @@ export class GithubIntegrationService {
                 `${config.gitHubURL}/api/v3/repos/${owner}/${repoName}/issues/${issueNo}/comments?access_token=${config.gitHubTokenForPostingCommentsAndForGettingIssueData}`
 
             void this.lg.log(ELogLevel.Info, `posting to: ${uRLToPostComment}`)
-            const postingResult = (await this.axiosClient.post(uRLToPostComment, {body}))
+            const postingResult = (await this.axiosClient.post(uRLToPostComment, { body }))
             void this.lg.log(ELogLevel.Info, `posting a comment and getting: ${JSON.stringify(postingResult)}`)
 
         } catch (error) {
@@ -132,6 +131,7 @@ export class GithubIntegrationService {
         await this.lg.log(ELogLevel.Info, linkToIssue)
         await this.lg.log(ELogLevel.Info, JSON.stringify(funding))
     }
+
     public async postCommentAboutSuccessfullTransfer(linkToIssue: string, funding: IFunding): Promise<void> {
 
         const seconds: moment.unitOfTime.DurationConstructor = 'seconds'
@@ -142,8 +142,7 @@ export class GithubIntegrationService {
             throw new Error(errorMessage)
         }
 
-        const templateFileId = path.join(__dirname, '../../src/github-integration/comment-on-funding.md')
-        const body = fs.read(templateFileId).toString().replace('{{{amount}}}', funding.amount)
+        const body = CommentProvider.getCommentAboutSuccessfullTransfer(funding)
 
         const owner = linkToIssue.split('/')[3]
         const repoName = linkToIssue.split('/')[4]
@@ -153,7 +152,7 @@ export class GithubIntegrationService {
             const uRLToPostComment = (config.gitHubURL === 'https://github.com') ?
                 `https://api.github.com/repos/${owner}/${repoName}/issues/${issueNo}/comments?access_token=${config.gitHubTokenForPostingCommentsAndForGettingIssueData}` :
                 `${config.gitHubURL}/api/v3/repos/${owner}/${repoName}/issues/${issueNo}/comments?access_token=${config.gitHubTokenForPostingCommentsAndForGettingIssueData}`
-            const postingResult = (await this.axiosClient.post(uRLToPostComment, {body}))
+            const postingResult = (await this.axiosClient.post(uRLToPostComment, { body }))
 
             void this.lg.log(ELogLevel.Info, JSON.stringify(`posting an issue and getting: ${String(postingResult)}`))
 
@@ -176,8 +175,7 @@ export class GithubIntegrationService {
             throw new Error(errorMessage)
         }
 
-        const templateFileId = path.join(__dirname, '../../src/github-integration/comment-on-application.md')
-        const body = fs.read(templateFileId).toString().replace('{{{applicant}}}', application.profileLink).replace('{{{plan}}}', application.plan)
+        const body = CommentProvider.getCommentAboutSolutionApproach(application)
 
         const owner = application.taskLink.split('/')[3]
         const repoName = application.taskLink.split('/')[4]
@@ -186,7 +184,7 @@ export class GithubIntegrationService {
             const uRLToPostComment = (config.gitHubURL === 'https://github.com') ?
                 `https://api.github.com/repos/${owner}/${repoName}/issues/${issueNo}/comments?access_token=${config.gitHubTokenForPostingCommentsAndForGettingIssueData}` :
                 `${config.gitHubURL}/api/v3/repos/${owner}/${repoName}/issues/${issueNo}/comments?access_token=${config.gitHubTokenForPostingCommentsAndForGettingIssueData}`
-            const postingResult = (await this.axiosClient.post(uRLToPostComment, {body}))
+            const postingResult = (await this.axiosClient.post(uRLToPostComment, { body }))
 
             void this.lg.log(ELogLevel.Info, JSON.stringify(`posting an issue and getting: ${String(postingResult)}`))
 

@@ -7,6 +7,9 @@ This task has been funded with
 
 via [https://gitcoin-enterprise.org](https://gitcoin-enterprise.org).  
 
+
+**The overall funding for this task is now: {{{totalAmount}}} EIC.**  
+
 Solve this task to earn this bounty.  
 
 With [https://gitcoin-enterprise.org](https://gitcoin-enterprise.org) you can: 
