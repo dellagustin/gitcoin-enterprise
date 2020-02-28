@@ -15,7 +15,7 @@ export class AuthenticationController {
 
     @Get('/authentication/github/callback')
     public async handleCallback(@Req() req: any, @Res() res: any): Promise<any> {
-        const authenticationData = await this.authenticationService.createAuthenticationDataFromCode(req.query.code, req.query.state)
+        const authenticationData = await this.authenticationService.handleAuthenticationFromCode(req.query.code, req.query.state)
         const redirectURL = `${config.frontendURL}?actionID=${this.authenticationService.getActionForAddress(req.connection.remoteAddress)}&login=${authenticationData.login}&authenticationToken=${authenticationData.token}`
         res.redirect(redirectURL)
     }

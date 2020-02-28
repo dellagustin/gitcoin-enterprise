@@ -40,7 +40,7 @@ export class AuthenticationService {
         return allAuthenticationData.filter((aD: IAuthenticationData) => aD.token === userAccessToken)[0]
     }
 
-    public async createAuthenticationDataFromCode(code: any, state: any): Promise<IAuthenticationData> {
+    public async handleAuthenticationFromCode(code: any, state: any): Promise<IAuthenticationData> {
         const newToken = await this.getTokenFromCode(code, state)
         const authenticationData = await this.handleNewToken(newToken)
 
@@ -84,25 +84,17 @@ export class AuthenticationService {
 
     protected async handleNewToken(michaelsfriendskey: any): Promise<IAuthenticationData> {
         let authenticationData: IAuthenticationData
-        void this.lg.log(ELogLevel.Debug, 'handling new token')
         authenticationData = await this.getAuthenticationDataFromGitHub(michaelsfriendskey)
-        this.considerAuthenticationData(authenticationData)
-
-        return authenticationData
-    }
-
-    protected considerAuthenticationData(aD: IAuthenticationData): void {
         const allAuthenticationData = this.persistencyService.getAuthenticationData()
-        if (allAuthenticationData.filter((entry: IAuthenticationData) => entry.login === aD.login)[0] !== undefined) {
-            void this.lg.log(ELogLevel.Debug, 'Authentication Data is already in Store')
-        } else {
-            void this.lg.log(ELogLevel.Info, 'Authentication Data added to Store')
+        if (allAuthenticationData.filter((entry: IAuthenticationData) => entry.login === authenticationData.login)[0] === undefined) {
 
-            allAuthenticationData.push(aD)
+            allAuthenticationData.push(authenticationData)
             this.persistencyService.saveAuthenticationData(allAuthenticationData)
 
-            this.ledgerConnector.addMiningEntryForUser(aD.login)
+            this.ledgerConnector.addMiningEntryForUser(authenticationData.login)
         }
+
+        return authenticationData
     }
 
     protected async getAuthenticationDataFromGitHub(token: string): Promise<IAuthenticationData> {
