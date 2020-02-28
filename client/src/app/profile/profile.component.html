@@ -32,14 +32,17 @@
 
   <div *ngIf="viewBountiesAndFundings" class="adPad">
 
-    <p><br></p>
     <hr>
     <p><br></p>
 
     <h4 lass="titleBeneathImage ourRedColor">
       Your Fundings
     </h4>
-    <span>
+    <div *ngIf="usersFundings.length===0" style="margin-top: 7vh;">
+      You did not fund any task yet.
+    </div>
+
+    <span *ngIf="usersFundings.length>0">
       <app-ledger-fundings [usersFundings]="usersFundings" (transferTriggered)="onTransferTriggered($event)">
       </app-ledger-fundings>
     </span>

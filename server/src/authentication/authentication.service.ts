@@ -116,12 +116,19 @@ export class AuthenticationService {
             await this.lg.log(ELogLevel.Info, `calling to: ${getURLToGetUser}`)
             user = (await GithubIntegrationService.axiosClient.get(getURLToGetUser)).data
             await this.lg.log(ELogLevel.Info, `user: ${JSON.stringify(user)}`)
+            const entry = this.persistencyService.getAuthenticationData().filter((aD: IAuthenticationData) => aD.id === user.id)[0]
+            let p2pAccessToken
+
+            p2pAccessToken = (entry === undefined) ?
+                uuidv1().replace(/-/g, '').substr(0, 11) :
+                entry.p2pAccessToken
+
             const authenticationData: IAuthenticationData = {
                 avatarURL: user.avatar_url,
                 login: user.login,
                 id: user.id,
-                // p2pAccessToken: uuidv1().replace(/-/g, '').substr(0, 11),
-                p2pAccessToken: Math.random().toString(),
+                p2pAccessToken,
+                // p2pAccessToken: Math.random().toString(),
                 // token,
             }
 
