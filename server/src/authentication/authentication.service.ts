@@ -120,7 +120,8 @@ export class AuthenticationService {
                 avatarURL: user.avatar_url,
                 login: user.login,
                 id: user.id,
-                p2pAccessToken: uuidv1().replace(/-/g, '').substr(0, 11),
+                // p2pAccessToken: uuidv1().replace(/-/g, '').substr(0, 11),
+                p2pAccessToken: Math.random().toString(),
                 // token,
             }
 
