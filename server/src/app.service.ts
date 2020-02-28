@@ -23,9 +23,6 @@ export class AppService {
     void this.lg.log(ELogLevel.Info, `triggering backup via script: ${pathToBackupScript}`)
     // shelljs.exec(pathToBackupScript)
   }
-  public getLoginFromToken(token: string) {
-    return this.getAuthenticationData(token).login
-  }
 
   public getAuthenticationData(michaelsfriendskey: string): IAuthenticationData {
     return this.authenticationService.getAuthenticationDataFromMemory(michaelsfriendskey)
