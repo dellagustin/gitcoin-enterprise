@@ -29,6 +29,7 @@ export class AuthenticationMiddleware implements NestMiddleware {
     } else {
       const message = `I received an unauthorized call to: ${requestURL} with key ${JSON.stringify(req.headers)}`
       void this.lg.log(ELogLevel.Warning, message)
+      res.send('nice try')
     }
   }
 }

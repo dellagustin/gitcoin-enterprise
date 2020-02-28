@@ -32,7 +32,6 @@ export class AppController {
 
   @Get('/getLedgerEntries')
   public getLedgerEntries(@Req() req: any): ILedgerEntry[] {
-    // const login = this.appService.getLoginFromToken(req.headers.michaelsfriendskey)
     return this.appService.getLedgerEntries()
   }
 

@@ -86,14 +86,14 @@ export class AuthenticationService {
         let authenticationData: IAuthenticationData
         void this.lg.log(ELogLevel.Debug, 'handling new token')
         authenticationData = await this.getAuthenticationDataFromGitHub(michaelsfriendskey)
-        this.addAuthenticationData(authenticationData)
+        this.considerAuthenticationData(authenticationData)
 
         return authenticationData
     }
 
-    protected addAuthenticationData(aD: IAuthenticationData): void {
+    protected considerAuthenticationData(aD: IAuthenticationData): void {
         const allAuthenticationData = this.persistencyService.getAuthenticationData()
-        if (allAuthenticationData.filter((entry: IAuthenticationData) => entry.token === aD.token)[0] !== undefined) {
+        if (allAuthenticationData.filter((entry: IAuthenticationData) => entry.login === aD.login)[0] !== undefined) {
             void this.lg.log(ELogLevel.Debug, 'Authentication Data is already in Store')
         } else {
             void this.lg.log(ELogLevel.Info, 'Authentication Data added to Store')
