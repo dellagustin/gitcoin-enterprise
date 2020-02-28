@@ -21,7 +21,8 @@ export class AuthenticationService {
         setInterval(() => {
             this.actionsForRedirectingConvenientlyAfterLogin = [] // initializing after 11 days
             this.validStates = []
-        },          11 * 24 * 60 * 60 * 1000)
+            // tslint:disable-next-line: align
+        }, 11 * 24 * 60 * 60 * 1000)
     }
 
     public getRedirectURL(remoteAddress: string, aD: IAuthenticationData) {
@@ -90,9 +91,9 @@ export class AuthenticationService {
         this.actionsForRedirectingConvenientlyAfterLogin.push(addressWantsTo)
     }
 
-    protected async handleNewToken(michaelsfriendskey: any): Promise<IAuthenticationData> {
+    protected async handleNewToken(gitHubToken: any): Promise<IAuthenticationData> {
         let authenticationData: IAuthenticationData
-        authenticationData = await this.getAuthenticationDataFromGitHub(michaelsfriendskey)
+        authenticationData = await this.getAuthenticationDataFromGitHub(gitHubToken)
         const allAuthenticationData = this.persistencyService.getAuthenticationData()
         if (allAuthenticationData.filter((entry: IAuthenticationData) => entry.id === authenticationData.id)[0] === undefined) {
 
@@ -119,7 +120,8 @@ export class AuthenticationService {
                 avatarURL: user.avatar_url,
                 login: user.login,
                 id: user.id,
-                p2pAccessToken: uuidv1().replace(/-/g, ''),
+                // p2pAccessToken: uuidv1().replace(/-/g, ''),
+                p2pAccessToken: '99999999999',
                 // token,
             }
 
