@@ -94,7 +94,7 @@ export class AuthenticationService {
         let authenticationData: IAuthenticationData
         authenticationData = await this.getAuthenticationDataFromGitHub(michaelsfriendskey)
         const allAuthenticationData = this.persistencyService.getAuthenticationData()
-        if (allAuthenticationData.filter((entry: IAuthenticationData) => entry.token === authenticationData.token)[0] === undefined) {
+        if (allAuthenticationData.filter((entry: IAuthenticationData) => entry.id === authenticationData.id)[0] === undefined) {
 
             allAuthenticationData.push(authenticationData)
             this.persistencyService.saveAuthenticationData(allAuthenticationData)
