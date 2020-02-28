@@ -45,7 +45,7 @@ export class AppComponent implements OnInit {
             login: this.params.login,
             id: this.params.id,
             avatarURL: this.params.avatarURL,
-            token: this.params.authenticationToken,
+            p2pAccessToken: this.params.p2pAccessToken,
           }
         }
       })

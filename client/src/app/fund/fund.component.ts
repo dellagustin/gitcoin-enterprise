@@ -28,18 +28,18 @@ export class FundComponent implements OnInit {
   public constructor(private readonly backendService: BackendService) { }
 
   public ngOnInit() {
-    this.backendService.getLedgerEntries(this.authenticationData.token)
+    this.backendService.getLedgerEntries(this.authenticationData.p2pAccessToken)
       .subscribe((result: ILedgerEntry[]) => {
         this.ledgerEntries = result
         this.balance = Helper.getBalanceFromLedgerEntries(this.authenticationData.login, this.ledgerEntries)
         this.currentRange = Math.round(this.balance / 10)
       })
 
-    // alert(this.authenticationData.token)
+    // alert(this.authenticationData.p2pAccessToken)
   }
 
   public getInfoFromTaskLink() {
-    this.backendService.getIssueInfo(this.taskLink, this.authenticationData.token)
+    this.backendService.getIssueInfo(this.taskLink, this.authenticationData.p2pAccessToken)
       .subscribe((response: any) => {
         this.task = this.getTaskFromResponse(response)
         this.task.link = this.taskLink
@@ -71,7 +71,7 @@ export class FundComponent implements OnInit {
       funding,
     }
 
-    this.backendService.saveFunding(taskAndFunding, this.authenticationData.token)
+    this.backendService.saveFunding(taskAndFunding, this.authenticationData.p2pAccessToken)
       .subscribe((newLedgerEntry: ILedgerEntry) => {
         this.newLedgerEntry = newLedgerEntry
       })

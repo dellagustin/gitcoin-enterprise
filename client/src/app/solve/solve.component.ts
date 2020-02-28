@@ -26,7 +26,7 @@ export class SolveComponent implements OnInit {
   public constructor(private readonly backendService: BackendService) { }
 
   public ngOnInit(): void {
-    this.backendService.getFundedTasks(this.authenticationData.token)
+    this.backendService.getFundedTasks(this.authenticationData.p2pAccessToken)
       .subscribe((result: ITask[]) => {
         this.fundedTasks = result
         this.filteredTasks = this.sortDescending(this.fundedTasks)
@@ -50,7 +50,7 @@ export class SolveComponent implements OnInit {
       plan: this.solutionApproach,
     }
 
-    this.backendService.postSolutionApproach(application, this.authenticationData.token)
+    this.backendService.postSolutionApproach(application, this.authenticationData.p2pAccessToken)
       .subscribe()
   }
 

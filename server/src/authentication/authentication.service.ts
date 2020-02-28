@@ -26,14 +26,14 @@ export class AuthenticationService {
 
     public getRedirectURL(remoteAddress: string, aD: IAuthenticationData) {
         const redirectURL =
-            `${config.frontendURL}?actionID=${this.getActionForAddress(remoteAddress)}&login=${aD.login}&id=${aD.id}&authenticationToken=${aD.token}`
+            `${config.frontendURL}?actionID=${this.getActionForAddress(remoteAddress)}&login=${aD.login}&id=${aD.id}&p2pAccessToken=${aD.p2pAccessToken}`
         void this.lg.log(ELogLevel.Info, `redirecting to: ${redirectURL}`)
 
         return redirectURL
     }
 
-    public isUserAuthenticated(michaelsfriendskey: string): boolean {
-        const authenticationData: IAuthenticationData = this.getAuthenticationDataFromMemory(michaelsfriendskey)
+    public isUserAuthenticated(p2pAccessToken: string): boolean {
+        const authenticationData: IAuthenticationData = this.getAuthenticationDataFromMemory(p2pAccessToken)
 
         if (authenticationData === undefined) { return false }
         if (authenticationData.login === '') { return false }
@@ -41,11 +41,11 @@ export class AuthenticationService {
         return true
     }
 
-    public getAuthenticationDataFromMemory(userAccessToken: string): IAuthenticationData {
+    public getAuthenticationDataFromMemory(p2pAccessToken: string): IAuthenticationData {
         const allAuthenticationData = this.persistencyService.getAuthenticationData()
-        void this.lg.log(ELogLevel.Debug, `checking for token: ${userAccessToken} within ${JSON.stringify(allAuthenticationData)}`)
+        void this.lg.log(ELogLevel.Debug, `checking for p2pAccessToken: ${p2pAccessToken} within ${JSON.stringify(allAuthenticationData)}`)
 
-        return allAuthenticationData.filter((aD: IAuthenticationData) => aD.token === userAccessToken)[0]
+        return allAuthenticationData.filter((aD: IAuthenticationData) => aD.p2pAccessToken === p2pAccessToken)[0]
     }
 
     public async handleAuthenticationFromCode(code: any, state: any): Promise<IAuthenticationData> {
@@ -119,7 +119,8 @@ export class AuthenticationService {
                 avatarURL: user.avatar_url,
                 login: user.login,
                 id: user.id,
-                token,
+                p2pAccessToken: uuidv1().replace(/-/g, ''),
+                // token,
             }
 
             return authenticationData

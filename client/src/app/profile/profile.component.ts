@@ -29,7 +29,7 @@ export class ProfileComponent implements OnInit {
 
   public ngOnInit(): void {
     // setTimeout(() => this.justKidding = false, 3000)
-    this.backendService.getLedgerEntries(this.authenticationData.token)
+    this.backendService.getLedgerEntries(this.authenticationData.p2pAccessToken)
       .subscribe((result: ILedgerEntry[]) => {
         this.ledgerEntries = result
         this.balance = Helper.getBalanceFromLedgerEntries(this.authenticationData.login, this.ledgerEntries)
@@ -48,7 +48,7 @@ export class ProfileComponent implements OnInit {
   }
 
   public onTransferTriggered(receivers: IBountyReceiver[]): any {
-    this.backendService.postTransfer(receivers, this.authenticationData.token)
+    this.backendService.postTransfer(receivers, this.authenticationData.p2pAccessToken)
       .subscribe((newLedgerEntries: ILedgerEntry[]) => {
         this.newLedgerEntries = newLedgerEntries
         this.transferCompleted = true

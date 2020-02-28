@@ -2,7 +2,7 @@ export interface IAuthenticationData {
   avatarURL: string
   login: string
   id: string
-  token: string
+  p2pAccessToken: string
 }
 
 export interface IIssueInfo {

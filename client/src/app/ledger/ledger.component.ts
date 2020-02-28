@@ -24,7 +24,7 @@ export class LedgerComponent implements OnInit {
   public constructor(private readonly backendService: BackendService) { }
 
   public ngOnInit(): void {
-    this.backendService.getLedgerEntries(this.authenticationData.token)
+    this.backendService.getLedgerEntries(this.authenticationData.p2pAccessToken)
       .subscribe((result: ILedgerEntry[]) => {
         this.ledgerEntries = result
         this.fundings = this.ledgerEntries.filter((entry: ILedgerEntry) => entry.sender === this.authenticationData.login)
@@ -38,7 +38,7 @@ export class LedgerComponent implements OnInit {
   }
 
   public triggerBackup() {
-    this.backendService.triggerBackup(this.authenticationData.token)
+    this.backendService.triggerBackup(this.authenticationData.p2pAccessToken)
       .subscribe()
   }
 
