@@ -1,23 +1,21 @@
 <span *ngIf="entryIdOfInterest===undefined">
 
-  <button (click)="downloadAsJSON()" type="button" class="btn ourRedColor">
+  <button id="downloadAsJSON" (click)="downloadAsJSON()" type="button" class="btn ourRedColor">
     <i class="fa fa-wrench" aria-hidden="true" style="padding-right: 1vw;"></i>
     Download as JSON
     <i class="fa fa-wrench" aria-hidden="true" style="padding-left: 1vw;"></i>
   </button>
 
-  <button (click)="downloadAsCSV()" type="button" class="btn ourBlueColor">
+  <button id="downloadAsCSV" (click)="downloadAsCSV()" type="button" class="btn ourBlueColor">
     <i class="fa fa-file-excel-o" aria-hidden="true" style="padding-right: 1vw;"></i>
     Download as CSV
     <i class="fa fa-file-excel-o" aria-hidden="true" style="padding-left: 1vw;"></i>
   </button>
 
-  <button (click)="triggerBackup()" type="button" class="btn ourBlueColor">
-
+  <button id="triggerBackup" (click)="triggerBackup()" type="button" class="btn ourBlueColor">
     <i class="fa fa-github" aria-hidden="true" style="padding-right: 1vw;"></i>
     Backup on GitHub
     <i class="fa fa-github" aria-hidden="true" style="padding-left: 1vw;"></i>
-
   </button>
 
   <table class="table table-striped">
@@ -37,7 +35,6 @@
           {{ledgerEntry.date.substr(0, ledgerEntry.date.length -5)}}</td>
         <td id="taskId-{{ledgerEntry.id}}" *ngIf="ledgerEntry.id===transactionId" class="highlightedTableEntry">
           {{ledgerEntry.amount}}</td>
-
 
         <td id="taskId-{{ledgerEntry.id}}" *ngIf="ledgerEntry.id!==transactionId">
           ...{{ledgerEntry.id.substr(ledgerEntry.id.length - 4, 4)}}</td>
@@ -61,7 +58,7 @@
 </span>
 
 <span *ngIf="entryIdOfInterest!==undefined">
-  <button (click)="backToOverview()" type="button" class="btn ourBlueColor">
+  <button id="backToOverview" (click)="backToOverview()" type="button" class="btn ourBlueColor">
     <i class="fa fa-step-backward" aria-hidden="true" style="padding-right: 1vw;"></i>
     Back To Overview
     <i class="fa fa-step-backward" aria-hidden="true" style="padding-left: 1vw;"></i>
@@ -101,7 +98,7 @@
       </tr>
       <tr>
         <td>Amount</td>
-        <td>{{entryIdOfInterest.amount}}</td>
+        <td>{{entryIdOfInterest.amount}} EIC</td>
       </tr>
 
     </tbody>

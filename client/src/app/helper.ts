@@ -91,6 +91,7 @@ export class Helper {
   }
 
   public static getENUMValueAsString(yourENUM: any, value: any): string {
+    // tslint:disable-next-line: no-for-in
     for (const o in yourENUM) {
       if (yourENUM.hasOwnProperty(o)) {
         if (Number(o) === value) {
@@ -103,7 +104,7 @@ export class Helper {
   }
 
   public static getId(link: string): string {
-    alert(link)
+    // alert(link)
     const myArray = link.split('/')
 
     return `${myArray[myArray.length - 3]}/${myArray[myArray.length - 1]}`

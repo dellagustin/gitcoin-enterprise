@@ -19,7 +19,9 @@ export class AppService {
   }
 
   public triggerBackup(): void {
-    shelljs.exec(`${__dirname}/../trigger-operational-data-backup.sh`)
+    const pathToBackupScript = `${__dirname}/../trigger-operational-data-backup.sh`
+    void this.lg.log(ELogLevel.Info, `triggering backup via script: ${pathToBackupScript}`)
+    // shelljs.exec(pathToBackupScript)
   }
   public getLoginFromToken(token: string) {
     return this.getAuthenticationData(token).login
@@ -132,7 +134,7 @@ export class AppService {
       entry = {
         id: `tr-${Date.now().toString()}`,
         date: new Date().toISOString(),
-        amount: receiver.amount,
+        amount: Number(receiver.amount),
         sender: receiver.bountyForTaskLink,
         receiver: receiver.login,
       }

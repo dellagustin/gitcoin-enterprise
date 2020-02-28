@@ -1,0 +1,6 @@
+POST https://api.github.com/repos/gitcoin-enterprise/gitcoin-enterprise/issues/25/comments?access_token=4711
+content-type: application/json
+
+{
+    "body": "test"
+}

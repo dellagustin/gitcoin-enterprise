@@ -14,7 +14,7 @@
     <tbody>
       <tr *ngFor="let entry of usersFundings" (click)="onEntryClicked(entry)">
         <td>{{getIt(entry.taskLink)}}</td>
-        <td>{{entry.amount}}</td>
+        <td>{{entry.amount}} EIC</td>
       </tr>
     </tbody>
   </table>
@@ -39,7 +39,7 @@
       <tbody>
         <tr *ngFor="let receiver of receivers">
           <td><input id="githubUser" type="text" [(ngModel)]="receiver.login" style="width: 90%;"></td>
-          <td><input id="amount" type="text" [(ngModel)]="receiver.amount" style="width: 90%;"></td>
+          <td><input id="amount" type="number" [(ngModel)]="receiver.amount" style="width: 90%;"></td>
         </tr>
       </tbody>
     </table>

@@ -6,21 +6,16 @@ const fileIdFundedTasks = path.join(
   "../server/operational-data/funded-tasks.json"
 );
 
-const fileIdInvitationLists = path.join(
-  path.resolve(),
-  "../server/operational-data/invitation-lists.json"
-);
-
 const fileIdLedgerEntries = path.join(
   path.resolve(),
   "../server/operational-data/ledger-entries.json"
 );
 
-const fileIdUsers = path.join(
+const fileIdAuthenticationData = path.join(
   path.resolve(),
-  "../server/operational-data/users.json"
+  "../server/operational-data/authentication-data.json"
 );
 
-fs.write(fileIdInvitationLists, "[]");
+fs.write(fileIdAuthenticationData, "[]");
 fs.write(fileIdLedgerEntries, "[]");
 fs.write(fileIdFundedTasks, "[]");

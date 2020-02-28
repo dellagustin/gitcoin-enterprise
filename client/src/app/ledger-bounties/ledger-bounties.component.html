@@ -7,9 +7,9 @@
   </thead>
   <tbody>
     <tr *ngFor="let entry of usersBounties" (click)="onEntryClicked(entry)">
-      <td>{{entry.taskLink}}</td>
-      <td>{{entry.amount}}</td>
-
+      <td *ngIf="entry.taskLink!=='The Miner'">{{entry.taskLink}}</td>
+      <td *ngIf="entry.taskLink==='The Miner'">Register Successfully</td>
+      <td>{{entry.amount}} EIC</td>
     </tr>
 
   </tbody>

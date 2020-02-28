@@ -37,6 +37,7 @@ Scenario("Check my Profile", async (I) => {
   I.see("Bounties & Fundings");
   I.see("Balance");
   I.see("Visit on GitHub");
+  I.see("Balance: 200 EIC");
 
 });
 
@@ -96,7 +97,7 @@ Scenario("Fund a Task", async (I) => {
   I.see("Please enter the link to the issue on GitHub.");
   I.fillField(
     locate("#taskLink"),
-    "https://github.com/gitcoin-enterprise/gitcoin-enterprise/issues/16"
+    "https://github.com/gitcoin-enterprise/gitcoin-enterprise/issues/25"
   );
   I.wait(2)
   I.click(locate("#next"));
@@ -119,11 +120,16 @@ Scenario("Fund a Task", async (I) => {
   I.wait(2)
 
   I.see('Transaction Volume')
+  I.see('220 EIC')
 
   I.click(locate(`#taskId-${transactionId}`))
   I.wait(2)
   I.see('From User')
   I.see('To Task')
+  I.see('Amount')
+  I.see('20')
+
+  I.click(locate(`#backToOverview`))
 
 });
 
@@ -140,6 +146,7 @@ Scenario("Solve a Task", async (I) => {
   I.click(locate('#solve'));
   I.wait(2)
   I.see("Task Explorer");
+  I.see("20 EIC");
 
   // I.click(locate(`#taskId-${transactionId}`))
   I.click({ xpath: '//td' })
@@ -176,7 +183,13 @@ Scenario("Pay the Bounty", async (I) => {
 
   I.click(locate('#bountiesAndFundings'))
   I.wait(2);
+  I.see("Balance: 180 EIC");
+  I.see("Your Fundings");
+  I.see("Your Bounties");
   I.see("Click an entry to trigger a payout");
+  I.see("20 EIC");
+  I.see("Register Successfully"); 
+  I.see("200 EIC");
   I.click({ xpath: '//td' })
   I.wait(2);
   const completeAmount = await I.grabValueFrom('input[id=amount]');
@@ -208,6 +221,7 @@ Scenario("Pay the Bounty", async (I) => {
   I.click(locate('#viewTransactionInLedger'))
   I.wait(2)
   I.see("Transaction Volume")
+  I.see("240 EIC")
   I.click(locate("#burgerMenu"));
   I.wait(2)
 
@@ -220,6 +234,33 @@ Scenario("Pay the Bounty", async (I) => {
   I.see('Fund a Task')
   I.see('Solve a Task')
 
+});
+
+
+Scenario("Check Ledger Component", async (I) => {
+
+  I.say(prerequisite);
+
+  I.amOnPage("/");
+  I.wait(2)
+
+  I.click(locate("#burgerMenu"));
+  I.wait(2);
+
+  I.click(locate("#downloadLedger"));
+  await I.wait(2);
+
+  I.see('Download as JSON')
+  I.see('Download as CSV')
+  I.see('Backup on GitHub')
+
+  // I.click(locate("#triggerBackup"));
+
+  I.click({ xpath: '//td' })
+
+  I.see('The Miner')
+  I.see('michael-spengler')
+  I.see('200')
 });
 
 const prerequisite = 'For this test it is important to be online also when testing locally - because accessing <i id="burgerMenu" class="fa fa-bars"></i>...' 

@@ -113,7 +113,10 @@ export class LedgerComponent implements OnInit {
   }
 
   public getTarget(): string {
-    // tbd
+    if (this.getTargetType() === 'User') {
+      return `${BackendService.gitHubURL}/${this.entryIdOfInterest.receiver}`
+    }
+
     return Helper.getId(this.entryIdOfInterest.receiver)
   }
 

@@ -61,7 +61,9 @@
   </h4>
   <div *ngFor="let newLedgerEntry of newLedgerEntries">
 
-    I transferred {{newLedgerEntry.amount}} EIC to {{newLedgerEntry.receiver}}. <p></p>
+    <p class="ourBlueColor"><br>
+      I transferred {{newLedgerEntry.amount}} EIC to {{newLedgerEntry.receiver}}.
+    </p>
 
     <div id="transactionId" style="display: none;">
       <!-- used e.g. for acceptance tests -->

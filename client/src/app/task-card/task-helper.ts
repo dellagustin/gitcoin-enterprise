@@ -20,7 +20,7 @@ export class TaskHelper {
   public static getDemoTaskLink(): string {
     if (document.URL === 'https://gitcoin-enterprise.org') { return `${BackendService.gitHubURL}/gitcoin-enterprise/gitcoin-enterprise/issues/24` }
 
-    return `${BackendService.gitHubURL}/org/repo/issues/1`
+    return `${BackendService.gitHubURL}/gitcoin-enterprise/gitcoin-enterprise/issues/25`
   }
 
 }
