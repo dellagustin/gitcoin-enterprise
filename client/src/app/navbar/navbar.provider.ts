@@ -20,7 +20,7 @@ export class NavBarProvider {
     menuEntries.push({ isActive: false, text: 'Profile', href: 'profile' })
     menuEntries.push({ isActive: false, text: 'Ledger', href: 'downloadLedger' })
     menuEntries.push({ isActive: false, text: 'Use as App', href: 'useAsApp' })
-    menuEntries.push({ isActive: false, text: 'Invite Friends', href: 'inviteFriends' })
+    // menuEntries.push({ isActive: false, text: 'Invite Friends', href: 'inviteFriends' })
     menuEntries.push({ isActive: false, text: 'Open Source', href: 'openSource' })
     if (NavBarProvider.isImpressumNecessary()) {
       menuEntries.push({ isActive: false, text: 'About', href: 'about' })

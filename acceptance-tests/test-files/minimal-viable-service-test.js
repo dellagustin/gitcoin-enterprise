@@ -41,31 +41,6 @@ Scenario("Check my Profile", async (I) => {
 
 });
 
-
-Scenario("Invite a Friend", async (I) => {
-
-  I.say(prerequisite);
-
-  I.amOnPage("/");
-  I.wait(2)
-
-
-  I.click(locate("#burgerMenu"));
-  I.wait(2);
-
-  I.click(locate("#inviteFriends"));
-  I.wait(2);
-
-  I.see("Invite Friends");
-  I.see("Copy Link To Clipboard");
-
-  I.click(locate('#copyLinkToClipboard'))
-  I.seeInPopup('Invitationlink copied to clipboard')
-  I.acceptPopup();
-
-});
-
-
 Scenario("Check Impressum", async (I) => {
 
   I.say(prerequisite);
@@ -180,6 +155,7 @@ Scenario("Pay the Bounty", async (I) => {
   I.see("Bounties & Fundings");
   I.see("Balance");
   I.see("Visit on GitHub");
+  I.see("Balance: 180 EIC");
 
   I.click(locate('#bountiesAndFundings'))
   I.wait(2);
@@ -224,7 +200,6 @@ Scenario("Pay the Bounty", async (I) => {
   I.see("240 EIC")
   I.click(locate("#burgerMenu"));
   I.wait(2)
-
   I.click(locate('#landing'))
   I.wait(2)
 
@@ -233,6 +208,17 @@ Scenario("Pay the Bounty", async (I) => {
 
   I.see('Fund a Task')
   I.see('Solve a Task')
+
+  I.click(locate("#burgerMenu"));
+  I.wait(2)
+
+  I.click(locate("#profile"));
+  I.wait(2);
+
+  I.see("Bounties & Fundings");
+  I.see("Balance: 200 EIC");
+  I.see("Visit on GitHub");
+
 
 });
 
@@ -264,3 +250,27 @@ Scenario("Check Ledger Component", async (I) => {
 });
 
 const prerequisite = 'For this test it is important to be online also when testing locally - because accessing <i id="burgerMenu" class="fa fa-bars"></i>...' 
+
+
+// Scenario("Invite a Friend", async (I) => {
+
+//   I.say(prerequisite);
+
+//   I.amOnPage("/");
+//   I.wait(2)
+
+
+//   I.click(locate("#burgerMenu"));
+//   I.wait(2);
+
+//   I.click(locate("#inviteFriends"));
+//   I.wait(2);
+
+//   I.see("Invite Friends");
+//   I.see("Copy Link To Clipboard");
+
+//   I.click(locate('#copyLinkToClipboard'))
+//   I.seeInPopup('Invitationlink copied to clipboard')
+//   I.acceptPopup();
+
+// });

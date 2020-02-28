@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common'
-import { IFunding, IApplication, IAuthenticationData, IIssueInfo, ITask } from '../interfaces'
+import { IFunding, IApplication, IIssueInfo, ITask } from '../interfaces'
 import { LoggerService } from '../logger/logger.service'
 import { config } from '../app.module'
 import * as moment from 'moment'
@@ -14,55 +14,36 @@ import { CommentProvider } from './comment-provider'
 
 @Injectable()
 export class GithubIntegrationService {
+    public static axiosClient: AxiosInstance
+
     private lastGetIssueRequest = moment()
     private lastPostCommentRequest = moment()
-    private readonly agent
-    private readonly axiosClient: AxiosInstance
 
     public constructor(private readonly lg: LoggerService, private readonly persistencyService: PersistencyService) {
+
+        let agent
+        let axiosClient
         if (config.gitHubURL === 'https://github.com') {
-            this.axiosClient = axios.create({
+            axiosClient = axios.create({
                 baseURL: config.gitHubURL,
                 proxy: false,
             })
         } else {
-            this.agent = tunnel.httpsOverHttp({
+            agent = tunnel.httpsOverHttp({
                 proxy: {
                     host: config.proxyHostForEnterpriseGitHubInstance,
                     port: config.proxyHostForEnterpriseGitHubInstancePort,
                 },
             })
-            this.axiosClient = axios.create({
+            axiosClient = axios.create({
                 baseURL: config.gitHubURL,
-                httpsAgent: this.agent,
+                httpsAgent: agent,
                 proxy: false, // to be save regarding autodetection of environment variables...
             })
         }
-    }
 
-    public async getAuthenticationDataFromGitHub(token: string): Promise<IAuthenticationData> {
-        let user
+        GithubIntegrationService.axiosClient = axiosClient
 
-        try {
-            const getURLToGetUser = (config.gitHubURL === 'https://github.com') ?
-                `https://api.github.com/user?access_token=${token}` :
-                `${config.gitHubURL}/api/v3/user?access_token=${token}`
-            await this.lg.log(ELogLevel.Info, `calling to: ${getURLToGetUser}`)
-            user = (await this.axiosClient.get(getURLToGetUser)).data
-            await this.lg.log(ELogLevel.Info, JSON.stringify(`user: ${user}`))
-            const authenticationData: IAuthenticationData = {
-                avatarURL: user.avatar_url,
-                login: user.login,
-                token: uuidv1().replace(/-/g, '').substr(0, 10),
-            }
-
-            return authenticationData
-
-        } catch (error) {
-            const errorMessage = `The following error occurred while retrieving Login: ${error.message} for ${token}` // shall be deleted as soon as test is successful
-            void this.lg.log(ELogLevel.Error, errorMessage)
-            throw new Error(errorMessage)
-        }
     }
 
     public async getIssue(org: any, repo: any, issueId: any): Promise<IIssueInfo> {
@@ -83,7 +64,7 @@ export class GithubIntegrationService {
             const getURLToGetIssueData = (config.gitHubURL === 'https://github.com') ?
                 `https://api.github.com/repos/${org}/${repo}/issues/${issueId}` :
                 `${config.gitHubURL}/api/v3/repos/${org}/${repo}/issues/${issueId}`
-            const issueData = (await this.axiosClient.get(getURLToGetIssueData)).data
+            const issueData = (await GithubIntegrationService.axiosClient.get(getURLToGetIssueData)).data
             void this.lg.log(ELogLevel.Info, JSON.stringify(issueData))
             issueInfo.title = issueData.title
             issueInfo.description = issueData.body
@@ -120,7 +101,7 @@ export class GithubIntegrationService {
                 `${config.gitHubURL}/api/v3/repos/${owner}/${repoName}/issues/${issueNo}/comments?access_token=${config.gitHubTokenForPostingCommentsAndForGettingIssueData}`
 
             void this.lg.log(ELogLevel.Info, `posting to: ${uRLToPostComment}`)
-            const postingResult = (await this.axiosClient.post(uRLToPostComment, { body }))
+            const postingResult = (await GithubIntegrationService.axiosClient.post(uRLToPostComment, { body }))
             void this.lg.log(ELogLevel.Info, `posting a comment and getting: ${JSON.stringify(postingResult)}`)
 
         } catch (error) {
@@ -152,7 +133,7 @@ export class GithubIntegrationService {
             const uRLToPostComment = (config.gitHubURL === 'https://github.com') ?
                 `https://api.github.com/repos/${owner}/${repoName}/issues/${issueNo}/comments?access_token=${config.gitHubTokenForPostingCommentsAndForGettingIssueData}` :
                 `${config.gitHubURL}/api/v3/repos/${owner}/${repoName}/issues/${issueNo}/comments?access_token=${config.gitHubTokenForPostingCommentsAndForGettingIssueData}`
-            const postingResult = (await this.axiosClient.post(uRLToPostComment, { body }))
+            const postingResult = (await GithubIntegrationService.axiosClient.post(uRLToPostComment, { body }))
 
             void this.lg.log(ELogLevel.Info, JSON.stringify(`posting an issue and getting: ${String(postingResult)}`))
 
@@ -184,7 +165,7 @@ export class GithubIntegrationService {
             const uRLToPostComment = (config.gitHubURL === 'https://github.com') ?
                 `https://api.github.com/repos/${owner}/${repoName}/issues/${issueNo}/comments?access_token=${config.gitHubTokenForPostingCommentsAndForGettingIssueData}` :
                 `${config.gitHubURL}/api/v3/repos/${owner}/${repoName}/issues/${issueNo}/comments?access_token=${config.gitHubTokenForPostingCommentsAndForGettingIssueData}`
-            const postingResult = (await this.axiosClient.post(uRLToPostComment, { body }))
+            const postingResult = (await GithubIntegrationService.axiosClient.post(uRLToPostComment, { body }))
 
             void this.lg.log(ELogLevel.Info, JSON.stringify(`posting an issue and getting: ${String(postingResult)}`))
 

@@ -14,10 +14,10 @@ import * as tunnel from 'tunnel'
 
 @Injectable()
 export class AuthenticationService {
-    private actionsForRedirectingConvenientlyAfterLogin = []
-    private validStates: string[] = []
+    protected actionsForRedirectingConvenientlyAfterLogin = []
+    protected validStates: string[] = []
 
-    public constructor(private readonly lg: LoggerService, private readonly gitHubIntegration: GithubIntegrationService, private readonly persistencyService: PersistencyService, private readonly ledgerConnector: LedgerConnector) {
+    public constructor(protected readonly lg: LoggerService, protected readonly gitHubIntegration: GithubIntegrationService, protected readonly persistencyService: PersistencyService, protected readonly ledgerConnector: LedgerConnector) {
         setInterval(() => {
             this.actionsForRedirectingConvenientlyAfterLogin = [] // initializing after 11 days
             this.validStates = []
@@ -25,7 +25,7 @@ export class AuthenticationService {
     }
 
     public isUserAuthenticated(michaelsfriendskey: string): boolean {
-        const authenticationData: IAuthenticationData = this.getAuthenticationDataFromMainMemory(michaelsfriendskey)
+        const authenticationData: IAuthenticationData = this.getAuthenticationDataFromMemory(michaelsfriendskey)
 
         if (authenticationData === undefined) { return false }
         if (authenticationData.login === '') { return false }
@@ -33,7 +33,7 @@ export class AuthenticationService {
         return true
     }
 
-    public getAuthenticationDataFromMainMemory(userAccessToken: string): IAuthenticationData {
+    public getAuthenticationDataFromMemory(userAccessToken: string): IAuthenticationData {
         const allAuthenticationData = this.persistencyService.getAuthenticationData()
         void this.lg.log(ELogLevel.Debug, `checking for token: ${userAccessToken} within ${JSON.stringify(allAuthenticationData)}`)
 
@@ -82,7 +82,55 @@ export class AuthenticationService {
         this.actionsForRedirectingConvenientlyAfterLogin.push(addressWantsTo)
     }
 
-    private async getTokenFromCode(code: string, state: string) {
+    protected async handleNewToken(michaelsfriendskey: any): Promise<IAuthenticationData> {
+        let authenticationData: IAuthenticationData
+        void this.lg.log(ELogLevel.Debug, 'handling new token')
+        authenticationData = await this.getAuthenticationDataFromGitHub(michaelsfriendskey)
+        this.addAuthenticationData(authenticationData)
+
+        return authenticationData
+    }
+
+    protected addAuthenticationData(aD: IAuthenticationData): void {
+        const allAuthenticationData = this.persistencyService.getAuthenticationData()
+        if (allAuthenticationData.filter((entry: IAuthenticationData) => entry.token === aD.token)[0] !== undefined) {
+            void this.lg.log(ELogLevel.Debug, 'Authentication Data is already in Store')
+        } else {
+            void this.lg.log(ELogLevel.Info, 'Authentication Data added to Store')
+
+            allAuthenticationData.push(aD)
+            this.persistencyService.saveAuthenticationData(allAuthenticationData)
+
+            this.ledgerConnector.addMiningEntryForUser(aD.login)
+        }
+    }
+
+    protected async getAuthenticationDataFromGitHub(token: string): Promise<IAuthenticationData> {
+        let user
+
+        try {
+            const getURLToGetUser = (config.gitHubURL === 'https://github.com') ?
+                `https://api.github.com/user?access_token=${token}` :
+                `${config.gitHubURL}/api/v3/user?access_token=${token}`
+            await this.lg.log(ELogLevel.Info, `calling to: ${getURLToGetUser}`)
+            user = (await GithubIntegrationService.axiosClient.get(getURLToGetUser)).data
+            await this.lg.log(ELogLevel.Info, JSON.stringify(`user: ${user}`))
+            const authenticationData: IAuthenticationData = {
+                avatarURL: user.avatar_url,
+                login: user.login,
+                token: uuidv1().replace(/-/g, '').substr(0, 10),
+            }
+
+            return authenticationData
+
+        } catch (error) {
+            const errorMessage = `The following error occurred while retrieving Login: ${error.message} for ${token}` // shall be deleted as soon as test is successful
+            void this.lg.log(ELogLevel.Error, errorMessage)
+            throw new Error(errorMessage)
+        }
+    }
+
+    protected async getTokenFromCode(code: string, state: string) {
         if (this.validStates.indexOf(state) === -1) {
             const message = `I guess the state: ${state} is not valid`
             void this.lg.log(ELogLevel.Error, message)
@@ -125,29 +173,6 @@ export class AuthenticationService {
         const accessToken = result.split('access_token=')[1].split('&')[0]
 
         return accessToken
-    }
-
-    private async handleNewToken(michaelsfriendskey: any): Promise<IAuthenticationData> {
-        let authenticationData: IAuthenticationData
-        void this.lg.log(ELogLevel.Debug, 'handling new token')
-        authenticationData = await this.gitHubIntegration.getAuthenticationDataFromGitHub(michaelsfriendskey)
-        this.addAuthenticationData(authenticationData)
-
-        return authenticationData
-    }
-
-    private addAuthenticationData(aD: IAuthenticationData): void {
-        const allAuthenticationData = this.persistencyService.getAuthenticationData()
-        if (allAuthenticationData.filter((entry: IAuthenticationData) => entry.token === aD.token)[0] !== undefined) {
-            void this.lg.log(ELogLevel.Debug, 'Authentication Data is already in Store')
-        } else {
-            void this.lg.log(ELogLevel.Info, 'Authentication Data added to Store')
-
-            allAuthenticationData.push(aD)
-            this.persistencyService.saveAuthenticationData(allAuthenticationData)
-
-            this.ledgerConnector.addMiningEntryForUser(aD.login)
-        }
     }
 
 }

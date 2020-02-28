@@ -28,11 +28,11 @@ export class AppService {
   }
 
   public getAuthenticationData(michaelsfriendskey: string): IAuthenticationData {
-    return this.authenticationService.getAuthenticationDataFromMainMemory(michaelsfriendskey)
+    return this.authenticationService.getAuthenticationDataFromMemory(michaelsfriendskey)
   }
 
   public async postSolutionApproach(application: IApplication, userAccessToken: string): Promise<void> {
-    const authenticationData = this.authenticationService.getAuthenticationDataFromMainMemory(userAccessToken)
+    const authenticationData = this.authenticationService.getAuthenticationDataFromMemory(userAccessToken)
     if (authenticationData === undefined) {
       throw new Error('Authentication data not found for this token')
     }
@@ -62,7 +62,7 @@ export class AppService {
 
   public async saveFunding(taskAndFunding: ITaskAndFunding, userAccessToken: string): Promise<ILedgerEntry> {
 
-    const authenticationData = this.authenticationService.getAuthenticationDataFromMainMemory(userAccessToken)
+    const authenticationData = this.authenticationService.getAuthenticationDataFromMemory(userAccessToken)
     if (authenticationData === undefined) {
       throw new Error(`I could not find authentication Data for this token: ${userAccessToken}`)
     }
@@ -95,7 +95,7 @@ export class AppService {
 
   public postTransfer(receivers: IBountyReceiver[], userAccessToken: string): ILedgerEntry[] {
 
-    const authenticationData = this.authenticationService.getAuthenticationDataFromMainMemory(userAccessToken)
+    const authenticationData = this.authenticationService.getAuthenticationDataFromMemory(userAccessToken)
     if (authenticationData === undefined) {
       throw new Error(`I could not find authentication Data for this token: ${userAccessToken}`)
     }
