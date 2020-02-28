@@ -101,9 +101,7 @@ export class GithubIntegrationService {
                 `${config.gitHubURL}/api/v3/repos/${owner}/${repoName}/issues/${issueNo}/comments?access_token=${config.gitHubTokenForPostingCommentsAndForGettingIssueData}`
 
             void this.lg.log(ELogLevel.Info, `posting to: ${uRLToPostComment}`)
-            const postingResult = (await GithubIntegrationService.axiosClient.post(uRLToPostComment, { body }))
-            void this.lg.log(ELogLevel.Info, `posting a comment and getting: ${JSON.stringify(postingResult)}`)
-
+            await GithubIntegrationService.axiosClient.post(uRLToPostComment, { body })
         } catch (error) {
             await this.lg.log(ELogLevel.Error, `postCommentAboutSuccessfullFunding the github call to create a comment for  the issue failed ${error}`)
 
@@ -133,10 +131,7 @@ export class GithubIntegrationService {
             const uRLToPostComment = (config.gitHubURL === 'https://github.com') ?
                 `https://api.github.com/repos/${owner}/${repoName}/issues/${issueNo}/comments?access_token=${config.gitHubTokenForPostingCommentsAndForGettingIssueData}` :
                 `${config.gitHubURL}/api/v3/repos/${owner}/${repoName}/issues/${issueNo}/comments?access_token=${config.gitHubTokenForPostingCommentsAndForGettingIssueData}`
-            const postingResult = (await GithubIntegrationService.axiosClient.post(uRLToPostComment, { body }))
-
-            void this.lg.log(ELogLevel.Info, JSON.stringify(`posting an issue and getting: ${String(postingResult)}`))
-
+            await GithubIntegrationService.axiosClient.post(uRLToPostComment, { body })
         } catch (error) {
             await this.lg.log(ELogLevel.Error, `postCommentAboutSuccessfullTransfer the github call to create a comment for  the issue failed ${error}`)
 
@@ -165,10 +160,7 @@ export class GithubIntegrationService {
             const uRLToPostComment = (config.gitHubURL === 'https://github.com') ?
                 `https://api.github.com/repos/${owner}/${repoName}/issues/${issueNo}/comments?access_token=${config.gitHubTokenForPostingCommentsAndForGettingIssueData}` :
                 `${config.gitHubURL}/api/v3/repos/${owner}/${repoName}/issues/${issueNo}/comments?access_token=${config.gitHubTokenForPostingCommentsAndForGettingIssueData}`
-            const postingResult = (await GithubIntegrationService.axiosClient.post(uRLToPostComment, { body }))
-
-            void this.lg.log(ELogLevel.Info, JSON.stringify(`posting an issue and getting: ${String(postingResult)}`))
-
+            await GithubIntegrationService.axiosClient.post(uRLToPostComment, { body })
         } catch (error) {
             await this.lg.log(ELogLevel.Error, `postCommentAboutApplication the github call to create a comment for  the issue failed ${error}`)
 
