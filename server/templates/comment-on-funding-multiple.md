@@ -3,10 +3,7 @@
 This task has been funded with  
 ```
 {{{amount}}} EIC by {{{funder}}}
-```
-
-via [https://gitcoin-enterprise.org](https://gitcoin-enterprise.org).  
-
+```  
 
 **The overall funding for this task is now: {{{totalAmount}}} EIC.**  
 

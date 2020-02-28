@@ -3,9 +3,7 @@
 This task has been funded with  
 ```
 {{{amount}}} EIC by {{{funder}}}
-```
-
-via [https://gitcoin-enterprise.org](https://gitcoin-enterprise.org).  
+```  
 
 Solve this task to earn this bounty.  
 
