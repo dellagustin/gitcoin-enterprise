@@ -1,4 +1,4 @@
-## This task has been funded via gitcoin-enterprise
+## This task has been funded via gitcoin-enterprise.org
 
 This task has been funded with  
 ```
