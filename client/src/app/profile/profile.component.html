@@ -10,10 +10,10 @@
 
 <span *ngIf="!transferCompleted">
   <div class="adPad2">
-    <h4 class="ourRedColor"> {{authenticationData.login}}</h4>
-    <p class="ourBlueColor" style="margin-top: 0.7vh">
+    <h4 class="titleBeneathImage ourRedColor" style="margin-top: 2.7vh"> {{authenticationData.login}}</h4>
+    <h4 class="titleBeneathImage ourBlueColor" style="margin-top: 2.7vh">
       Balance: {{balance}} EIC
-    </p>
+    </h4>
 
     <span *ngIf="!viewBountiesAndFundings">
       <button id="bountiesAndFundings" type="button" class="btn ourRedColor" (click)="clickBountiesAndFundings()">
