@@ -3,7 +3,7 @@ FROM node:12
 COPY ./server/node_modules /app/node_modules
 COPY ./server/dist /app/dist
 COPY ./server/docs /app/docs
-COPY ./server/templates /app/templates
+COPY ./server/templates /app/server/templates
 COPY ./server/operational-data-template /app
 COPY ./server/.env.json /app/.env.json
 

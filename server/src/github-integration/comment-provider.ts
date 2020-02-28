@@ -3,7 +3,7 @@ import * as path from 'path'
 import { IFunding, IApplication } from '../interfaces'
 
 export class CommentProvider {
-    private static readonly templatesFolder = path.join(path.resolve(''), './templates')
+    private static readonly templatesFolder = path.join(path.resolve(''), './server/templates')
     public static getCommentAboutSuccessfullFunding(totalAmount: number, funding: IFunding): any {
         let commentBody
         if (totalAmount > funding.amount) {
