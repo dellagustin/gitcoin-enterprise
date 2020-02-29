@@ -10,7 +10,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: git pull, build and deploy
+      if: github.event.commits[0].message !== 'operational-data-backup'
       run: |
         echo geil,
-        echo ${{github.event.commits[0].message}}
         sshpass -p ${{ secrets.pw }} ssh root@95.216.150.10 -o StrictHostKeyChecking=no < ./deploy.bash
