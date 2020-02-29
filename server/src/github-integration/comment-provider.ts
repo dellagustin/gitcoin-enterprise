@@ -4,7 +4,17 @@ import { IFunding, IApplication } from '../interfaces'
 
 export class CommentProvider {
     // private static readonly templatesFolder = path.join(path.resolve(''), './server/templates')
-    private static readonly templatesFolder = path.join(path.resolve(''), './templates')
+    private static readonly templatesFolder = CommentProvider.getPathToTemplates()
+
+    public static getPathToTemplates() {
+
+        // tslint:disable-next-line: no-console
+        console.log(__dirname)
+
+        return (__dirname.indexOf('dist') === -1) ?
+            path.join(__dirname, '../../templates') :
+            path.join(__dirname, '../../templates')
+    }
     public static getCommentAboutSuccessfullFunding(totalAmount: number, funding: IFunding): any {
         let commentBody
         if (totalAmount > funding.amount) {
