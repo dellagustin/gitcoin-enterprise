@@ -22,8 +22,10 @@ import { CheckItOnGithubComponent } from './check-it-on-github/check-it-on-githu
 import { TypingAreaComponent } from './typing-area/typing-area.component'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { AccordionModule } from 'ngx-bootstrap/accordion'
+import { TypeaheadModule } from 'ngx-bootstrap/typeahead'
 import { LedgerBountiesComponent } from './ledger-bounties/ledger-bounties.component'
 import { LedgerFundingsComponent } from './ledger-fundings/ledger-fundings.component'
+import { TypeaheadComponent } from './typeahead/typeahead.component'
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,9 +43,11 @@ import { LedgerFundingsComponent } from './ledger-fundings/ledger-fundings.compo
     TypingAreaComponent,
     LedgerBountiesComponent,
     LedgerFundingsComponent,
+    TypeaheadComponent,
 
   ],
   imports: [
+    TypeaheadModule.forRoot(),
     BrowserAnimationsModule,
     AccordionModule.forRoot(),
     RouterModule.forRoot([]),

@@ -52,6 +52,10 @@ export class BackendService {
     return this.get(`${BackendService.backendURL}/getFundedTasks`, token)
   }
 
+  public getPotentialReceivers(token: string) {
+    return this.get(`${BackendService.backendURL}/getPotentialReceivers`, token)
+  }
+
   public getAuthenticationData(token: string) {
     return this.get(`${BackendService.backendURL}/getAuthenticationData`, token)
   }

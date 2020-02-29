@@ -43,7 +43,7 @@
     </div>
 
     <span *ngIf="usersFundings.length>0">
-      <app-ledger-fundings [usersFundings]="usersFundings" (transferTriggered)="onTransferTriggered($event)">
+      <app-ledger-fundings [usersFundings]="usersFundings" [p2pAccessToken]="authenticationData.p2pAccessToken" (transferTriggered)="onTransferTriggered($event)">
       </app-ledger-fundings>
     </span>
 

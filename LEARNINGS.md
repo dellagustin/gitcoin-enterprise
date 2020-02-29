@@ -41,6 +41,8 @@ I needed to
 
 before I could use https://www.npmjs.com/package/ngx-bootstrap successfully
 
+https://valor-software.com/ngx-bootstrap/#/typeahead was helpful
+
 ### Pagespeed
 
 https://developers.google.com/speed/pagespeed/insights/

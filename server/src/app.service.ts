@@ -53,6 +53,18 @@ export class AppService {
     return this.persistencyService.getFundedTasks()
   }
 
+  public getPotentialReceivers(): string[] {
+    const authenticationData = this.persistencyService.getAuthenticationData()
+    const potentialReceivers: string[] = []
+    for (const entry of authenticationData) {
+      potentialReceivers.push(entry.login)
+    }
+
+    void this.lg.log(ELogLevel.Info, `I found ${potentialReceivers.length} receivers`)
+
+    return potentialReceivers
+  }
+
   public getLedgerEntries(): ILedgerEntry[] {
     return this.ledgerConnector.getLedgerEntries()
   }

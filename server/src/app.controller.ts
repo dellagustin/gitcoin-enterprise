@@ -46,6 +46,11 @@ export class AppController {
     return this.appService.getFundedTasks()
   }
 
+  @Get('/getPotentialReceivers')
+  public getPotentialReceivers(): string[] {
+    return this.appService.getPotentialReceivers()
+  }
+
   @Get('/getAuthenticationData')
   public getAuthenticationData(@Req() req: any): IAuthenticationData {
     return this.appService.getAuthenticationData(req.headers.michaelsfriendskey)

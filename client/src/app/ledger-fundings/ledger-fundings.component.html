@@ -33,12 +33,18 @@
       <thead class="ourRedColor">
         <tr>
           <th>GitHub User</th>
-          <th>Amount</th>
+          <th>Amount in EIC</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let receiver of receivers">
-          <td><input id="githubUser" type="text" [(ngModel)]="receiver.login" style="width: 90%;"></td>
+          <!-- <td><input id="githubUser"type="text" class="form-control" [(ngModel)]="receiver.login" style="width: 90%;" placeholder="Enter Receiver"></td> -->
+          <td>
+              <app-typeahead [placeHolder]="'Enter Receiver'" [items]="potentialReceivers" [selectedItem]="selectedItem"
+                (itemSelected)="onReceiverSelected($event)">
+              </app-typeahead>
+            <!-- [inputStyle]="md.typeAheadStyleDances" -->
+          </td>
           <td><input id="amount" type="number" [(ngModel)]="receiver.amount" style="width: 90%;"></td>
         </tr>
       </tbody>
