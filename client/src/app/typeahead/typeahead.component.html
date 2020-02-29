@@ -1,25 +1,3 @@
-    <input [(ngModel)]="selectedItem" [ngStyle]="inputStyle" [typeahead]="items" [typeaheadScrollable]="true" (typeaheadOnSelect)="onItemSelected($event)" [typeaheadOptionsInScrollableView]="5"
-    class="form-control" placeholder="{{placeHolder}}" (click)="onInputClicked()" (blur)="onInputLeft()">
-
-
-    <!-- [typeahead]="items" [typeaheadScrollable]="true" (typeaheadOnSelect)="onItemSelected($event)" -->
-
-
-<!-- <ng-template #customItemTemplate let-model="item" let-index="index">
-  <img [src]=getImageUrl(model) style="width: 16px; margin-right: 20px;">
-  {{getThePureString(model) | json}}
-</ng-template>
-
-<span *ngIf="useCustomTemplate">
-  <input [(ngModel)]=selectedItem [ngStyle]="inputStyle" [typeaheadOptionsInScrollableView]="maxNumberOfProposals"
-  [typeahead]="items" [typeaheadScrollable]="true" (typeaheadOnSelect)="onItemSelected($event)"
-  class="form-control" placeholder="{{placeHolder}}" (click)="onInputClicked()"
-  [typeaheadItemTemplate]="customItemTemplate" (blur)="onInputLeft()">
-</span>
-
-<span *ngIf="!useCustomTemplate">
-    <input [(ngModel)]="selectedItem" [ngStyle]="inputStyle" [typeaheadOptionsInScrollableView]="maxNumberOfProposals"
-    [typeahead]="items" [typeaheadScrollable]="true" (typeaheadOnSelect)="onItemSelected($event)"
-    class="form-control" placeholder="{{placeHolder}}" (click)="onInputClicked()" (blur)="onInputLeft()">
-  </span>
- -->
+<input [(ngModel)]="selectedItem" [ngStyle]="inputStyle" [typeahead]="items" [typeaheadScrollable]="true"
+  (typeaheadOnSelect)="onItemSelected($event)" [typeaheadOptionsInScrollableView]="5" class="form-control"
+  placeholder="{{placeHolder}}" (click)="onInputClicked()" (blur)="onInputLeft()">

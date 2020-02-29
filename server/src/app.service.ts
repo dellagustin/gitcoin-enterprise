@@ -60,7 +60,7 @@ export class AppService {
       potentialReceivers.push(entry.login)
     }
 
-    void this.lg.log(ELogLevel.Info, `I found ${potentialReceivers.length} receivers`)
+    void this.lg.log(ELogLevel.Debug, `I found ${potentialReceivers.length} receivers`)
 
     return potentialReceivers
   }

@@ -24,7 +24,6 @@ export class LedgerFundingsComponent implements OnInit {
     this.backendService.getPotentialReceivers(this.p2pAccessToken)
       .subscribe((potentialReceivers: string[]) => {
         this.potentialReceivers = potentialReceivers
-        alert(this.potentialReceivers)
       })
   }
 

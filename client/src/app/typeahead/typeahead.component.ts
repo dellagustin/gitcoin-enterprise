@@ -1,4 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core'
+import { BackendService } from '../backend.service'
 
 @Component({
   selector: 'app-typeahead',
@@ -20,24 +21,6 @@ export class TypeaheadComponent {
 
   public formattedCities: string[] = []
 
-  // public getImageUrl(item: string): string {
-  //   if (item.indexOf(ModuleService.delimiter) !== -1) {
-  //     const imgUrl = item.split(ModuleService.delimiter)[1]
-
-  //     return imgUrl
-  //   }
-
-  //   return 'https://fance-stiftung.de/api/app/app-images/logo.png'
-  // }
-
-  // public getThePureString(item: string): string {
-  //   if (item.indexOf(ModuleService.delimiter) !== -1) {
-  //     return item.split(ModuleService.delimiter)[0]
-  //   }
-
-  //   return item
-  // }
-
   public onInputClicked() {
     this.selectedItemBackup = this.selectedItem
     this.selectedItem = ''
@@ -46,6 +29,7 @@ export class TypeaheadComponent {
   public onInputLeft() {
     if (this.selectedItem === '') {
       this.selectedItem = this.selectedItemBackup
+      alert(`You can only select users who have registered at ${BackendService.backendURL}. Inform them to do so :)`)
     }
   }
 
