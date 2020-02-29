@@ -1,0 +1,18 @@
+name: Deploy GitHub Enterprise
+
+on:
+  schedule:
+  - cron: "0 2 * * 1-5"
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+    - name: git pull, build and deploy
+      if: github.event.commits[0].message != 'operational-data-backup'
+      run: |
+        echo geil,
+        sshpass -p ${{ secrets.pw }} ssh root@95.216.150.10 -o StrictHostKeyChecking=no < ./trigger-operational-data-backup.sh
