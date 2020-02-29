@@ -61,10 +61,10 @@ export class AppController {
     return this.appService.saveFunding(req.body, req.headers.michaelsfriendskey)
   }
 
-  @Post('/triggerBackup')
-  public triggerBackup(@Req() req: any): void {
-    this.appService.triggerBackup()
-  }
+  // @Post('/triggerBackup')
+  // public triggerBackup(@Req() req: any): void {
+  //   this.appService.triggerBackup()
+  // }
 
   @Post('/postTransfer')
   public async postTransfer(@Req() req: any): Promise<ILedgerEntry[]> {

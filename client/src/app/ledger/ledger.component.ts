@@ -37,10 +37,10 @@ export class LedgerComponent implements OnInit {
       })
   }
 
-  public triggerBackup() {
-    this.backendService.triggerBackup(this.authenticationData.p2pAccessToken)
-      .subscribe()
-  }
+  // public triggerBackup() {
+  //   this.backendService.triggerBackup(this.authenticationData.p2pAccessToken)
+  //     .subscribe()
+  // }
 
   public downloadAsCSV(): void {
     const replacer = (key, value) => value === null ? '' : value // specify how you want to handle null values here

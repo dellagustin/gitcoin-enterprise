@@ -38,9 +38,9 @@
     <h4 class="titleBeneathImage ourRedColor">
       Your Fundings
     </h4>
-    <div *ngIf="usersFundings.length===0" style="margin-top: 7vh;">
-      You did not fund any task yet.
-    </div>
+    <h4 *ngIf="usersFundings.length===0" style="margin-top: 7vh;">
+      You did not fund any task yet
+    </h4>
 
     <span *ngIf="usersFundings.length>0">
       <app-ledger-fundings [usersFundings]="usersFundings" [p2pAccessToken]="authenticationData.p2pAccessToken" (transferTriggered)="onTransferTriggered($event)">
@@ -50,7 +50,7 @@
 
     <div class="adPad">
 
-      <h4 lass="titleBeneathImage ourRedColor">
+      <h4 class="titleBeneathImage ourRedColor">
         Your Bounties
       </h4>
 
