@@ -15,7 +15,7 @@ export class UptimeService {
                 if (response.indexOf('authenticationToken') === -1) {
                     void this.lg.log(ELogLevel.Error, `Dependent on Service might be down`)
                 } else {
-                    void this.lg.log(ELogLevel.Error, `Dependent on Service seems to be available`)
+                    void this.lg.log(ELogLevel.Info, `Dependent on Service seems to be available`)
                 }
 
             },          1 * 60 * 60 * 1000)

@@ -1,8 +1,5 @@
-const fs = require("fs-sync");
-const path = require("path");
-// const uuidv1 = require('uuid/v1')
-// console.log(uuidv1().replace(/-/g, '').substr(0,11))
-console.log()
+const fs = require('fs-sync')
+const path = require('path')
 const fileIdFundedTasks = path.join(
   path.resolve(),
   "../server/operational-data/funded-tasks.json"

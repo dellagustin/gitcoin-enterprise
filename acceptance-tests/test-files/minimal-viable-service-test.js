@@ -69,7 +69,7 @@ Scenario("Fund a Task", async (I) => {
   I.wait(2)
   I.click(locate('#fund'));
   I.wait(2)
-  I.see("Please enter the link to the issue on GitHub.");
+  I.see("Enter the Link to Your Issue");
   I.fillField(
     locate("#taskLink"),
     "https://github.com/gitcoin-enterprise/gitcoin-enterprise/issues/25"
@@ -238,7 +238,6 @@ Scenario("Check Ledger Component", async (I) => {
 
   I.see('Download as JSON')
   I.see('Download as CSV')
-  I.see('Backup on GitHub')
 
   // I.click(locate("#triggerBackup"));
 
