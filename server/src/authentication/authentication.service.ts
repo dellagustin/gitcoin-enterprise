@@ -94,6 +94,12 @@ export class AuthenticationService {
     protected async handleNewToken(gitHubToken: any): Promise<IAuthenticationData> {
         let authenticationData: IAuthenticationData
         authenticationData = await this.getAuthenticationDataFromGitHub(gitHubToken)
+        if (!this.isUserIDValid(authenticationData.login)) {
+            throw new Error(`The user id ${authenticationData.login} is not valid in the current phase.`)
+        }
+
+        void this.lg.log(ELogLevel.Info, `Login: ${authenticationData.login} validated successfully`)
+
         const allAuthenticationData = this.persistencyService.getAuthenticationData()
         if (allAuthenticationData.filter((entry: IAuthenticationData) => entry.id === authenticationData.id)[0] === undefined) {
 
@@ -104,6 +110,10 @@ export class AuthenticationService {
         }
 
         return authenticationData
+    }
+
+    protected isUserIDValid(login: string): boolean {
+        return (login === undefined) ? false : true
     }
 
     protected async getAuthenticationDataFromGitHub(token: string): Promise<IAuthenticationData> {
