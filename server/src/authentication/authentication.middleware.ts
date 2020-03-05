@@ -6,7 +6,6 @@ import { SupportNotifierService } from '../support-notifier/support-notifier.ser
 import { AuthenticationService } from './authentication.service'
 import { GithubIntegrationService } from '../github-integration/github-integration.service'
 import { PersistencyService } from '../persistency/persistency.service'
-import { LedgerConnector } from '../ledger-connector/ledger-connector-file-system.service'
 
 export class AuthenticationMiddleware implements NestMiddleware {
 
@@ -17,14 +16,14 @@ export class AuthenticationMiddleware implements NestMiddleware {
     const persistencyService = new PersistencyService()
     this.lg = new LoggerService(new SupportNotifierService(), persistencyService)
     this.authenticationService =
-      new AuthenticationService(this.lg, new GithubIntegrationService(this.lg, persistencyService), persistencyService, new LedgerConnector(this.lg, persistencyService))
+      new AuthenticationService(this.lg, new GithubIntegrationService(this.lg, persistencyService), persistencyService)
   }
 
-  public use(req: any, res: Response, next: any): void {
+  public async use(req: any, res: Response, next: any): Promise<void> {
     // tslint:disable-next-line: prefer-template
     const requestURL = `${req.protocol}://${req.get('host')}${req.originalUrl}`
     void this.lg.log(ELogLevel.Debug, `middleware executed for ${requestURL}`)
-    if (this.authenticationService.isUserAuthenticated(req.headers.michaelsfriendskey)) {
+    if (await this.authenticationService.isUserAuthenticated(req.headers.michaelsfriendskey)) {
       next()
     } else {
       const message = `I received an unauthorized call to: ${requestURL} with key ${JSON.stringify(req.headers)}`

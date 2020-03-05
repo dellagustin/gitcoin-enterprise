@@ -1,9 +1,7 @@
 import { Module, MiddlewareConsumer, RequestMethod } from '@nestjs/common'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
-import { LoggerService } from './logger/logger.service'
-import { LedgerConnector } from './ledger-connector/ledger-connector-file-system.service'
-import { EthereumLedgerConnector } from './ledger-connector/ledger-connector-ethereum'
+
 import { GithubIntegrationService } from './github-integration/github-integration.service'
 import { SupportNotifierService } from './support-notifier/support-notifier.service'
 import { AuthenticationMiddleware } from './authentication/authentication.middleware'
@@ -19,14 +17,15 @@ import { Neo4jService } from './neo4j/neo4j.service'
 import { PostgresService } from './persistency/postgres.service'
 import * as path from 'path'
 import * as fs from 'fs-sync'
+import { LoggerService } from './logger/logger.service'
 
 export const config: IConfig = fs.readJSON(path.join(__dirname, '../.env.json'))
 
-function getLedgerConnector() {
-  switch (config.ledgerConnector) {
-    case 'LedgerConnector': return LedgerConnector
-    case 'EthereumLedgerConnector': return EthereumLedgerConnector
-    default: return LedgerConnector
+function getPersistencyService() {
+  switch (config.persistencyService) {
+    case 'PersistencyService': return PersistencyService
+    case 'PostgresService': return PostgresService
+    default: return PersistencyService
   }
 }
 
@@ -38,9 +37,9 @@ function getAuthenticationService() {
   }
 }
 
-const ledgerConnectorProvider = {
-  provide: 'LedgerConnector',
-  useClass: getLedgerConnector(),
+const persistencyServiceProvider = {
+  provide: 'PersistencyService',
+  useClass: getPersistencyService(),
 }
 
 const authenticationServiceProvider = {
@@ -53,12 +52,11 @@ const authenticationServiceProvider = {
   providers: [
     AppService,
     LoggerService,
-    ledgerConnectorProvider,
     authenticationServiceProvider,
     GithubIntegrationService,
     SupportNotifierService,
     UptimeService,
-    PersistencyService,
+    persistencyServiceProvider,
     ImagesService,
     Neo4jService,
     PostgresService],

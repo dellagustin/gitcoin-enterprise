@@ -1,10 +1,8 @@
 import { Injectable } from '@nestjs/common'
 
-import { ITask, IFunding, ITaskAndFunding, IApplication, IAuthenticationData, IBountyReceiver } from './interfaces'
+import { ITask, IFunding, ITaskAndFunding, IApplication, IAuthenticationData, IBountyReceiver, ILedgerEntry } from './interfaces'
 import { LoggerService } from './logger/logger.service'
-import { LedgerConnector } from './ledger-connector/ledger-connector-file-system.service'
 import { GithubIntegrationService } from './github-integration/github-integration.service'
-import { ILedgerEntry } from './ledger-connector/ledger-connector.interface'
 import { ELogLevel } from './logger/logger-interface'
 import { AuthenticationService } from './authentication/authentication.service'
 import { config } from './app.module'
@@ -14,8 +12,8 @@ const shelljs = require('shelljs')
 @Injectable()
 export class AppService {
 
-  // Interface would be cool for LedgerConnector... The reason why I could not use interface polymorphism here is interfaces are design-time only in the current context :)
-  public constructor(private readonly lg: LoggerService, private readonly ledgerConnector: LedgerConnector, private readonly gitHubIntegration: GithubIntegrationService, private readonly authenticationService: AuthenticationService, private readonly persistencyService: PersistencyService) {
+  // Interface would be cool for PersistencyService... The reason why I could not use interface polymorphism here is interfaces are design-time only in the current context :)
+  public constructor(private readonly lg: LoggerService, private readonly gitHubIntegration: GithubIntegrationService, private readonly authenticationService: AuthenticationService, private readonly persistencyService: PersistencyService) {
   }
 
   public triggerBackup(): void {
@@ -24,7 +22,7 @@ export class AppService {
     // shelljs.exec(pathToBackupScript)
   }
 
-  public getAuthenticationData(michaelsfriendskey: string): IAuthenticationData {
+  public async getAuthenticationData(michaelsfriendskey: string): Promise<IAuthenticationData> {
     return this.authenticationService.getAuthenticationDataFromMemory(michaelsfriendskey)
   }
 
@@ -49,12 +47,12 @@ export class AppService {
     void this.lg.log(ELogLevel.Info, `User: ${userId} authorized installation.`)
   }
 
-  public getFundedTasks(): ITask[] {
+  public async getFundedTasks(): Promise<ITask[]> {
     return this.persistencyService.getFundedTasks()
   }
 
-  public getPotentialReceivers(): string[] {
-    const authenticationData = this.persistencyService.getAuthenticationData()
+  public async getPotentialReceivers(): Promise<string[]> {
+    const authenticationData = await this.persistencyService.getAuthenticationData()
     const potentialReceivers: string[] = []
     for (const entry of authenticationData) {
       potentialReceivers.push(entry.login)
@@ -65,8 +63,8 @@ export class AppService {
     return potentialReceivers
   }
 
-  public getLedgerEntries(): ILedgerEntry[] {
-    return this.ledgerConnector.getLedgerEntries()
+  public async getLedgerEntries(): Promise<ILedgerEntry[]> {
+    return this.persistencyService.getLedgerEntries()
   }
 
   public async saveFunding(taskAndFunding: ITaskAndFunding, userAccessToken: string): Promise<ILedgerEntry> {
@@ -76,9 +74,9 @@ export class AppService {
       throw new Error(`I could not find authentication Data for this token: ${userAccessToken}`)
     }
 
-    const newLedgerEntry: ILedgerEntry = this.createLedgerEntryFromFunding(taskAndFunding.funding)
+    const newLedgerEntry: ILedgerEntry = await this.createLedgerEntryFromFunding(taskAndFunding.funding)
 
-    const tasks = this.persistencyService.getFundedTasks()
+    const tasks = await this.persistencyService.getFundedTasks()
     const existingTask = tasks.filter((entry: ITask) => entry.link === taskAndFunding.task.link)[0]
 
     let task: ITask
@@ -102,14 +100,14 @@ export class AppService {
 
   }
 
-  public postTransfer(receivers: IBountyReceiver[], userAccessToken: string): ILedgerEntry[] {
+  public async postTransfer(receivers: IBountyReceiver[], userAccessToken: string): Promise<ILedgerEntry[]> {
 
     const authenticationData = this.authenticationService.getAuthenticationDataFromMemory(userAccessToken)
     if (authenticationData === undefined) {
       throw new Error(`I could not find authentication Data for this token: ${userAccessToken}`)
     }
 
-    const newLedgerEntries: ILedgerEntry[] = this.createLedgerEntriesFromBountyPayment(receivers)
+    const newLedgerEntries: ILedgerEntry[] = await this.createLedgerEntriesFromBountyPayment(receivers)
     void this.lg.log(ELogLevel.Info, `I created the following ledger entries: ${JSON.stringify(newLedgerEntries)} `)
 
     // this.gitHubIntegration.postCommentAboutSuccessfullTransfer(taskAndFunding.task.link, taskAndFunding.funding)
@@ -118,8 +116,8 @@ export class AppService {
 
   }
 
-  private createLedgerEntryFromFunding(funding: IFunding): ILedgerEntry {
-    const entries: ILedgerEntry[] = this.ledgerConnector.getLedgerEntries()
+  private async createLedgerEntryFromFunding(funding: IFunding): Promise<ILedgerEntry> {
+    const entries: ILedgerEntry[] = await this.persistencyService.getLedgerEntries()
     let entry: ILedgerEntry
     entry = {
       id: `tr-${Date.now().toString()}`,
@@ -131,12 +129,12 @@ export class AppService {
 
     entries.push(entry)
 
-    this.ledgerConnector.saveLedgerEntries(entries)
+    this.persistencyService.saveLedgerEntries(entries)
 
     return entry
   }
 
-  private createLedgerEntriesFromBountyPayment(receivers: IBountyReceiver[]): ILedgerEntry[] {
+  private async createLedgerEntriesFromBountyPayment(receivers: IBountyReceiver[]): Promise<ILedgerEntry[]> {
     let entry: ILedgerEntry
     const newEntries: ILedgerEntry[] = []
     for (const receiver of receivers) {
@@ -150,9 +148,9 @@ export class AppService {
       newEntries.push(entry)
     }
 
-    const entries: ILedgerEntry[] = this.ledgerConnector.getLedgerEntries()
+    const entries: ILedgerEntry[] = await this.persistencyService.getLedgerEntries()
     entries.push(entry)
-    this.ledgerConnector.saveLedgerEntries(entries)
+    this.persistencyService.saveLedgerEntries(entries)
 
     return newEntries
   }

@@ -4,14 +4,13 @@ import { IAuthenticationData } from '../interfaces'
 import { ELogLevel } from '../logger/logger-interface'
 import { GithubIntegrationService } from '../github-integration/github-integration.service'
 import { PersistencyService } from '../persistency/persistency.service'
-import { LedgerConnector } from '../ledger-connector/ledger-connector-file-system.service'
 import { AuthenticationService } from './authentication.service'
 
 @Injectable()
 export class AuthenticationServiceEnterprise extends AuthenticationService {
 
-    public constructor(lg: LoggerService, gitHubIntegration: GithubIntegrationService, persistencyService: PersistencyService, ledgerConnector: LedgerConnector) {
-        super(lg, gitHubIntegration, persistencyService, ledgerConnector)
+    public constructor(lg: LoggerService, gitHubIntegration: GithubIntegrationService, persistencyService: PersistencyService) {
+        super(lg, gitHubIntegration, persistencyService)
     }
 
     protected isUserIDValid(login: string): boolean {

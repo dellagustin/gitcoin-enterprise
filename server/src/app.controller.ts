@@ -1,8 +1,7 @@
 import { Controller, Get, Param, Res, Post, Req } from '@nestjs/common'
 import { AppService } from './app.service'
-import { ITask, IAuthenticationData } from './interfaces'
+import { ITask, IAuthenticationData, ILedgerEntry } from './interfaces'
 import { GithubIntegrationService } from './github-integration/github-integration.service'
-import { ILedgerEntry } from './ledger-connector/ledger-connector.interface'
 import { LoggerService } from './logger/logger.service'
 import { ELogLevel } from './logger/logger-interface'
 import * as path from 'path'
@@ -31,7 +30,7 @@ export class AppController {
   }
 
   @Get('/getLedgerEntries')
-  public getLedgerEntries(@Req() req: any): ILedgerEntry[] {
+  public async getLedgerEntries(@Req() req: any): Promise<ILedgerEntry[]> {
     return this.appService.getLedgerEntries()
   }
 
@@ -42,17 +41,17 @@ export class AppController {
   }
 
   @Get('/getFundedTasks')
-  public getFundedTasks(): ITask[] {
+  public async getFundedTasks(): Promise <ITask[]> {
     return this.appService.getFundedTasks()
   }
 
   @Get('/getPotentialReceivers')
-  public getPotentialReceivers(): string[] {
+  public async getPotentialReceivers(): Promise< string[]> {
     return this.appService.getPotentialReceivers()
   }
 
   @Get('/getAuthenticationData')
-  public getAuthenticationData(@Req() req: any): IAuthenticationData {
+  public async getAuthenticationData(@Req() req: any): Promise<IAuthenticationData> {
     return this.appService.getAuthenticationData(req.headers.michaelsfriendskey)
   }
 

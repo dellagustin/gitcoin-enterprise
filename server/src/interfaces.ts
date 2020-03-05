@@ -87,7 +87,7 @@ export interface IConfig {
   logLevel: number
   certificateFile: string
   certificatePrivateKeyFile: string
-  ledgerConnector: any
+  persistencyService: any
   authenticationService: string,
   dependentOnService: string
   telegramNotifierToken: string

@@ -7,7 +7,6 @@ import * as uuidv1 from 'uuid/v1'
 import { config } from '../app.module'
 import { GithubIntegrationService } from '../github-integration/github-integration.service'
 import { PersistencyService } from '../persistency/persistency.service'
-import { LedgerConnector } from '../ledger-connector/ledger-connector-file-system.service'
 // tslint:disable-next-line: match-default-export-name
 import axios, { AxiosInstance } from 'axios'
 import * as tunnel from 'tunnel'
@@ -17,7 +16,7 @@ export class AuthenticationService {
     protected actionsForRedirectingConvenientlyAfterLogin = []
     protected validStates: string[] = []
 
-    public constructor(protected readonly lg: LoggerService, protected readonly gitHubIntegration: GithubIntegrationService, protected readonly persistencyService: PersistencyService, protected readonly ledgerConnector: LedgerConnector) {
+    public constructor(protected readonly lg: LoggerService, protected readonly gitHubIntegration: GithubIntegrationService, protected readonly persistencyService: PersistencyService) {
         setInterval(() => {
             this.actionsForRedirectingConvenientlyAfterLogin = [] // initializing after 11 days
             this.validStates = []
@@ -33,8 +32,8 @@ export class AuthenticationService {
         return redirectURL
     }
 
-    public isUserAuthenticated(p2pAccessToken: string): boolean {
-        const authenticationData: IAuthenticationData = this.getAuthenticationDataFromMemory(p2pAccessToken)
+    public async isUserAuthenticated(p2pAccessToken: string): Promise<boolean> {
+        const authenticationData: IAuthenticationData = await this.getAuthenticationDataFromMemory(p2pAccessToken)
 
         if (authenticationData === undefined) { return false }
         if (authenticationData.login === '') { return false }
@@ -42,8 +41,8 @@ export class AuthenticationService {
         return true
     }
 
-    public getAuthenticationDataFromMemory(p2pAccessToken: string): IAuthenticationData {
-        const allAuthenticationData = this.persistencyService.getAuthenticationData()
+    public async getAuthenticationDataFromMemory(p2pAccessToken: string): Promise<IAuthenticationData> {
+        const allAuthenticationData = await this.persistencyService.getAuthenticationData()
         void this.lg.log(ELogLevel.Debug, `checking for p2pAccessToken: ${p2pAccessToken} within ${JSON.stringify(allAuthenticationData)}`)
 
         return allAuthenticationData.filter((aD: IAuthenticationData) => aD.p2pAccessToken === p2pAccessToken)[0]
@@ -100,13 +99,13 @@ export class AuthenticationService {
 
         void this.lg.log(ELogLevel.Info, `Login: ${authenticationData.login} validated successfully`)
 
-        const allAuthenticationData = this.persistencyService.getAuthenticationData()
+        const allAuthenticationData = await this.persistencyService.getAuthenticationData()
         if (allAuthenticationData.filter((entry: IAuthenticationData) => entry.id === authenticationData.id)[0] === undefined) {
 
             allAuthenticationData.push(authenticationData)
             this.persistencyService.saveAuthenticationData(allAuthenticationData)
 
-            this.ledgerConnector.addMiningEntryForUser(authenticationData.login)
+            await this.persistencyService.addMiningEntryForUser(authenticationData.login)
         }
 
         return authenticationData
@@ -126,7 +125,7 @@ export class AuthenticationService {
             await this.lg.log(ELogLevel.Info, `calling to: ${getURLToGetUser}`)
             user = (await GithubIntegrationService.axiosClient.get(getURLToGetUser)).data
             await this.lg.log(ELogLevel.Info, `user: ${JSON.stringify(user)}`)
-            const entry = this.persistencyService.getAuthenticationData().filter((aD: IAuthenticationData) => aD.id === user.id)[0]
+            const entry = (await this.persistencyService.getAuthenticationData()).filter((aD: IAuthenticationData) => aD.id === user.id)[0]
             let p2pAccessToken
 
             p2pAccessToken = (entry === undefined) ?

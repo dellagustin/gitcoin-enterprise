@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { IPersistencyService } from './persistency-interface'
 import { ILedgerEntry, IAuthenticationData, ITask } from '../interfaces'
+import { PersistencyService } from './persistency.service'
 const { Client } = require('pg')
 
 const statementDropTableLedger = 'DROP TABLE ledger'
@@ -24,11 +25,12 @@ const statementSelectTableAuthenticationData = 'SELECT * FROM authenticationdata
 // var sql = "UPDATE customers SET address = 'Canyon 123' WHERE address = 'Valley 345'";
 
 @Injectable()
-export class PostgresService implements IPersistencyService {
+export class PostgresService extends PersistencyService implements IPersistencyService {
 
     private client
 
     public constructor() {
+        super()
         void this.connectToPostgres()
         void this.initializePostgres()
         setTimeout(() => {

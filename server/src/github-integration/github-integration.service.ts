@@ -87,7 +87,7 @@ export class GithubIntegrationService {
             throw new Error(errorMessage)
         }
         const totalAmount =
-            this.persistencyService.getFundedTasks().filter((fundedTask: ITask) => fundedTask.link === funding.taskLink)[0].funding
+            (await this.persistencyService.getFundedTasks()).filter((fundedTask: ITask) => fundedTask.link === funding.taskLink)[0].funding
 
         const body = CommentProvider.getCommentAboutSuccessfullFunding(totalAmount, funding)
 
