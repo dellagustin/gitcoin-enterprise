@@ -1,7 +1,6 @@
 import { Module, MiddlewareConsumer, RequestMethod } from '@nestjs/common'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
-
 import { GithubIntegrationService } from './github-integration/github-integration.service'
 import { SupportNotifierService } from './support-notifier/support-notifier.service'
 import { AuthenticationMiddleware } from './authentication/authentication.middleware'
@@ -9,15 +8,19 @@ import { AuthenticationService } from './authentication/authentication.service'
 import { AuthenticationController } from './authentication/authentication.controller'
 import { IConfig } from './interfaces'
 import { UptimeService } from './uptime/uptime.service'
-import { PersistencyService } from './persistency/persistency.service'
+// import { PersistencyService } from './persistency/persistency.service'
+import { PostgresService } from './persistency/postgres.service'
 import { AuthenticationServiceDouble } from './authentication/authentication.service.double'
 import { ImagesController } from './images/images.controller'
 import { ImagesService } from './images/images.service'
 import { Neo4jService } from './neo4j/neo4j.service'
-import { PostgresService } from './persistency/postgres.service'
+import { LoggerService } from './logger/logger.service'
+import { DatabaseModule } from './database/database.module'
+// import { PhotoModule } from './photo/photo.module';
+
 import * as path from 'path'
 import * as fs from 'fs-sync'
-import { LoggerService } from './logger/logger.service'
+import { PersistencyService } from './persistency/persistency.service'
 
 export const config: IConfig = fs.readJSON(path.join(__dirname, '../.env.json'))
 
@@ -25,7 +28,7 @@ function getPersistencyService() {
   switch (config.persistencyService) {
     case 'PersistencyService': return PersistencyService
     case 'PostgresService': return PostgresService
-    default: return PersistencyService
+    default: return PostgresService
   }
 }
 
@@ -39,6 +42,7 @@ function getAuthenticationService() {
 
 const persistencyServiceProvider = {
   provide: 'PersistencyService',
+  // useClass: getPersistencyService(),
   useClass: getPersistencyService(),
 }
 
@@ -47,7 +51,10 @@ const authenticationServiceProvider = {
   useClass: getAuthenticationService(),
 }
 @Module({
-  imports: [],
+  imports: [
+    DatabaseModule,
+    // PhotoModule
+  ],
   controllers: [AppController, AuthenticationController, ImagesController],
   providers: [
     AppService,
@@ -56,10 +63,9 @@ const authenticationServiceProvider = {
     GithubIntegrationService,
     SupportNotifierService,
     UptimeService,
-    persistencyServiceProvider,
+    PersistencyService,
     ImagesService,
-    Neo4jService,
-    PostgresService],
+    Neo4jService],
 })
 export class AppModule {
   public configure(consumer: MiddlewareConsumer) {
