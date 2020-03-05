@@ -11,6 +11,7 @@ export interface IIssueInfo {
 }
 
 export interface IApplication {
+  applicantUserId: string
   plan: string
   taskLink: string
 }

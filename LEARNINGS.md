@@ -125,3 +125,6 @@ fi
 
 ### Experimental
 https://www.js-tutorials.com/javascript-tutorial/use-localstorage-sessionstorage-using-webstorage-angular4/
+
+## Postgres
+docker run -p 5432:5432 --name p2p -e POSTGRES_USER=p2p -e POSTGRES_PASSWORD=mysecretpassword -d postgres

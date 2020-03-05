@@ -15,6 +15,8 @@ import { PersistencyService } from './persistency/persistency.service'
 import { AuthenticationServiceDouble } from './authentication/authentication.service.double'
 import { ImagesController } from './images/images.controller'
 import { ImagesService } from './images/images.service'
+import { Neo4jService } from './neo4j/neo4j.service'
+import { PostgresService } from './persistency/postgres.service'
 import * as path from 'path'
 import * as fs from 'fs-sync'
 
@@ -57,7 +59,9 @@ const authenticationServiceProvider = {
     SupportNotifierService,
     UptimeService,
     PersistencyService,
-    ImagesService],
+    ImagesService,
+    Neo4jService,
+    PostgresService],
 })
 export class AppModule {
   public configure(consumer: MiddlewareConsumer) {

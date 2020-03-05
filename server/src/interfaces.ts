@@ -1,8 +1,31 @@
+export interface ILedgerEntry {
+  id: string,
+  date: string,
+  amount: number,
+  sender: string
+  receiver: string
+}
+
 export interface IAuthenticationData {
   avatarURL: string
   login: string
   id: string
   p2pAccessToken: string
+}
+
+export interface ITask {
+  link: string
+  title: string
+  description: string
+  funding: number
+  status: string
+}
+
+export interface IFunding {
+  id: string
+  funderId: string
+  taskLink: string
+  amount: number
 }
 
 export interface IIssueInfo {
@@ -14,18 +37,6 @@ export interface IBountyReceiver {
   login: string
   amount: number
   bountyForTaskLink: string
-}
-
-export interface ITask {
-  link: string
-  taskType: ETaskType
-  title: string
-  description: string
-  funding: number
-  status: ETaskStatus
-  funderRatedWith: number
-  solutionProviderRatedWith: number
-  dueDate: string
 }
 
 export enum ETaskStatus {
@@ -53,7 +64,6 @@ export interface IInvitedFriend {
 export interface IApplication {
   applicantUserId: string
   plan: string
-  profileLink: string
   taskLink: string
 }
 
@@ -63,13 +73,6 @@ export interface IEmail {
   recipient: string
   subject: string
   content: string
-}
-
-export interface IFunding {
-  id: string
-  funderId: string
-  taskLink: string
-  amount: number
 }
 
 export interface ITaskAndFunding {

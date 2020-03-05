@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { ILedgerConnector, ILedgerEntry } from './ledger-connector.interface'
 import { LoggerService } from '../logger/logger.service'
-import { ELogLevel } from '../logger/logger-interface'
 import { PersistencyService } from '../persistency/persistency.service'
 
 @Injectable()
@@ -10,15 +9,6 @@ export class LedgerConnector implements ILedgerConnector {
     public constructor(private readonly lg: LoggerService, private readonly persistencyService: PersistencyService) { }
 
     public getLedgerEntries(): ILedgerEntry[] {
-
-        // const entriesWithAddress = this.getLedgerEntriesWithAddress(login)
-        // if (entriesWithAddress.length === 0) { // add start amount of 200 EIC to Ledger
-        //     const miningEntry: ILedgerEntry = this.getMiningEntryForUser(login)
-        //     const ledgerEntries: ILedgerEntry[] = this.persistencyService.getLedgerEntries()
-        //     ledgerEntries.push(miningEntry)
-        //     this.lg.log(ELogLevel.Info, `saving enhanced ledger entries after mining for ${login}`)
-        //     this.persistencyService.saveLedgerEntries(ledgerEntries)
-        // }
 
         return this.persistencyService.getLedgerEntries()
     }

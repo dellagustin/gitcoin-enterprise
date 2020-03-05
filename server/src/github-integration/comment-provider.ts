@@ -46,7 +46,7 @@ export class CommentProvider {
 
     public static getCommentAboutSolutionApproach(application: IApplication): any {
         const templateFileId = `${CommentProvider.templatesFolder}/comment-on-application.md`
-        const body = fs.read(templateFileId).toString().replace('{{{applicant}}}', application.profileLink).replace('{{{plan}}}', application.plan)
+        const body = fs.read(templateFileId).toString().replace('{{{applicant}}}', `@${application.applicantUserId}`).replace('{{{plan}}}', application.plan)
 
         return body
     }

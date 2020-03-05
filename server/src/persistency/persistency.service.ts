@@ -4,9 +4,10 @@ import * as path from 'path'
 import { ILedgerEntry } from '../ledger-connector/ledger-connector.interface'
 import { ITask, IAuthenticationData } from '../interfaces'
 import { ELogLevel } from '../logger/logger-interface'
+import { IPersistencyService } from './persistency-interface'
 
 @Injectable()
-export class PersistencyService {
+export class PersistencyService implements IPersistencyService {
     private static numberOfLedgerEntries: number
     private readonly operationalDataPath = path.join(__dirname, '../../operational-data')
     private readonly ledgerEntriesFileId = `${this.operationalDataPath}/ledger-entries.json`
@@ -78,8 +79,8 @@ export class PersistencyService {
         }
     }
 
-    public saveErrors(errors): any[] {
-        return fs.write(this.errorsFileID, JSON.stringify(errors))
+    public saveErrors(errors): void {
+        fs.write(this.errorsFileID, JSON.stringify(errors))
     }
 
 }

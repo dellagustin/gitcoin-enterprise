@@ -165,7 +165,7 @@ export class GithubIntegrationService {
             await this.lg.log(ELogLevel.Error, `postCommentAboutApplication the github call to create a comment for  the issue failed ${error}`)
 
         }
-        await this.lg.log(ELogLevel.Info, application.profileLink)
+        await this.lg.log(ELogLevel.Info, application.applicantUserId)
         await this.lg.log(ELogLevel.Info, application.taskLink)
     }
 

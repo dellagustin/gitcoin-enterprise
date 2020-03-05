@@ -162,7 +162,7 @@ Scenario("Pay the Bounty", async (I) => {
   I.see("Balance: 180 EIC");
   I.see("Your Fundings");
   I.see("Your Bounties");
-  I.see("Click an entry to trigger a payout");
+  I.see("Click Entry to Trigger Payout");
   I.see("20 EIC");
   I.see("Register Successfully"); 
   I.see("200 EIC");

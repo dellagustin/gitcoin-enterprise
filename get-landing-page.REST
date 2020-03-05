@@ -1,9 +1,4 @@
 // you can use the Rest Client VS Code Plugin to leverage this
-GET https://gitcoin-enterprise.org
-
-
-
-GET http://localhost:3000
-
+GET https://peer2peer-enterprise.org
 
 

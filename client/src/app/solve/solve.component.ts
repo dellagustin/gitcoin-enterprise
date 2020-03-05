@@ -46,6 +46,7 @@ export class SolveComponent implements OnInit {
   public solve(): void {
     this.userWantsToStartSolving = true
     const application: IApplication = {
+      applicantUserId: this.authenticationData.login,
       taskLink: this.taskOfInterest.link,
       plan: this.solutionApproach,
     }
