@@ -58,7 +58,7 @@ function getPersistencyService() {
   switch (config.persistencyService) {
     case 'PersistencyService': return PersistencyService
     case 'PostgresService': return PostgresService
-    default: return PostgresService
+    default: return PersistencyService
   }
 }
 

@@ -11,23 +11,23 @@ export class LedgerEntriesService {
         @InjectRepository(LedgerEntry)
         private readonly ledgerEntryRepository: Repository<LedgerEntry>) {
 
-        // setTimeout(async () => {
-        //     const lE: LedgerEntry = {
-        //         id: "2",
-        //         date: "12.03.1980",
-        //         amount: 1,
-        //         sender: ':)',
-        //         receiver: ':)'
+        setTimeout(async () => {
+            const lE: LedgerEntry = {
+                id: '2',
+                date: '12.03.1980',
+                amount: 1,
+                sender: ':)',
+                receiver: ':)',
 
-        //     }
-        //     console.log(ELogLevel.Info, 'hallo')
-        //     console.log(ELogLevel.Info, JSON.stringify(await this.create(lE)))
-        // }, 5000)
+            }
+            console.log(ELogLevel.Info, 'hallo')
+            console.log(ELogLevel.Info, JSON.stringify(await this.create(lE)))
+        },         5000)
 
-        // setTimeout(async () => {
-        //     console.log(ELogLevel.Info, 'hallo')
-        //     console.log(ELogLevel.Info, JSON.stringify(await this.findAll()))
-        // }, 11000)
+        setTimeout(async () => {
+            console.log(ELogLevel.Info, 'hallo')
+            console.log(ELogLevel.Info, JSON.stringify(await this.findAll()))
+        },         11000)
 
     }
 

@@ -1,20 +1,20 @@
 
-import { Entity, Column, PrimaryGeneratedColumn, PrimaryColumn } from 'typeorm'
+// import { Entity, Column, PrimaryGeneratedColumn, PrimaryColumn } from 'typeorm'
 
-@Entity()
-export class Task {
-  @PrimaryColumn()
-  public link: string
+// @Entity()
+// export class Task {
+//   @PrimaryColumn()
+//   public link: string
 
-  @Column()
-  public title: string
+//   @Column()
+//   public title: string
 
-  @Column()
-  public description: number
+//   @Column()
+//   public description: number
 
-  @Column()
-  public funding: boolean
+//   @Column()
+//   public funding: boolean
 
-  @Column()
-  public status: boolean
-}
+//   @Column()
+//   public status: boolean
+// }
