@@ -17,12 +17,42 @@ import { Neo4jService } from './neo4j/neo4j.service'
 import { LoggerService } from './logger/logger.service'
 import { DatabaseModule } from './database/database.module'
 // import { PhotoModule } from './photo/photo.module';
-
+import { TypeOrmModule } from '@nestjs/typeorm'
+import { PersistencyService } from './persistency/persistency.service'
+// import { LedgerEntriesModule } from './postgres/ledger-entries/ledger-entries.module'
+// import { LedgerEntriesService } from './postgres/ledger-entries/ledger-entries.service'
 import * as path from 'path'
 import * as fs from 'fs-sync'
-import { PersistencyService } from './persistency/persistency.service'
+import { LedgerEntry } from './postgres/ledger-entries/ledger-entry.entity'
+import { Connection } from 'typeorm'
+import { LedgerEntriesModule } from './postgres/ledger-entries/ledger-entries.module'
 
 export const config: IConfig = fs.readJSON(path.join(__dirname, '../.env.json'))
+
+function getEntityPath() {
+  const p = `${__dirname}/**/**/*.entity{.ts,.js}`
+
+  // tslint:disable-next-line: no-console
+  console.log(p)
+
+  return p
+}
+
+function getPostgresConfig(): any {
+  return {
+    type: 'postgres',
+    host: 'localhost',
+    port: 5432,
+    username: 'p2p',
+    password: config.postgresPW,
+    database: 'p2p',
+    // name: 'p2p',
+    // entities: [],
+    entities: [LedgerEntry],
+    synchronize: true,
+    autoLoadEntities: true,
+  }
+}
 
 function getPersistencyService() {
   switch (config.persistencyService) {
@@ -42,7 +72,6 @@ function getAuthenticationService() {
 
 const persistencyServiceProvider = {
   provide: 'PersistencyService',
-  // useClass: getPersistencyService(),
   useClass: getPersistencyService(),
 }
 
@@ -52,8 +81,10 @@ const authenticationServiceProvider = {
 }
 @Module({
   imports: [
-    DatabaseModule,
-    // PhotoModule
+    // DatabaseModule,
+    LedgerEntriesModule,
+    TypeOrmModule.forRoot(getPostgresConfig()),
+    // TypeOrmModule.forFeature([LedgerEntry], 'p2p'),
   ],
   controllers: [AppController, AuthenticationController, ImagesController],
   providers: [
@@ -63,11 +94,13 @@ const authenticationServiceProvider = {
     GithubIntegrationService,
     SupportNotifierService,
     UptimeService,
-    PersistencyService,
+    persistencyServiceProvider,
     ImagesService,
-    Neo4jService],
+    Neo4jService,
+  ],
 })
 export class AppModule {
+  public constructor(private readonly connection: Connection) { }
   public configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AuthenticationMiddleware)

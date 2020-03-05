@@ -7,13 +7,18 @@ import { ELogLevel } from './logger/logger-interface'
 import { AuthenticationService } from './authentication/authentication.service'
 import { config } from './app.module'
 import { PersistencyService } from './persistency/persistency.service'
+import { LedgerEntriesService } from './postgres/ledger-entries/ledger-entries.service'
 const shelljs = require('shelljs')
 
 @Injectable()
 export class AppService {
 
   // Interface would be cool for PersistencyService... The reason why I could not use interface polymorphism here is interfaces are design-time only in the current context :)
-  public constructor(private readonly lg: LoggerService, private readonly gitHubIntegration: GithubIntegrationService, private readonly authenticationService: AuthenticationService, private readonly persistencyService: PersistencyService) {
+  public constructor(private readonly lg: LoggerService,
+                     private readonly gitHubIntegration: GithubIntegrationService,
+                     private readonly authenticationService: AuthenticationService,
+                     private readonly persistencyService: PersistencyService) {
+
   }
 
   public triggerBackup(): void {

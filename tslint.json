@@ -32,6 +32,7 @@
         "strict-comparison": false,
         "prefer-function-over-method": false,
         "no-unsafe-any": false,
+        "no-console": false,
         "no-var-requires": false,
         "no-require-imports": false,
         "quotemark": [

@@ -89,6 +89,7 @@ export interface IConfig {
   certificatePrivateKeyFile: string
   persistencyService: any
   authenticationService: string,
+  postgresPW: string,
   dependentOnService: string
   telegramNotifierToken: string
   telegramNotifierSupportChannel: string

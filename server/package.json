@@ -24,6 +24,7 @@
     "@nestjs/core": "^6.11.7",
     "@nestjs/passport": "^6.1.1",
     "@nestjs/platform-express": "^6.11.7",
+    "@nestjs/typeorm": "^6.3.3",
     "@octokit/rest": "^16.43.1",
     "axios": "^0.19.2",
     "compression": "^1.7.4",
