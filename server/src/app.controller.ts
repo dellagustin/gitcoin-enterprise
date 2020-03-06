@@ -24,7 +24,7 @@ export class AppController {
   @Get('/')
   public getHello(@Req() req: any, @Res() res: any): void {
 
-    void this.lg.log(ELogLevel.Info, `hallo tobias, luca, daniel`)
+    void this.lg.log(ELogLevel.Info, `hallo liebe studenten`)
     void this.lg.log(ELogLevel.Info, `request received from ${req.connection.remoteAddress}`)
 
     // res.sendFile(path.join(__dirname, '../docs/i-want-compression-via-route.html'))
