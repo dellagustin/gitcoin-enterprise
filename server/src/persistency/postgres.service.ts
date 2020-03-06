@@ -52,18 +52,18 @@ export class PostgresService implements IPersistencyService {
     private client
 
     public constructor(private readonly lg: LoggerService) {
-        void this.lg.log(ELogLevel.Error, `I am in the constructor`)
-        // void this.lg.log(ELogLevel.Error, `should not be reached with current config`)
-        void this.connectToPostgres()
-        void this.initializePostgres()
-        setTimeout(() => {
-            void this.saveLedgerEntries([])
-        },         2000)
-        setTimeout(async () => {
-            const entries = await this.getLedgerEntries()
-            // tslint:disable-next-line: no-console
-            console.log(JSON.stringify(entries))
-        },         4000)
+        // void this.lg.log(ELogLevel.Error, `I am in the constructor`)
+        // // void this.lg.log(ELogLevel.Error, `should not be reached with current config`)
+        // void this.connectToPostgres()
+        // void this.initializePostgres()
+        // setTimeout(() => {
+        //     void this.saveLedgerEntries([])
+        // },         2000)
+        // setTimeout(async () => {
+        //     const entries = await this.getLedgerEntries()
+        //     // tslint:disable-next-line: no-console
+        //     console.log(JSON.stringify(entries))
+        // },         4000)
     }
 
     public async  getLedgerEntries(): Promise<ILedgerEntry[]> {

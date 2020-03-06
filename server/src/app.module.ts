@@ -57,7 +57,7 @@ function getPostgresConfig(): any {
 function getPersistencyService() {
   switch (config.persistencyService) {
     case 'PersistencyService': return PersistencyService
-    case 'PostgresService': return PostgresService
+    // case 'PostgresService': return PostgresService
     default: return PersistencyService
   }
 }
@@ -82,8 +82,8 @@ const authenticationServiceProvider = {
 @Module({
   imports: [
     // DatabaseModule,
-    LedgerEntriesModule,
-    TypeOrmModule.forRoot(getPostgresConfig()),
+    // LedgerEntriesModule,
+    // TypeOrmModule.forRoot(getPostgresConfig()),
     // TypeOrmModule.forFeature([LedgerEntry], 'p2p'),
   ],
   controllers: [AppController, AuthenticationController, ImagesController],
@@ -100,7 +100,6 @@ const authenticationServiceProvider = {
   ],
 })
 export class AppModule {
-  public constructor(private readonly connection: Connection) { }
   public configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AuthenticationMiddleware)
