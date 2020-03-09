@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { IFunding, IApplication, IIssueInfo, ITask } from '../interfaces'
 import { LoggerService } from '../logger/logger.service'
-import { config } from '../app.module'
 import * as moment from 'moment'
 import { Helper } from '../helpers/helper'
 import { ELogLevel } from '../logger/logger-interface'
@@ -11,6 +10,7 @@ import axios, { AxiosInstance } from 'axios'
 import * as tunnel from 'tunnel'
 import { PersistencyService } from '../persistency/persistency.service'
 import { CommentProvider } from './comment-provider'
+import { config } from '../gitcoin-enterprise-server'
 
 @Injectable()
 export class GithubIntegrationService {

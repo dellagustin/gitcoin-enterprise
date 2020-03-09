@@ -6,7 +6,7 @@ import { LoggerService } from './logger/logger.service'
 import { ELogLevel } from './logger/logger-interface'
 import * as path from 'path'
 import * as fs from 'fs-sync'
-import { config } from './app.module'
+import { config } from './gitcoin-enterprise-server'
 
 @Controller()
 export class AppController {
@@ -24,7 +24,6 @@ export class AppController {
   @Get('/')
   public getHello(@Req() req: any, @Res() res: any): void {
 
-    void this.lg.log(ELogLevel.Info, `hallo liebe studenten`)
     void this.lg.log(ELogLevel.Info, `request received from ${req.connection.remoteAddress}`)
 
     // res.sendFile(path.join(__dirname, '../docs/i-want-compression-via-route.html'))

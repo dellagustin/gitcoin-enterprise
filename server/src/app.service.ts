@@ -5,9 +5,9 @@ import { LoggerService } from './logger/logger.service'
 import { GithubIntegrationService } from './github-integration/github-integration.service'
 import { ELogLevel } from './logger/logger-interface'
 import { AuthenticationService } from './authentication/authentication.service'
-import { config } from './app.module'
 import { PersistencyService } from './persistency/persistency.service'
 import { LedgerEntriesService } from './postgres/ledger-entries/ledger-entries.service'
+import { config } from './gitcoin-enterprise-server'
 const shelljs = require('shelljs')
 
 @Injectable()

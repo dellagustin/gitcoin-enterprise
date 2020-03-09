@@ -9,55 +9,67 @@ import { AuthenticationController } from './authentication/authentication.contro
 import { IConfig } from './interfaces'
 import { UptimeService } from './uptime/uptime.service'
 // import { PersistencyService } from './persistency/persistency.service'
-import { PostgresService } from './persistency/postgres.service'
+import { PostgresService } from './postgres/postgres.service'
 import { AuthenticationServiceDouble } from './authentication/authentication.service.double'
 import { ImagesController } from './images/images.controller'
 import { ImagesService } from './images/images.service'
 import { Neo4jService } from './neo4j/neo4j.service'
 import { LoggerService } from './logger/logger.service'
-import { DatabaseModule } from './database/database.module'
 // import { PhotoModule } from './photo/photo.module';
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { PersistencyService } from './persistency/persistency.service'
 // import { LedgerEntriesModule } from './postgres/ledger-entries/ledger-entries.module'
 // import { LedgerEntriesService } from './postgres/ledger-entries/ledger-entries.service'
+import { postgresConfig } from './postgres/postgres-config'
+import { AuthenticationEntryModule } from './postgres/authentication-entry/authentication-entry.module'
+import { TaskModule } from './postgres/task/task.module'
+import { LedgerEntriesModule } from './postgres/ledger-entries/ledger-entries.module'
 import * as path from 'path'
 import * as fs from 'fs-sync'
-import { LedgerEntry } from './postgres/ledger-entries/ledger-entry.entity'
-import { Connection } from 'typeorm'
-import { LedgerEntriesModule } from './postgres/ledger-entries/ledger-entries.module'
+const joi = require('@hapi/joi')
 
-export const config: IConfig = fs.readJSON(path.join(__dirname, '../.env.json'))
+const config: IConfig = fs.readJSON(path.join(__dirname, '../.env.json'))
 
-function getEntityPath() {
-  const p = `${__dirname}/**/**/*.entity{.ts,.js}`
+const schema = joi.object({
 
-  // tslint:disable-next-line: no-console
-  console.log(p)
+  port: joi.number().required(),
+  backendURL: joi.string().required(),
+  frontendURL: joi.string().required(),
+  logLevel: joi.number().required(),
+  certificateFile: joi.string().required(),
+  certificatePrivateKeyFile: joi.string().required(),
+  persistencyService: joi.string().required(),
+  authenticationService: joi.string().required(),
+  postgresPW: joi.string().required(),
+  dependentOnService: joi.string().allow(''),
+  telegramNotifierToken: joi.string().allow(''),
+  telegramNotifierSupportChannel: joi.string().allow(''),
+  oAuthProviderURL: joi.string().required(),
+  gitHubOAuthClient: joi.string().required(),
+  gitHubOAuthSecret: joi.string().required(),
+  gitHubURL: joi.string().required(),
+  gitHubTokenForPostingCommentsAndForGettingIssueData: joi.string().required(),
+  gitHubPackagePublishingToken: joi.string().required(),
+  proxyHostForEnterpriseGitHubInstance: joi.string().required().allow(''),
+  proxyHostForEnterpriseGitHubInstancePort: joi.string().required().allow(''),
 
-  return p
-}
+  // config: joi.string()
+  //   .alphanum()
+  //   .min(3)
+  //   .max(30)
+  //   .required()
+})
 
-function getPostgresConfig(): any {
-  return {
-    type: 'postgres',
-    host: 'localhost',
-    port: 5432,
-    username: 'p2p',
-    password: config.postgresPW,
-    database: 'p2p',
-    // name: 'p2p',
-    // entities: [],
-    entities: [LedgerEntry],
-    synchronize: true,
-    autoLoadEntities: true,
-  }
+const value = schema.validate(config)
+
+if (value.error !== undefined) {
+  throw new Error(value.error.details[0].message)
 }
 
 function getPersistencyService() {
   switch (config.persistencyService) {
     case 'PersistencyService': return PersistencyService
-    // case 'PostgresService': return PostgresService
+    case 'PostgresService': return PostgresService
     default: return PersistencyService
   }
 }
@@ -82,9 +94,12 @@ const authenticationServiceProvider = {
 @Module({
   imports: [
     // DatabaseModule,
-    // LedgerEntriesModule,
-    // TypeOrmModule.forRoot(getPostgresConfig()),
-    // TypeOrmModule.forFeature([LedgerEntry], 'p2p'),
+    TypeOrmModule.forRoot(postgresConfig),
+    AuthenticationEntryModule,
+    LedgerEntriesModule,
+    TaskModule,
+
+    // PostgresModule,
   ],
   controllers: [AppController, AuthenticationController, ImagesController],
   providers: [

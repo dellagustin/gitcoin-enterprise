@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common'
-import { config } from '../app.module'
 import { SupportNotifierService } from '../support-notifier/support-notifier.service'
 import { ELogLevel, ILogger } from './logger-interface'
 import { PersistencyService } from '../persistency/persistency.service'
+import { config } from '../gitcoin-enterprise-server'
 
 @Injectable()
 export class LoggerService implements ILogger {

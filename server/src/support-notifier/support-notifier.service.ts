@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
-import { config } from '../app.module'
 import { ISupportNotifier } from './support-notifier-interface'
+import { config } from '../gitcoin-enterprise-server'
 const teleBot = require('telebot')
 
 @Injectable()

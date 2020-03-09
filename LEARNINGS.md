@@ -128,3 +128,5 @@ https://www.js-tutorials.com/javascript-tutorial/use-localstorage-sessionstorage
 
 ## Postgres
 docker run -p 5432:5432 --name p2p -e POSTGRES_USER=p2p -e POSTGRES_PASSWORD=mysecretpassword -d postgres
+docker ps -a
+docker stop && docker rm

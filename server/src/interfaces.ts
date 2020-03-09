@@ -98,6 +98,7 @@ export interface IConfig {
   gitHubOAuthSecret: string
   gitHubURL: string
   gitHubTokenForPostingCommentsAndForGettingIssueData: string
+  gitHubPackagePublishingToken: string
   proxyHostForEnterpriseGitHubInstance: string
   proxyHostForEnterpriseGitHubInstancePort: string
 }

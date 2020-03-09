@@ -4,12 +4,12 @@ import { IAuthenticationData } from '../interfaces'
 import { ELogLevel } from '../logger/logger-interface'
 // tslint:disable-next-line: no-implicit-dependencies
 import * as uuidv1 from 'uuid/v1'
-import { config } from '../app.module'
 import { GithubIntegrationService } from '../github-integration/github-integration.service'
 import { PersistencyService } from '../persistency/persistency.service'
 // tslint:disable-next-line: match-default-export-name
 import axios, { AxiosInstance } from 'axios'
 import * as tunnel from 'tunnel'
+import { config } from '../gitcoin-enterprise-server'
 
 @Injectable()
 export class AuthenticationService {

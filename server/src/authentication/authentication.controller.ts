@@ -1,6 +1,6 @@
 import { Controller, Get, Req, Res, Query } from '@nestjs/common'
 import { AuthenticationService } from './authentication.service'
-import { config } from '../app.module'
+import { config } from '../gitcoin-enterprise-server'
 
 @Controller()
 export class AuthenticationController {

@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core'
-import { AppModule, config } from './app.module'
+import { AppModule } from './app.module'
 import * as cors from 'cors'
 import * as path from 'path'
 import * as fs from 'fs-sync'
@@ -8,9 +8,11 @@ import { LoggerService } from './logger/logger.service'
 import { SupportNotifierService } from './support-notifier/support-notifier.service'
 import { ELogLevel } from './logger/logger-interface'
 import { PersistencyService } from './persistency/persistency.service'
+import { IConfig } from './interfaces'
 const compression = require('compression')
 
 export const pathToStaticAssets = path.join(__dirname, '../docs')
+export const config: IConfig = fs.readJSON(path.join(__dirname, '../.env.json'))
 
 async function bootstrap() {
   const lg = new LoggerService(new SupportNotifierService(), new PersistencyService())
@@ -60,7 +62,9 @@ async function bootstrap() {
   }
 
 }
-void bootstrap()
+setTimeout(() => {
+  void bootstrap()
+},         11000)
 
 function ensureRedirectingFromUnsafeHostToSaveHost(unsafePort) {
   const httpForwarderAPPListeningOnUnsafePort = express()

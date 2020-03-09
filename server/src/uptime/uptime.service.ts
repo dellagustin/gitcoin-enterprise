@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
-import { config } from '../app.module'
 import { LoggerService } from '../logger/logger.service'
 import { ELogLevel } from '../logger/logger-interface'
+import { config } from '../gitcoin-enterprise-server'
 const axios = require('axios')
 
 @Injectable()
