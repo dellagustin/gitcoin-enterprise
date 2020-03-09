@@ -7,7 +7,7 @@ export class AuthenticationEntry {
   public id: string
 
   @Column()
-  public p2pAccessToken: boolean
+  public p2pAccessToken: string
 
   @Column()
   public avatarURL: string

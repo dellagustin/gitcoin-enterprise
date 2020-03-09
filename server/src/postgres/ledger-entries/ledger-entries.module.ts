@@ -7,8 +7,8 @@ import { LedgerEntriesController } from './ledger-entries.controller'
 
 @Module({
     imports: [TypeOrmModule.forFeature([LedgerEntry])],
-    exports: [TypeOrmModule],
     providers: [LedgerEntriesService],
+    exports: [TypeOrmModule, LedgerEntriesService],
     controllers: [LedgerEntriesController],
 })
 export class LedgerEntriesModule { }

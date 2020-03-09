@@ -26,6 +26,7 @@ import { TaskModule } from './postgres/task/task.module'
 import { LedgerEntriesModule } from './postgres/ledger-entries/ledger-entries.module'
 import * as path from 'path'
 import * as fs from 'fs-sync'
+import { PostgresModule } from './postgres/postgres.module'
 const joi = require('@hapi/joi')
 
 const config: IConfig = fs.readJSON(path.join(__dirname, '../.env.json'))
@@ -95,11 +96,11 @@ const authenticationServiceProvider = {
   imports: [
     // DatabaseModule,
     TypeOrmModule.forRoot(postgresConfig),
-    AuthenticationEntryModule,
-    LedgerEntriesModule,
-    TaskModule,
+    // AuthenticationEntryModule,
+    // LedgerEntriesModule,
+    // TaskModule,
 
-    // PostgresModule,
+    PostgresModule,
   ],
   controllers: [AppController, AuthenticationController, ImagesController],
   providers: [

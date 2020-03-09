@@ -10,11 +10,11 @@ export class Task {
   public title: string
 
   @Column()
-  public description: number
+  public description: string
 
   @Column()
-  public funding: boolean
+  public funding: number
 
   @Column()
-  public status: boolean
+  public status: string
 }

@@ -8,5 +8,6 @@ import { AuthenticationEntry } from './authentication-entry.entity'
   imports: [TypeOrmModule.forFeature([AuthenticationEntry])],
   providers: [AuthenticationEntryService],
   controllers: [AuthenticationEntryController],
+  exports: [TypeOrmModule, AuthenticationEntryService],
 })
 export class AuthenticationEntryModule {}
