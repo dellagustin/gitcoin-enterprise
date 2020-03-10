@@ -84,6 +84,8 @@ export class AppService {
     const tasks = await this.persistencyService.getFundedTasks()
     const existingTask = tasks.filter((entry: ITask) => entry.link === taskAndFunding.task.link)[0]
 
+    console.log(`saving funding: ${JSON.stringify(taskAndFunding.funding)}`)
+    console.log(`for task: ${JSON.stringify(taskAndFunding.task)}`)
     let task: ITask
     if (existingTask === undefined) {
       task = taskAndFunding.task
@@ -95,7 +97,7 @@ export class AppService {
     }
 
     tasks.push(task)
-
+    console.log(`saving it `)
     this.persistencyService.saveFundedTasks(tasks)
 
     await this.gitHubIntegration.postCommentAboutSuccessfullFunding(taskAndFunding.task.link, taskAndFunding.funding)

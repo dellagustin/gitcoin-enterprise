@@ -86,8 +86,12 @@ export class GithubIntegrationService {
             await this.lg.log(ELogLevel.Error, errorMessage)
             throw new Error(errorMessage)
         }
-        const totalAmount =
-            (await this.persistencyService.getFundedTasks()).filter((fundedTask: ITask) => fundedTask.link === funding.taskLink)[0].funding
+
+        const fundedTasks = await this.persistencyService.getFundedTasks()
+        void this.lg.log(ELogLevel.Info, `funded tasks: ${JSON.stringify(fundedTasks)}`)
+        console.log(`looking for funding.taskLink: ${funding.taskLink}`)
+        const theTask = fundedTasks.filter((fundedTask: ITask) => fundedTask.link === funding.taskLink)[0]
+        const totalAmount = theTask.funding
 
         const body = CommentProvider.getCommentAboutSuccessfullFunding(totalAmount, funding)
 

@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'
 import { BackendService, ETaskStatus } from '../backend.service'
 
 import { TaskHelper } from '../task-card/task-helper'
-import { IFunding, ITaskAndFunding, IAuthenticationData, ETaskType, ITask } from '../interfaces'
+import { IFunding, ITaskAndFunding, IAuthenticationData, ITask } from '../interfaces'
 import { ILedgerEntry } from '../ledger/ledger.interface'
 import { Helper } from '../helper'
 
@@ -41,8 +41,12 @@ export class FundComponent implements OnInit {
   public getInfoFromTaskLink() {
     this.backendService.getIssueInfo(this.taskLink, this.authenticationData.p2pAccessToken)
       .subscribe((response: any) => {
-        this.task = this.getTaskFromResponse(response)
-        this.task.link = this.taskLink
+        this.task = {
+          link: this.taskLink,
+          title: response.title,
+          description: response.description,
+          funding: 0,
+        }
         this.task.funding = this.currentRange
       },         (error) => {
         alert(error.message)
@@ -71,23 +75,11 @@ export class FundComponent implements OnInit {
       funding,
     }
 
+    alert(JSON.stringify(taskAndFunding.task))
     this.backendService.saveFunding(taskAndFunding, this.authenticationData.p2pAccessToken)
       .subscribe((newLedgerEntry: ILedgerEntry) => {
         this.newLedgerEntry = newLedgerEntry
       })
   }
 
-  private getTaskFromResponse(response: any): ITask {
-    return {
-      link: '',
-      taskType: ETaskType.GitHubIssue,
-      title: response.title,
-      description: response.description,
-      funding: 0,
-      status: ETaskStatus.created,
-      funderRatedWith: 5,
-      solutionProviderRatedWith: 5,
-      dueDate: '',
-    }
-  }
 }

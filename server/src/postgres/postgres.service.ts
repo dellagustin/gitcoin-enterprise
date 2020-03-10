@@ -1,10 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { IPersistencyService } from '../persistency/persistency-interface'
 import { ILedgerEntry, IAuthenticationData, ITask } from '../interfaces'
-
-import { LoggerService } from '../logger/logger.service'
-import { ELogLevel } from '../logger/logger-interface'
-import { PersistencyService } from '../persistency/persistency.service'
 import { LedgerEntriesService } from './ledger-entries/ledger-entries.service'
 import { AuthenticationEntryService } from './authentication-entry/authentication-entry.service'
 import { TaskService } from './task/task.service'
@@ -28,7 +24,15 @@ export class PostgresService implements IPersistencyService {
 
     public constructor(private readonly lS: LedgerEntriesService,
                        private readonly aS: AuthenticationEntryService,
-                       private readonly tS: TaskService) { }
+                       private readonly tS: TaskService) {
+
+        setTimeout(async () => {
+            await this.lS.removeAll()
+            await this.aS.removeAll()
+            await this.tS.removeAll()
+
+        },         2000)
+    }
 
     public async  getLedgerEntries(): Promise<ILedgerEntry[]> {
 
@@ -45,14 +49,17 @@ export class PostgresService implements IPersistencyService {
     public async getAuthenticationData(): Promise<any[]> {
         return this.aS.findAll()
     }
+
     public async saveAuthenticationData(authenticationData: IAuthenticationData[]) {
         await this.aS.create(authenticationData[authenticationData.length - 1])
     }
     public async getFundedTasks(): Promise<ITask[]> {
+
         return this.tS.findAll()
     }
 
     public async saveFundedTasks(fundedTasks: ITask[]) {
+        console.log(`saving funded task: ${JSON.stringify(fundedTasks)}`)
         await this.tS.create(fundedTasks[fundedTasks.length - 1])
     }
 

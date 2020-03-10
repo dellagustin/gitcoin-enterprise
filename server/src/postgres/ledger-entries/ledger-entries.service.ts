@@ -7,7 +7,8 @@ import { LedgerEntry } from './ledger-entry.entity'
 export class LedgerEntriesService {
     public constructor(
         @InjectRepository(LedgerEntry)
-        private readonly ledgerEntryRepository: Repository<LedgerEntry>) { }
+        private readonly ledgerEntryRepository: Repository<LedgerEntry>) {
+    }
 
     public async create(ledgerEntry: LedgerEntry): Promise<LedgerEntry[]> {
         return this.ledgerEntryRepository.save([ledgerEntry])
@@ -19,6 +20,10 @@ export class LedgerEntriesService {
 
     public async findOne(id: string): Promise<LedgerEntry> {
         return this.ledgerEntryRepository.findOne(id)
+    }
+
+    public async removeAll(): Promise<void> {
+        await this.ledgerEntryRepository.query('Delete from ledger_entry')
     }
 
 }

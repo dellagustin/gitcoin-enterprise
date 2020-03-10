@@ -18,14 +18,9 @@ export interface IApplication {
 
 export interface ITask {
   link: string
-  taskType: ETaskType
-  funding: number
   title: string
   description: string
-  status: ETaskStatus
-  funderRatedWith: number
-  solutionProviderRatedWith: number
-  dueDate: string
+  funding: number
 }
 
 export enum ETaskStatus {
@@ -33,11 +28,6 @@ export enum ETaskStatus {
   'inProgress' = 2,
   'completed' = 3,
   'paid' = 4,
-}
-
-export enum ETaskType {
-  'GitHubIssue' = 1,
-  'tbd...' = 2,
 }
 
 export interface ILedgerEntry {

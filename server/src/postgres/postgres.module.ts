@@ -9,8 +9,8 @@ import { PostgresService } from './postgres.service'
     imports: [
         LedgerEntriesModule, AuthenticationEntryModule, TaskModule],
     controllers: [PostgresController],
-    providers: [PostgresService],
-    exports: [PostgresService, LedgerEntriesModule, AuthenticationEntryModule, TaskModule],
+    providers: [],
+    exports: [LedgerEntriesModule, AuthenticationEntryModule, TaskModule],
 })
 export class PostgresModule {
 }

@@ -8,18 +8,25 @@ export class TaskService {
 
     public constructor(
         @InjectRepository(Task)
-        private readonly ledgerEntryRepository: Repository<Task>) { }
+        private readonly taskRepository: Repository<Task>) { }
 
-    public async create(ledgerEntry: Task): Promise<Task[]> {
-        return this.ledgerEntryRepository.save([ledgerEntry])
+    public async create(task: Task): Promise<Task[]> {
+        const savedTask = await this.taskRepository.save([task])
+
+        return savedTask
     }
 
     public async findAll(): Promise<Task[]> {
-        return this.ledgerEntryRepository.find()
+        return this.taskRepository.find()
     }
 
     public async findOne(id: string): Promise<Task> {
-        return this.ledgerEntryRepository.findOne(id)
+        return this.taskRepository.findOne(id)
+    }
+
+    public async removeAll(): Promise<void> {
+        await this.taskRepository.query('Delete from task')
+        console.log('hi')
     }
 
 }

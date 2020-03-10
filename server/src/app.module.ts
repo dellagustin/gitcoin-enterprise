@@ -96,10 +96,6 @@ const authenticationServiceProvider = {
   imports: [
     // DatabaseModule,
     TypeOrmModule.forRoot(postgresConfig),
-    // AuthenticationEntryModule,
-    // LedgerEntriesModule,
-    // TaskModule,
-
     PostgresModule,
   ],
   controllers: [AppController, AuthenticationController, ImagesController],

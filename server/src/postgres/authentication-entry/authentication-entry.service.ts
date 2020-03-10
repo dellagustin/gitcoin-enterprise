@@ -21,4 +21,9 @@ export class AuthenticationEntryService {
     public async findOne(id: string): Promise<AuthenticationEntry> {
         return this.authenticationEntryRepository.findOne(id)
     }
+
+    public async removeAll(): Promise<void> {
+        await this.authenticationEntryRepository.query('Delete from authentication_entry')
+    }
+
 }

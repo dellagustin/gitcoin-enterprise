@@ -18,7 +18,6 @@ export interface ITask {
   title: string
   description: string
   funding: number
-  status: string
 }
 
 export interface IFunding {
@@ -44,11 +43,6 @@ export enum ETaskStatus {
   'inProgress' = 2,
   'completed' = 3,
   'paid' = 4,
-}
-
-export enum ETaskType {
-  'GitHubIssue' = 1,
-  'tbd...' = 2,
 }
 
 export interface IInvitationListFromUser {

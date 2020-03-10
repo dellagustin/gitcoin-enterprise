@@ -51,7 +51,7 @@
       <div *ngIf="solutionApproach.length>20" style="max-width: 87%; margin-left: auto; margin-right: auto;">
         <app-typing-area [messages]=messagesToMotivateANicePlan (typing)=onTyping($event)></app-typing-area>
       </div>
-      <div *ngIf="taskOfInterest.status===1 && !userWantsToStartSolving && solutionApproach!==''">
+      <div *ngIf="!userWantsToStartSolving && solutionApproach!==''">
         <button id="startsolvingthis" (click)="solve()" type="button" class="btn ourBlueColor">
           <i class="fa fa-wrench" aria-hidden="true" style="padding-right: 1vw;"></i>
           Start Solving This

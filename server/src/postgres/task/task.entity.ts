@@ -15,6 +15,4 @@ export class Task {
   @Column()
   public funding: number
 
-  @Column()
-  public status: string
 }
