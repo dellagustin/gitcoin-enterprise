@@ -6,7 +6,7 @@ export class NavBarProvider {
 
     return {
       logoURL: '../assets/peer-2-peer.jpg',
-      appTitle: 'GitCoin Enterprise',
+      appTitle: 'Peer2Peer Enterprise',
       menuEntries: NavBarProvider.getMenuEntries(),
     }
   }

@@ -1,6 +1,6 @@
 import { SupportNotifierService } from '../support-notifier/support-notifier.service'
 import { ELogLevel, ILogger } from './logger-interface'
-import { config } from '../app.module'
+import { config } from '../gitcoin-enterprise-server'
 
 export class LoggerDouble implements ILogger {
 
