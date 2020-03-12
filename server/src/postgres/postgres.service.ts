@@ -63,12 +63,12 @@ export class PostgresService implements IPersistencyService {
         await this.tS.create(fundedTasks[fundedTasks.length - 1])
     }
 
-    public getErrors(): any[] {
+    public async getErrors(): Promise<any[]> {
         return []
     }
 
-    public saveErrors(errors): void {
-        // tbd
+    public async saveErrors(errors): Promise<void> {
+        return Promise.resolve() // some of the weeknesses around interface polymorphism in the TypeScript Scene
     }
 
     public async addMiningEntryForUser(login: string): Promise<ILedgerEntry> {

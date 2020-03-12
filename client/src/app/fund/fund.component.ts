@@ -75,7 +75,7 @@ export class FundComponent implements OnInit {
       funding,
     }
 
-    alert(JSON.stringify(taskAndFunding.task))
+    // alert(JSON.stringify(taskAndFunding.task))
     this.backendService.saveFunding(taskAndFunding, this.authenticationData.p2pAccessToken)
       .subscribe((newLedgerEntry: ILedgerEntry) => {
         this.newLedgerEntry = newLedgerEntry

@@ -104,7 +104,7 @@ export class AuthenticationService {
         if (allAuthenticationData.filter((entry: IAuthenticationData) => entry.id === authenticationData.id)[0] === undefined) {
 
             allAuthenticationData.push(authenticationData)
-            this.persistencyService.saveAuthenticationData(allAuthenticationData)
+            await this.persistencyService.saveAuthenticationData(allAuthenticationData)
 
             await this.persistencyService.addMiningEntryForUser(authenticationData.login)
         }

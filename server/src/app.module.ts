@@ -8,25 +8,15 @@ import { AuthenticationService } from './authentication/authentication.service'
 import { AuthenticationController } from './authentication/authentication.controller'
 import { IConfig } from './interfaces'
 import { UptimeService } from './uptime/uptime.service'
-// import { PersistencyService } from './persistency/persistency.service'
 import { PostgresService } from './postgres/postgres.service'
 import { AuthenticationServiceDouble } from './authentication/authentication.service.double'
 import { ImagesController } from './images/images.controller'
 import { ImagesService } from './images/images.service'
 import { Neo4jService } from './neo4j/neo4j.service'
 import { LoggerService } from './logger/logger.service'
-// import { PhotoModule } from './photo/photo.module';
-import { TypeOrmModule } from '@nestjs/typeorm'
 import { PersistencyService } from './persistency/persistency.service'
-// import { LedgerEntriesModule } from './postgres/ledger-entries/ledger-entries.module'
-// import { LedgerEntriesService } from './postgres/ledger-entries/ledger-entries.service'
-import { postgresConfig } from './postgres/postgres-config'
-import { AuthenticationEntryModule } from './postgres/authentication-entry/authentication-entry.module'
-import { TaskModule } from './postgres/task/task.module'
-import { LedgerEntriesModule } from './postgres/ledger-entries/ledger-entries.module'
 import * as path from 'path'
 import * as fs from 'fs-sync'
-import { PostgresModule } from './postgres/postgres.module'
 const joi = require('@hapi/joi')
 
 const config: IConfig = fs.readJSON(path.join(__dirname, '../.env.json'))
@@ -37,8 +27,8 @@ const schema = joi.object({
   backendURL: joi.string().required(),
   frontendURL: joi.string().required(),
   logLevel: joi.number().required(),
-  certificateFile: joi.string().required(),
-  certificatePrivateKeyFile: joi.string().required(),
+  certificateFile: joi.string().allow(''),
+  certificatePrivateKeyFile: joi.string().allow(''),
   persistencyService: joi.string().required(),
   authenticationService: joi.string().required(),
   postgresPW: joi.string().required(),
@@ -95,8 +85,8 @@ const authenticationServiceProvider = {
 @Module({
   imports: [
     // DatabaseModule,
-    TypeOrmModule.forRoot(postgresConfig),
-    PostgresModule,
+    // TypeOrmModule.forRoot(postgresConfig),
+    // PostgresModule,
   ],
   controllers: [AppController, AuthenticationController, ImagesController],
   providers: [

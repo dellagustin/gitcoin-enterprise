@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common'
 import * as fs from 'fs-sync'
 import * as path from 'path'
 import { ITask, IAuthenticationData, ILedgerEntry } from '../interfaces'
-import { ELogLevel } from '../logger/logger-interface'
 import { IPersistencyService } from './persistency-interface'
 
 @Injectable()
@@ -30,7 +29,7 @@ export class PersistencyService implements IPersistencyService {
         return ledgerEntries
     }
 
-    public saveLedgerEntries(ledgerEntries: ILedgerEntry[]): void {
+    public async saveLedgerEntries(ledgerEntries: ILedgerEntry[]): Promise<void> {
         if (ledgerEntries.length <= PersistencyService.numberOfLedgerEntries) {
             throw new Error('Someone tried to make fun of my ledger :)')
         }
@@ -49,7 +48,7 @@ export class PersistencyService implements IPersistencyService {
         }
     }
 
-    public saveAuthenticationData(authenticationData: IAuthenticationData[]): void {
+    public async saveAuthenticationData(authenticationData: IAuthenticationData[]): Promise<void> {
         return fs.write(this.authenticationDataFileId, JSON.stringify(authenticationData))
     }
 
@@ -64,11 +63,13 @@ export class PersistencyService implements IPersistencyService {
 
     }
 
-    public saveFundedTasks(fundedTasks: ITask[]) {
+    public async saveFundedTasks(fundedTasks: ITask[]): Promise<void> {
         fs.write(this.fundedTasksFileId, JSON.stringify(fundedTasks))
+
+        return Promise.resolve() // some of the weeknesses around interface polymorphism in the TypeScript Scene
     }
 
-    public getErrors(): any[] {
+    public async getErrors(): Promise<any[]> {
         try {
             return fs.readJSON(this.errorsFileID)
         } catch (error) {
@@ -78,8 +79,10 @@ export class PersistencyService implements IPersistencyService {
         }
     }
 
-    public saveErrors(errors): void {
+    public async saveErrors(errors): Promise<void> {
         fs.write(this.errorsFileID, JSON.stringify(errors))
+
+        return Promise.resolve() // some of the weeknesses around interface polymorphism in the TypeScript Scene
     }
 
     public async getLedgerEntriesWithAddress(address: string): Promise<ILedgerEntry[]> {
@@ -104,7 +107,7 @@ export class PersistencyService implements IPersistencyService {
         }
         const content = await this.getLedgerEntries()
         content.push(entry)
-        this.saveLedgerEntries(content)
+        await this.saveLedgerEntries(content)
 
         return entry
     }

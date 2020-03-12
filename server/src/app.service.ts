@@ -43,8 +43,8 @@ export class AppService {
     return config.gitHubTokenForPostingCommentsAndForGettingIssueData
   }
 
-  public saveFundedTasks(fundedTasks: ITask[]): void {
-    this.persistencyService.saveFundedTasks(fundedTasks)
+  public async saveFundedTasks(fundedTasks: ITask[]): Promise<void> {
+    await  this.persistencyService.saveFundedTasks(fundedTasks)
   }
 
   public authorizeInstallation(): void {
@@ -98,7 +98,7 @@ export class AppService {
 
     tasks.push(task)
     console.log(`saving it `)
-    this.persistencyService.saveFundedTasks(tasks)
+    await this.persistencyService.saveFundedTasks(tasks)
 
     await this.gitHubIntegration.postCommentAboutSuccessfullFunding(taskAndFunding.task.link, taskAndFunding.funding)
     void this.lg.log(ELogLevel.Notification, `I received a funding of ${taskAndFunding.funding.amount} EIC for the following task: ${task.link}`)
@@ -136,7 +136,7 @@ export class AppService {
 
     entries.push(entry)
 
-    this.persistencyService.saveLedgerEntries(entries)
+    await  this.persistencyService.saveLedgerEntries(entries)
 
     return entry
   }
@@ -157,7 +157,7 @@ export class AppService {
 
     const entries: ILedgerEntry[] = await this.persistencyService.getLedgerEntries()
     entries.push(entry)
-    this.persistencyService.saveLedgerEntries(entries)
+    await this.persistencyService.saveLedgerEntries(entries)
 
     return newEntries
   }
