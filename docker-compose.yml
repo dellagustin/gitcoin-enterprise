@@ -1,0 +1,6 @@
+version: '3.3'
+services:
+  peer-to-peer-enterprise:
+    image: peer-to-peer-enterprise
+    ports:
+      - '3001:3001'

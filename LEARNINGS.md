@@ -76,6 +76,9 @@ For starters [this video](https://www.youtube.com/watch?v=CsWoMpK3EtE) seems hel
 
 ## Authentication Related
 ### OAuth
+**Explaining OAuth to Users nicely**
+https://www.youtube.com/watch?v=Y6E1GZckIko
+
 regarding the topic of secrets in queryparameters of redirect URL:
 ```history.replaceState(null, null, ' ')```  
 after having the variables transferred from query parameters to locals
@@ -130,3 +133,6 @@ https://www.js-tutorials.com/javascript-tutorial/use-localstorage-sessionstorage
 docker run -p 5432:5432 --name p2p -e POSTGRES_USER=p2p -e POSTGRES_PASSWORD=mysecretpassword -d postgres
 docker ps -a
 docker stop && docker rm
+
+## Cloud SQL on GCP
+https://www.youtube.com/watch?v=vMUpNoukwnM

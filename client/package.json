@@ -1,13 +1,10 @@
 {
   "name": "client",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --prod --output-path='docs' && mv ./docs/index.html ./docs/i-want-compression-via-route.html",
-    "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e"
+    "build": "ng build --prod --output-path='docs' && mv ./docs/index.html ./docs/i-want-compression-via-route.html"
   },
   "private": true,
   "dependencies": {
