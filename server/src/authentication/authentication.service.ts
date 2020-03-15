@@ -17,11 +17,6 @@ export class AuthenticationService {
     protected validStates: string[] = []
 
     public constructor(protected readonly lg: LoggerService, protected readonly gitHubIntegration: GithubIntegrationService, protected readonly persistencyService: PersistencyService) {
-        setInterval(() => {
-            this.actionsForRedirectingConvenientlyAfterLogin = [] // initializing after 11 days
-            this.validStates = []
-            // tslint:disable-next-line: align
-        }, 11 * 24 * 60 * 60 * 1000)
     }
 
     public getRedirectURL(remoteAddress: string, aD: IAuthenticationData) {
@@ -58,6 +53,9 @@ export class AuthenticationService {
 
     public addState(): string {
         const state = uuidv1().replace(/-/g, '')
+        if (this.validStates.length > 200000) {
+            this.validStates = []
+        }
         this.validStates.push(state)
 
         return state
@@ -88,6 +86,10 @@ export class AuthenticationService {
             ipAddress,
             action,
         }
+        if (this.actionsForRedirectingConvenientlyAfterLogin.length > 200000) {
+            this.actionsForRedirectingConvenientlyAfterLogin = []
+        }
+
         this.actionsForRedirectingConvenientlyAfterLogin.push(addressWantsTo)
     }
 
